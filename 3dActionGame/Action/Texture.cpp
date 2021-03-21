@@ -5,10 +5,10 @@
 #include "Renderer.h"
 
 Texture::Texture()
-	:textureID(0)
-	, width(0)
-	, height(0)
-	,luminance(0)
+	: mTextureID(0)
+	, mWidth(0)
+	, mHeight(0)
+	, mLuminance(0)
 {
 }
 
@@ -43,26 +43,26 @@ bool Texture::Load(const std::string& _fileName)
 	}
 
 	// 画像の幅、高さを取得
-	width = surf->w;
-	height = surf->h;
+	mWidth = surf->w;
+	mHeight = surf->h;
 	channels = surf->format->BytesPerPixel;
 
 	// OpenGLにテクスチャ登録
 	int format = GL_RGB;
 	int depth, pitch;
 	depth = 24;
-	pitch = 3 * width; // 1ピクセルあたり3byte * 1行のピクセル数
+	pitch = 3 * mWidth; // 1ピクセルあたり3byte * 1行のピクセル数
 	if (channels == 4)
 	{
 		format = GL_RGBA;
 		depth = 32;
-		pitch = 4 * width;
+		pitch = 4 * mWidth;
 	}
 
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, surf->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, surf->pixels);
 
 	SDL_FreeSurface(surf);
 
@@ -89,18 +89,18 @@ bool Texture::Load(const std::string& _fileName)
 */
 void Texture::Unload()
 {
-	glDeleteTextures(1, &textureID);
+	glDeleteTextures(1, &mTextureID);
 }
 
 void Texture::CreateFromSurface(SDL_Surface * _surface)
 {
-	width = _surface->w;
-	height = _surface->h;
+	mWidth = _surface->w;
+	mHeight = _surface->h;
 
 	// Generate a GL texture
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA,
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_BGRA,
 		GL_UNSIGNED_BYTE, _surface->pixels);
 
 	// Use linear filtering
@@ -116,13 +116,13 @@ void Texture::CreateFromSurface(SDL_Surface * _surface)
 */
 void Texture::CreateForRendering(int _width, int _height, unsigned int _format)
 {
-	width = _width;
-	height = _height;
+	mWidth = _width;
+	mHeight = _height;
 	// テクスチャIDの作成
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
 	// 画像の幅と高さを設定（初期データは指定しない）
-	glTexImage2D(GL_TEXTURE_2D, 0, _format, width, height, 0, GL_RGB,
+	glTexImage2D(GL_TEXTURE_2D, 0, _format, mWidth, mHeight, 0, GL_RGB,
 		GL_FLOAT, nullptr);
 
 	// レンダリング先のテクスチャには最近傍フィルタリングのみを使う
@@ -136,7 +136,7 @@ void Texture::CreateForRendering(int _width, int _height, unsigned int _format)
 void Texture::SetActive()
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
 }
 
 bool Texture::LoadDiv(const std::string& _fileName, const unsigned int _allNum

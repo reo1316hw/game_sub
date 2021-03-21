@@ -2,6 +2,10 @@
 
 class Sprite;
 class InputSystem;
+class MapCreate;
+class HeartUI;
+class Goal;
+class PlayerObject;
 
 class SceneBase
 {
@@ -13,10 +17,9 @@ public:
     virtual ~SceneBase() {};
 
     virtual SceneBase* update() = 0; // 純粋仮想関数 virtual 戻り値　メソッド名() = 0;
-    virtual void draw() = 0;         // 純粋仮想関数
 
-    static int  GetScene() { return isScene; };
-    virtual void SetScene(int _isScene) { isScene = _isScene; }; //シーンをセット
+    static int  GetScene() { return mIsScene; };
+    virtual void SetScene(int _isScene) { mIsScene = _isScene; }; //シーンをセット
 
     enum Scene
     {
@@ -39,12 +42,21 @@ public:
         // コンティニュー 
         Continue
     };
-protected:
-    Sprite* sprite;
-    InputSystem* inputSystem;
 
-    bool clearFlag;
+protected:
+    Sprite*      mSprite;
+    //入力管理クラス
+    InputSystem* mInputSystem;
+
+    MapCreate*    mMapCreate;
+    PlayerObject* mPlayer;
+    Goal*         mGoalLine;
+    HeartUI*      mHeartUI;
+
+    bool         mClearFlag;
+
+    int          mNextSceneCount;
 
 private:
-    static int isScene;
+    static int   mIsScene;
 };

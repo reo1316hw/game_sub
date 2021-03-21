@@ -23,24 +23,24 @@ public:
 	*/
 	virtual void Draw(Shader* _shader, const Vector3& _offset);
 
-	int GetUIid() { return myUIid; }
+	int GetUIid() { return mMyUIid; }
 
 protected:
 	//クラスのポインタ
-	Texture* texture;
+	Texture* mTexture;
 	//描画される順番（数値が少ないほど早く更新される）
-	int drawOrder;
+	int mDrawOrder;
 	//テクスチャの横幅
-	int textureWidth;
+	int mTextureWidth;
 	//テクスチャの縦幅
-	int textureHeight;
+	int mTextureHeight;
 	//描画を行うか
-	bool visible;
+	bool mVisible;
 
 	//UIのID、カウント用
-	static int UIid;
+	static int mUIid;
 	//このUIのID
-	int myUIid;
+	int mMyUIid;
 
 public://ゲッターセッター
 	/*
@@ -52,29 +52,29 @@ public://ゲッターセッター
 	/*
 	@return テクスチャの横幅
 	*/
-	int GetTexWidth() const { return textureWidth; }
+	int GetTexWidth() const { return mTextureWidth; }
 
 	/*
 	@return テクスチャの縦幅
 	*/
-	int GetTexHeight() const { return textureHeight; }
+	int GetTexHeight() const { return mTextureHeight; }
 
 	/*
 	@return 描画順
 	*/
-	int GetDrawOrder() { return drawOrder; }
+	int GetDrawOrder() { return mDrawOrder; }
 
 	/*
 	@brief　描画をするかどうかを設定
 	@param	true : 描画する , false : 描画しない
 	*/
-	void SetVisible(bool _visible) { visible = _visible; }
+	void SetVisible(bool _visible) { mVisible = _visible; }
 
 	/*
 	@brief　描画をするかどうかを取得する
 	@return	true : 描画する , false : 描画しない
 	*/
-	bool GetVisible() const { return visible; }
+	bool GetVisible() const { return mVisible; }
 private:
 };
 

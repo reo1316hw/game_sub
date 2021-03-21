@@ -12,7 +12,9 @@ public:
 	Sprite(const std::string _fileName);
 	~Sprite() {};
 private:
-	Texture* spriteTexture;
-	SpriteComponent* spriteComponent;
+	//テクスチャを生成
+	Texture* mSpriteTexture;
+	//SpriteComponentを生成
+	SpriteComponent* mSpriteComponent;
 };
 

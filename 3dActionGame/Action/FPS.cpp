@@ -3,13 +3,13 @@
 #include "stdio.h"
 
 FPS::FPS()
-	: setFps(60)
-	, oneFrameTickCount(1000 / setFps)
-	, fpsCount(0)
-	, frameStartTickTime(0)
-	, fps(0)
-    , beforetickCount(0)
-	, deltaTime(0)
+	: mSetFps(60)
+	, mOneFrameTickCount(1000 / mSetFps)
+	, mFpsCount(0)
+	, mFrameStartTickTime(0)
+	, mFps(0)
+    , mBeforetickCount(0)
+	, mDeltaTime(0)
 {
 
 }
@@ -24,27 +24,27 @@ FPS::~FPS()
 void FPS::Update()
 {
 	Wait();
-	deltaTime = (SDL_GetTicks() - beforetickCount) / 1000.0f;
-	if (deltaTime >= 0.10f)
+	mDeltaTime = (SDL_GetTicks() - mBeforetickCount) / 1000.0f;
+	if (mDeltaTime >= 0.10f)
 	{
-		deltaTime = 0.10f;
+		mDeltaTime = 0.10f;
 	}
-	beforetickCount = SDL_GetTicks();
+	mBeforetickCount = SDL_GetTicks();
 	//1フレーム目の時刻を保存
-	if (fpsCount == 0)
+	if (mFpsCount == 0)
 	{
-		frameStartTickTime = SDL_GetTicks();
+		mFrameStartTickTime = SDL_GetTicks();
 	}
 	//設定したフレーム数が経過したら
-	if (fpsCount == setFps)
+	if (mFpsCount == mSetFps)
 	{
 		int nowTickTime = SDL_GetTicks();
-		fps = 1000 / ((nowTickTime - frameStartTickTime) / setFps);
-		fpsCount = 0;
+		mFps = 1000 / ((nowTickTime - mFrameStartTickTime) / mSetFps);
+		mFpsCount = 0;
 	}
 	else
 	{
-		fpsCount++;
+		mFpsCount++;
 	}
 }
 
@@ -53,5 +53,5 @@ void FPS::Update()
 */
 void FPS::Wait()
 {
-	while (!SDL_TICKS_PASSED(SDL_GetTicks(), beforetickCount + oneFrameTickCount));
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mBeforetickCount + mOneFrameTickCount));
 }

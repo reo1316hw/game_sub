@@ -6,12 +6,12 @@
 #include "Renderer.h"
 
 SpriteComponent::SpriteComponent(GameObject * _owner, int _drawOrder)
-    :Component(_owner)
-    ,texture(nullptr)
-    ,drawOrder(_drawOrder)
-    ,textureWidth(0)
-    ,textureHeight(0)
-	, visible(true)
+    : Component(_owner)
+    , mTexture(nullptr)
+    , mDrawOrder(_drawOrder)
+    , mTextureWidth(0)
+    , mTextureHeight(0)
+	, mVisible(true)
 {
 	//レンダラーにポインターを送る
 	RENDERER->AddSprite(this);
@@ -30,11 +30,11 @@ SpriteComponent::~SpriteComponent()
 void SpriteComponent::Draw(Shader * _shader)
 {
 	//画像情報が空でないか、親オブジェクトが未更新状態でないか
-	if (texture&& mOwner->GetState()!=State::Dead)
+	if (mTexture&&mOwner->GetState()!=State::Dead)
 	{
 		Matrix4 scaleMatrix = Matrix4::CreateScale(
-			static_cast<float>(textureWidth),
-			static_cast<float>(textureHeight),
+			static_cast<float>(mTextureWidth),
+			static_cast<float>(mTextureHeight),
 			1.0f);
 
 		Matrix4 world = scaleMatrix * mOwner->GetWorldTransform();
@@ -46,7 +46,7 @@ void SpriteComponent::Draw(Shader * _shader)
 		//texture->SetActive();
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+		glBindTexture(GL_TEXTURE_2D, mTexture->GetTextureID());
 		_shader->SetIntUniform("uSpriteTexture", 0);
 
 	/*	glActiveTexture(GL_TEXTURE3);
@@ -74,7 +74,7 @@ void SpriteComponent::Draw(Shader * _shader)
 
 void SpriteComponent::SetTexture(Texture* _texture)
 {
-	texture = _texture;
-	textureWidth = texture->GetWidth();
-	textureHeight = texture->GetHeight();
+	mTexture = _texture;
+	mTextureWidth = mTexture->GetWidth();
+	mTextureHeight = mTexture->GetHeight();
 }

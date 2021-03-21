@@ -1,4 +1,4 @@
-                                                                                      #pragma once
+#pragma once
 #define GAME_OBJECT_MANAGER GameObjectManager::GetInstance()
 
 #include "SDL.h"
@@ -20,7 +20,7 @@ public:
 	/*
 	@return 自身のインスタンスを返す
 	*/
-	static GameObjectManager* GetInstance() { return manager; }
+	static GameObjectManager* GetInstance() { return mManager; }
 	/*
 	@fn インスタンスを生成
 	*/
@@ -66,37 +66,22 @@ private:
 	GameObjectManager();
 	~GameObjectManager();
 
-	static GameObjectManager* manager;
+	static GameObjectManager* mManager;
 
 	//ゲームオブジェクトのポインタの可変長コンテナ
-	std::vector<GameObject*> gameObjects;
-	std::vector<GameObject*> cameraObjects;
-	std::vector<GameObject*> groundObjects;
-	std::vector<GameObject*> glassObjects;
-	std::vector<GameObject*> blockObjects;
-	std::vector<GameObject*> verticalMoveGroundObjects;
-	std::vector<GameObject*> jumpObjects;
-	std::vector<GameObject*> lateralMoveGroundObjects;
-	std::vector<GameObject*> playerObjects;
-	std::vector<GameObject*> upBlockObjects;
-	std::vector<GameObject*> upBlock_02Objects;
-	std::vector<GameObject*> verticalBlockObjects;
-	std::vector<GameObject*> aerialBlockObjects;
-	std::vector<GameObject*> rightBlockObjects;
-	std::vector<GameObject*> leftBlockObjects;
-	std::vector<GameObject*> rightOneBlockObjects;
-	std::vector<GameObject*> rightOneBlock_02Objects;
-	std::vector<GameObject*> leftOneBlockObjects;
-	std::vector<GameObject*> leftOneBlock_02Objects;
-	std::vector<GameObject*> downBlockObjects;
-	std::vector<GameObject*> tutorialObjects;
-	std::vector<GameObject*> stage1Objects;
-	std::vector<GameObject*> stage2Objects;
+	//カメラを格納するための可変長コンテナ
+	std::vector<GameObject*> mCameraObjects;
+	//チュートリアル時の全てのゲームオブジェクトを格納するための可変長コンテナ
+	std::vector<GameObject*> mTutorialObjects; 
+	//ステージ1の時の全てのゲームオブジェクトを格納するための可変長コンテナ
+	std::vector<GameObject*> mStage01Objects;
+	//ステージ2の時の全てのゲームオブジェクトを格納するための可変長コンテナ
+	std::vector<GameObject*> mStage02Objects;
 
 	//Update中に追加されたゲームオブジェクトのポインタを一時的に保存する可変長コンテナ
-	std::vector<GameObject*> pendingGameObjects;
+	std::vector<GameObject*> mPendingGameObjects;
 
 	//Update中かどうか
-	bool updatingGameObject;
+	bool mUpdatingGameObject;
 
 };

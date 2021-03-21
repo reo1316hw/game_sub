@@ -95,10 +95,10 @@ bool IsExistArrayName(const rapidjson::Document& _inDocument, const char* _menbe
 }
 
 // JSON値を内容がintでも強制的にfloat 値として取得
-float ForceGetFloat(const rapidjson::Value& val)
+float ForceGetFloat(const rapidjson::Value& _val)
 {
 	std::string tmp;
-	tmp = val.GetString();
+	tmp = _val.GetString();
 
 	return static_cast<float>(atof(tmp.c_str()));
 }

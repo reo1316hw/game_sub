@@ -12,11 +12,11 @@
 @sa SkeletalMeshComponent.h
 */
 MeshComponent::MeshComponent(GameObject* _owner, bool _skelton)
-	:Component(_owner)
+	: Component(_owner)
 	, mMesh(nullptr)
-	, textureIndex(0)
-	, visible(true)
-	,isSkelton(_skelton)
+	, mTextureIndex(0)
+	, mVisible(true)
+	, mSkeltonFlag(_skelton)
 {
 	//レンダラーにポインターを送る
 	RENDERER->AddMeshComponent(this);

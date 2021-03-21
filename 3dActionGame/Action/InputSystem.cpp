@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-bool InputSystem::controllerConnected = 0;
+bool InputSystem::mControllerConnected = 0;
 
 /*
 @brief	現在のキーの入力状態のみを取得する
@@ -13,7 +13,7 @@ bool InputSystem::controllerConnected = 0;
 */
 bool KeyboardState::GetKeyValue(SDL_Scancode _keyCode) const
 {
-	return currState[_keyCode] == 1;
+	return mCurrState[_keyCode] == 1;
 }
 
 /*
@@ -23,9 +23,9 @@ bool KeyboardState::GetKeyValue(SDL_Scancode _keyCode) const
 */
 ButtonState KeyboardState::GetKeyState(SDL_Scancode _keyCode) const
 {
-	if (prevState[_keyCode] == 0)
+	if (mPrevState[_keyCode] == 0)
 	{
-		if (currState[_keyCode] == 0)
+		if (mCurrState[_keyCode] == 0)
 		{
 			return None;
 		}
@@ -36,7 +36,7 @@ ButtonState KeyboardState::GetKeyState(SDL_Scancode _keyCode) const
 	}
 	else // Prev state must be 1
 	{
-		if (currState[_keyCode] == 0)
+		if (mCurrState[_keyCode] == 0)
 		{
 			return Released;
 		}
@@ -54,7 +54,7 @@ ButtonState KeyboardState::GetKeyState(SDL_Scancode _keyCode) const
 */
 bool MouseState::GetButtonValue(int _button) const
 {
-	return (SDL_BUTTON(_button) & currButtons) == 1;
+	return (SDL_BUTTON(_button) & mCurrButtons) == 1;
 }
 
 /*
@@ -65,9 +65,9 @@ bool MouseState::GetButtonValue(int _button) const
 ButtonState MouseState::GetButtonState(int _button) const
 {
 	int mask = SDL_BUTTON(_button);
-	if ((mask & prevButtons) == 0)
+	if ((mask & mPrevButtons) == 0)
 	{
-		if ((mask & currButtons) == 0)
+		if ((mask & mCurrButtons) == 0)
 		{
 			return None;
 		}
@@ -78,7 +78,7 @@ ButtonState MouseState::GetButtonState(int _button) const
 	}
 	else
 	{
-		if ((mask & currButtons) == 0)
+		if ((mask & mCurrButtons) == 0)
 		{
 			return Released;
 		}
@@ -96,7 +96,7 @@ ButtonState MouseState::GetButtonState(int _button) const
 */
 bool ControllerState::GetButtonValue(SDL_GameControllerButton _button) const
 {
-	return currButtons[_button] == 1;
+	return mCurrButtons[_button] == 1;
 }
 
 /*
@@ -106,9 +106,9 @@ bool ControllerState::GetButtonValue(SDL_GameControllerButton _button) const
 */
 ButtonState ControllerState::GetButtonState(SDL_GameControllerButton _button) const
 {
-	if (prevButtons[_button] == 0)
+	if (mPrevButtons[_button] == 0)
 	{
-		if (currButtons[_button] == 0)
+		if (mCurrButtons[_button] == 0)
 		{
 			return None;
 		}
@@ -119,7 +119,7 @@ ButtonState ControllerState::GetButtonState(SDL_GameControllerButton _button) co
 	}
 	else // Prev state must be 1
 	{
-		if (currButtons[_button] == 0)
+		if (mCurrButtons[_button] == 0)
 		{
 			return Released;
 		}
@@ -130,9 +130,9 @@ ButtonState ControllerState::GetButtonState(SDL_GameControllerButton _button) co
 	}
 }
 
-float ControllerState::GetAxisValue(const SDL_GameControllerAxis iAxis) const
+float ControllerState::GetAxisValue(const SDL_GameControllerAxis _iAxis) const
 {
-	return axisValues[iAxis];
+	return mAxisValues[_iAxis];
 }
 
 /*
@@ -143,18 +143,18 @@ bool InputSystem::Initialize()
 {
 	//キーボードの初期化処理
 	//今のキーボードの状態を割り当てる
-	state.Keyboard.currState = SDL_GetKeyboardState(NULL);
+	mState.m_keyboard.mCurrState = SDL_GetKeyboardState(NULL);
 	//１フレーム前の入力状態を初期化する
-	memset(state.Keyboard.prevState, 0,
+	memset(mState.m_keyboard.mPrevState, 0,
 		SDL_NUM_SCANCODES);
 
-	memset(state.Controller.axisValues, 0,
+	memset(mState.m_controller.mAxisValues, 0,
 		sizeof(float) * SDL_CONTROLLER_AXIS_MAX);
 
 
 	//現在と１フレーム前のマウスの入力状態を初期化する
-	state.Mouse.currButtons = 0;
-	state.Mouse.prevButtons = 0;
+	mState.m_mouse.mCurrButtons = 0;
+	mState.m_mouse.mPrevButtons = 0;
 
 	// パッドの設定ファイル gamecontrollerdb.txt の読み込みと問題が無いかのチェック
 	int iNumOfControllers = SDL_GameControllerAddMappingsFromFile("Assets/Config/GameControllerdb.txt");
@@ -165,15 +165,15 @@ bool InputSystem::Initialize()
 	}
 
 	//コントローラーを開く
-	controller = nullptr;
-	controller = SDL_GameControllerOpen(0);
-	if (controller != nullptr)
+	mController = nullptr;
+	mController = SDL_GameControllerOpen(0);
+	if (mController != nullptr)
 	{
-		controllerConnected = true;
+		mControllerConnected = true;
 	}
 	if (SDL_IsGameController(0))
 	{
-		printf("Controller :: %s \n", SDL_GameControllerMapping(controller));
+		printf("Controller :: %s \n", SDL_GameControllerMapping(mController));
 	}
 
 	// コントローライベントの無視（こちらからフレーム毎に状態を取得するため）
@@ -187,11 +187,11 @@ bool InputSystem::Initialize()
 */
 void InputSystem::Shutdown()
 {
-	if (!controller)
+	if (!mController)
 	{
-		SDL_GameControllerClose(controller);
+		SDL_GameControllerClose(mController);
 	}
-	controller = nullptr;
+	mController = nullptr;
 }
 
 /*
@@ -201,18 +201,18 @@ void InputSystem::PrepareForUpdate()
 {
 	//現在の入力状態を１フレーム前の入力状態にコピーする
 	//キーボード
-	memcpy(state.Keyboard.prevState,
-		state.Keyboard.currState,
+	memcpy(mState.m_keyboard.mPrevState,
+		mState.m_keyboard.mCurrState,
 		SDL_NUM_SCANCODES);
 
 	//マウス
-	state.Mouse.prevButtons = state.Mouse.currButtons;
-	state.Mouse.isRelative = false;
-	state.Mouse.scrollWheel = Vector2::Zero;
+	mState.m_mouse.mPrevButtons = mState.m_mouse.mCurrButtons;
+	mState.m_mouse.mRelativeFlag = false;
+	mState.m_mouse.mScrollWheel = Vector2::Zero;
 
 	//コントローラー
-	memcpy(state.Controller.prevButtons,
-		state.Controller.currButtons,
+	memcpy(mState.m_controller.mPrevButtons,
+		mState.m_controller.mCurrButtons,
 		SDL_CONTROLLER_BUTTON_MAX);
 }
 
@@ -223,35 +223,35 @@ void InputSystem::Update()
 {
 	//マウス
 	int x = 0, y = 0;
-	if (state.Mouse.isRelative)
+	if (mState.m_mouse.mRelativeFlag)
 	{
-		state.Mouse.currButtons =
+		mState.m_mouse.mCurrButtons =
 			SDL_GetRelativeMouseState(&x, &y);
 	}
 	else
 	{
-		state.Mouse.currButtons =
+		mState.m_mouse.mCurrButtons =
 			SDL_GetMouseState(&x, &y);
 	}
 
-	state.Mouse.mousePos.x = static_cast<float>(x) - 1024.0f / 2;
-	state.Mouse.mousePos.y = 768.0f / 2 - static_cast<float>(y);
+	mState.m_mouse.mMousePos.x = static_cast<float>(x) - 1024.0f / 2;
+	mState.m_mouse.mMousePos.y = 768.0f / 2 - static_cast<float>(y);
 
 	//コントローラー
 	//・ボタン
 	for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++)
 	{
-		state.Controller.currButtons[i] =
-			SDL_GameControllerGetButton(controller,
+		mState.m_controller.mCurrButtons[i] =
+			SDL_GameControllerGetButton(mController,
 				SDL_GameControllerButton(i));
 	}
 
 
 	// コントローラが無い場合は early exitする
-	if (controller != NULL)
+	if (mController != NULL)
 	{
 		// 前のフレームのコントローラの状態をコピーする
-		memcpy(&state.Controller.prevButtons, &state.Controller.currButtons, sizeof(Uint8) * SDL_CONTROLLER_BUTTON_MAX);
+		memcpy(&mState.m_controller.mPrevButtons, &mState.m_controller.mCurrButtons, sizeof(Uint8) * SDL_CONTROLLER_BUTTON_MAX);
 
 		// コントローラの状態を更新する
 		SDL_GameControllerUpdate();
@@ -259,24 +259,24 @@ void InputSystem::Update()
 		// 現在のコントローラのボタン状態を保存
 		for (int b = 0; b < SDL_CONTROLLER_BUTTON_MAX; ++b)
 		{
-			state.Controller.currButtons[b] = SDL_GameControllerGetButton(controller, (SDL_GameControllerButton)b);
+			mState.m_controller.mCurrButtons[b] = SDL_GameControllerGetButton(mController, (SDL_GameControllerButton)b);
 		}
 
 		// 現在のコントローラの軸情報を保存
 		for (int a = 0; a < SDL_CONTROLLER_AXIS_MAX; ++a)
 		{
-			state.Controller.axisValues[a] = SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)a);
+			mState.m_controller.mAxisValues[a] = SDL_GameControllerGetAxis(mController, (SDL_GameControllerAxis)a);
 		}
 
 		// LPAD入力をベクトル化する
 		const float maxInput = 32767.0f;
-		state.Controller.lAxis.x = (float)state.Controller.axisValues[SDL_CONTROLLER_AXIS_LEFTX];
-		state.Controller.lAxis.y= (float)state.Controller.axisValues[SDL_CONTROLLER_AXIS_LEFTY];
+		mState.m_controller.mLAxis.x = (float)mState.m_controller.mAxisValues[SDL_CONTROLLER_AXIS_LEFTX];
+		mState.m_controller.mLAxis.y= (float)mState.m_controller.mAxisValues[SDL_CONTROLLER_AXIS_LEFTY];
 		
 		//printf("%f\n", (float)state.Controller.axisValues[SDL_CONTROLLER_AXIS_LEFTX]);
 		//スティックの入力に最低値を設ける(定数以下はカット)
-		state.Controller.lAxis.x= (fabs(state.Controller.lAxis.x) < (float)7849) ? 0.0f : state.Controller.lAxis.x / maxInput;
-		state.Controller.lAxis.y= (fabs(state.Controller.lAxis.y) < (float)8689) ? 0.0f : state.Controller.lAxis.y / maxInput;
+		mState.m_controller.mLAxis.x= (fabs(mState.m_controller.mLAxis.x) < (float)7849) ? 0.0f : mState.m_controller.mLAxis.x / maxInput;
+		mState.m_controller.mLAxis.y= (fabs(mState.m_controller.mLAxis.y) < (float)8689) ? 0.0f : mState.m_controller.mLAxis.y / maxInput;
 
 	}
 }
@@ -289,7 +289,7 @@ void InputSystem::ProcessEvent(SDL_Event& _event)
 	switch (_event.type)
 	{
 	case SDL_MOUSEWHEEL:
-		state.Mouse.scrollWheel = Vector2(
+		mState.m_mouse.mScrollWheel = Vector2(
 			static_cast<float>(_event.wheel.x),
 			static_cast<float>(_event.wheel.y));
 		break;
@@ -307,7 +307,7 @@ void InputSystem::SetRelativeMouseMode(bool _value)
 	SDL_bool set = _value ? SDL_TRUE : SDL_FALSE;
 	SDL_SetRelativeMouseMode(set);
 
-	state.Mouse.isRelative = _value;
+	mState.m_mouse.mRelativeFlag = _value;
 }
 
 /*

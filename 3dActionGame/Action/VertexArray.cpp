@@ -9,21 +9,21 @@
 */
 VertexArray::VertexArray(const float* _verts, unsigned int _numVerts,
 	const unsigned int* _indices, unsigned int _numIndices)
-	:numVerts(_numVerts)
-	,numIndices(_numIndices)
+	:mNumVerts(_numVerts)
+	,mNumIndices(_numIndices)
 {
 	// 頂点配列の作成
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
+	glGenVertexArrays(1, &mVertexArray);
+	glBindVertexArray(mVertexArray);
 
 	// 頂点バッファの作成
-	glGenBuffers(1, &vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glGenBuffers(1, &mVertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, _numVerts * 8 * sizeof(float), _verts, GL_STATIC_DRAW);
 
 	// インデクスバッファの作成
-	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glGenBuffers(1, &mIndexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _numIndices * sizeof(unsigned int), _indices, GL_STATIC_DRAW);
 
 	//最初の頂点属性を有効に（位置座標）
@@ -57,12 +57,12 @@ VertexArray::VertexArray(const float* _verts, unsigned int _numVerts,
 }
 
 VertexArray::VertexArray(const void * verts, unsigned int _numVerts, Layout layout, const unsigned int * indices, unsigned int _numIndices)
-	:numVerts(_numVerts)
-	, numIndices(_numIndices)
+	: mNumVerts(_numVerts)
+	, mNumIndices(_numIndices)
 {
 	// 頂点配列の作成
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
+	glGenVertexArrays(1, &mVertexArray);
+	glBindVertexArray(mVertexArray);
 
 	// 頂点レイアウトが スケルタルモデルなら　ボーンID、影響度分をサイズ増やす
 	unsigned vertexSize = 8 * sizeof(float);
@@ -72,14 +72,14 @@ VertexArray::VertexArray(const void * verts, unsigned int _numVerts, Layout layo
 	}
 
 	// 頂点バッファの作成
-	glGenBuffers(1, &vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, numVerts * vertexSize, verts, GL_STATIC_DRAW);
+	glGenBuffers(1, &mVertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, mNumVerts * vertexSize, verts, GL_STATIC_DRAW);
 
 	// インデックスバッファの作成
-	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glGenBuffers(1, &mIndexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	// 頂点属性
 	if (layout == PosNormTex)
@@ -123,9 +123,9 @@ VertexArray::VertexArray(const void * verts, unsigned int _numVerts, Layout layo
 
 VertexArray::~VertexArray()
 {
-	glDeleteBuffers(1, &vertexBuffer);
-	glDeleteBuffers(1, &indexBuffer);
-	glDeleteVertexArrays(1, &vertexArray);
+	glDeleteBuffers(1, &mVertexBuffer);
+	glDeleteBuffers(1, &mIndexBuffer);
+	glDeleteVertexArrays(1, &mVertexArray);
 }
 
 /*
@@ -133,5 +133,5 @@ VertexArray::~VertexArray()
 */
 void VertexArray::SetActive()
 {
-	glBindVertexArray(vertexArray);
+	glBindVertexArray(mVertexArray);
 }

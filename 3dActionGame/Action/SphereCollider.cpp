@@ -4,8 +4,6 @@
 //=============================================================================
 //	@file	SphereCollider.cpp
 //	@brief	球の当たり判定を行うコンポーネント
-//	@autor	居本 和哉
-//	@date	2020/02/29
 //=============================================================================
 
 //-----------------------------------------------------------------------------
@@ -23,8 +21,8 @@
 */
 SphereCollider::SphereCollider(GameObject* _owner, ColliderTag _tag, onCollisionFunc _func, int _updateOrder, int _collisionOrder)
 	: ColliderComponent(_owner,_tag, _updateOrder, _collisionOrder)
-	, objectSphere({ Vector3::Zero,0.0f })
-	, worldSphere({ Vector3::Zero,0.0f })
+	, mObjectSphere( Vector3::Zero,0.0f )
+	, mWorldSphere( Vector3::Zero,0.0f )
 {
 	PHYSICS->AddSphere(this, _func);
 }
@@ -49,7 +47,7 @@ void SphereCollider::OnUpdateWorldTransform()
 void SphereCollider::refresh()
 {
 	//ワールド座標での中心位置を更新する
-	worldSphere.center = objectSphere.center + mOwner->GetPosition();
+	mWorldSphere.m_center = mObjectSphere.m_center + mOwner->GetPosition();
 	//ワールド空間での球の大きさを更新する
-	worldSphere.radius = objectSphere.radius * mOwner->GetScale();
+	mWorldSphere.m_radius = mObjectSphere.m_radius * mOwner->GetScale();
 }

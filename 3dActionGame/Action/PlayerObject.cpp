@@ -30,15 +30,15 @@
 
 PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const char* _gpanimName, const Tag& _objectTag, const SceneBase::Scene _sceneTag)
 	: GameObject(_objectTag, _sceneTag)
-	, offsetPos(Vector3(150.0f,0.0f, 50.0f))
-	, targetPos(Vector3::Zero)
-	, viewPos(Vector3::Zero)
-	, swordRot(Vector3::Zero)
-	, swordPos(Vector3::Zero)
-	, playerBox(Vector3::Zero, Vector3::Zero)
+	, mOffsetPos(Vector3(150.0f,0.0f, 50.0f))
+	, mTargetPos(Vector3::Zero)
+	, mViewPos(Vector3::Zero)
+	, mSwordRot(Vector3::Zero)
+	, mSwordPos(Vector3::Zero)
+	, mPlayerBox(Vector3::Zero, Vector3::Zero)
 {
 	//GameObjectメンバ変数の初期化
-	tag = _objectTag;
+	mTag = _objectTag;
 	SetScale(_size);
 	SetPosition(_pos);
 	/*gravity = GRAVITY;*/
@@ -47,11 +47,11 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	/*new TestComponent(this);*/
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
-	skeltalMeshComponent = new SkeletalMeshComponent(this);
+	mSkeltalMeshComponent = new SkeletalMeshComponent(this);
 	//Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
-	skeltalMeshComponent->SetMesh(RENDERER->GetMesh(_gpmeshName));
+	mSkeltalMeshComponent->SetMesh(RENDERER->GetMesh(_gpmeshName));
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してSkeletonをセット(.gpskel)
-	skeltalMeshComponent->SetSkeleton(RENDERER->GetSkeleton(_gpskelName));
+	mSkeltalMeshComponent->SetSkeleton(RENDERER->GetSkeleton(_gpskelName));
 
 	// アニメーションの取得 & アニメーション配列にセット
 	mAnimTypes.resize(static_cast<unsigned int>(PlayerState::PLAYER_STATE_NUM));
@@ -77,7 +77,7 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_IDLE)];
 	//anim変数を速度0.5fで再生
-	skeltalMeshComponent->PlayAnimation(anim, 1.0f);
+	mSkeltalMeshComponent->PlayAnimation(anim, 1.0f);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle);					// mStatePool[PLAYER_STATE_IDLE]
@@ -100,21 +100,21 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	//mStatePools.push_back(new PlayerObjectStateHit);
 	
 	// 当たり判定
-	mesh = new Mesh;
-	mesh = RENDERER->GetMesh(_gpmeshName);
-	boxCollider = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
-	boxCollider->SetObjectBox(mesh->GetBox());
+	mMesh = new Mesh;
+	mMesh = RENDERER->GetMesh(_gpmeshName);
+	mBoxCollider = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
+	mBoxCollider->SetObjectBox(mMesh->GetBox());
 
 	//プレイヤーの回転
 	SelfRotation(Vector3::UnitZ, 270.0f);
 
 	// 武器コンポーネント取付
 	// 剣
-	mesh = RENDERER->GetMesh("Assets/Model/Player/valkiria_Sword.gpmesh");
-	mWeaponMesh = new AttackMeshComponent(this, skeltalMeshComponent, "index_01_r");
-	mWeaponMesh->SetMesh(mesh);
-	swordRot = Vector3(-Math::PiOver2 * 0.6f, Math::Pi * 0.4f, 0.0f);
-	swordPos = Vector3(0.0f, 0.0f, 110.0f);
+	mMesh = RENDERER->GetMesh("Assets/Model/Player/valkiria_Sword.gpmesh");
+	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponent, "index_01_r");
+	mWeaponMesh->SetMesh(mMesh);
+	mSwordRot = Vector3(-Math::PiOver2 * 0.6f, Math::Pi * 0.4f, 0.0f);
+	mSwordPos = Vector3(0.0f, 0.0f, 110.0f);
 	mAttackBoneIndex = mWeaponMesh->GetAttackBoneIndex();
 }
 
@@ -125,9 +125,9 @@ PlayerObject::~PlayerObject()
 
 void PlayerObject::UpdateGameObject(float _deltaTime)
 {
-	targetPos = Vector3(position.x, position.y, position.z + 40.0f);
-	viewPos = mainCamera->GetPosition();
-	mainCamera->SetViewMatrixLerpObject(offsetPos, targetPos);
+	mTargetPos = Vector3(mPosition.x, mPosition.y, mPosition.z + 40.0f);
+	mViewPos = mMainCamera->GetPosition();
+	mMainCamera->SetViewMatrixLerpObject(mOffsetPos, mTargetPos);
 
 	// ステート外部からステート変更があったか？
 	if (mNowState != mNextState)
@@ -150,9 +150,9 @@ void PlayerObject::UpdateGameObject(float _deltaTime)
 	}
 
 	// 武器の円周率をセット
-	mWeaponMesh->SetOffsetRotation(swordRot);
+	mWeaponMesh->SetOffsetRotation(mSwordRot);
 	// 武器の座標をセット
-	mWeaponMesh->SetOffsetPosition(swordPos);
+	mWeaponMesh->SetOffsetPosition(mSwordPos);
 }
 
 void PlayerObject::PausingUpdateGameObject()
@@ -185,14 +185,14 @@ void PlayerObject::GameObjectInput(const InputState& _keyState)
 void PlayerObject::OnCollision(const GameObject& _hitObject)
 {
 	//押し戻し処理
-	playerBox = boxCollider->GetWorldBox();
+	mPlayerBox = mBoxCollider->GetWorldBox();
 
-	float dx1 = _hitObject.aabb.min.x - playerBox.max.x;
-	float dx2 = _hitObject.aabb.max.x - playerBox.min.x;
-	float dy1 = _hitObject.aabb.min.y - playerBox.max.y;
-	float dy2 = _hitObject.aabb.max.y - playerBox.min.y;
-	float dz1 = _hitObject.aabb.min.z - playerBox.max.z;
-	float dz2 = _hitObject.aabb.max.z - playerBox.min.z;
+	float dx1 = _hitObject.mAabb.m_min.x - mPlayerBox.m_max.x;
+	float dx2 = _hitObject.mAabb.m_max.x - mPlayerBox.m_min.x;
+	float dy1 = _hitObject.mAabb.m_min.y - mPlayerBox.m_max.y;
+	float dy2 = _hitObject.mAabb.m_max.y - mPlayerBox.m_min.y;
+	float dz1 = _hitObject.mAabb.m_min.z - mPlayerBox.m_max.z;
+	float dz2 = _hitObject.mAabb.m_max.z - mPlayerBox.m_min.z;
 
 	float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
 	float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
@@ -200,18 +200,18 @@ void PlayerObject::OnCollision(const GameObject& _hitObject)
 
 	if (Math::Abs(dx) <= Math::Abs(dy) && Math::Abs(dx) <= Math::Abs(dz))
 	{
-		position.x += dx;
+		mPosition.x += dx;
 	}
 
 	if (Math::Abs(dy) <= Math::Abs(dx) && Math::Abs(dy) <= Math::Abs(dz))
 	{
-		position.y += dy;
+		mPosition.y += dy;
 	}
 
 	if (Math::Abs(dz) <= Math::Abs(dx) && Math::Abs(dz) <= Math::Abs(dy))
 	{
 		//charaSpeed = 0.0f;
-		position.z += dz;
+		mPosition.z += dz;
 	}
 }
 

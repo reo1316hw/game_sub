@@ -34,26 +34,26 @@ enum class PlayerState
 	PLAYER_STATE_NUM,   // 総アニメーション数
 };
 
-class PlayerObject:public GameObject
+class PlayerObject : public GameObject
 {
 public:
 	PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const char* _gpanimName, const Tag& _objectTag, const SceneBase::Scene _sceneTag);
 	//PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const char* _gpanimName);
 	~PlayerObject();
 
-	SkeletalMeshComponent* GetSkeletalMeshComp() { return skeltalMeshComponent; };
-	const Animation* GetAnim(PlayerState state) { return mAnimTypes[static_cast<unsigned int>(state)]; };
+	SkeletalMeshComponent* GetSkeletalMeshComp() { return mSkeltalMeshComponent; };
+	const Animation* GetAnim(PlayerState _state) { return mAnimTypes[static_cast<unsigned int>(_state)]; };
 
 	void UpdateGameObject(float _deltaTime)override;
 	void GameObjectInput(const InputState& _keyState)override;
 	void SelfRotation(Vector3 _axis, float _angle);
 	void PausingUpdateGameObject()override;
 
-	Vector3 GetTargetPos() { return targetPos; };
-	Vector3 GetViewPos() { return viewPos; };
+	Vector3 GetTargetPos() { return mTargetPos; };
+	Vector3 GetViewPos() { return mViewPos; };
 
-	void SetSwordRot(Vector3 _swordRot) { swordRot = _swordRot; };
-	void SetSwordPos(Vector3 _swordPos) { swordPos = _swordPos; };
+	void SetSwordRot(Vector3 _swordRot) { mSwordRot = _swordRot; };
+	void SetSwordPos(Vector3 _swordPos) { mSwordPos = _swordPos; };
 	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; };
 
 private:
@@ -66,26 +66,20 @@ private:
 	// 次のステート
 	PlayerState mNextState;
 
-	//3Dモデルの描画を行うクラス
-	SkeletalMeshComponent* skeltalMeshComponent;
-	MeshComponent* meshComponent;
-	Mesh* mesh;
-
-	BoxCollider* boxCollider;
-	AABB playerBox;
+	AABB mPlayerBox;
 
 	// 武器メッシュ
 	AttackMeshComponent* mWeaponMesh;
 
 	//見たい座標との差
-	Vector3 offsetPos;
+	Vector3 mOffsetPos;
 	//見る対象のポジション
-	Vector3 targetPos;
+	Vector3 mTargetPos;
 	//カメラのポジション
-	Vector3 viewPos;
+	Vector3 mViewPos;
 
-	Vector3 swordRot; //剣の円周率
-	Vector3 swordPos; //剣の座標
+	Vector3 mSwordRot; //剣の円周率
+	Vector3 mSwordPos; //剣の座標
 
 	int mAttackBoneIndex;
 

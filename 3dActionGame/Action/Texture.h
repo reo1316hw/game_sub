@@ -38,15 +38,15 @@ public:
 	@brief	テクスチャの横幅を取得する
 	@return 横幅
 	*/
-	int GetWidth() const { return width; }
+	int GetWidth() const { return mWidth; }
 
 	/*
 	@brief	テクスチャの縦幅を取得する
 	@return 縦幅
 	*/
-	int GetHeight() const { return height; }
+	int GetHeight() const { return mHeight; }
 
-	int GetTextureID() const { return textureID; }
+	int GetTextureID() const { return mTextureID; }
 
 	static bool LoadDiv(
 		 const std::string& _fileName,const unsigned int _allNum
@@ -54,16 +54,16 @@ public:
 		,const unsigned int _width, const unsigned int _height
 		,std::vector<Texture*> textures);
 
-	void SetLuminace(float _luminance) { luminance = _luminance; }
+	void SetLuminace(float _luminance) { mLuminance = _luminance; }
 
 	//float GetLuminace() const { return luminance; }
 
 private:
-	unsigned int textureID;
-	float luminance;
+	unsigned int mTextureID;
+	float mLuminance;
 	//テクスチャの横幅
-	int width;
+	int mWidth;
 	//テクスチャの縦幅
-	int height;
+	int mHeight;
 };
 

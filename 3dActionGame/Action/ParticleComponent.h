@@ -38,91 +38,91 @@ public:
 	bool operator > (const ParticleComponent& rhs) const;
 private:
 	//親オブジェクトクラスと画像を描画する位置の差
-	Vector3 offset;
+	Vector3 mOffset;
 	//画像に乗算する色
-	Vector3 color;
+	Vector3 mColor;
 	//サイズ
-	float scale;
+	float mScale;
 	//透明度
-	float alpha; 
+	float mAlpha; 
 	//テクスチャID
-	int textureID; 
+	int mTextureID; 
 	//ブレンドタイプ
-	PARTICLE_ENUM blendType;
+	PARTICLE_ENUM mBlendType;
 	//描画を行うか
-	bool visible;
+	bool mVisible;
 	// ビルボード行列
-	static Matrix4 staticBillboardMat; 
+	static Matrix4 mStaticBillboardMat; 
 	// カメラのワールド座標
-	static Vector3 staticCameraWorldPos;
+	static Vector3 mStaticCameraWorldPos;
 	//描画順(数字が少ないものから描画される)
-	int drawOrder;
+	int mDrawOrder;
 	//反転を行うか
-	bool reverce;
+	bool mReverce;
 public: //ゲッターセッター
 	/*
 	@return テクスチャID
 	*/
-	int GetTextureID() { return textureID; }
+	int GetTextureID() { return mTextureID; }
 	/*
 	@param _texId テクスチャID
 	*/
-	void SetTextureID(int _texId) { textureID = _texId; }
+	void SetTextureID(int _texId) { mTextureID = _texId; }
 	/*
 	@return ブレンドタイプ
 	*/
-	PARTICLE_ENUM GetBlendType() { return blendType; }
+	PARTICLE_ENUM GetBlendType() { return mBlendType; }
 	/*
 	@param _color 画像に乗算する色
 	*/
-	void SetColor(const Vector3& _color) { color = _color; }
+	void SetColor(const Vector3& _color) { mColor = _color; }
 	/*
 	@param _alfa 透明度0~1
 	*/
-	void SetAlpha(float _alpha) { alpha = _alpha; }
+	void SetAlpha(float _alpha) { mAlpha = _alpha; }
 	/*
 	@param サイズ
 	*/
-	void SetScale(float _scale) { scale = _scale; }
+	void SetScale(float _scale) { mScale = _scale; }
 	/*
 	@param _mat ビルボード行列
 	*/
-	void SetBillboardMat(const Matrix4& _mat) {	staticBillboardMat = _mat;	}
+	void SetBillboardMat(const Matrix4& _mat) {	mStaticBillboardMat = _mat;	}
 	/*
 	@param _brendType カメラのワールド座標
 	*/
-	void SetBlendMode(PARTICLE_ENUM _blendType){blendType = _blendType;	}
+	void SetBlendMode(PARTICLE_ENUM _blendType){mBlendType = _blendType;	}
 	/*
 	@brief　描画をするかどうかを設定
 	@param	true : 描画する , false : 描画しない
 	*/
-	void SetVisible(bool _visible) { visible = _visible; }
+	void SetVisible(bool _visible) { mVisible = _visible; }
 
 	/*
 	@brief　描画をするかどうかを取得する
 	@return	true : 描画する , false : 描画しない
 	*/
-	bool GetVisible() const { return visible; }
+	bool GetVisible() const { return mVisible; }
 
 	/*
 	@param _drawOrder 描画順
 	*/
-	void SetDrawOrder(int _drawOrder) { drawOrder = _drawOrder; }
+	void SetDrawOrder(int _drawOrder) { mDrawOrder = _drawOrder; }
 
 	/*
 	@return 描画順
 	*/
-	int GetDrawOrder() { return drawOrder; }
+	int GetDrawOrder() { return mDrawOrder; }
 
 	/*
 	@param _offset 親オブジェクトの座標と描画位置の差
 	*/
-	void SetOffSet(Vector3 _offset) { offset = _offset; };
+	void SetOffSet(Vector3 _offset) { mOffset = _offset; };
 
 	/*
 	@param _flag 反転を行うか
 	*/
-	void SetReverce(bool _flag) { reverce = _flag; }
+	void SetReverce(bool _flag) { mReverce = _flag; }
 };
 
 Matrix4 GetBillboardMatrix();

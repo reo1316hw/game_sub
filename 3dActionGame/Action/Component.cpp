@@ -7,7 +7,7 @@
 */
 Component::Component(GameObject* _owner, int _updateOrder)
 	: mOwner(_owner)
-	, updateOrder(_updateOrder)
+	, mUpdateOrder(_updateOrder)
 {
 	mOwner->AddComponent(this);
 }

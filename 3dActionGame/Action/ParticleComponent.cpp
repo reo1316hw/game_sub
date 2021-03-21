@@ -4,9 +4,9 @@
 #include "GameObject.h"
 
 // ビルボード行列
-Matrix4 ParticleComponent::staticBillboardMat;
+Matrix4 ParticleComponent::mStaticBillboardMat;
 // カメラのワールド座標
-Vector3 ParticleComponent::staticCameraWorldPos;
+Vector3 ParticleComponent::mStaticCameraWorldPos;
 
 /*
  @param _offset 親オブジェクトクラスと画像を描画する位置の差
@@ -14,15 +14,15 @@ Vector3 ParticleComponent::staticCameraWorldPos;
 */
 ParticleComponent::ParticleComponent(GameObject* _owner, const Vector3& _offset, float _scale, int _updateOrder)
 	: Component(_owner, _updateOrder)
-	, offset(_offset)
-	, scale(_scale)
-	, alpha(1.0f)
-	, blendType(PARTICLE_BLEND_ENUM::PARTICLE_BLEND_ENUM_ALPHA)
-	, visible(true)
-	, drawOrder(_updateOrder)
-	, color(Vector3(1, 1, 1))
-	, reverce(false)
-	, textureID(0)
+	, mOffset(_offset)
+	, mScale(_scale)
+	, mAlpha(1.0f)
+	, mBlendType(PARTICLE_BLEND_ENUM::PARTICLE_BLEND_ENUM_ALPHA)
+	, mVisible(true)
+	, mDrawOrder(_updateOrder)
+	, mColor(Vector3(1, 1, 1))
+	, mReverce(false)
+	, mTextureID(0)
 
 {
 	//レンダラーにポインターを送る
@@ -49,19 +49,19 @@ void ParticleComponent::Draw(Shader* _shader)
 	Matrix4 mat, matScale;
 	Vector3 reverceVec = Vector3(1, 1, 1);
 	//サイズを反転させる
-	if (reverce)
+	if (mReverce)
 	{
 		reverceVec.x *= -1;
 	}
-	matScale = Matrix4::CreateScale(scale*reverceVec* mOwner->GetScale());
-	mat = Matrix4::CreateTranslation(offset + mOwner->GetPosition());
+	matScale = Matrix4::CreateScale(mScale*reverceVec* mOwner->GetScale());
+	mat = Matrix4::CreateTranslation(mOffset + mOwner->GetPosition());
 
-	_shader->SetMatrixUniform("uWorldTransform", matScale * staticBillboardMat * mat);
-	_shader->SetFloatUniform("uAlpha", alpha);
-	_shader->SetVectorUniform("uColor", color);
+	_shader->SetMatrixUniform("uWorldTransform", matScale * mStaticBillboardMat * mat);
+	_shader->SetFloatUniform("uAlpha", mAlpha);
+	_shader->SetVectorUniform("uColor", mColor);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
 	_shader->SetIntUniform("uParticleTexture", 0);
 
 	RENDERER->SetParticleVertex();
@@ -72,8 +72,8 @@ void ParticleComponent::Draw(Shader* _shader)
 bool ParticleComponent::operator<(const ParticleComponent& rhs) const
 {
 	float lenThis, lenRhs;
-	lenThis = (staticCameraWorldPos - offset).LengthSq();
-	lenRhs = (staticCameraWorldPos - rhs.offset).LengthSq();
+	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
+	lenRhs = (mStaticCameraWorldPos - rhs.mOffset).LengthSq();
 	return lenThis < lenRhs;
 }
 
@@ -81,8 +81,8 @@ bool ParticleComponent::operator<(const ParticleComponent& rhs) const
 bool ParticleComponent::operator>(const ParticleComponent& rhs) const
 {
 	float lenThis, lenRhs;
-	lenThis = (staticCameraWorldPos - offset).LengthSq();
-	lenRhs = (staticCameraWorldPos - rhs.offset).LengthSq();
+	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
+	lenRhs = (mStaticCameraWorldPos - rhs.mOffset).LengthSq();
 	return lenThis > lenRhs;
 }
 

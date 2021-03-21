@@ -1,8 +1,6 @@
 ﻿//=============================================================================
 //	@file	ColliderComponent.cpp
 //	@brief	当たり判定を行うコンポーネントの規定クラス
-//	@autor	居本 和哉
-//	@date	2020/02/29
 //=============================================================================
 
 //-----------------------------------------------------------------------------
@@ -20,8 +18,8 @@
 */
 ColliderComponent::ColliderComponent(GameObject* _owner, ColliderTag _tag, int _updateOrder, int _collisionOrder)
 	: Component(_owner, _updateOrder)
-	, isTrigger(false)
-	, collisionOrder(_collisionOrder)
+	, mTriggerFlag(false)
+	, mCollisionOrder(_collisionOrder)
 	, mTag(_tag)
 {
 }

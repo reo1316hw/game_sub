@@ -39,25 +39,25 @@ PlayerState PlayerObjectStateSwordIdle::Update(PlayerObject* _owner, float _delt
 void PlayerObjectStateSwordIdle::Inipt(PlayerObject* _owner, const InputState& _keyState)
 {
     //// ジャンプキーが入力されたか
-   //if (sceneState.Keyboard.GetKeyValue(SDL_SCANCODE_SPACE) == 1)
+   //if (sceneState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE) == 1)
    //{
    //    return PlayerState::PLAYER_STATE_JUMPSTART;
    //}
 
    //方向キーが入力されたか
-    mIsRun = _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_W) ||
-        _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_S) ||
-        _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-        _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_D);
+    mIsRun = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+        _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
+        _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
+        _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D);
 
     //左Shiftキーが入力されたか
-    mIsSprint = _keyState.Keyboard.GetKeyState(SDL_SCANCODE_LSHIFT);
+    mIsSprint = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_LSHIFT);
 
     //Enterキーが入力されたか
-    mIsAttack = _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
+    mIsAttack = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
 
     //Xキーが入力されたか
-    swordDelivery = _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_X);
+    swordDelivery = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_X);
 }
 
 void PlayerObjectStateSwordIdle::Enter(PlayerObject* _owner, float _deltaTime)

@@ -1,12 +1,5 @@
 #pragma once
 #include "SceneBase.h"
-#include "MapCreate.h"
-#include "SpriteComponent.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "PlayerObject.h"
-#include "ParticleComponent.h"
-#include <SDL.h>
 
 class Tutorial : public SceneBase
 {
@@ -15,19 +8,13 @@ public:
 	~Tutorial();
 
 	SceneBase* update() override;
-	void       draw() override;
 
-	static bool GetContinueTutorialFlag() { return sendContinueTutorialFlag; };
-	static void SetContinueTutorialFlag(bool _continue) { sendContinueTutorialFlag = _continue; };
+	static bool GetContinueTutorialFlag() { return mSendContinueTutorialFlag; };
+	static void SetContinueTutorialFlag(bool _continue) { mSendContinueTutorialFlag = _continue; };
 
 private:
-	MapCreate* mapCreate;
-	PlayerObject* player;
-	Sprite* sprite;
+	static bool mSendContinueTutorialFlag;
 
-	static bool sendContinueTutorialFlag;
-
-	bool continueTutorialFlag;
-	int count;
+	bool mContinueTutorialFlag;
 };
 

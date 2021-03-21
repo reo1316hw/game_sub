@@ -13,7 +13,7 @@
 SkeletalMeshComponent::SkeletalMeshComponent(GameObject* _owner)
 	:MeshComponent(_owner, true)
 	, mSkeleton(nullptr)
-	, color(Vector3(0,0,0))
+	, mColor(Vector3(0,0,0))
 {
 }
 
@@ -37,9 +37,9 @@ void SkeletalMeshComponent::Draw(Shader* _shader)
 			//スペキュラー強度をセット
 			_shader->SetFloatUniform("uSpecPower", 100);
 
-			_shader->SetVectorUniform("uColor", color);
+			_shader->SetVectorUniform("uColor", mColor);
 			//  テクスチャをセット 
-			Texture* t = mMesh->GetTexture(textureIndex);
+			Texture* t = mMesh->GetTexture(mTextureIndex);
 			if (t)
 			{
 				glActiveTexture(GL_TEXTURE0);
@@ -57,22 +57,22 @@ void SkeletalMeshComponent::Draw(Shader* _shader)
 
 void SkeletalMeshComponent::Update(float _deltaTime)
 {
-		if (animation && mSkeleton)
+		if (mAnimation && mSkeleton)
 		{
-			animTime += _deltaTime * animPlayRate;
+			mAnimTime += _deltaTime * mAnimPlayRate;
 
 			// アニメーションがループアニメーションなら巻き戻し処理
-			if (animation->IsLoopAnimation())
+			if (mAnimation->IsLoopAnimation())
 			{
-				while (animTime > animation->GetDuration())
+				while (mAnimTime > mAnimation->GetDuration())
 				{
-					animTime -= animation->GetDuration();
+					mAnimTime -= mAnimation->GetDuration();
 				}
 			}
 			// ループしないアニメで再生時間超えたら最終時間までとする
-			else if (animTime > animation->GetDuration())
+			else if (mAnimTime > mAnimation->GetDuration())
 			{
-				animTime = animation->GetDuration();
+				mAnimTime = mAnimation->GetDuration();
 			}
 			// 行列パレットの再計算
 			ComputeMatrixPalette();
@@ -82,26 +82,26 @@ void SkeletalMeshComponent::Update(float _deltaTime)
 
 float SkeletalMeshComponent::PlayAnimation(const Animation* _anim, float _playRate) 
 {
-	animation = _anim;
-	animTime = 0.0f;
-	animPlayRate = _playRate;
+	mAnimation = _anim;
+	mAnimTime = 0.0f;
+	mAnimPlayRate = _playRate;
 
-	if (!animation)
+	if (!mAnimation)
 	{
 		return 0.0f;
 	}
 
 	ComputeMatrixPalette();
 
-	return animation->GetDuration();
+	return mAnimation->GetDuration();
 }
 
 // 現在アニメーション再生中か？ true : 再生中 / false : 再生終了
 bool SkeletalMeshComponent::IsPlaying()
 {
-	if (!animation->IsLoopAnimation())
+	if (!mAnimation->IsLoopAnimation())
 	{
-		if (animTime >= animation->GetDuration())
+		if (mAnimTime >= mAnimation->GetDuration())
 		{
 			return false;
 		}
@@ -118,9 +118,9 @@ int SkeletalMeshComponent::GetBoneIndexFromName(const char* _boneName) const
 }
 
 // ボーンインデックス値からそのボーンの最終ワールド行列を返す
-void SkeletalMeshComponent::GetMatrixFromBoneIndex(Matrix4& boneWorldMatrix, int boneIndex) const
+void SkeletalMeshComponent::GetMatrixFromBoneIndex(Matrix4& _boneWorldMatrix, int _boneIndex) const
 {
-	boneWorldMatrix = mPalette.mEntry[boneIndex] * mOwner->GetWorldTransform();
+	_boneWorldMatrix = mPalette.mEntry[_boneIndex] * mOwner->GetWorldTransform();
 }
 
 void SkeletalMeshComponent::ComputeMatrixPalette()                             
@@ -130,7 +130,7 @@ void SkeletalMeshComponent::ComputeMatrixPalette()
 	// 現在のポーズ行列
 	std::vector<Matrix4> currentPoses;                                        
 	// アニメ時刻時点のグローバルポーズの取得
-	animation->GetGlobalPoseAtTime(currentPoses, mSkeleton, animTime);
+	mAnimation->GetGlobalPoseAtTime(currentPoses, mSkeleton, mAnimTime);
 	// それぞれのボーンの行列パレットのセット                                    
 	for (size_t i = 0; i < mSkeleton->GetNumBones(); i++)
 	{

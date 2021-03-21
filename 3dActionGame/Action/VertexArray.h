@@ -30,24 +30,24 @@ public:
 	@brief	インデックスバッファにあるインデックスの数を取得する
 	@return numIndices（インデックスの数）
 	*/
-	unsigned int GetNumIndices() const { return numIndices; }
+	unsigned int GetNumIndices() const { return mNumIndices; }
 
 	/*
 	@brief	頂点バッファにある頂点の数を取得する
 	@return numVerts（頂点の数）
 	*/
-	unsigned int GetNumVerts() const { return numVerts; }
+	unsigned int GetNumVerts() const { return mNumVerts; }
 
 private:
 	//頂点バッファにある頂点の数
-	unsigned int numVerts;
+	unsigned int mNumVerts;
 	//インデクスバッファにあるインデックスの数
-	unsigned int numIndices;
+	unsigned int mNumIndices;
 	//頂点バッファのOpenGL ID
-	unsigned int vertexBuffer;
+	unsigned int mVertexBuffer;
 	//インデックスバッファのOpenGL ID
-	unsigned int indexBuffer;
+	unsigned int mIndexBuffer;
 	//頂点配列オブジェクトのOpenGL ID
-	unsigned int vertexArray;
+	unsigned int mVertexArray;
 };
 

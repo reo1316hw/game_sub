@@ -21,5 +21,5 @@ public:
 	/*
 	@fn ƒ{[ƒ“•âŠÔ
 	*/
-	static BoneTransform Interpolate(const BoneTransform& a, const BoneTransform& b, float f); 
+	static BoneTransform Interpolate(const BoneTransform& _a, const BoneTransform& _b, float _f); 
 };

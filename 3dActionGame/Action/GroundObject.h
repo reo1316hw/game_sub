@@ -15,11 +15,6 @@ public:
 
 	void UpdateGameObject(float _deltaTime)override;
 private:
-	MeshComponent* meshComponent;
-	BoxCollider* boxCollider;
-	Mesh* mesh;
-	//AABB groundBox;
-
 	const float DOWN_SPEED = 10;
 
 	void OnCollision(const GameObject& _hitObject)override;

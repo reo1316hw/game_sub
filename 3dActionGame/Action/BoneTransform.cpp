@@ -17,10 +17,10 @@ Matrix4 BoneTransform::ToMatrix() const
 /*
 @fn ボーン補間
 */
-BoneTransform BoneTransform::Interpolate(const BoneTransform& a, const BoneTransform& b, float f)
+BoneTransform BoneTransform::Interpolate(const BoneTransform& _a, const BoneTransform& _b, float _f)
 {
 	BoneTransform retVal;
-	retVal.mRotation = Quaternion::Slerp(a.mRotation, b.mRotation, f);        // aからb に数値fで球面線形補間(slerp)する
-	retVal.mTranslation = Vector3::Lerp(a.mTranslation, b.mTranslation, f);   // 平行移動成分はf で線形補間(lerp)する
+	retVal.mRotation = Quaternion::Slerp(_a.mRotation, _b.mRotation, _f);        // aからb に数値fで球面線形補間(slerp)する
+	retVal.mTranslation = Vector3::Lerp(_a.mTranslation, _b.mTranslation, _f);   // 平行移動成分はf で線形補間(lerp)する
 	return retVal;
 }

@@ -7,14 +7,8 @@
 //#include "SwordEffectActor.h"
 
 PlayerObjectStateRunEnd::PlayerObjectStateRunEnd()
-	: mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
-	, mIsIdle(false)
+	: mIsIdle(false)
 	, mIsAttack(false)
-	, charaSpeed(0.0f)
-	, dirVec(Vector3::Zero)
-	, forwardVec(Vector3::Zero)
-	, rightVec(Vector3::Zero)
 {
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateRunEnd\n");
 }
@@ -103,7 +97,7 @@ void PlayerObjectStateRunEnd::Enter(PlayerObject* _owner, float _deltaTime)
 	// アニメーション再生時間取得(アニメーションの総時間矯正)
 	mTotalAnimTime = _owner->GetAnim(PlayerState::PLAYER_STATE_RUN_END)->GetDuration() - 0.6f;
 	mElapseTime = 0.0f;
-	charaSpeed = 12.0f;
+	mCharaSpeed = 12.0f;
 }
 
 void PlayerObjectStateRunEnd::Exit(PlayerObject* _owner, float _deltaTime)
@@ -152,19 +146,19 @@ void PlayerObjectStateRunEnd::MoveCalc(PlayerObject* _owner, float _deltaTime)
 	// 移動速度
 	const float PLAYER_SPEED = 100.0f;
 
-	charaForwardVec = _owner->GetForward();
+	mCharaForwardVec = _owner->GetForward();
 
 	// 現在のスピードを保存
-	charaSpeed -= PLAYER_SPEED * _deltaTime;
+	mCharaSpeed -= PLAYER_SPEED * _deltaTime;
 
-	if (charaSpeed <= 0.0f)
+	if (mCharaSpeed <= 0.0f)
 	{
-		charaSpeed = 0.0f;
+		mCharaSpeed = 0.0f;
 	}
 
 	// 移動処理
 	Vector3 position = _owner->GetPosition();
-	position += charaSpeed * charaForwardVec;
+	position += mCharaSpeed * mCharaForwardVec;
 
 	// キャラの位置・スピード・変換行列の再計算の必要をセット
 	_owner->SetPosition(position);

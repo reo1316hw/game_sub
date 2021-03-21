@@ -10,13 +10,13 @@
 @param _filename
 @return 成功、失敗
 */
-bool Skeleton::Load(const std::string& fileName)
+bool Skeleton::Load(const std::string& _fileName)
 {
 	// ファイル名からテキストファイルをオープンして、RapidJSONに解析させる
-	std::ifstream file(fileName);
+	std::ifstream file(_fileName);
 	if (!file.is_open())
 	{
-		SDL_Log("File not found: Skeleton %s", fileName.c_str());
+		SDL_Log("File not found: Skeleton %s", _fileName.c_str());
 		return false;
 	}
 
@@ -30,7 +30,7 @@ bool Skeleton::Load(const std::string& fileName)
 	// JSONオブジェクトか
 	if (!doc.IsObject())
 	{
-		SDL_Log("Skeleton %s is not valid json", fileName.c_str());
+		SDL_Log("Skeleton %s is not valid json", _fileName.c_str());
 		return false;
 	}
 
@@ -39,7 +39,7 @@ bool Skeleton::Load(const std::string& fileName)
 	// Check the metadata　メタデータのチェック（バージョンチェック）
 	if (ver != 1)
 	{
-		SDL_Log("Skeleton %s unknown format", fileName.c_str());
+		SDL_Log("Skeleton %s unknown format", _fileName.c_str());
 		return false;
 	}
 
@@ -47,7 +47,7 @@ bool Skeleton::Load(const std::string& fileName)
 	const rapidjson::Value& bonecount = doc["bonecount"];
 	if (!bonecount.IsUint())
 	{
-		SDL_Log("Skeleton %s doesn't have a bone count.", fileName.c_str());
+		SDL_Log("Skeleton %s doesn't have a bone count.", _fileName.c_str());
 		return false;
 	}
 
@@ -56,7 +56,7 @@ bool Skeleton::Load(const std::string& fileName)
 	// ボーン数がMAX_SKELETON_BONESを超えていた場合 (196本が最大)
 	if (count > MAX_SKELETON_BONES)
 	{
-		SDL_Log("Skeleton %s exceeds maximum bone count.", fileName.c_str());
+		SDL_Log("Skeleton %s exceeds maximum bone count.", _fileName.c_str());
 		return false;
 	}
 
@@ -66,14 +66,14 @@ bool Skeleton::Load(const std::string& fileName)
 	const rapidjson::Value& bones = doc["bones"];
 	if (!bones.IsArray())
 	{
-		SDL_Log("Skeleton %s doesn't have a bone array?", fileName.c_str());
+		SDL_Log("Skeleton %s doesn't have a bone array?", _fileName.c_str());
 		return false;
 	}
 
 	// ボーン配列のサイズとボーン数が異なる場合はエラーを返す
 	if (bones.Size() != count)
 	{
-		SDL_Log("Skeleton %s has a mismatch between the bone count and number of bones", fileName.c_str());
+		SDL_Log("Skeleton %s has a mismatch between the bone count and number of bones", _fileName.c_str());
 		return false;
 	}
 
@@ -85,7 +85,7 @@ bool Skeleton::Load(const std::string& fileName)
 		// ボーンが読めるか？
 		if (!bones[i].IsObject())
 		{
-			SDL_Log("Skeleton %s: Bone %d is invalid.", fileName.c_str(), i);
+			SDL_Log("Skeleton %s: Bone %d is invalid.", _fileName.c_str(), i);
 			return false;
 		}
 
@@ -101,7 +101,7 @@ bool Skeleton::Load(const std::string& fileName)
 		const rapidjson::Value& bindpose = bones[i]["bindpose"];
 		if (!bindpose.IsObject())
 		{
-			SDL_Log("Skeleton %s: Bone %d is invalid.", fileName.c_str(), i);
+			SDL_Log("Skeleton %s: Bone %d is invalid.", _fileName.c_str(), i);
 			return false;
 		}
 
@@ -112,7 +112,7 @@ bool Skeleton::Load(const std::string& fileName)
 		// 回転と位置が配列じゃなかったらエラー返す
 		if (!rot.IsArray() || !trans.IsArray())
 		{
-			SDL_Log("Skeleton %s: Bone %d is invalid.", fileName.c_str(), i);
+			SDL_Log("Skeleton %s: Bone %d is invalid.", _fileName.c_str(), i);
 			return false;
 		}
 

@@ -23,23 +23,22 @@ public:
 	void CreateEnemy();
 
 private:
-	bool readTiledJson(std::vector<std::vector<int>>& mapData, const char* fileName, const char* layerName);
-	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& layer,std::string& layerName);
+	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
+	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);
 
 	//jsonから読み込んだ"プレイヤー"データを格納するための可変長コンテナ
-	std::vector<std::vector<int>> playerMapData;
+	std::vector<std::vector<int>> mPlayerMapData;
 	//jsonから読み込んだ"床"データを格納するための可変長コンテナ
-	std::vector<std::vector<int>> groundMapData;
+	std::vector<std::vector<int>> mGroundMapData;
 	//jsonから読み込んだ"壁"データを格納するための可変長コンテナ
-	std::vector<std::vector<int>> wallMapData;
+	std::vector<std::vector<int>> mWallMapData;
 	//jsonから読み込んだ"エネミー"データを格納するための可変長コンテナ
-	std::vector<std::vector<int>> enemyMapData;
+	std::vector<std::vector<int>> mEnemyMapData;
 
-	int scene;
-
-	int sizeX;
-	int sizeY;
-	int sizeZ;
-	float offset;
+	int		mScene;
+	int		mSizeX;
+	int		mSizeY;
+	int		mSizeZ;
+	float	mOffset;
 };
 

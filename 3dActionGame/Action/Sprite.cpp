@@ -7,8 +7,8 @@
 Sprite::Sprite(const std::string _fileName)
 	:GameObject(Tag::Other, SceneBase::Scene::other)
 {
-	spriteComponent = new SpriteComponent(this);
+	mSpriteComponent = new SpriteComponent(this);
 
-	spriteTexture = RENDERER->GetTexture(_fileName);
-	spriteComponent->SetTexture(spriteTexture);
+	mSpriteTexture = RENDERER->GetTexture(_fileName);
+	mSpriteComponent->SetTexture(mSpriteTexture);
 }

@@ -47,7 +47,7 @@ public: //ゲッターセッター
 	/*
 	@fn idによるボーン
 	*/
-	const Bone& GetBone(size_t idx) const { return mBones[idx]; }
+	const Bone& GetBone(size_t _idx) const { return mBones[_idx]; }
 	/*
 	@fn ボーン配列
 	*/

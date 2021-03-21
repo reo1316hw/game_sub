@@ -35,12 +35,12 @@ protected:
 	//アタッチしているゲームオブジェクトのポインタ
 	GameObject* mOwner;			
 	// コンポーネントの更新順番（数値が小さいほど早く更新される）
-	int updateOrder;
+	int mUpdateOrder;
 public: //ゲッターセッター
 	/*
 	@return 更新順番
 	*/
-	int GetUpdateOder() { return updateOrder; }
+	int GetUpdateOder() { return mUpdateOrder; }
 
 	/*
 	@return アタッチしているゲームオブジェクトへのポインタ

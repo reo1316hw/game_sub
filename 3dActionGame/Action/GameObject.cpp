@@ -7,31 +7,31 @@
 #include "PhysicsWorld.h"
 #include "MainCameraObject.h"
 
-int GameObject::gameObjectId = 0;
-MainCameraObject* GameObject::mainCamera = nullptr;
-PauzingEvent GameObject::pauzingEvent = PauzingEvent::NoneEvent;
+int GameObject::mGameObjectId = 0;
+MainCameraObject* GameObject::mMainCamera = nullptr;
+PauzingEvent GameObject::mPauzingEvent = PauzingEvent::NoneEvent;
 
 /*
 @param	ゲームクラスのポインタ
 */
 GameObject::GameObject(const Tag& _objectTag, SceneBase::Scene _sceneTag, bool _reUseGameObject)
-	: state(Active)
-	, worldTransform()
-	, position(Vector3::Zero)
-	, velocity(Vector3::Zero)
-	, scale(Vector3(1.0f, 1.0f, 1.0f))
-	, rotation(Quaternion::Identity)
-	, recomputeWorldTransform(true)
-	, myObjectId(gameObjectId)
-	, reUseObject(_reUseGameObject)
-	, aabb(Vector3::Zero, Vector3::Zero)
-	, moveSpeed(0)
-	, gravity(0)
-	, tag(_objectTag)
-	, sceneTag(_sceneTag)
-	, hitFlag(false)
+	: mState(Active)
+	, mWorldTransform()
+	, mPosition(Vector3::Zero)
+	, mVelocity(Vector3::Zero)
+	, mAabb(Vector3::Zero, Vector3::Zero)
+	, mScale(Vector3(1.0f, 1.0f, 1.0f))
+	, mRotation(Quaternion::Identity)
+	, mMyObjectId(mGameObjectId)
+	, mTag(_objectTag)
+	, mSceneTag(_sceneTag)
+	, mMoveSpeed(0.0f)
+	, mGravity(0.0f)
+	, mReUseObject(_reUseGameObject)
+	, mRecomputeWorldTransform(true)
+	, mHitFlag(false)
 {
-	gameObjectId++;
+	mGameObjectId++;
 	//GameObjectManagerにポインタを渡す
 	GAME_OBJECT_MANAGER->AddGameObject(this);
 }
@@ -40,9 +40,9 @@ GameObject::~GameObject()
 {
 	//GameObjectManagerからポインタを削除する
 	GAME_OBJECT_MANAGER->RemoveGameObject(this);
-	while (!components.empty())
+	while (!mComponents.empty())
 	{
-		delete components.back();
+		delete mComponents.back();
 	}
 }
 
@@ -53,9 +53,9 @@ GameObject::~GameObject()
 void GameObject::Update(float _deltaTime)
 {
 	//更新停止のイベント中でないか(ポーズ画面など)
-	if (pauzingEvent == PauzingEvent::NoneEvent)
+	if (mPauzingEvent == PauzingEvent::NoneEvent)
 	{
-		if (state == Active)
+		if (mState == Active)
 		{
 			//Transformのワールド変換
 			ComputeWorldTransform();
@@ -68,7 +68,7 @@ void GameObject::Update(float _deltaTime)
 		}
 	}
 	//ポーズ画面のときコンポーネントを更新させない(アニメーションなども止めるため)
-	else if(pauzingEvent == PauzingEvent::PausingEvent)
+	else if(mPauzingEvent == PauzingEvent::PausingEvent)
 	{
 		PausingUpdateGameObject();
 	}
@@ -85,9 +85,9 @@ void GameObject::Update(float _deltaTime)
 */
 void GameObject::UpdateComponents(float _deltaTime)
 {
-	if (state != Dead)
+	if (mState != Dead)
 	{	
-		for (auto itr : components)
+		for (auto itr : mComponents)
 		{
 			itr->Update(_deltaTime);
 		}
@@ -113,10 +113,10 @@ void GameObject::PausingUpdateGameObject()
 */
 void GameObject::ProcessInput(const InputState& _keyState)
 {
-	if (state == Active)
+	if (mState == Active)
 	{
 		//コンポーネントの入力関数にコントローラーの入力状態を
-		for (auto comp : components)
+		for (auto comp : mComponents)
 		{
 			comp->ProcessInput(_keyState);
 		}
@@ -140,9 +140,9 @@ void GameObject::GameObjectInput(const InputState & _keyState)
 void GameObject::AddComponent(Component * _component)
 {
 	int order = _component->GetUpdateOder();
-	auto itr = components.begin();
+	auto itr = mComponents.begin();
 	for (;
-		itr != components.end();
+		itr != mComponents.end();
 		++itr)
 	{
 		if (order < (*itr)->GetUpdateOder())
@@ -150,7 +150,7 @@ void GameObject::AddComponent(Component * _component)
 			break;
 		}
 	}
-	components.insert(itr, _component);
+	mComponents.insert(itr, _component);
 }
 
 /*
@@ -159,10 +159,10 @@ void GameObject::AddComponent(Component * _component)
 */
 void GameObject::RemoveComponent(Component * _component)
 {
-	auto itr = std::find(components.begin(), components.end(), _component);
-	if (itr != components.end())
+	auto itr = std::find(mComponents.begin(), mComponents.end(), _component);
+	if (itr != mComponents.end())
 	{
-		components.erase(itr);
+		mComponents.erase(itr);
 	}
 }
 /*
@@ -187,44 +187,44 @@ void GameObject::ComputeWorldTransform()
 {
 	//ワールド変換が必要かどうか？
 	//もし必要だったらワールド変換を行う
-	if (recomputeWorldTransform)
+	if (mRecomputeWorldTransform)
 	{
 		//objectの
 		//変換が必要フラグを降ろす
-		recomputeWorldTransform = false;
+		mRecomputeWorldTransform = false;
 		//スケールのワールド変換
-		worldTransform = Matrix4::CreateScale(scale);
+		mWorldTransform = Matrix4::CreateScale(mScale);
 		//回転のワールド変換（クウォータニオン）
-		worldTransform *= Matrix4::CreateFromQuaternion(rotation);
+		mWorldTransform *= Matrix4::CreateFromQuaternion(mRotation);
 		//平行移動の更新
-		worldTransform *= Matrix4::CreateTranslation(position);
+		mWorldTransform *= Matrix4::CreateTranslation(mPosition);
 
 		//object（owner）が持っているcomponentによる座標変換系
-		for (auto itr : components)
+		for (auto itr : mComponents)
 		{
 			itr->OnUpdateWorldTransform();
 		}
 	}
 }
 
-void GameObject::FixCollision(const AABB & myAABB, const AABB & pairAABB, const Tag& _pairTag)
+void GameObject::FixCollision(const AABB & _myAABB, const AABB & _pairAABB, const Tag& _pairTag)
 {
 	Vector3 ment = Vector3(0, 0, 0);
-	calcCollisionFixVec(myAABB, pairAABB, ment);
+	calcCollisionFixVec(_myAABB, _pairAABB, ment);
 	SetPosition(GetPosition() + (ment));
 }
 
 void GameObject::CreateMainCamera()
 {
-	mainCamera = new MainCameraObject();
+	mMainCamera = new MainCameraObject();
 }
 
 // forwardベクトルの向きに回転する
 // in forward : 向かせたい前方方向ベクトル
-void GameObject::RotateToNewForward(const Vector3& forward)
+void GameObject::RotateToNewForward(const Vector3& _forward)
 {
 	// X軸ベクトル(1,0,0)とforwardの間の角度を求める
-	float dot = Vector3::Dot(Vector3::UnitX, forward);
+	float dot = Vector3::Dot(Vector3::UnitX, _forward);
 	float angle = Math::Acos(dot);
 	//printf("%f\n", angle);
 	// 下向きだった場合
@@ -240,7 +240,7 @@ void GameObject::RotateToNewForward(const Vector3& forward)
 	else
 	{
 		// 軸ベクトルとforwardとの外積から回転軸をもとめ、回転させる
-		Vector3 axis = Vector3::Cross(Vector3::UnitX, forward);
+		Vector3 axis = Vector3::Cross(Vector3::UnitX, _forward);
 		axis.Normalize();
 		SetRotation(Quaternion(axis, angle));
 	}

@@ -9,16 +9,16 @@
 /*
 @fn アニメーション読み込み
 @param アニメーションへのパス
-*/bool Animation::Load(const std::string& fileName, bool _loop)
+*/bool Animation::Load(const std::string& _fileName, bool _loop)
 {
 	// アニメーションループさせるか？
 	mIsLoopAnimation = _loop;
 
 	// filenameからテキストファイルとして読み込み、rapidJSONに解析させる
-	std::ifstream file(fileName);
+	std::ifstream file(_fileName);
 	if (!file.is_open())
 	{
-		SDL_Log("File not found: Animation %s", fileName.c_str());
+		SDL_Log("File not found: Animation %s", _fileName.c_str());
 		return false;
 	}
 
@@ -32,7 +32,7 @@
 	// JSONオブジェクトか？
 	if (!doc.IsObject())
 	{
-		SDL_Log("Animation %s is not valid json", fileName.c_str());
+		SDL_Log("Animation %s is not valid json", _fileName.c_str());
 		return false;
 	}
 
@@ -41,7 +41,7 @@
 	// Check the metadata　メタデータのチェック。バージョンは１か？
 	if (ver != 1)
 	{
-		SDL_Log("Animation %s unknown format", fileName.c_str());
+		SDL_Log("Animation %s unknown format", _fileName.c_str());
 		return false;
 	}
 
@@ -49,7 +49,7 @@
 	const rapidjson::Value& sequence = doc["sequence"];
 	if (!sequence.IsObject())
 	{
-		SDL_Log("Animation %s doesn't have a sequence.", fileName.c_str());
+		SDL_Log("Animation %s doesn't have a sequence.", _fileName.c_str());
 		return false;
 	}
 
@@ -60,7 +60,7 @@
 
 	if (!frames.IsUint() || !length.IsDouble() || !bonecount.IsUint())
 	{
-		SDL_Log("Sequence %s has invalid frames, length, or bone count.", fileName.c_str());
+		SDL_Log("Sequence %s has invalid frames, length, or bone count.", _fileName.c_str());
 		return false;
 	}
 
@@ -78,7 +78,7 @@
 
 	if (!tracks.IsArray())
 	{
-		SDL_Log("Sequence %s missing a tracks array.", fileName.c_str());
+		SDL_Log("Sequence %s missing a tracks array.", _fileName.c_str());
 		return false;
 	}
 
@@ -88,7 +88,7 @@
 		// tracs[i]はオブジェクトか？
 		if (!tracks[i].IsObject())
 		{
-			SDL_Log("Animation %s: Track element %d is invalid.", fileName.c_str(), i);
+			SDL_Log("Animation %s: Track element %d is invalid.", _fileName.c_str(), i);
 			return false;
 		}
 
@@ -99,7 +99,7 @@
 		const rapidjson::Value& transforms = tracks[i]["transforms"];
 		if (!transforms.IsArray())
 		{
-			SDL_Log("Animation %s: Track element %d is missing transforms.", fileName.c_str(), i);
+			SDL_Log("Animation %s: Track element %d is missing transforms.", _fileName.c_str(), i);
 			return false;
 		}
 
@@ -107,7 +107,7 @@
 		// transformのサイズとアニメーションフレーム数が不具合ないか？
 		if (transforms.Size() < mNumFrames)
 		{
-			SDL_Log("Animation %s: Track element %d has fewer frames than expected.", fileName.c_str(), i);
+			SDL_Log("Animation %s: Track element %d has fewer frames than expected.", _fileName.c_str(), i);
 			return false;
 		}
 
@@ -120,7 +120,7 @@
 
 			if (!rot.IsArray() || !trans.IsArray())
 			{
-				SDL_Log("Skeleton %s: Bone %d is invalid.", fileName.c_str(), i);
+				SDL_Log("Skeleton %s: Bone %d is invalid.", _fileName.c_str(), i);
 				return false;
 			}
 
@@ -144,22 +144,22 @@
 }
 
 // inTime時刻時点のグローバルポーズ配列の取得
-void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& outPoses, const Skeleton* inSkeleton, float inTime) const
+void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& _outPoses, const Skeleton* _inSkeleton, float _inTime) const
 {
-	if (outPoses.size() != mNumBones)
+	if (_outPoses.size() != mNumBones)
 	{
-		outPoses.resize(mNumBones);
+		_outPoses.resize(mNumBones);
 	}
 
 	// Figure out the current frame index and next frame
 	// (This assumes inTime is bounded by [0, AnimDuration]
 	// 現在のフレームと次のフレームを見つけ出す。
 	// これはinTimeが [0～AnimDuration] の間にいることを前提としています。
-	size_t frame = static_cast<size_t>(inTime / mFrameDuration);
+	size_t frame = static_cast<size_t>(_inTime / mFrameDuration);
 	size_t nextFrame = frame + 1;
 	// Calculate fractional value between frame and next frame
 	// フレームと次のフレームの間の小数値を計算します。
-	float pct = inTime / mFrameDuration - frame;
+	float pct = _inTime / mFrameDuration - frame;
 
 	/*アニメーションの最大フレームから超えるのを防ぐために
 	次のフレームが最大フレームに到達したら現在のフレームと次のフレームを-1する*/
@@ -177,15 +177,15 @@ void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& outPoses, const Skelet
 		// 現在のフレームのポーズと次のフレームの間を補間する
 		BoneTransform interp = BoneTransform::Interpolate(mTracks[0][frame],
 			mTracks[0][nextFrame], pct);
-		outPoses[0] = interp.ToMatrix();
+		_outPoses[0] = interp.ToMatrix();
 
 	}
 	else
 	{
-		outPoses[0] = Matrix4::Identity;
+		_outPoses[0] = Matrix4::Identity;
 	}
 
-	const std::vector<Skeleton::Bone>& bones = inSkeleton->GetBones();
+	const std::vector<Skeleton::Bone>& bones = _inSkeleton->GetBones();
 	// Now setup the poses for the rest
 	// 残りのポーズを設定します
 	for (size_t bone = 1; bone < mNumBones; bone++)
@@ -202,6 +202,6 @@ void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& outPoses, const Skelet
 		}
 
 		// 出力ポーズ行列[bone] = ローカルポーズ行列 * 出力ポーズ行列[親bone]
-		outPoses[bone] = localMat * outPoses[bones[bone].mParent];
+		_outPoses[bone] = localMat * _outPoses[bones[bone].mParent];
 	}
 }

@@ -1,8 +1,6 @@
 ﻿//=============================================================================
 //	@file	BoxCollider.h
 //	@brief	ボックスの当たり判定を行うコンポーネント
-//	@autor	居本 和哉
-//	@date	2020/02/29
 //=============================================================================
 
 //-----------------------------------------------------------------------------
@@ -23,9 +21,9 @@
 */
 BoxCollider::BoxCollider(GameObject* _owner, ColliderTag _tag,onCollisionFunc _func, int _updateOrder, int _collisionOrder)
 	: ColliderComponent(_owner,_tag, _updateOrder, _collisionOrder)
-	, objectBox({Vector3::Zero,Vector3::Zero})
-	, worldBox({ Vector3::Zero,Vector3::Zero})
-	, shouldRotate(true)
+	, mObjectBox(Vector3::Zero,Vector3::Zero)
+	, mWorldBox(Vector3::Zero,Vector3::Zero)
+	, mShouldRotate(true)
 {
 	PHYSICS->AddBox(this,_func);
 }
@@ -49,17 +47,17 @@ void BoxCollider::OnUpdateWorldTransform()
 
 void BoxCollider::refresh()
 {
-	worldBox = objectBox;
+	mWorldBox = mObjectBox;
 
-	worldBox.min = (objectBox.min * mOwner->GetScaleVec());
-	worldBox.max = (objectBox.max * mOwner->GetScaleVec());
+	mWorldBox.m_min = (mObjectBox.m_min * mOwner->GetScale());
+	mWorldBox.m_max = (mObjectBox.m_max * mOwner->GetScale());
 
-	if (shouldRotate)
+	if (mShouldRotate)
 	{
-		worldBox.Rotate(mOwner->GetRotation());
+		mWorldBox.Rotate(mOwner->GetRotation());
 	}
 
-	worldBox.min += mOwner->GetPosition();
-	worldBox.max += mOwner->GetPosition();
+	mWorldBox.m_min += mOwner->GetPosition();
+	mWorldBox.m_max += mOwner->GetPosition();
 }
 

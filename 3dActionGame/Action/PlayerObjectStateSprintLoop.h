@@ -15,16 +15,4 @@ private:
 	bool mIsIdle;
 	bool mIsRun;
 	bool mIsAttack;
-
-	//  キャラの現在のスピード
-	float charaSpeed;
-
-	//向き
-	Vector3 dirVec;
-	//前進方向
-	Vector3 forwardVec;
-	//右方向
-	Vector3 rightVec;
-	// キャラの前進ベクトル
-	Vector3 charaForwardVec;
 };

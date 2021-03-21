@@ -12,11 +12,4 @@ public:
 	void Exit(class PlayerObject* _owner, float _deltaTime)override;
 
 private:
-	// 次のコンボにつなげるか  
-	bool mIsNextCombo;
-
-	// 攻撃状態の経過時刻
-	float mElapseTime;
-	// アニメーション総時間
-	float mTotalAnimTime;
 };

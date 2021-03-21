@@ -5,7 +5,7 @@
 class HDRRenderer
 {
 public:
-	HDRRenderer(int fbowidth, int fboheight, int bloomLevel);
+	HDRRenderer(int _fbowidth, int _fboheight, int _bloomLevel);
 	~HDRRenderer();
 
 	void HdrRecordBegin();
@@ -14,15 +14,15 @@ public:
 	void HdrTonemapAndBrightBlurCombine();
 	void CopyDepthToScreen();
 
-	unsigned int GetColorTexID() { return mHdrColorBuffers[0]; }
-	unsigned int GetHDRTexID() { return mHdrColorBuffers[1]; }
+	unsigned int GetColorTexID()	{ return mHdrColorBuffers[0]; }
+	unsigned int GetHDRTexID()		{ return mHdrColorBuffers[1]; }
 
 private:
 	void  InitHDRBuffers();
 	void  InitBlurBuffers();
 	void  InitScreenQuadVAO();
-	float GaussianDistribution(const Vector2& pos, float rho);
-	void  CalcGaussBlurParam(int w, int h, Vector2 dir, float deviation);
+	float GaussianDistribution(const Vector2& _pos, float _rho);
+	void  CalcGaussBlurParam(int _w, int _h, Vector2 _dir, float _deviation);
 
 	class Shader*             mGaussianBlurShader;
 	class Shader*             mDownSamplingShader;

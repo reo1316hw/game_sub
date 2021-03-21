@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Shader.h"
 
-HDRRenderer::HDRRenderer(int fbowidth, int fboheight, int bloomLevel)
+HDRRenderer::HDRRenderer(int _fbowidth, int _fboheight, int _bloomLevel)
 	: mGaussianBlurShader(nullptr)
 	, mDownSamplingShader(nullptr)
 	, mHdrToneAndBlurBlendShader(nullptr)
@@ -10,9 +10,9 @@ HDRRenderer::HDRRenderer(int fbowidth, int fboheight, int bloomLevel)
 	, mQuadScreenVBO(0)
 	, mHdrFBO(0)
 	, mHdrRBO(0)
-	, mBufferWidth(fbowidth)
-	, mBufferHeight(fboheight)
-	, mBloomBufferLevel(bloomLevel)
+	, mBufferWidth(_fbowidth)
+	, mBufferHeight(_fboheight)
+	, mBloomBufferLevel(_bloomLevel)
 {
 	// HDR バッファとBlur用バッファを作成
 	InitHDRBuffers();
@@ -329,17 +329,17 @@ void HDRRenderer::InitScreenQuadVAO()
 
 }
 
-float HDRRenderer::GaussianDistribution(const Vector2& pos, float rho)
+float HDRRenderer::GaussianDistribution(const Vector2& _pos, float _rho)
 {
-	return exp(-(pos.x * pos.x + pos.y * pos.y) / (2.0f * rho * rho));
+	return exp(-(_pos.x * _pos.x + _pos.y * _pos.y) / (2.0f * _rho * _rho));
 }
 
-void HDRRenderer::CalcGaussBlurParam(int w, int h, Vector2 dir, float deviation)
+void HDRRenderer::CalcGaussBlurParam(int _w, int _h, Vector2 _dir, float _deviation)
 {
-	auto tu = 1.0f / float(w);
-	auto tv = 1.0f / float(h);
+	auto tu = 1.0f / float(_w);
+	auto tv = 1.0f / float(_h);
 
-	mOffset[0].z = GaussianDistribution(Vector2(0.0f, 0.0f), deviation);
+	mOffset[0].z = GaussianDistribution(Vector2(0.0f, 0.0f), _deviation);
 	auto total_weight = mOffset[0].z;
 
 	mOffset[0].x = 0.0f;
@@ -348,9 +348,9 @@ void HDRRenderer::CalcGaussBlurParam(int w, int h, Vector2 dir, float deviation)
 	for (auto i = 1; i < 8; ++i)
 	{
 		int nextpos = (i - 1) * 2 + 1;
-		mOffset[i].x = dir.x * tu * nextpos;
-		mOffset[i].y = dir.y * tv * nextpos;
-		mOffset[i].z = GaussianDistribution(dir * float(nextpos), deviation);
+		mOffset[i].x = _dir.x * tu * nextpos;
+		mOffset[i].y = _dir.y * tv * nextpos;
+		mOffset[i].z = GaussianDistribution(_dir * float(nextpos), _deviation);
 		total_weight += mOffset[i].z * 2.0f;
 	}
 	for (auto i = 0; i < 8; ++i)

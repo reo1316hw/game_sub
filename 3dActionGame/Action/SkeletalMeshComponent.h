@@ -28,12 +28,12 @@ public:
 	float PlayAnimation(const class Animation* _anim, float _playRate = 1.0f);
 
 	// 現在再生中のアニメーション
-	const class Animation* GetNowPlayingAnimation() { return animation; }
+	const class Animation* GetNowPlayingAnimation() { return mAnimation; }
 	// 現在再生中のアニメーションは再生中か？ true : 再生中 false : 再生終了
 	bool IsPlaying();
 
 	int GetBoneIndexFromName(const char* _boneName) const;
-	void GetMatrixFromBoneIndex(Matrix4& _boneWorldMatrix, int boneIndex)const;
+	void GetMatrixFromBoneIndex(Matrix4& _boneWorldMatrix, int _boneIndex)const;
 
 protected:
 	/*
@@ -45,13 +45,13 @@ protected:
 	// スケルトンデータ
 	const class Skeleton* mSkeleton;                                       
 	// アニメーションデータ
-	const class Animation* animation;                                     
+	const class Animation* mAnimation;                                     
 	// アニメーションの再生速度
-	float animPlayRate;                                                  
+	float mAnimPlayRate;                                                  
 	// アニメーション時間
-	float animTime;                                                       
+	float mAnimTime;                                                       
 	//スケルトンデータに乗算する色
-	Vector3 color;
+	Vector3 mColor;
 public://ゲッターセッター
 	/*
 	@param _skeleton スケルトンデータ
@@ -60,5 +60,5 @@ public://ゲッターセッター
 	/*
 	@param _color スケルトンデータに乗算する色
 	*/
-	void SetColor(const Vector3& _color) { color = _color; }
+	void SetColor(const Vector3& _color) { mColor = _color; }
 };

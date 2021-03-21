@@ -7,56 +7,56 @@
 
 MapCreate::MapCreate() :GameObject(Tag::Other,SceneBase::Scene::other)
 {
-	sizeX = 0;
-	sizeY = 0;
-	sizeZ = 0;
-	offset = 200;
+	mSizeX = 0;
+	mSizeY = 0;
+	mSizeZ = 0;
+	mOffset = 200;
 }
 
 MapCreate::~MapCreate()
 {
-	groundMapData.clear();
-	wallMapData.clear();
-	playerMapData.clear();
-	enemyMapData.clear();
+	mGroundMapData.clear();
+	mWallMapData.clear();
+	mPlayerMapData.clear();
+	mEnemyMapData.clear();
 }
 
 bool MapCreate::OpenFile()
 {
-	scene = SceneBase::GetScene();
+	mScene = SceneBase::GetScene();
 
 	//-----------------------------------------------
 	//----------------tutorial-----------------------
 	//-----------------------------------------------
-	if (scene == SceneBase::tutorial)
+	if (mScene == SceneBase::tutorial)
 	{
 		//床データの読み込み
-		if (!readTiledJson(groundMapData, "Assets/Config/3dActionGame02.json", "Ground"))
+		if (!readTiledJson(mGroundMapData, "Assets/Config/3dActionGame02.json", "Ground"))
 		{
 			printf("don't have Layer/Ground\n");
 			return true;
 		}
 
-		sizeX = groundMapData[0].size();
-		sizeY = groundMapData[0].size();
-		//sizeZ = groundMapData[0].size();
+		mSizeX = mGroundMapData[0].size();
+		mSizeY = mGroundMapData[0].size();
+		//mSizeZ = mGroundMapData[0].size();
 
 		//壁データの読み込み
-		if (!readTiledJson(wallMapData, "Assets/Config/3dActionGame02.json", "Wall"))
+		if (!readTiledJson(mWallMapData, "Assets/Config/3dActionGame02.json", "Wall"))
 		{
 			printf("don't have Layer/Wall\n");
 			return true;
 		}
 
 		//プレイヤーデータの読み込み
-		if (!readTiledJson(playerMapData, "Assets/Config/3dActionGame02.json", "Player"))
+		if (!readTiledJson(mPlayerMapData, "Assets/Config/3dActionGame02.json", "Player"))
 		{
 			printf("don't have Layer/player\n");
 			return true;
 		}
 
 		//エネミーデータの読み込み
-		if (!readTiledJson(enemyMapData, "Assets/Config/3dActionGame02.json", "Enemy"))
+		if (!readTiledJson(mEnemyMapData, "Assets/Config/3dActionGame02.json", "Enemy"))
 		{
 			printf("don't have Layer/Enemy\n");
 			return true;
@@ -68,18 +68,18 @@ bool MapCreate::OpenFile()
 
 void MapCreate::CreateGround()
 {
-	for (float ix = 0; ix < sizeX; ix++)
+	for (float ix = 0; ix < mSizeX; ix++)
 	{
-		for (float iy = 0; iy < sizeY; iy++)
+		for (float iy = 0; iy < mSizeY; iy++)
 		{
-			const unsigned int name = groundMapData[(int)ix][(int)iy];
-			Vector3 objectPos		= Vector3(offset * ix, -offset * iy, 0.0f);
-			Vector3 objectPosEvenX	= Vector3(offset * ix, -offset * iy + 100.0f, 0.0f);
-			Vector3 objectPosEvenY	= Vector3(offset * ix + 100.0f, -offset * iy, 0.0f);
-			//Vector3 objectPosEvenXY = Vector3(offset * ix - 100.0f, -100.0f, -offset * iz - 100.0f);
+			const unsigned int name = mGroundMapData[(int)ix][(int)iy];
+			Vector3 objectPos		= Vector3(mOffset * ix, -mOffset * iy, 0.0f);
+			Vector3 objectPosEvenX	= Vector3(mOffset * ix, -mOffset * iy + 100.0f, 0.0f);
+			Vector3 objectPosEvenY	= Vector3(mOffset * ix + 100.0f, -mOffset * iy, 0.0f);
+			//Vector3 objectPosEvenXY = Vector3(mOffset * ix - 100.0f, -100.0f, -mOffset * iz - 100.0f);
 			Vector3 objectSize = Vector3(1.0f, 1.0f, 1.0f);
 
-			switch (scene)
+			switch (mScene)
 			{
 			case SceneBase::tutorial:
 
@@ -136,16 +136,16 @@ void MapCreate::CreateGround()
 
 void MapCreate::CreateWall()
 {
-	for (float ix = 0; ix < sizeX; ix++)
+	for (float ix = 0; ix < mSizeX; ix++)
 	{
-		for (float iy = 0; iy < sizeY; iy++)
+		for (float iy = 0; iy < mSizeY; iy++)
 		{
-			const unsigned int name = wallMapData[(int)ix][(int)iy];
-			Vector3 objectPos	= Vector3(offset * ix, -offset * iy + 100.0f, 1000.0f);
-			Vector3 objectPos02 = Vector3(offset * ix + 100.0f, -offset * iy, 1000.0f);
+			const unsigned int name = mWallMapData[(int)ix][(int)iy];
+			Vector3 objectPos	= Vector3(mOffset * ix, -mOffset * iy + 100.0f, 1000.0f);
+			Vector3 objectPos02 = Vector3(mOffset * ix + 100.0f, -mOffset * iy, 1000.0f);
 			Vector3 objectSize	= Vector3(1.0f, 1.0f, 1.0f);
 
-			switch (scene)
+			switch (mScene)
 			{
 			case SceneBase::tutorial:
 
@@ -188,15 +188,15 @@ void MapCreate::CreateWall()
 
 void MapCreate::CreateEnemy()
 {
-	for (float ix = 0; ix < sizeX; ix++)
+	for (float ix = 0; ix < mSizeX; ix++)
 	{
-		for (float iy = 0; iy < sizeY; iy++)
+		for (float iy = 0; iy < mSizeY; iy++)
 		{
-			const unsigned int name = enemyMapData[(int)ix][(int)iy];
-			Vector3 objectPos = Vector3(offset * ix, -offset * iy, 100.0f);
+			const unsigned int name = mEnemyMapData[(int)ix][(int)iy];
+			Vector3 objectPos = Vector3(mOffset * ix, -mOffset * iy, 100.0f);
 			Vector3 objectSize = Vector3(0.5f, 0.5f, 0.5f);
 
-			switch (scene)
+			switch (mScene)
 			{
 			case SceneBase::tutorial:
 
@@ -218,15 +218,15 @@ void MapCreate::CreateEnemy()
 
 void MapCreate::CreatePlayer()
 {
-	for (float ix = 0; ix < sizeX; ix++)
+	for (float ix = 0; ix < mSizeX; ix++)
 	{
-		for (float iy = 0; iy < sizeY; iy++)
+		for (float iy = 0; iy < mSizeY; iy++)
 		{
-			const unsigned int name = playerMapData[(int)ix][(int)iy];
-			Vector3 objectPos = Vector3(offset * ix, -offset * iy, 100.0f);
+			const unsigned int name = mPlayerMapData[(int)ix][(int)iy];
+			Vector3 objectPos = Vector3(mOffset * ix, -mOffset * iy, 100.0f);
 			Vector3 objectSize = Vector3(0.5f, 0.5f, 0.5f);
 
-			switch (scene)
+			switch (mScene)
 			{
 			case SceneBase::tutorial:
 
@@ -247,11 +247,11 @@ void MapCreate::CreatePlayer()
 
 }
 
-bool MapCreate::readTiledJson(std::vector<std::vector<int>>& mapData, const char* fileName, const char* layerName)
+bool MapCreate::readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName)
 {
 	//RapidJsonドキュメントとして開けるか？
 	rapidjson::Document doc;
-	if (!openJsonFile(doc,fileName))
+	if (!openJsonFile(doc,_fileName))
 	{
 		return false;
 	}
@@ -271,7 +271,7 @@ bool MapCreate::readTiledJson(std::vector<std::vector<int>>& mapData, const char
 	int layerSize = layer.Size();
 
 	//layer名から該当layerの添え字を調べる
-	std::string layerNameString(layerName);
+	std::string layerNameString(_layerName);
 	int layerIndex = findLayerIndex(layer, layerNameString);
 	if (layerIndex<0)
 	{
@@ -282,7 +282,7 @@ bool MapCreate::readTiledJson(std::vector<std::vector<int>>& mapData, const char
 	rapidjson::Value::ConstMemberIterator itr = layer[layerIndex].FindMember("data");
 	if (itr==layer[layerIndex].MemberEnd())
 	{
-		printf("レイヤー名:%sにマップデータがありません\n", layerName);
+		printf("レイヤー名:%sにマップデータがありません\n", _layerName);
 		return false;
 	}
 
@@ -293,8 +293,8 @@ bool MapCreate::readTiledJson(std::vector<std::vector<int>>& mapData, const char
 	height = layer[layerIndex]["height"].GetInt();
 
 	//ユーザー配列確保　行方向、列方向の順番にサイズ確保
-	mapData.resize(height);
-	for (auto&mapIter:mapData)
+	_mapData.resize(height);
+	for (auto&mapIter:_mapData)
 	{
 		mapIter.resize(width);
 	}
@@ -305,7 +305,7 @@ bool MapCreate::readTiledJson(std::vector<std::vector<int>>& mapData, const char
 		for (int x = 0; x < width; x++)
 		{
 			//なぜかIDが+1ずれているので補正する
-			mapData[y][x] = rapidArrayData[y * width + x].GetInt();
+			_mapData[y][x] = rapidArrayData[y * width + x].GetInt();
 		}
 	}
 	return true;

@@ -15,7 +15,4 @@ public:
 
 	void UpdateGameObject(float _deltaTime)override;
 private:
-	MeshComponent* meshComponent;
-	BoxCollider* boxCollider;
-	Mesh* mesh;
 };

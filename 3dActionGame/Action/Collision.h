@@ -40,9 +40,9 @@ struct LineSegment
     static float MinDistanceSquared(const LineSegment& _line1,const LineSegment& _line2);
 
 	//線分の開始地点
-    Vector3 start;
+    Vector3 m_start;
 	//線分の終了地点
-    Vector3 end;
+    Vector3 m_end;
 };
 
 //平面
@@ -69,9 +69,9 @@ struct Plane
     float SignedDistance(const Vector3& _point);
 
 	//平面の法線ベクトル
-    Vector3 normal;
+    Vector3 m_normal;
 	//平面と原点の符号つき最短距離
-    float distance;
+    float m_distance;
 };
 
 //球
@@ -91,9 +91,9 @@ struct Sphere
 	bool Contains(const Vector3& _point)const;
 
 	//球体の中心座標
-    Vector3 center;
+    Vector3 m_center;
 	//球体の半径
-    float radius;
+    float m_radius;
 };
 
 //軸並行バウンディングボックス(Axis-Aligned Bounding Box)
@@ -131,10 +131,10 @@ struct AABB
 	*/
 	float MinDistanceSquared(const Vector3& _point)const;
 
-	void InitMinMax(const Vector3& _point) { min = max = _point; };
+	void InitMinMax(const Vector3& _point) { m_min = m_max = _point; };
 
-    Vector3 min;
-    Vector3 max;
+    Vector3 m_min;
+    Vector3 m_max;
 };
 
 //有向バウンディングボックス（Oriented Bounding Box）
@@ -142,11 +142,11 @@ struct AABB
 struct OBB
 {
 	//中心の座標
-    Vector3 center;
+    Vector3 m_center;
 	//回転クォータニオン
-    Quaternion rotation;
+    Quaternion m_rotation;
 	//ボックスの広がり（幅、高さ、奥行き）
-    Vector3 extents;
+    Vector3 m_extents;
 };
 
 //カプセル
@@ -174,9 +174,9 @@ struct Capsule
     bool Contains(const Vector3& _point)const;
 
 	//カプセルを構成する線分
-    LineSegment segment;
+    LineSegment m_segment;
 	//カプセルの半径
-    float radius;
+    float m_radius;
 };
 
 //凸ポリゴン
@@ -190,7 +190,7 @@ struct ConvexPolygon
     bool Contains(const Vector2& _point)const;
 
 	//頂点の可変長コンテナ
-    std::vector<Vector2> vertices;
+    std::vector<Vector2> m_vertices;
 };
 
 /*

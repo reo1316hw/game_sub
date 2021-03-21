@@ -18,28 +18,28 @@
 #include "HDRRenderer.h"
 
 
-Renderer* Renderer::renderer = nullptr;
+Renderer* Renderer::mRenderer = nullptr;
 static bool saveFlag = false;
 
 void Renderer::SetParticleVertex()
 {
-	particleVertex->SetActive();
+	mParticleVertex->SetActive();
 }
 
 Renderer::Renderer()
-	: spriteShader(nullptr)
-	, spriteVerts(nullptr)
-	, uiShader(nullptr)
-	, uiVerts(nullptr)
-	, meshShader(nullptr)
-	, invisibleMeshShader(nullptr)
-	, basicShader(nullptr)
-	, particleVertex(nullptr)
-	, view(Matrix4::Identity)
-	, projection(Matrix4::Identity)
-	, screenWidth(0)
-	, screenHeight(0)
-	, ambientLight(Vector3::Zero)
+	: mSpriteShader(nullptr)
+	, mSpriteVerts(nullptr)
+	, mUiShader(nullptr)
+	, mUiVerts(nullptr)
+	, mMeshShader(nullptr)
+	, mInvisibleMeshShader(nullptr)
+	, mBasicShader(nullptr)
+	, mParticleVertex(nullptr)
+	, mView(Matrix4::Identity)
+	, mProjection(Matrix4::Identity)
+	, mScreenWidth(0)
+	, mScreenHeight(0)
+	, mAmbientLight(Vector3::Zero)
 	, mSkinnedShader(nullptr)
 	, mUndefineTexID(0)
 	, mHDRRenderer(nullptr)
@@ -56,9 +56,9 @@ Renderer::~Renderer()
 */
 void Renderer::CreateInstance()
 {
-	if (renderer == nullptr)
+	if (mRenderer == nullptr)
 	{
-		renderer = new Renderer();
+		mRenderer = new Renderer();
 	}
 }
 
@@ -67,10 +67,10 @@ void Renderer::CreateInstance()
 */
 void Renderer::DeleteInstance()
 {
-	if (renderer != nullptr)
+	if (mRenderer != nullptr)
 	{
-		delete renderer;
-		renderer = nullptr;
+		delete mRenderer;
+		mRenderer = nullptr;
 	}
 }
 
@@ -78,10 +78,10 @@ void Renderer::DeleteInstance()
 @brief  初期化処理
 @return true : 成功 , false : 失敗
 */
-bool Renderer::Initialize(float _screenWidth, float _screenHeight, bool _fullScreen)
+bool Renderer::Initialize(float _ScreenWidth, float _screenHeight, bool _fullScreen)
 {
-	screenWidth = _screenWidth;
-	screenHeight = _screenHeight;
+	mScreenWidth = _ScreenWidth;
+	mScreenHeight = _screenHeight;
 
 	// OpenGLの各属性を設定する
 	// コアOpenGLプロファイルを使う
@@ -101,29 +101,29 @@ bool Renderer::Initialize(float _screenWidth, float _screenHeight, bool _fullScr
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
 	//ウィンドウの作成
-	window = SDL_CreateWindow("OpenGL Game", 1, 1,
-		static_cast<int>(screenWidth), static_cast<int>(screenHeight), SDL_WINDOW_OPENGL);
+	mWindow = SDL_CreateWindow("OpenGL Game", 1, 1,
+		static_cast<int>(mScreenWidth), static_cast<int>(mScreenHeight), SDL_WINDOW_OPENGL);
 
 	if (_fullScreen)
 	{
-		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		SDL_SetWindowFullscreen(mWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 
-	if (!window)
+	if (!mWindow)
 	{
-		SDL_Log("Failed to create window: %s", SDL_GetError());
+		SDL_Log("Failed to create mWindow: %s", SDL_GetError());
 		return false;
 	}
 
-	sdlRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (!sdlRenderer)
+	mSdlRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (!mSdlRenderer)
 	{
 		printf("SDLRendererの作成に失敗 : %s", SDL_GetError());
 		return false;
 	}
 
 	// OpenGLのコンテキストを作成
-	context = SDL_GL_CreateContext(window);
+	mContext = SDL_GL_CreateContext(mWindow);
 
 	// GLEWの初期化
 	glewExperimental = GL_TRUE;
@@ -146,7 +146,7 @@ bool Renderer::Initialize(float _screenWidth, float _screenHeight, bool _fullScr
 	mUndefineTexID = GetTexture("Assets/noneTexture.png")->GetTextureID();
 
 	// HDRレンダラー初期化
-	mHDRRenderer = new HDRRenderer(screenWidth, screenHeight, 4);
+	mHDRRenderer = new HDRRenderer(mScreenWidth, mScreenHeight, 4);
 
 	////// カリング
 	//glFrontFace(GL_CCW);
@@ -158,7 +158,7 @@ bool Renderer::Initialize(float _screenWidth, float _screenHeight, bool _fullScr
 	CreateParticleVerts();
 
 	// UIの初期座標に加算される座標
-	addPosition = Vector2::Zero;
+	mAddPosition = Vector2::Zero;
 
 	return true;
 }
@@ -168,20 +168,20 @@ bool Renderer::Initialize(float _screenWidth, float _screenHeight, bool _fullScr
 */
 void Renderer::Shutdown()
 {
-	delete spriteVerts;
-	spriteShader->Unload();
-	delete spriteShader;
-	delete uiVerts;
-	uiShader->Unload();
-	delete uiShader;
-	meshShader->Unload();
-	delete meshShader;
-	invisibleMeshShader->Unload();
-	delete invisibleMeshShader;
-	basicShader->Unload();
-	delete basicShader;
-	SDL_GL_DeleteContext(context);
-	SDL_DestroyWindow(window);
+	delete mSpriteVerts;
+	mSpriteShader->Unload();
+	delete mSpriteShader;
+	delete mUiVerts;
+	mUiShader->Unload();
+	delete mUiShader;
+	mMeshShader->Unload();
+	delete mMeshShader;
+	mInvisibleMeshShader->Unload();
+	delete mInvisibleMeshShader;
+	mBasicShader->Unload();
+	delete mBasicShader;
+	SDL_GL_DeleteContext(mContext);
+	SDL_DestroyWindow(mWindow);
 }
 
 /*
@@ -190,15 +190,15 @@ void Renderer::Shutdown()
 void Renderer::UnloadData()
 {
 	// すべてのテクスチャのデータを解放
-	for (auto i : textures)
+	for (auto i : mTextures)
 	{
 		i.second->Unload();
 		delete i.second;
 	}
-	textures.clear();
+	mTextures.clear();
 
 	// すべてのメッシュのデータを解放
-	for (auto i : meshes)
+	for (auto i : mMeshes)
 	{
 		i.second->Unload();
 		delete i.second;
@@ -214,7 +214,7 @@ void Renderer::UnloadData()
 		delete a.second;
 	}
 
-	meshes.clear();
+	mMeshes.clear();
 }
 
 /*
@@ -236,14 +236,14 @@ void Renderer::Draw()
 		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
 		// スプライトシェーダーをアクティブにする/スプライト頂点配列を有効にする
-		spriteShader->SetActive();
-		spriteVerts->SetActive();
+		mSpriteShader->SetActive();
+		mSpriteVerts->SetActive();
 		// すべてのスプライトの描画
-		for (auto sprite : sprites)
+		for (auto sprite : mSprites)
 		{
 			if (sprite->GetVisible())
 			{
-				sprite->Draw(spriteShader);
+				sprite->Draw(mSpriteShader);
 			}
 		}
 
@@ -252,17 +252,17 @@ void Renderer::Draw()
 
 		// メッシュコンポーネントの描画
 		// 基本的なメッシュシェーダーをアクティブにする
-		meshShader->SetActive();
+		mMeshShader->SetActive();
 		// ビュー射影行列を更新する
-		meshShader->SetMatrixUniform("uViewProj", view * projection);
+		mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 		// シェーダーに渡すライティング情報を更新する
-		SetLightUniforms(meshShader, view);
+		SetLightUniforms(mMeshShader, mView);
 		// すべてのメッシュの描画
-		for (auto mc : meshComponents)
+		for (auto mc : mMeshComponents)
 		{
 			if (mc->GetVisible())
 			{
-				mc->Draw(meshShader);
+				mc->Draw(mMeshShader);
 			}
 		}
 	}
@@ -278,16 +278,16 @@ void Renderer::Draw()
 	mHDRRenderer->CopyDepthToScreen();
 
 	
-	basicShader->SetActive();
-	basicShader->SetMatrixUniform("uViewProj", view * projection);
+	mBasicShader->SetActive();
+	mBasicShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
-	// Draw any skinned meshes now
-	// Draw any skinned meshes now
+	// Draw any skinned mMeshes now
+	// Draw any skinned mMeshes now
 	mSkinnedShader->SetActive();
-	// Update view-projection matrix
-	mSkinnedShader->SetMatrixUniform("uViewProj", view * projection);
+	// Update mView-mProjection matrix
+	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
 	// Update lighting uniforms
-	SetLightUniforms(mSkinnedShader, view);
+	SetLightUniforms(mSkinnedShader, mView);
 	for (auto sk : mSkeletalMeshes)
 	{
 		if (sk->GetVisible())
@@ -299,30 +299,30 @@ void Renderer::Draw()
 	DrawParticle();
 
 
-	// UIの描画
-	// アルファブレンディングを有効にする
-	glEnable(GL_BLEND);
-	// デプスバッファ法を無効にする
-	glDisable(GL_DEPTH_TEST);
-	// RGB成分とα成分のブレンディング方法を別々に設定
-	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-	// RGB成分とアルファ成分に別々の混合係数を設定
-	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+	//// UIの描画
+	//// アルファブレンディングを有効にする
+	//glEnable(GL_BLEND);
+	//// デプスバッファ法を無効にする
+	//glDisable(GL_DEPTH_TEST);
+	//// RGB成分とα成分のブレンディング方法を別々に設定
+	//glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+	//// RGB成分とアルファ成分に別々の混合係数を設定
+	//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
-	// UIシェーダーをアクティブにする/スプライト頂点配列を有効にする
-	uiShader->SetActive();
-	uiVerts->SetActive();
-	// すべてのUIの描画
-	for (auto ui : uis)
-	{
-		if (ui->GetVisible())
-		{
-			ui->Draw(uiShader, ui->GetOwner()->GetPosition());
-		}
-	}
+	//// UIシェーダーをアクティブにする/スプライト頂点配列を有効にする
+	//mUiShader->SetActive();
+	//mUiVerts->SetActive();
+	//// すべてのUIの描画
+	//for (auto ui : mUis)
+	//{
+	//	if (ui->GetVisible())
+	//	{
+	//		ui->Draw(mUiShader, ui->GetOwner()->GetPosition());
+	//	}
+	//}
 
 		// バッファを交換
-	SDL_GL_SwapWindow(window);
+	SDL_GL_SwapWindow(mWindow);
 }
 
 /*
@@ -334,9 +334,9 @@ void Renderer::AddSprite(SpriteComponent* _spriteComponent)
 	// 今あるスプライトから挿入する場所の検索
 	// (DrawOrderが小さい順番に描画するため)
 	int myDrawOrder = _spriteComponent->GetDrawOrder();
-	auto iter = sprites.begin();
+	auto iter = mSprites.begin();
 	for (;
-		iter != sprites.end();
+		iter != mSprites.end();
 		++iter)
 	{
 		if (myDrawOrder < (*iter)->GetDrawOrder())
@@ -346,7 +346,7 @@ void Renderer::AddSprite(SpriteComponent* _spriteComponent)
 	}
 
 	// 検索した場所のiterの場所に挿入
-	sprites.insert(iter, _spriteComponent);
+	mSprites.insert(iter, _spriteComponent);
 }
 
 /*
@@ -355,8 +355,8 @@ void Renderer::AddSprite(SpriteComponent* _spriteComponent)
 */
 void Renderer::RemoveSprite(SpriteComponent* _spriteComponent)
 {
-	auto iter = std::find(sprites.begin(), sprites.end(), _spriteComponent);
-	sprites.erase(iter);
+	auto iter = std::find(mSprites.begin(), mSprites.end(), _spriteComponent);
+	mSprites.erase(iter);
 }
 
 void Renderer::AddUI(UIComponent* _ui)
@@ -364,9 +364,9 @@ void Renderer::AddUI(UIComponent* _ui)
 	// 今あるスプライトから挿入する場所の検索
 	// (DrawOrderが小さい順番に描画するため)
 	int myUiDrawOrder = _ui->GetDrawOrder();
-	auto iterUi = uis.begin();
+	auto iterUi = mUis.begin();
 	for (;
-		iterUi != uis.end();
+		iterUi != mUis.end();
 		++iterUi)
 	{
 		if (myUiDrawOrder < (*iterUi)->GetDrawOrder())
@@ -376,13 +376,13 @@ void Renderer::AddUI(UIComponent* _ui)
 	}
 
 	// 検索した場所のiterの場所に挿入
-	uis.insert(iterUi, _ui);
+	mUis.insert(iterUi, _ui);
 }
 
 void Renderer::RemoveUI(UIComponent* _ui)
 {
-	auto iterUi = std::find(uis.begin(), uis.end(), _ui);
-	uis.erase(iterUi);
+	auto iterUi = std::find(mUis.begin(), mUis.end(), _ui);
+	mUis.erase(iterUi);
 }
 
 /*
@@ -392,9 +392,9 @@ void Renderer::RemoveUI(UIComponent* _ui)
 void Renderer::AddParticle(ParticleComponent * _particleComponent)
 {
 	int myDrawOrder = _particleComponent->GetDrawOrder();
-	auto iter = particles.begin();
+	auto iter = mParticles.begin();
 	for (;
-		iter != particles.end();
+		iter != mParticles.end();
 		++iter)
 	{
 		if (myDrawOrder < (*iter)->GetDrawOrder())
@@ -402,7 +402,7 @@ void Renderer::AddParticle(ParticleComponent * _particleComponent)
 			break;
 		}
 	}
-	particles.insert(iter, _particleComponent);
+	mParticles.insert(iter, _particleComponent);
 }
 
 /*
@@ -411,8 +411,8 @@ void Renderer::AddParticle(ParticleComponent * _particleComponent)
 */
 void Renderer::RemoveParticle(ParticleComponent * _particleComponent)
 {
-	auto iter = std::find(particles.begin(), particles.end(), _particleComponent);
-	particles.erase(iter);
+	auto iter = std::find(mParticles.begin(), mParticles.end(), _particleComponent);
+	mParticles.erase(iter);
 }
 
 /*
@@ -428,7 +428,7 @@ void Renderer::AddMeshComponent(MeshComponent* _meshComponent)
 	}
 	else
 	{
-		meshComponents.emplace_back(_meshComponent);
+		mMeshComponents.emplace_back(_meshComponent);
 	}
 }
 
@@ -446,8 +446,8 @@ void Renderer::RemoveMeshComponent(MeshComponent* _meshComponent)
 	}
 	else
 	{
-		auto iter = std::find(meshComponents.begin(), meshComponents.end(), _meshComponent);
-		meshComponents.erase(iter);
+		auto iter = std::find(mMeshComponents.begin(), mMeshComponents.end(), _meshComponent);
+		mMeshComponents.erase(iter);
 	}
 }
 
@@ -467,7 +467,7 @@ void Renderer::AddInvisibleMeshComponent(InvisibleMeshComponent* _invisibleMeshC
 		invisibleMeshComponent.emplace_back(_meshComponent);
 	}*/
 
-	invisibleMeshComponents.emplace_back(_invisibleMeshComponent);
+	mInvisibleMeshComponents.emplace_back(_invisibleMeshComponent);
 }
 
 /*
@@ -484,21 +484,21 @@ void Renderer::RemoveInvisibleMeshComponent(InvisibleMeshComponent* _invisibleMe
 	}
 	else
 	{
-		auto iter = std::find(meshComponents.begin(), meshComponents.end(), _meshComponent);
-		meshComponents.erase(iter);
+		auto iter = std::find(mMeshComponents.begin(), mMeshComponents.end(), _meshComponent);
+		mMeshComponents.erase(iter);
 	}*/
 	
-	auto iter = std::find(invisibleMeshComponents.begin(), invisibleMeshComponents.end(), _invisibleMeshComponent);
-	invisibleMeshComponents.erase(iter);
+	auto iter = std::find(mInvisibleMeshComponents.begin(), mInvisibleMeshComponents.end(), _invisibleMeshComponent);
+	mInvisibleMeshComponents.erase(iter);
 }
 
 /*
 @param _fileName モデルへのアドレス
 @return スケルトンモデルの取得
 */
-const Skeleton * Renderer::GetSkeleton(const char * fileName)
+const Skeleton * Renderer::GetSkeleton(const char * _fileName)
 {
-	std::string file(fileName);
+	std::string file(_fileName);
 	auto iter = mSkeletons.find(file);
 	if (iter != mSkeletons.end())
 	{
@@ -524,9 +524,9 @@ const Skeleton * Renderer::GetSkeleton(const char * fileName)
 @param _fileName アニメーションへのアドレス
 @return スケルトンアニメーションの取得
 */
-const Animation * Renderer::GetAnimation(const char * fileName, bool _loop)
+const Animation * Renderer::GetAnimation(const char * _fileName, bool _loop)
 {
-	auto iter = mAnims.find(fileName);
+	auto iter = mAnims.find(_fileName);
 	if (iter != mAnims.end())
 	{
 		return iter->second;
@@ -534,9 +534,9 @@ const Animation * Renderer::GetAnimation(const char * fileName, bool _loop)
 	else
 	{
 		Animation* anim = new Animation();
-		if (anim->Load(fileName, _loop))
+		if (anim->Load(_fileName, _loop))
 		{
-			mAnims.emplace(fileName, anim);
+			mAnims.emplace(_fileName, anim);
 		}
 		else
 		{
@@ -556,8 +556,8 @@ Texture* Renderer::GetTexture(const std::string& _fileName)
 {
 	Texture* texture = nullptr;
 	//すでに作成されてないか調べる
-	auto itr = textures.find(_fileName);
-	if (itr != textures.end())
+	auto itr = mTextures.find(_fileName);
+	if (itr != mTextures.end())
 	{
 		texture = itr->second;
 	}
@@ -567,7 +567,7 @@ Texture* Renderer::GetTexture(const std::string& _fileName)
 		texture = new Texture();
 		if (texture->Load(_fileName))
 		{
-			textures.emplace(_fileName, texture);
+			mTextures.emplace(_fileName, texture);
 		}
 		else
 		{
@@ -584,12 +584,12 @@ Texture* Renderer::GetTexture(const std::string& _fileName)
 @param	_fileName 取得したいメッシュのファイル名
 @return Meshクラスのポインタ
 */
-Mesh* Renderer::GetMesh(const std::string &_fileName)
+Mesh* Renderer::GetMesh(const std::string& _fileName)
 {
 	Mesh* m = nullptr;
 	//すでに作成されてないか調べる
-	auto iter = meshes.find(_fileName);
-	if (iter != meshes.end())
+	auto iter = mMeshes.find(_fileName);
+	if (iter != mMeshes.end())
 	{
 		m = iter->second;
 	}
@@ -599,7 +599,7 @@ Mesh* Renderer::GetMesh(const std::string &_fileName)
 		m = new Mesh();
 		if (m->Load(_fileName, this))
 		{
-			meshes.emplace(_fileName, m);
+			mMeshes.emplace(_fileName, m);
 		}
 		else
 		{
@@ -617,51 +617,51 @@ Mesh* Renderer::GetMesh(const std::string &_fileName)
 bool Renderer::LoadShaders()
 {
 	// スプライトシェーダーの作成
-	spriteShader = new Shader();
-	if (!spriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
+	mSpriteShader = new Shader();
+	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
 	{
 		return false;
 	}
 
-	spriteShader->SetActive();
+	mSpriteShader->SetActive();
 	// ビュー行列の設定
-	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(screenWidth, screenHeight);
-	spriteShader->SetMatrixUniform("uViewProj", viewProj);
+	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
+	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
 	// UIシェーダーの作成
-	uiShader = new Shader();
-	if (!uiShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
+	mUiShader = new Shader();
+	if (!mUiShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
 	{
 		return false;
 	}
 
-	uiShader->SetActive();
+	mUiShader->SetActive();
 	// ビュー行列の設定
-	Matrix4 viewUiProj = Matrix4::CreateSimpleViewProj(screenWidth, screenHeight);
-	uiShader->SetMatrixUniform("uViewProj", viewUiProj);
+	Matrix4 viewUiProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
+	mUiShader->SetMatrixUniform("uViewProj", viewUiProj);
 
 	// 標準のメッシュシェーダーの作成
-	meshShader = new Shader();
-	if (!meshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
+	mMeshShader = new Shader();
+	if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
 	{
 		return false;
 	}
 
 	// インビジブルメッシュシェーダーの作成
-	invisibleMeshShader = new Shader();
-	if (!invisibleMeshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
+	mInvisibleMeshShader = new Shader();
+	if (!mInvisibleMeshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
 	{
 		return false;
 	}
 
-	basicShader = new Shader();
-	if (!basicShader->Load("Shaders/BasicMesh.vert", "Shaders/BasicMesh.frag"))
+	mBasicShader = new Shader();
+	if (!mBasicShader->Load("Shaders/BasicMesh.vert", "Shaders/BasicMesh.frag"))
 	{
 		return false;
 	}
 
-	particleShader = new Shader();
-	if (!particleShader->Load("Shaders/Phong.vert", "Shaders/Particle.frag"))
+	mParticleShader = new Shader();
+	if (!mParticleShader->Load("Shaders/Phong.vert", "Shaders/Particle.frag"))
 	{
 		printf("シェーダー読み込み失敗\n");
 	}
@@ -672,23 +672,23 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 	mSkinnedShader->SetActive();
-	mSkinnedShader->SetMatrixUniform("uViewProj", view * projection);
+	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
 	// メッシュ
-	meshShader->SetActive();
+	mMeshShader->SetActive();
 
 	// インビジブルメッシュ
-	invisibleMeshShader->SetActive();
+	mInvisibleMeshShader->SetActive();
 
 	// ビュー行列の設定
-	view = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	projection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f),
-		screenWidth, screenHeight, 10.0f, 10000.0f);
+	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
+	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f),
+		mScreenWidth, mScreenHeight, 10.0f, 10000.0f);
 
-	invisibleMeshShader->SetMatrixUniform("uViewProj", view * projection);
+	mInvisibleMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
-	basicShader->SetActive();
-	basicShader->SetMatrixUniform("uViewProj", view * projection);
+	mBasicShader->SetActive();
+	mBasicShader->SetMatrixUniform("uViewProj", mView * mProjection);
 	return true;
 }
 
@@ -709,8 +709,8 @@ void Renderer::CreateSpriteVerts()
 		2, 3, 0
 	};
 
-	spriteVerts = new VertexArray(vertices, 4, indices, 6);
-	uiVerts = new VertexArray(vertices, 4, indices, 6);
+	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
+	mUiVerts = new VertexArray(vertices, 4, indices, 6);
 }
 
 // パーティクル頂点作成
@@ -727,21 +727,21 @@ void Renderer::CreateParticleVerts()
 		0, 2, 1,
 		2, 0, 3
 	};
-	particleVertex = new VertexArray(vertices, 4, VertexArray::PosNormTex, indices, 6);
+	mParticleVertex = new VertexArray(vertices, 4, VertexArray::PosNormTex, indices, 6);
 }
 
 void Renderer::DrawParticle()
 {
 
-	std::sort(particles.begin(), particles.end(), std::greater<ParticleComponent*>());
+	std::sort(mParticles.begin(), mParticles.end(), std::greater<ParticleComponent*>());
 
-	if (particles.size() == 0)
+	if (mParticles.size() == 0)
 	{
 		return;
 	}
 	// ブレンドモード初期状態取得
 	ParticleComponent::PARTICLE_BLEND_ENUM blendType, prevType;
-	auto itr = particles.begin();
+	auto itr = mParticles.begin();
 	blendType = prevType = (*itr)->GetBlendType();
 
 	// テクスチャID初期状態取得
@@ -750,11 +750,11 @@ void Renderer::DrawParticle()
 
 	// ビュープロジェクション行列
 	Matrix4 viewProjectionMat;
-	viewProjectionMat = view * projection;
+	viewProjectionMat = mView * mProjection;
 
 	// シェーダーON
-	particleShader->SetActive();
-	particleShader->SetMatrixUniform("uViewProj", viewProjectionMat);
+	mParticleShader->SetActive();
+	mParticleShader->SetMatrixUniform("uViewProj", viewProjectionMat);
 
 	// 全てのパーティクルのビルボード行列をセット
 	Matrix4 tmp;
@@ -768,7 +768,7 @@ void Renderer::DrawParticle()
 	ChangeBlendMode(blendType);
 	ChangeTexture(nowTexture);
 
-	for (auto particle : particles)
+	for (auto particle : mParticles)
 	{
 		if (particle->GetVisible())
 		{
@@ -787,7 +787,7 @@ void Renderer::DrawParticle()
 			}
 
 			// パーティクル描画
-			particle->Draw(particleShader);
+			particle->Draw(mParticleShader);
 
 			// 前回描画状態として保存
 			prevType = blendType;
@@ -798,15 +798,15 @@ void Renderer::DrawParticle()
 	glDepthMask(GL_TRUE);
 }
 
-void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4 & view, const Matrix4 & proj, float viewPortScale, bool lit)
+void Renderer::Draw3DScene(unsigned int _framebuffer, const Matrix4 & _view, const Matrix4 & _proj, float _viewPortScale, bool _lit)
 {
 	// Set the current frame buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
 
 	// Set viewport size based on scale
 	glViewport(0, 0,
-		static_cast<int>(screenWidth * viewPortScale),
-		static_cast<int>(screenHeight * viewPortScale)
+		static_cast<int>(mScreenWidth * _viewPortScale),
+		static_cast<int>(mScreenHeight * _viewPortScale)
 	);
 
 	// Clear color buffer/depth buffer
@@ -819,19 +819,19 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4 & view, const
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 	// Set the mesh shader active
-	meshShader->SetActive();
-	// Update view-projection matrix
-	meshShader->SetMatrixUniform("uViewProj", view * proj);
+	mMeshShader->SetActive();
+	// Update mView-mProjection matrix
+	mMeshShader->SetMatrixUniform("uViewProj", _view * _proj);
 	// Update lighting uniforms
-	if (lit)
+	if (_lit)
 	{
-		SetLightUniforms(meshShader, view);
+		SetLightUniforms(mMeshShader, _view);
 	}
-	for (auto mc : meshComponents)
+	for (auto mc : mMeshComponents)
 	{
 		if (mc->GetVisible())
 		{
-			mc->Draw(meshShader);
+			mc->Draw(mMeshShader);
 		}
 	}
 
@@ -846,12 +846,12 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4 & view, const
 //		1.0f);
 //	// スクリーン位置の平行移動
 //	Matrix4 transMat = Matrix4::CreateTranslation(
-//		Vector3(offset.x - (screenWidth * 0.5f),
-//			(screenHeight * 0.5f) - offset.y, 0.0f));
+//		Vector3(offset.x - (mScreenWidth * 0.5f),
+//			(mScreenHeight * 0.5f) - offset.y, 0.0f));
 //	// ワールド変換
 //	Matrix4 world = scaleMat * transMat;
-//	spriteShader->SetMatrixUniform("uWorldTransform", world);
-//	spriteShader->SetFloatUniform("alpha", alpha);
+//	mSpriteShader->SetMatrixUniform("uWorldTransform", world);
+//	mSpriteShader->SetFloatUniform("alpha", alpha);
 //	// テクスチャセット
 //	texture->SetActive();
 //	// 四角形描画
@@ -875,14 +875,14 @@ void Renderer::SetLightUniforms(Shader* _shader, const Matrix4& _view)
 	invView.Invert();
 	_shader->SetVectorUniform("uCameraPos", invView.GetTranslation());
 	// 環境光の設定
-	_shader->SetVectorUniform("uAmbientLight", ambientLight);
+	_shader->SetVectorUniform("uAmbientLight", mAmbientLight);
 	// 平行光源の設定
 	_shader->SetVectorUniform("uDirLight.mDirection",
-		dirLight.direction);
+		mDirLight.m_direction);
 	_shader->SetVectorUniform("uDirLight.mDiffuseColor",
-		dirLight.diffuseColor);
+		mDirLight.m_diffuseColor);
 	_shader->SetVectorUniform("uDirLight.mSpecColor",
-		dirLight.specColor);
+		mDirLight.m_specColor);
 }
 
 void Renderer::ChangeBlendMode(ParticleComponent::PARTICLE_BLEND_ENUM blendType)
@@ -903,21 +903,21 @@ void Renderer::ChangeBlendMode(ParticleComponent::PARTICLE_BLEND_ENUM blendType)
 	}
 }
 
-void Renderer::ChangeTexture(int changeTextureID)
+void Renderer::ChangeTexture(int _changeTextureID)
 {
-	glBindTexture(GL_TEXTURE_2D, changeTextureID);
+	glBindTexture(GL_TEXTURE_2D, _changeTextureID);
 }
 
 Vector3 Renderer::CalcCameraPos()
 {
 	// ビュー行列よりワールドでのカメラ位置算出
-	Matrix4 transMat = view;
+	Matrix4 transMat = mView;
 
 	// ビュー行列の移動成分抜き取る
 	Vector3 v;
-	v.x = -1.0f * view.mat[3][0];
-	v.y = -1.0f * view.mat[3][1];
-	v.z = -1.0f * view.mat[3][2];
+	v.x = -1.0f * mView.mat[3][0];
+	v.y = -1.0f * mView.mat[3][1];
+	v.z = -1.0f * mView.mat[3][2];
 
 	//移動成分を取り除いたあと転置して、回転部分の逆変換を作る
 	transMat.mat[3][0] = transMat.mat[3][1] = transMat.mat[3][2] = 0.0f;

@@ -7,8 +7,8 @@
 @param	線分の終了地点のポジション
 */
 LineSegment::LineSegment(const Vector3 & _start, const Vector3 & _end)
-	:start(_start)
-	, end(_end)
+	: m_start(_start)
+	, m_end(_end)
 {
 }
 
@@ -19,7 +19,7 @@ LineSegment::LineSegment(const Vector3 & _start, const Vector3 & _end)
 */
 Vector3 LineSegment::PointOnSegment(float _t) const
 {
-	return start + (end - start) * _t;
+	return m_start + (m_end - m_start) * _t;
 }
 
 /*
@@ -29,10 +29,10 @@ Vector3 LineSegment::PointOnSegment(float _t) const
 */
 float LineSegment::MinDistanceSquared(const Vector3 & _point) const
 {
-	Vector3 ab = end - start;
+	Vector3 ab = m_end - m_start;
 	Vector3 ba = -1.0f * ab;
-	Vector3 ac = _point - start;
-	Vector3 bc = _point - end;
+	Vector3 ac = _point - m_start;
+	Vector3 bc = _point - m_end;
 
 	if (Vector3::Dot(ab, ac) < 0.0f)
 	{
@@ -58,9 +58,9 @@ float LineSegment::MinDistanceSquared(const Vector3 & _point) const
 */
 float LineSegment::MinDistanceSquared(const LineSegment & _line1, const LineSegment & _line2)
 {
-	Vector3 u = _line1.end - _line1.start;
-	Vector3 v = _line2.end - _line2.start;
-	Vector3 w = _line1.start - _line2.start;
+	Vector3 u = _line1.m_end - _line1.m_start;
+	Vector3 v = _line2.m_end - _line2.m_start;
+	Vector3 w = _line1.m_start - _line2.m_start;
 	float   a = Vector3::Dot(u, u);
 	float   b = Vector3::Dot(u, v);
 	float   c = Vector3::Dot(v, v);
@@ -134,8 +134,8 @@ float LineSegment::MinDistanceSquared(const LineSegment & _line1, const LineSegm
 @param	平面と原点の符号つき最短距離
 */
 Plane::Plane(const Vector3 & _normal, float _distance)
-	:normal(_normal)
-	, distance(_distance)
+	: m_normal(_normal)
+	, m_distance(_distance)
 {
 }
 
@@ -149,10 +149,10 @@ Plane::Plane(const Vector3 & _vec1, const Vector3 & _vec2, const Vector3 & _vec3
 	Vector3 ab = _vec2 - _vec1;
 	Vector3 ac = _vec3 - _vec1;
 
-	normal = Vector3::Cross(ab, ac);
-	normal.Normalize();
+	m_normal = Vector3::Cross(ab, ac);
+	m_normal.Normalize();
 
-	distance = -Vector3::Dot(_vec1, normal);
+	m_distance = -Vector3::Dot(_vec1, m_normal);
 
 }
 
@@ -163,7 +163,7 @@ Plane::Plane(const Vector3 & _vec1, const Vector3 & _vec2, const Vector3 & _vec3
 */
 float Plane::SignedDistance(const Vector3& _point)
 {
-	return Vector3::Dot(_point, normal) - distance;
+	return Vector3::Dot(_point, m_normal) - m_distance;
 }
 
 /*
@@ -171,8 +171,8 @@ float Plane::SignedDistance(const Vector3& _point)
 @param	球体の半径
 */
 Sphere::Sphere(const Vector3 & _center, const float _radius)
-	:center(_center)
-	, radius(_radius)
+	: m_center(_center)
+	, m_radius(_radius)
 {
 }
 
@@ -183,8 +183,8 @@ Sphere::Sphere(const Vector3 & _center, const float _radius)
 */
 bool Sphere::Contains(const Vector3 & _point) const
 {
-	float distansSquared = (center - _point).LengthSq();
-	return distansSquared <= (radius * radius);
+	float distansSquared = (m_center - _point).LengthSq();
+	return distansSquared <= (m_radius * m_radius);
 }
 
 /*
@@ -192,8 +192,8 @@ bool Sphere::Contains(const Vector3 & _point) const
 @param	最大のx,y,zの値のポジション
 */
 AABB::AABB(const Vector3 & _min, const Vector3 & _max)
-	: min(_min),
-	  max(_max)
+	: m_min(_min),
+	  m_max(_max)
 {
 }
 
@@ -203,13 +203,13 @@ AABB::AABB(const Vector3 & _min, const Vector3 & _max)
 */
 void AABB::UpdateMinMax(const Vector3 & _point)
 {
-	min.x = Math::Min(min.x, _point.x);
-	min.y = Math::Min(min.y, _point.y);
-	min.z = Math::Min(min.z, _point.z);
+	m_min.x = Math::Min(m_min.x, _point.x);
+	m_min.y = Math::Min(m_min.y, _point.y);
+	m_min.z = Math::Min(m_min.z, _point.z);
 
-	max.x = Math::Max(max.x, _point.x);
-	max.y = Math::Max(max.y, _point.y);
-	max.z = Math::Max(max.z, _point.z);
+	m_max.x = Math::Max(m_max.x, _point.x);
+	m_max.y = Math::Max(m_max.y, _point.y);
+	m_max.z = Math::Max(m_max.z, _point.z);
 }
 
 /*
@@ -220,22 +220,22 @@ void AABB::Rotate(const Quaternion & _quaternion)
 {
 	std::array<Vector3, 8> points;
 
-	points[0] = min;
+	points[0] = m_min;
 
-	points[1] = Vector3(max.x, min.y, min.z);
-	points[2] = Vector3(min.x, max.y, min.z);
-	points[3] = Vector3(min.x, min.y, max.z);
+	points[1] = Vector3(m_max.x, m_min.y, m_min.z);
+	points[2] = Vector3(m_min.x, m_max.y, m_min.z);
+	points[3] = Vector3(m_min.x, m_min.y, m_max.z);
 
-	points[4] = Vector3(min.x, max.y, max.z);
-	points[5] = Vector3(max.x, min.y, max.z);
-	points[6] = Vector3(max.x, max.y, min.z);
+	points[4] = Vector3(m_min.x, m_max.y, m_max.z);
+	points[5] = Vector3(m_max.x, m_min.y, m_max.z);
+	points[6] = Vector3(m_max.x, m_max.y, m_min.z);
 
-	points[7] = Vector3(max);
+	points[7] = Vector3(m_max);
 
 	Vector3 p = Vector3::Transform(points[0], _quaternion);
 
-	min = p;
-	max = p;
+	m_min = p;
+	m_max = p;
 
 	for (std::size_t i = 1; i < points.size(); i++)
 	{
@@ -252,12 +252,12 @@ void AABB::Rotate(const Quaternion & _quaternion)
 bool AABB::Contains(const Vector3 & _point) const
 {
 	bool outside =
-        _point.x < min.x ||
-        _point.y < min.y ||
-        _point.z < min.x ||
-        _point.x > max.x ||
-        _point.y > max.y ||
-        _point.z > max.z;
+        _point.x < m_min.x ||
+        _point.y < m_min.y ||
+        _point.z < m_min.x ||
+        _point.x > m_max.x ||
+        _point.y > m_max.y ||
+        _point.z > m_max.z;
 	//どれも真でなければボックスの中に点がある
 	return !outside;
 }
@@ -269,12 +269,12 @@ bool AABB::Contains(const Vector3 & _point) const
 */
 float AABB::MinDistanceSquared(const Vector3 & _point) const
 {
-	float dx = Math::Max(min.x - _point.x, 0.0f);
-	dx = Math::Max(dx, _point.x - max.x);
-	float dy = Math::Max(min.y - _point.y, 0.0f);
-	dy = Math::Max(dy, _point.y - max.y);
-	float dz = Math::Max(min.z - _point.z, 0.0f);
-	dz = Math::Max(dz, _point.z - max.z);
+	float dx = Math::Max(m_min.x - _point.x, 0.0f);
+	dx = Math::Max(dx, _point.x - m_max.x);
+	float dy = Math::Max(m_min.y - _point.y, 0.0f);
+	dy = Math::Max(dy, _point.y - m_max.y);
+	float dz = Math::Max(m_min.z - _point.z, 0.0f);
+	dz = Math::Max(dz, _point.z - m_max.z);
 
 	return dx * dx + dy * dy + dz * dz;
 }
@@ -285,8 +285,8 @@ float AABB::MinDistanceSquared(const Vector3 & _point) const
 @param	カプセルの半径
 */
 Capsule::Capsule(const Vector3 & _start, const Vector3 & _end, float _radius)
-	:segment(_start, _end)
-	, radius(_radius)
+	: m_segment(_start, _end)
+	, m_radius(_radius)
 {
 }
 
@@ -297,7 +297,7 @@ Capsule::Capsule(const Vector3 & _start, const Vector3 & _end, float _radius)
 */
 Vector3 Capsule::PointOnSegment(float _t) const
 {
-	return segment.PointOnSegment(_t);
+	return m_segment.PointOnSegment(_t);
 }
 
 /*
@@ -307,8 +307,8 @@ Vector3 Capsule::PointOnSegment(float _t) const
 */
 bool Capsule::Contains(const Vector3 & _point) const
 {
-	float distanceSquared = segment.MinDistanceSquared(_point);
-	return distanceSquared <= (radius * radius);
+	float distanceSquared = m_segment.MinDistanceSquared(_point);
+	return distanceSquared <= (m_radius * m_radius);
 }
 
 /*
@@ -320,20 +320,20 @@ bool ConvexPolygon::Contains(const Vector2 & _point) const
 {
 	float sum = 0.0f;
 	Vector2 a, b;
-	for (std::size_t i = 0; i < vertices.size() - 1; i++)
+	for (std::size_t i = 0; i < m_vertices.size() - 1; i++)
 	{
-		a = vertices[i] - _point;
+		a = m_vertices[i] - _point;
 		a.Normalize();
 
-		b = vertices[i + 1] - _point;
+		b = m_vertices[i + 1] - _point;
 		b.Normalize();
 
 		sum += Math::Acos(Vector2::Dot(a, b));
 	}
 
-	a = vertices.back() - _point;
+	a = m_vertices.back() - _point;
 	a.Normalize();
-	b = vertices.front() - _point;
+	b = m_vertices.front() - _point;
 	b.Normalize();
 	sum += Math::Acos(Vector2::Dot(a, b));
 
@@ -348,9 +348,9 @@ bool ConvexPolygon::Contains(const Vector2 & _point) const
 */
 bool Intersect(const Sphere & _sphere1, const Sphere & _sphere2)
 {
-	float distanceSquared = (_sphere1.center - _sphere2.center).LengthSq();
-	float sumRadius = _sphere1.radius + _sphere2.radius;
-	return distanceSquared <= (sumRadius * sumRadius);
+	float distanceSquared = (_sphere1.m_center - _sphere2.m_center).LengthSq();
+	float sum_radius = _sphere1.m_radius + _sphere2.m_radius;
+	return distanceSquared <= (sum_radius * sum_radius);
 }
 
 /*
@@ -362,12 +362,12 @@ bool Intersect(const Sphere & _sphere1, const Sphere & _sphere2)
 bool Intersect(const AABB & _AABB1, const AABB & _AABB2)
 {
 	bool no =
-        _AABB1.max.x < _AABB2.min.x ||
-        _AABB1.max.y < _AABB2.min.y ||
-        _AABB1.max.z < _AABB2.min.z ||
-        _AABB2.max.x < _AABB1.min.x ||
-        _AABB2.max.y < _AABB1.min.y ||
-        _AABB2.max.z < _AABB1.min.z;
+        _AABB1.m_max.x < _AABB2.m_min.x ||
+        _AABB1.m_max.y < _AABB2.m_min.y ||
+        _AABB1.m_max.z < _AABB2.m_min.z ||
+        _AABB2.m_max.x < _AABB1.m_min.x ||
+        _AABB2.m_max.y < _AABB1.m_min.y ||
+        _AABB2.m_max.z < _AABB1.m_min.z;
 	//これらのどれも真でなければ、交差している
 	return !no;
 }
@@ -380,10 +380,10 @@ bool Intersect(const AABB & _AABB1, const AABB & _AABB2)
 */
 bool Intersect(const Capsule & _capsule1, const Capsule & _capsule2)
 {
-	float distanceSquared = LineSegment::MinDistanceSquared(_capsule1.segment,
-        _capsule2.segment);
-	float sumRadius = _capsule1.radius + _capsule2.radius;
-	return distanceSquared <= (sumRadius * sumRadius);
+	float distanceSquared = LineSegment::MinDistanceSquared(_capsule1.m_segment,
+        _capsule2.m_segment);
+	float sum_radius = _capsule1.m_radius + _capsule2.m_radius;
+	return distanceSquared <= (sum_radius * sum_radius);
 }
 
 /*
@@ -394,15 +394,15 @@ bool Intersect(const Capsule & _capsule1, const Capsule & _capsule2)
 */
 bool Intersect(const Sphere & _sphere, const AABB & _AABB)
 {
-	bool hit = _AABB.Contains(_sphere.center);
+	bool hit = _AABB.Contains(_sphere.m_center);
 	if (hit)
 	{
-		printf("%f,%f\n",_sphere.center,_sphere.radius);
-		printf("%f,%f\n", _AABB.min, _AABB.max);
+		printf("%f,%f\n",_sphere.m_center,_sphere.m_radius);
+		printf("%f,%f\n", _AABB.m_min, _AABB.m_max);
 		return true;
 	}
-	float distanceSquared = _AABB.MinDistanceSquared(_sphere.center);
-	return distanceSquared <= (_sphere.radius * _sphere.radius);
+	float distanceSquared = _AABB.MinDistanceSquared(_sphere.m_center);
+	return distanceSquared <= (_sphere.m_radius * _sphere.m_radius);
 }
 
 /*
@@ -414,11 +414,11 @@ bool Intersect(const Sphere & _sphere, const AABB & _AABB)
 */
 bool Intersect(const LineSegment & _line, const Sphere & _sphere, float & _outT)
 {
-	Vector3 X = _line.start - _sphere.center;
-    Vector3 Y = _line.end - _line.start;
+	Vector3 X = _line.m_start - _sphere.m_center;
+    Vector3 Y = _line.m_end - _line.m_start;
 	float a = Vector3::Dot(Y, Y);
 	float b = 2.0f * Vector3::Dot(X, Y);
-	float c = Vector3::Dot(X, X) - _sphere.radius * _sphere.radius;
+	float c = Vector3::Dot(X, X) - _sphere.m_radius * _sphere.m_radius;
 
 	float discriminant = b * b - 4.0f * a * c;
 	if (discriminant < 0.0f)
@@ -458,11 +458,11 @@ bool Intersect(const LineSegment & _line, const Sphere & _sphere, float & _outT)
 */
 bool Intersect(const LineSegment & _line, const Plane & _plane, float & _outT)
 {
-	float denom = Vector3::Dot(_line.end - _line.start,
-		_plane.normal);
+	float denom = Vector3::Dot(_line.m_end - _line.m_start,
+		_plane.m_normal);
 	if (Math::NearZero(denom))
 	{
-		if (Math::NearZero(Vector3::Dot(_line.start, _plane.normal) - _plane.distance))
+		if (Math::NearZero(Vector3::Dot(_line.m_start, _plane.m_normal) - _plane.m_distance))
 		{
 			return true;
 		}
@@ -473,7 +473,7 @@ bool Intersect(const LineSegment & _line, const Plane & _plane, float & _outT)
 	}
 	else
 	{
-		float numer = -Vector3::Dot(_line.start, _plane.normal) - _plane.distance;
+		float numer = -Vector3::Dot(_line.m_start, _plane.m_normal) - _plane.m_distance;
 		_outT = numer / denom;
 		if (_outT >= 0.0f && _outT <= 1.0f)
 		{
@@ -532,12 +532,12 @@ bool Intersect(const LineSegment & _line, const AABB & _AABB, float & _outT, Vec
 {
 	std::vector<std::pair<float, Vector3>> values;
 
-	TestSidePlane(_line.start.x, _line.end.x, _AABB.min.x, Vector3::NegUnitX, values);
-	TestSidePlane(_line.start.x, _line.end.x, _AABB.max.x, Vector3::UnitX, values);
-	TestSidePlane(_line.start.y, _line.end.y, _AABB.min.y, Vector3::NegUnitY, values);
-	TestSidePlane(_line.start.y, _line.end.y, _AABB.max.y, Vector3::UnitY, values);
-	TestSidePlane(_line.start.z, _line.end.z, _AABB.min.z, Vector3::NegUnitZ, values);
-	TestSidePlane(_line.start.z, _line.end.z, _AABB.max.z, Vector3::UnitZ, values);
+	TestSidePlane(_line.m_start.x, _line.m_end.x, _AABB.m_min.x, Vector3::NegUnitX, values);
+	TestSidePlane(_line.m_start.x, _line.m_end.x, _AABB.m_max.x, Vector3::UnitX, values);
+	TestSidePlane(_line.m_start.y, _line.m_end.y, _AABB.m_min.y, Vector3::NegUnitY, values);
+	TestSidePlane(_line.m_start.y, _line.m_end.y, _AABB.m_max.y, Vector3::UnitY, values);
+	TestSidePlane(_line.m_start.z, _line.m_end.z, _AABB.m_min.z, Vector3::NegUnitZ, values);
+	TestSidePlane(_line.m_start.z, _line.m_end.z, _AABB.m_max.z, Vector3::UnitZ, values);
 
 	std::sort(values.begin(), values.end(), [](
 		const std::pair<float, Vector3>& a,
@@ -569,12 +569,12 @@ bool Intersect(const LineSegment & _line, const AABB & _AABB, float & _outT, Vec
 */
 bool SweptSphere(const Sphere & _sphere1, const Sphere & _sphere2, const Sphere & _sphere3, const Sphere & _sphere4, float & _outT)
 {
-	Vector3 X = _sphere1.center - _sphere3.center;
-	Vector3 Y = _sphere2.center - _sphere1.center - (_sphere4.center - _sphere3.center);
+	Vector3 X = _sphere1.m_center - _sphere3.m_center;
+	Vector3 Y = _sphere2.m_center - _sphere1.m_center - (_sphere4.m_center - _sphere3.m_center);
 	float a = Vector3::Dot(Y, Y);
 	float b = 2.0f * Vector3::Dot(X, Y);
-	float sumRadius = _sphere1.radius + _sphere3.radius;
-	float c = Vector3::Dot(X, X) - sumRadius * sumRadius;
+	float sum_radius = _sphere1.m_radius + _sphere3.m_radius;
+	float c = Vector3::Dot(X, X) - sum_radius * sum_radius;
 
 	float discriminant = b * b - 4.0f * a * c;
 	if (discriminant < 0.0f)

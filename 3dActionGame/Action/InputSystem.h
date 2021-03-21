@@ -31,9 +31,9 @@ public:
 	friend class InputSystem;
 private:
 	//現在のキーボードの入力状態
-	const Uint8* currState;
+	const Uint8* mCurrState;
 	//１フレーム前のキーボードの入力状態
-	Uint8 prevState[SDL_NUM_SCANCODES];
+	Uint8 mPrevState[SDL_NUM_SCANCODES];
 public://ゲッターセッター
 	/*
 	@brief	現在のキーの入力状態のみを取得する
@@ -61,34 +61,34 @@ public:
 	friend class InputSystem;
 private:
 	//マウスのポジション
-	Vector2 mousePos;
+	Vector2 mMousePos;
 	//スクロールホイールのスクロール量
-	Vector2 scrollWheel;
+	Vector2 mScrollWheel;
 	// 現在のマウスの入力状態
-	Uint32 currButtons;
+	Uint32 mCurrButtons;
 	//１フレーム前のマウスの入力状態
-	Uint32 prevButtons;
+	Uint32 mPrevButtons;
 	// 相対マウスモードかどうか
-	bool isRelative;
+	bool mRelativeFlag;
 public://ゲッターセッター
 
 	/*
 	@brief	相対マウスモードかどうかを取得する
 	@return	true : 相対モード , false , 通常モード
 	*/
-	bool IsRelative() const { return isRelative; }
+	bool IsRelative() const { return mRelativeFlag; }
 
 	/*
 	@brief	現在のマウスのポジションを取得する
 	@return	Position
 	*/
-	const Vector2& GetPosition() const { return mousePos; }
+	const Vector2& GetPosition() const { return mMousePos; }
 
 	/*
 	@brief	現在のマウスのスクロールホイールの状態を取得する
 	@return	スクロール量（Vector2）
 	*/
-	const Vector2& GetScrollWheel() const { return scrollWheel; }
+	const Vector2& GetScrollWheel() const { return mScrollWheel; }
 
 	/*
 	@brief	現在の入力状態のみを取得する
@@ -116,13 +116,13 @@ public:
 	friend class InputSystem;
 private:
 	//現在のボタンの入力状態
-	Uint8 currButtons[SDL_CONTROLLER_BUTTON_MAX];
+	Uint8 mCurrButtons[SDL_CONTROLLER_BUTTON_MAX];
 	//１フレーム前のボタンの入力状態
-	Uint8 prevButtons[SDL_CONTROLLER_BUTTON_MAX];
+	Uint8 mPrevButtons[SDL_CONTROLLER_BUTTON_MAX];
 
 	//両スティックの情報
-	float axisValues[SDL_CONTROLLER_AXIS_MAX];
-	Vector2 lAxis;
+	float mAxisValues[SDL_CONTROLLER_AXIS_MAX];
+	Vector2 mLAxis;
 public://ゲッターセッター
 	/*
 	@brief	現在の入力状態のみを取得する
@@ -144,12 +144,12 @@ public://ゲッターセッター
 		   (左スティックのXを取得...SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)
 	@return スティックの入力情報
 	*/
-	float GetAxisValue(const SDL_GameControllerAxis iAxis) const;
+	float GetAxisValue(const SDL_GameControllerAxis _iAxis) const;
 	/*
 	@brief スティックの入力を0~1で返す
 	@return スティックの入力情報
 	*/
-	const Vector2& GetLAxisVec() const { return lAxis; }
+	const Vector2& GetLAxisVec() const { return mLAxis; }
 };
 
 /*
@@ -158,9 +158,9 @@ public://ゲッターセッター
 */
 struct InputState
 {
-	KeyboardState Keyboard;
-	MouseState Mouse;
-	ControllerState Controller;
+	KeyboardState m_keyboard;
+	MouseState m_mouse;
+	ControllerState m_controller;
 };
 /*
 @file InputSystem.h
@@ -212,18 +212,18 @@ private:
 	Vector2 Filter2D(int _inputX, int _inputY);
 
 	//各入力機器の入力状態をまとめたラッパー構造体
-	InputState state;
+	InputState mState;
 	//SDLでコントローラーを認識するためのクラスポインタ
-	SDL_GameController* controller;
+	SDL_GameController* mController;
 	//コントローラーが接続されたか
-	static bool controllerConnected;
+	static bool mControllerConnected;
 
 public://ゲッターセッター
 	/*
 	@brief  現在の入力状態を取得する
 	@return （InputState）各入力情報をまとめた構造体
 	*/
-	const InputState& GetState() const { return state; }
+	const InputState& GetState() const { return mState; }
 
 	/*
 	@brief  マウスのモードを設定する
@@ -231,5 +231,5 @@ public://ゲッターセッター
 	*/
 	void SetRelativeMouseMode(bool _value);
 
-	static bool GetConnectedController() { return controllerConnected; }
+	static bool GetConnectedController() { return mControllerConnected; }
 };

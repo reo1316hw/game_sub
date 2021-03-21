@@ -21,14 +21,7 @@ public:
 	//void PausingUpdateGameObject()override;
 
 private:
-	//3Dモデルの描画を行うクラス
-	SkeletalMeshComponent* skeltalMeshComponent;
-	MeshComponent* meshComponent;
-	Mesh* mesh;
-
-	BoxCollider* boxCollider;
-
-	Vector3 offsetPos;
+	Vector3 mOffsetPos;
 
 	// 移動速度
 	const float ENENY_SPEED = 20.0f;

@@ -10,7 +10,7 @@
 #include "Collision.h"
 #include "RapidJsonHelper.h"
 
-int LoadStageTextures(const rapidjson::Document& doc, TextureStage texStage, const char* stgString);
+int LoadStageTextures(const rapidjson::Document& _doc, TextureStage _texStage, const char* _stgString);
 
 namespace
 {
@@ -22,17 +22,17 @@ namespace
 }
 
 Mesh::Mesh()
-	: vertexArray(nullptr)
-	, radius(0.0f)
-	, specPower(100.0f)
-	, luminance(1.0f)
-	, alpha(1.0f)
+	: mVertexArray(nullptr)
+	, mRadius(0.0f)
+	, mSpecPower(100.0f)
+	, mLuminance(1.0f)
+	, mAlpha(1.0f)
 	, mBox(Vector3::Infinity, Vector3::NegInfinity)
 {
-	stageDefTexture.emplace(TextureStage::DiffuseMap, 0);
-	stageDefTexture.emplace(TextureStage::NormalMap, 0);
-	stageDefTexture.emplace(TextureStage::SpecularMap, 0);
-	stageDefTexture.emplace(TextureStage::EmissiveMap, 0);
+	mStageDefTexture.emplace(TextureStage::DiffuseMap, 0);
+	mStageDefTexture.emplace(TextureStage::NormalMap, 0);
+	mStageDefTexture.emplace(TextureStage::SpecularMap, 0);
+	mStageDefTexture.emplace(TextureStage::EmissiveMap, 0);
 }
 
 Mesh::~Mesh()
@@ -77,7 +77,7 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 		return false;
 	}
 
-	shaderName = doc["shader"].GetString();
+	mShaderName = doc["shader"].GetString();
 
 	// Skip the vertex format/shader for now
 	// (This is changed in a later chapter's code)
@@ -101,18 +101,18 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 		SDL_Log("Mesh %s has no textures, there should be at least one", _fileName.c_str());
 		return false;
 	}
-	specPower = static_cast<float>(doc["specularPower"].GetDouble());
+	mSpecPower = static_cast<float>(doc["specularPower"].GetDouble());
 
 	// エミッシブ強度値（定義されていれば)
 	if (IsExistMember(doc, "luminance"))
 	{
-		luminance = ForceGetFloat(doc["luminance"]);
+		mLuminance = ForceGetFloat(doc["luminance"]);
 	}
 
 	// 透明度
 	if (IsExistMember(doc, "alpha"))
 	{
-		alpha = ForceGetFloat(doc["alpha"]);
+		mAlpha = ForceGetFloat(doc["alpha"]);
 	}
 
 	for (rapidjson::SizeType i = 0; i < readTextures.Size(); i++)
@@ -130,22 +130,22 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 				t = _renderer->GetTexture("Assets/Default.png");
 			}
 		}
-		textures.emplace_back(t);
+		mTextures.emplace_back(t);
 
 		if (readTextures.Size() == 1)
 		{
-			stageDefTexture[TextureStage::DiffuseMap] = t->GetTextureID();
+			mStageDefTexture[TextureStage::DiffuseMap] = t->GetTextureID();
 		}
 	}
 
 	// テクスチャ読み込み(新ファイル形式)
 	if (IsExistMember(doc, "diffusemap"))
 	{
-		stageDefTexture[TextureStage::DiffuseMap] = LoadStageTextures(doc, TextureStage::DiffuseMap, "diffusemap");
+		mStageDefTexture[TextureStage::DiffuseMap] = LoadStageTextures(doc, TextureStage::DiffuseMap, "diffusemap");
 	}
-	stageDefTexture[TextureStage::NormalMap] = LoadStageTextures(doc, TextureStage::NormalMap, "normalmap");
-	stageDefTexture[TextureStage::SpecularMap] = LoadStageTextures(doc, TextureStage::SpecularMap, "specularmap");
-	stageDefTexture[TextureStage::EmissiveMap] = LoadStageTextures(doc, TextureStage::EmissiveMap, "emissivemap");
+	mStageDefTexture[TextureStage::NormalMap] = LoadStageTextures(doc, TextureStage::NormalMap, "normalmap");
+	mStageDefTexture[TextureStage::SpecularMap] = LoadStageTextures(doc, TextureStage::SpecularMap, "specularmap");
+	mStageDefTexture[TextureStage::EmissiveMap] = LoadStageTextures(doc, TextureStage::EmissiveMap, "emissivemap");
 
 
 	// 頂点配列データをロード
@@ -158,7 +158,7 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 
 	std::vector<Vertex> vertices;
 	vertices.reserve(vertsJson.Size() * vertSize);
-	radius = 0.0f;
+	mRadius = 0.0f;
 	for (rapidjson::SizeType i = 0; i < vertsJson.Size(); i++)
 	{
 		// 今のところは８つの要素とする
@@ -173,7 +173,7 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 			static_cast<float>(vert[1].GetDouble()),
 			static_cast<float>(vert[2].GetDouble()));
 		//verts.push_back(pos);
-		radius = Math::Max(radius, pos.LengthSq());
+		mRadius = Math::Max(mRadius, pos.LengthSq());
 
 		if (i == 0)
 		{
@@ -222,7 +222,7 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 	}
 
 	// 半径を2乗する
-	radius = Math::Sqrt(radius);
+	mRadius = Math::Sqrt(mRadius);
 
 	// 要素配列データのロード
 	const rapidjson::Value& indJson = doc["indices"];
@@ -249,7 +249,7 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 	}
 
 	// ここでVertexArrayクラスの作成
-	vertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize,
+	mVertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize,
 		layout,indices.data(), static_cast<unsigned>(indices.size()));
 	return true;
 }
@@ -259,8 +259,8 @@ bool Mesh::Load(const std::string & _fileName, Renderer* _renderer)
 */
 void Mesh::Unload()
 {
-	delete vertexArray;
-	vertexArray = nullptr;
+	delete mVertexArray;
+	mVertexArray = nullptr;
 }
 
 /*
@@ -268,9 +268,9 @@ void Mesh::Unload()
 */
 Texture* Mesh::GetTexture(size_t _index)
 {
-	if (_index < textures.size())
+	if (_index < mTextures.size())
 	{
-		return textures[_index];
+		return mTextures[_index];
 	}
 	else
 	{
@@ -278,19 +278,19 @@ Texture* Mesh::GetTexture(size_t _index)
 	}
 }
 
-int Mesh::GetTextureID(TextureStage stage)
+int Mesh::GetTextureID(TextureStage _stage)
 {
-	return stageDefTexture[stage];
+	return mStageDefTexture[_stage];
 }
 
-int LoadStageTextures(const rapidjson::Document& doc, TextureStage texStage, const char* stgString)
+int LoadStageTextures(const rapidjson::Document& _doc, TextureStage _texStage, const char* _stgString)
 {
 	std::string noneTexture("none");
 	std::string texName;
 	Texture* t;
-	if (IsExistMember(doc, stgString))
+	if (IsExistMember(_doc, _stgString))
 	{
-		texName = doc[stgString].GetString();
+		texName = _doc[_stgString].GetString();
 		if (texName != noneTexture)
 		{
 			t = RENDERER->GetTexture(texName);

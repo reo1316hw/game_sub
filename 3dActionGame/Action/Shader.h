@@ -76,8 +76,8 @@ private:
 	*/
 	bool IsVaildProgram();
 
-	GLuint vertexShader;
-	GLuint fragShader;
-	GLuint shaderProgram;
+	GLuint mVertexShader;
+	GLuint mFragShader;
+	GLuint mShaderProgram;
 };
 

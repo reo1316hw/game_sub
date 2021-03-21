@@ -1,8 +1,6 @@
 ﻿//=============================================================================
 //	@file	BoxCollider.h
 //	@brief	ボックスの当たり判定を行うコンポーネント
-//	@autor	居本 和哉
-//	@date	2020/02/29
 //=============================================================================
 
 //-----------------------------------------------------------------------------
@@ -47,19 +45,19 @@ public:
 	@brief	当たり判定に使うAABBの設定
 	@param	オブジェクトの大きさに合わせたAABBの構造体
 	*/
-	void SetObjectBox(const AABB& _box) { objectBox = _box; }
+	void SetObjectBox(const AABB& _box) { mObjectBox = _box; }
 
 	/**
 	@brief	当たり判定時に使うワールド空間でのAABBを取得する
 	@return 中心をワールド座標に合わせたAABBの構造体
 	*/
-	AABB GetWorldBox() const { return worldBox; }
+	AABB GetWorldBox() const { return mWorldBox; }
 
 private:
 //===================== privateのメンバ変数 ======================//
 
-	AABB objectBox;			//オブジェクトに設定する用のボックス（中心をオブジェクトの中心にする）
-	AABB worldBox;			//当たり判定するときに使うボックス（中心をワールド座標の中心にする）
-	bool shouldRotate;
+	AABB mObjectBox;			//オブジェクトに設定する用のボックス（中心をオブジェクトの中心にする）
+	AABB mWorldBox;			//当たり判定するときに使うボックス（中心をワールド座標の中心にする）
+	bool mShouldRotate;
 };
 

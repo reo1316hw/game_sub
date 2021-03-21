@@ -2,7 +2,7 @@
 
 /*
 @file FPS.h
-@brief 伊フレームにかかった時間を計測し上限を設けるクラス
+@brief フレームにかかった時間を計測し上限を設けるクラス
 */
 class FPS
 {
@@ -20,23 +20,23 @@ private:
 	*/
 	void Wait();
 	//フレームレートの最高値
-	const Uint32 setFps;				
+	const Uint32 mSetFps;				
 	//１フレームにかける時間
-	const Uint32 oneFrameTickCount;		
+	const Uint32 mOneFrameTickCount;		
 	//フレームのカウンター
-	Uint32 fpsCount;					
+	Uint32 mFpsCount;					
 	//FPSの計算を始めた時の時間
-	Uint32 frameStartTickTime;			
+	Uint32 mFrameStartTickTime;			
 	//計算したフレームレート
-	Uint32 fps;							
+	Uint32 mFps;							
 	//前のフレームのかかった時間
-	int beforetickCount;				
+	int mBeforetickCount;				
 	//現在のフレームのかかった時間
-	float deltaTime;					
+	float mDeltaTime;					
 public://ゲッターセッター
 	/*
 	@return 現在のフレームにかかった時間
 	*/
-	float GetDeltaTime() { return deltaTime; }
+	float GetDeltaTime() { return mDeltaTime; }
 };
 

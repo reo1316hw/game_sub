@@ -9,10 +9,6 @@ PlayerObjectStateRunLoop::PlayerObjectStateRunLoop(bool _isDrawnSword)
 	, mIsRunStart(false)
 	, mIsAttack(false)
 	, mIsDrawnSword(false)
-	, charaSpeed(0.0f)
-	, dirVec(Vector3::Zero)
-	, forwardVec(Vector3::Zero)
-	, rightVec(Vector3::Zero)
 {
 	mIsDrawnSword = _isDrawnSword;
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateRunLoop\n");
@@ -75,46 +71,46 @@ void PlayerObjectStateRunLoop::Inipt(PlayerObject* _owner, const InputState& _ke
 	//bool isContollerInputOff = !INPUT_INSTANCE.IsLStickMove();
 
 	//方向キーが入力されたか
-	mIsIdle = _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_W) ||
-				_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_S) ||
-				_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-				_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_D); //||
+	mIsIdle = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
+				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
+				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D); //||
 			  // isContollerInputOff;
 
 	//左Shiftキーが入力されたか
-	mIsRunStart = _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+	mIsRunStart = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
 	//Enterキーが入力されたか
-	mIsAttack = _keyState.Keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
+	mIsAttack = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
 	//bool IsJump = INPUT_INSTANCE.IsKeyPushdown(KEY_B);
 
 	//値が更新され続けるのを防ぐために初期化
-	dirVec = Vector3::Zero;
+	mDirVec = Vector3::Zero;
 
 	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
-	if (_keyState.Controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP) == 1 ||
-		_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_W) == 1)
+	if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP) == 1 ||
+		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) == 1)
 	{
-		dirVec += forwardVec;
+		mDirVec += mForwardVec;
 	}
 	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
-	else if (_keyState.Controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == 1 ||
-		_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_S) == 1)
+	else if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == 1 ||
+		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) == 1)
 	{
-		dirVec -= forwardVec;
+		mDirVec -= mForwardVec;
 	}
 
 	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
-	if (_keyState.Controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == 1 ||
-		_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_A) == 1)
+	if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == 1 ||
+		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) == 1)
 	{
-		dirVec -= rightVec;
+		mDirVec -= mRightVec;
 	}
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
-	else if (_keyState.Controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == 1 ||
-		_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_D) == 1)
+	else if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == 1 ||
+		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) == 1)
 	{
-		dirVec += rightVec;
+		mDirVec += mRightVec;
 	}
 }
 
@@ -138,10 +134,10 @@ void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)
 {
 	/*if (buttonFlag == false)
 	{
-		charaSpeed -= 1.0f;
-		if (charaSpeed <= 0.0f)
+		mCharaSpeed -= 1.0f;
+		if (mCharaSpeed <= 0.0f)
 		{
-			charaSpeed = 0.0f;
+			mCharaSpeed = 0.0f;
 		}
 	}*/
 
@@ -151,47 +147,47 @@ void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)
 	// カメラからみた前進方向を取得
 	Vector3 targetPos = _owner->GetTargetPos();
 	Vector3 viewPos = _owner->GetViewPos();
-	forwardVec = targetPos - viewPos;
-	forwardVec.z = 0.0f; // 高さ方向を無視
+	mForwardVec = targetPos - viewPos;
+	mForwardVec.z = 0.0f; // 高さ方向を無視
 
 	// カメラ前方ベクトルと右方向ベクトル算出
-	forwardVec = Vector3::Normalize(forwardVec);
-	rightVec = Vector3::Cross(Vector3::UnitZ, forwardVec);
-	//jumpVec = Vector3::Cross(Vector3::UnitY, forwardVec);
+	mForwardVec = Vector3::Normalize(mForwardVec);
+	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+	//jumpVec = Vector3::Cross(Vector3::UnitY, mForwardVec);
 
 	//// 右方向ベクトルからカメラ回転角を算出
 	//float forwardAngle = 0.0f;
 	//float angleSign;
 	//Vector3 tmpVec;
-	//forwardAngle = acosf(Vector3::Dot(Vector3::UnitX, rightVec));
+	//forwardAngle = acosf(Vector3::Dot(Vector3::UnitX, mRightVec));
 
 	//// 右回転か左回転か？
-	//tmpVec = Vector3::Cross(Vector3::UnitX, rightVec);
+	//tmpVec = Vector3::Cross(Vector3::UnitX, mRightVec);
 	//angleSign = (tmpVec.z > 0.0) ? 1.0f : -1.0f;
 	//forwardAngle *= angleSign;
 
 	// 入力キーの総和
-	if (dirVec.LengthSq() > 0.5f)
+	if (mDirVec.LengthSq() > 0.5f)
 	{
 		// 方向キー入力
-		charaForwardVec = dirVec;
+		mCharaForwardVec = mDirVec;
 
 		// 進行方向に向けて回転
-		charaForwardVec.Normalize();
-		_owner->RotateToNewForward(charaForwardVec);
+		mCharaForwardVec.Normalize();
+		_owner->RotateToNewForward(mCharaForwardVec);
 
 		// 現在のスピードを保存
-		charaSpeed = PLAYER_SPEED * _deltaTime;
+		mCharaSpeed = PLAYER_SPEED * _deltaTime;
 
-		/*if (charaSpeed >= 10.0f)
+		/*if (mCharaSpeed >= 10.0f)
 		{
-			charaSpeed = 10.0f;
+			mCharaSpeed = 10.0f;
 		}*/
 	}
 
 	// 移動処理
 	Vector3 position = _owner->GetPosition();
-	position += charaSpeed * charaForwardVec;
+	position += mCharaSpeed * mCharaForwardVec;
 
 	// キャラの位置・スピード・変換行列の再計算の必要をセット
 	_owner->SetPosition(position);

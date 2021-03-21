@@ -15,20 +15,4 @@ private:
 
 	bool mIsIdle;
 	bool mIsAttack;
-	float mElapseTime;    // このステートに入ってからの経過時刻
-	float mTotalAnimTime; // アニメーション総時間
-
-	//  キャラの現在のスピード
-	float charaSpeed;
-
-	//向き
-	Vector3 dirVec;
-	//前進方向
-	Vector3 forwardVec;
-	//右方向
-	Vector3 rightVec;
-	// キャラの前進ベクトル
-	Vector3 charaForwardVec;
-
-	const float cStopTime = 1.0f;
 };

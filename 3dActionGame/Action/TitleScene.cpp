@@ -10,66 +10,54 @@ TitleScene::TitleScene(const Scene& _scene)
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));
 	DirectionalLight& dir = RENDERER->GetDirectionalLight();
-	dir.direction = Vector3(1.0f, 0.7f, -0.7f);
+	dir.m_direction = Vector3(1.0f, 0.7f, -0.7f);
 	//dir.diffuseColor = Vector3(1.0f, 1.0f, 1.0f);
-	dir.diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
-	dir.specColor = Vector3(0.8f, 0.8f, 0.8f);
+	dir.m_diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
+	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	SetScene(_scene);
-	/*GameObject::CreateMainCamera();*/
 
-	/*
-	テストモデルの生成　解放はこのオブジェクトの継承元が自動でオブジェクト全体を管理しているクラスに追加されそのクラスで行われる
-	①TestObjectが生成される
-	②基底クラス内でGameObjectManager内のコンテナに追加される
-	③GameObjectManagerが解放される時に全てのゲームオブジェクトが解放される
-	*/
+	mInputSystem = new InputSystem();
+	mInputSystem->Initialize();
 
-	inputSystem = new InputSystem();
-	inputSystem->Initialize();
-	
 	/*mEmissiveTexture = RENDERER->GetTexture("Assets/title.png");
 	mTexture->SetLuminace(1.0f);*/
-	//sprite->SetTexture(mTexture, mEmissiveTexture);
+	//mSprite->SetTexture(mTexture, mEmissiveTexture);
 
-	sprite = new Sprite("Assets/title.png");
+	mSprite = new Sprite("Assets/title.png");
 
-	count = 0;
+	mNextSceneCount = 0;
 }
 
 TitleScene::~TitleScene()
 {
-	delete sprite;
+	delete mSprite;
 	/*RENDERER->DeleteInstance();*/
 	/*GAME_OBJECT_MANAGER->RemoveGameObject();*/
 }
 
 SceneBase* TitleScene::update()
 {
-	//inputSystem->PrepareForUpdate();
-	//inputSystem->Update();
+	mInputSystem->PrepareForUpdate();
+	mInputSystem->Update();
 
-	const InputState& sceneState = inputSystem->GetState();
-	
+	const InputState& sceneState = mInputSystem->GetState();
+
+
 	//if (sceneState.Keyboard.GetKeyState(SDL_SCANCODE_E) == Released)
 	//{
 	//	/*return new Tutorial(tutorial);*/
-	//	/*return new Stage01Scene(stage01);*/da
+	//	/*return new Stage01Scene(stage01);*/
 	//	return new Stage02Scene(stage02);
 	//}
 
-	if (sceneState.Controller.GetButtonValue(SDL_CONTROLLER_BUTTON_START) == 1 ||
-		sceneState.Keyboard.GetKeyValue(SDL_SCANCODE_SPACE) == 1)
+	if (sceneState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_START) == 1 ||
+		sceneState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE) == 1)
 	{
- 		return new Tutorial(tutorial);
+		return new Tutorial(tutorial);
 		//return new Stage01Scene(stage01);
 		//return new Stage02Scene(stage02);
 	}
 
 	return this;
-}
-
-void TitleScene::draw()
-{
-	RENDERER->Draw();
 }

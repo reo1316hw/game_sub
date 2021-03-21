@@ -162,6 +162,7 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     </ClCompile>
     <ClCompile Include="PlayerObjectStateAttack02.cpp" />
     <ClCompile Include="PlayerObjectStateAttack03.cpp" />
+    <ClCompile Include="PlayerObjectStateBase.cpp" />
     <ClCompile Include="PlayerObjectStateSword.cpp" />
     <ClCompile Include="PlayerObjectStateIdle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -171,16 +172,12 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClCompile Include="PlayerObjectStateRunEnd.cpp" />
     <ClCompile Include="PlayerObjectStateRunStart.cpp" />
     <ClCompile Include="PlayerObjectStateSwordIdle.cpp" />
+    <ClCompile Include="RapidJsonHelper.cpp" />
     <ClCompile Include="WallObject.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="HDRRenderer.cpp" />
-    <ClCompile Include="ParticleEffectBase.cpp" />
-    <ClCompile Include="EffectManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GroundObject.cpp" />
@@ -199,7 +196,6 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="PhysicsWorld.cpp" />
     <ClCompile Include="PlayerObject.cpp" />
-    <ClCompile Include="RapidJsonHelper.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -210,7 +206,6 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Tutorial.cpp" />
-    <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UIComponent.cpp" />
     <ClCompile Include="VertexArray.cpp" />
   </ItemGroup>
@@ -236,16 +231,12 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClInclude Include="PlayerObjectStateRunEnd.h" />
     <ClInclude Include="PlayerObjectStateRunStart.h" />
     <ClInclude Include="PlayerObjectStateSwordIdle.h" />
+    <ClInclude Include="RapidJsonHelper.h" />
     <ClInclude Include="WallObject.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="HDRRenderer.h" />
-    <ClInclude Include="ParticleEffectBase.h" />
-    <ClInclude Include="EffectManager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GroundObject.h" />
@@ -264,7 +255,6 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="PlayerObject.h" />
-    <ClInclude Include="RapidJsonHelper.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="Shader.h" />
@@ -275,7 +265,6 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Tutorial.h" />
-    <ClInclude Include="UIBase.h" />
     <ClInclude Include="UIComponent.h" />
     <ClInclude Include="VertexArray.h" />
   </ItemGroup>

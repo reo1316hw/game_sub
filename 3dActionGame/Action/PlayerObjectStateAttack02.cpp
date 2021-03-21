@@ -6,9 +6,6 @@
 //#include "SwordEffectActor.h"
 
 PlayerObjectStateAttack02::PlayerObjectStateAttack02()
-	: mIsNextCombo(false)
-	, mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
 {
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateAttack02\n");
 }
@@ -50,7 +47,7 @@ PlayerState PlayerObjectStateAttack02::Update(PlayerObject* _owner, float __delt
 void PlayerObjectStateAttack02::Inipt(PlayerObject* _owner, const InputState& _keyState)
 {
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (_keyState.Keyboard.GetKeyState(SDL_SCANCODE_RETURN) == Pressed)
+	if (_keyState.m_keyboard.GetKeyState(SDL_SCANCODE_RETURN) == Pressed)
 	{
 		mIsNextCombo = true;
 	}

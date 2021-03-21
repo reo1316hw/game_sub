@@ -23,23 +23,23 @@ public:
     virtual void Draw(Shader* _shader);
 protected:
 	//クラスのポインタ
-    Texture* texture;
+    Texture* mTexture;
 	// emisiiveテクスチャのポインタ
-	Texture* emissiveTexture;
+	Texture* mEmissiveTexture;
 	//描画される順番（数値が少ないほど早く更新される）
-    int drawOrder;
+    int mDrawOrder;
 	//テクスチャの横幅
-    int textureWidth;
+    int mTextureWidth;
 	//テクスチャの縦幅
-    int textureHeight;
+    int mTextureHeight;
 	//emissive
 	//テクスチャの横幅
-	int emissiveTextureWidth;
+	int mEmissiveTextureWidth;
 	//テクスチャの縦幅
-	int emissiveTextureHeight;
+	int mEmissiveTextureHeight;
 
 	//描画を行うか
-	bool visible;
+	bool mVisible;
 public://ゲッターセッター
 	/*
 	@fn テクスチャをセットし縦横の長さを計算する
@@ -51,28 +51,28 @@ public://ゲッターセッター
 	/*
 	@return テクスチャの横幅
 	*/
-	int GetTexWidth() const { return textureWidth; }
+	int GetTexWidth() const { return mTextureWidth; }
 
 	/*
 	@return テクスチャの縦幅
 	*/
-	int GetTexHeight() const { return textureHeight; }
+	int GetTexHeight() const { return mTextureHeight; }
 
 	/*
 	@return 描画順
 	*/
-	int GetDrawOrder() { return drawOrder; }
+	int GetDrawOrder() { return mDrawOrder; }
 
 	/*
 	@brief　描画をするかどうかを設定
 	@param	true : 描画する , false : 描画しない
 	*/
-	void SetVisible(bool _visible) { visible = _visible; }
+	void SetVisible(bool _visible) { mVisible = _visible; }
 
 	/*
 	@brief　描画をするかどうかを取得する
 	@return	true : 描画する , false : 描画しない
 	*/
-	bool GetVisible() const { return visible; }
+	bool GetVisible() const { return mVisible; }
 };
 

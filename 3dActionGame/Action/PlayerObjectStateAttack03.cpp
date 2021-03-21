@@ -9,8 +9,6 @@
 //const Vector3 swordLocalAngle(Math::ToRadians(80.0f), Math::ToRadians(40.0f), 0);
 
 PlayerObjectStateAttack03::PlayerObjectStateAttack03()
-	: mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
 {
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateAttack03\n");
 }

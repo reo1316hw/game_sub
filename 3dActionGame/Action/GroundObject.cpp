@@ -8,7 +8,7 @@ GroundObject::GroundObject(const Vector3& _pos, const Vector3& _size, const std:
 	: GameObject(_objectTag,_sceneTag)
 {
 	//GameObjectメンバ変数の初期化
-	tag = _objectTag;
+	mTag = _objectTag;
 	SetScale(_size);
 	SetPosition(_pos);
 
@@ -17,15 +17,15 @@ GroundObject::GroundObject(const Vector3& _pos, const Vector3& _size, const std:
 	case SceneBase::Scene::tutorial:
 
 		//生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
-		meshComponent = new MeshComponent(this);
+		mMeshComponent = new MeshComponent(this);
 		//Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
-		meshComponent->SetMesh(RENDERER->GetMesh(_gpmeshName));
+		mMeshComponent->SetMesh(RENDERER->GetMesh(_gpmeshName));
 
 		// 当たり判定
-		mesh = new Mesh;
-		mesh = RENDERER->GetMesh(_gpmeshName);
-		boxCollider = new BoxCollider(this, ColliderTag::Ground, GetOnCollisionFunc());
-		boxCollider->SetObjectBox(mesh->GetBox());
+		mMesh = new Mesh;
+		mMesh = RENDERER->GetMesh(_gpmeshName);
+		mBoxCollider = new BoxCollider(this, ColliderTag::Ground, GetOnCollisionFunc());
+		mBoxCollider->SetObjectBox(mMesh->GetBox());
 
 		break;
 	}
@@ -37,7 +37,7 @@ GroundObject::~GroundObject()
 
 void GroundObject::UpdateGameObject(float _deltaTime)
 {
-	aabb = boxCollider->GetWorldBox();
+	mAabb = mBoxCollider->GetWorldBox();
 }
 
 void GroundObject::OnCollision(const GameObject& _hitObject)

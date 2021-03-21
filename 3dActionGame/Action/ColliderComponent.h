@@ -1,8 +1,6 @@
 ﻿//=============================================================================
 //	@file	ColliderComponent.h
 //	@brief	当たり判定を行うコンポーネントの規定クラス
-//	@autor	居本 和哉
-//	@date	2020/02/29
 //=============================================================================
 
 //-----------------------------------------------------------------------------
@@ -15,7 +13,6 @@
 //-----------------------------------------------------------------------------
 #include "Component.h"
 #include "Collision.h"
-//#include "GameObject.h"
 
 //-----------------------------------------------------------------------------
 //	@brief	前方宣言
@@ -28,14 +25,14 @@ class GameObject;
 	*/
 enum class ColliderTag
 {
-	Other	 = 0,
-	Camera	 = 1,
-	Player	 = 2,
-	Ground	 = 3,
-	Wall	 = 4,
-	Enemy	 = 5,
+	Other = 0,
+	Camera = 1,
+	Player = 2,
+	Ground = 3,
+	Wall = 4,
+	Enemy = 5,
 	isGround = 6,
-	Swith	 = 7
+	Swith = 7
 };
 
 //-----------------------------------------------------------------------------
@@ -58,19 +55,9 @@ public:
 	@brief	めり込み動かす際の優先度を示す数値を取得する
 	@return 優先度を示す数値(int)
 	*/
-	int GetCollisionOrder() const { return collisionOrder; }
+	int GetCollisionOrder() const { return mCollisionOrder; }
 
 	ColliderTag GetTag() const { return mTag; };
-
-	//未実装
-	////オブジェクトが球に当たった時にめりこみからずらす処理
-	//virtual void ShiftObject(const Sphere& _hirSphere) {}
-	////オブジェクトが平面に当たった時にめりこみからずらす処理
-	//virtual void ShiftObject(const Plane& _hitPlane) {}
-	////オブジェクトがAABBに当たった時にめりこみからずらす処理
-	//virtual void ShiftObject(const AABB& _hitBox) {}
-	////オブジェクトがカプセルに当たった時にめりこみからずらす処理
-	//virtual void ShiftObject(const Capsule& _hitCapsule) {}
 
 protected:
 	ColliderTag mTag;
@@ -78,7 +65,7 @@ protected:
 private:
 //===================== privateのメンバ変数 ======================//
 
-	bool isTrigger;			//実体を伴う当たり判定をするかどうか
-	int	 collisionOrder;	//数値が大きい方を優先してめり込みから動かす処理をする（0以下は動かさない）
+	bool mTriggerFlag;		//実体を伴う当たり判定をするかどうか
+	int	 mCollisionOrder;	//数値が大きい方を優先してめり込みから動かす処理をする（0以下は動かさない）
 };
 
