@@ -7,12 +7,9 @@
 #include "Math.h"
 
 PlayerObjectStateSword::PlayerObjectStateSword(bool _moveFlag, bool _drawnSwordFlag)
-	: mIsIdle(false)
-	, mIsRunStart(false)
-	, mIsAttack(false)
-	, mMoveFlag(_moveFlag)
-	, mDrawnSwordFlag(_drawnSwordFlag)
 {
+	mMoveFlag = _moveFlag;
+	mDrawnSwordFlag = _drawnSwordFlag;
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateDrawnSword\n");
 }
 
@@ -210,7 +207,7 @@ void PlayerObjectStateSword::MoveCalc(PlayerObject* _owner, float _deltaTime)
 
 		// 進行方向に向けて回転
 		mCharaForwardVec.Normalize();
-		_owner->RotateToNewForward(charaForwardVec);
+		_owner->RotateToNewForward(mCharaForwardVec);
 
 		// 現在のスピードを保存
 		mCharaSpeed = PLAYER_SPEED * _deltaTime;

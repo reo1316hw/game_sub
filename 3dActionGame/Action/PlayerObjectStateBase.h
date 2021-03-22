@@ -17,7 +17,15 @@ protected:
 	//Vector3 jumpVec;
 	//// ジャンプスピード
 	//const float JUMP_SPEED = 1000.0f;
-	bool  mIsNextCombo;   // 次のコンボにつなげるか  
+	bool  mNextComboFlag;			//次のコンボにつなげるか  
+	bool  mIdleFlag;				//待機するか
+	bool  mRunStartFlag;			//走り始めか
+	bool  mRunFlag;					//走っているか
+	bool  mSprintFlag;				//全力疾走するか
+	bool  mAttackFlag;				//攻撃するか
+	bool  mSwordDeliveryFlag;		//抜刀するか
+	bool  mDrawnSwordFlag;			//納刀するか
+
 	float mElapseTime;    // このステートに入ってからの経過時刻
 	float mTotalAnimTime; // アニメーション総時間
 

@@ -27,7 +27,7 @@ public:
 	@param	テクスチャの縦幅
 	@param	ピクセルデータのフォーマット
 	*/
-	void CreateForRendering(int _width, int height, unsigned int _format);
+	void CreateForRendering(int _width, int _height, unsigned int _format);
 
 	/*
 	@brief	テクスチャをアクティブにする

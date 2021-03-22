@@ -12,11 +12,6 @@ public:
 private:
 	void MoveCalc(PlayerObject* _owner, float _deltaTime);
 
-	bool mIsIdle;
-	bool mIsRunStart;
-	bool mIsAttack;
 	//ìÆÇ≠Ç©Ç«Ç§Ç©
 	bool mMoveFlag;
-	//î≤ìÅÇµÇΩÇ©Ç«Ç§Ç©
-	bool mDrawnSwordFlag;
 };

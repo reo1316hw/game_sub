@@ -187,12 +187,12 @@ void PlayerObject::OnCollision(const GameObject& _hitObject)
 	//‰Ÿ‚µ–ß‚µˆ—
 	mPlayerBox = mBoxCollider->GetWorldBox();
 
-	float dx1 = _hitObject.mAabb.m_min.x - mPlayerBox.m_max.x;
-	float dx2 = _hitObject.mAabb.m_max.x - mPlayerBox.m_min.x;
-	float dy1 = _hitObject.mAabb.m_min.y - mPlayerBox.m_max.y;
-	float dy2 = _hitObject.mAabb.m_max.y - mPlayerBox.m_min.y;
-	float dz1 = _hitObject.mAabb.m_min.z - mPlayerBox.m_max.z;
-	float dz2 = _hitObject.mAabb.m_max.z - mPlayerBox.m_min.z;
+	float dx1 = _hitObject.GetObjectAABB().m_min.x - mPlayerBox.m_max.x;
+	float dx2 = _hitObject.GetObjectAABB().m_max.x - mPlayerBox.m_min.x;
+	float dy1 = _hitObject.GetObjectAABB().m_min.y - mPlayerBox.m_max.y;
+	float dy2 = _hitObject.GetObjectAABB().m_max.y - mPlayerBox.m_min.y;
+	float dz1 = _hitObject.GetObjectAABB().m_min.z - mPlayerBox.m_max.z;
+	float dz2 = _hitObject.GetObjectAABB().m_max.z - mPlayerBox.m_min.z;
 
 	float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
 	float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;

@@ -7,8 +7,6 @@
 //#include "SwordEffectActor.h"
 
 PlayerObjectStateRunStart::PlayerObjectStateRunStart()
-	: mIsIdle(false)
-	, mIsAttack(false)
 {
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateRunStart\n");
 }

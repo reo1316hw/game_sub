@@ -11,8 +11,4 @@ public:
 	void Enter(class PlayerObject* _owner, float _deltaTime)override;
 private:
 	void MoveCalc(PlayerObject* _owner, float _deltaTime);
-
-	bool mIsIdle;
-	bool mIsRun;
-	bool mIsAttack;
 };

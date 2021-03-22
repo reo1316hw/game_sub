@@ -27,7 +27,7 @@ public:
     virtual void Draw(Shader* _shader);
 protected:
 
-	virtual void SetTextureToShader(class Shader* shader);
+	virtual void SetTextureToShader(class Shader* _shader);
 
 	//メッシュデータクラスへのポインタ
     Mesh* mMesh;

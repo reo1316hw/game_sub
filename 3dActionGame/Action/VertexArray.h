@@ -17,8 +17,8 @@ public:
 	*/
 	VertexArray(const float* _verts, unsigned int _numVerts,
 		const unsigned int* _indices, unsigned int _numIndices);
-	VertexArray(const void* verts, unsigned int numVerts, Layout layout,  // 頂点配列コンストラクタ 
-		const unsigned int* indices, unsigned int numIndices);
+	VertexArray(const void* _verts, unsigned int _numVerts, Layout _layout,  // 頂点配列コンストラクタ 
+		const unsigned int* _indices, unsigned int _numIndices);
 	~VertexArray();
 
 	/*

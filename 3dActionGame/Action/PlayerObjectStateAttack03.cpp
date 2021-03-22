@@ -18,9 +18,9 @@ PlayerObjectStateAttack03::~PlayerObjectStateAttack03()
 	printf("Remove : [PlayerObjectStateBase] PlayerObjectStateAttack03\n");
 }
 
-PlayerState PlayerObjectStateAttack03::Update(PlayerObject* _owner, float __deltaTime)
+PlayerState PlayerObjectStateAttack03::Update(PlayerObject* _owner, float _deltaTime)
 {
-	mElapseTime += __deltaTime;
+	mElapseTime += _deltaTime;
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
 	if (!_owner->GetSkeletalMeshComp()->IsPlaying())
 	{
@@ -43,8 +43,8 @@ PlayerState PlayerObjectStateAttack03::Update(PlayerObject* _owner, float __delt
 	Vector3 pos, forward;
 	pos = _owner->GetPosition();
 	forward = _owner->GetForward();
-	float differencePos = 0.0f - PLAYER_ATTACK_SPEED * __deltaTime;
-	pos += Quintic::EaseIn(mElapseTime, PLAYER_ATTACK_SPEED * __deltaTime, differencePos, mTotalAnimTime) * forward;
+	float differencePos = 0.0f - PLAYER_ATTACK_SPEED * _deltaTime;
+	pos += Quintic::EaseIn(mElapseTime, PLAYER_ATTACK_SPEED * _deltaTime, differencePos, mTotalAnimTime) * forward;
 
 	_owner->SetPosition(pos);
 
@@ -55,7 +55,7 @@ void PlayerObjectStateAttack03::Inipt(PlayerObject* _owner, const InputState& _k
 {
 }
 
-void PlayerObjectStateAttack03::Enter(PlayerObject* _owner, float __deltaTime)
+void PlayerObjectStateAttack03::Enter(PlayerObject* _owner, float _deltaTime)
 {
 	// ATTACK3のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComp();
@@ -73,7 +73,7 @@ void PlayerObjectStateAttack03::Enter(PlayerObject* _owner, float __deltaTime)
 	//effect->SetEffectTime(mTotalAnimTime + cStopTime);
 }
 
-void PlayerObjectStateAttack03::Exit(PlayerObject* _owner, float __deltaTime)
+void PlayerObjectStateAttack03::Exit(PlayerObject* _owner, float _deltaTime)
 {
 	//_owner->RemoveAttackHitBox();
 }

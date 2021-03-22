@@ -69,20 +69,20 @@ void ParticleComponent::Draw(Shader* _shader)
 }
 
 // カメラ距離でのソート用
-bool ParticleComponent::operator<(const ParticleComponent& rhs) const
+bool ParticleComponent::operator<(const ParticleComponent& _rhs) const
 {
 	float lenThis, lenRhs;
 	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
-	lenRhs = (mStaticCameraWorldPos - rhs.mOffset).LengthSq();
+	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
 	return lenThis < lenRhs;
 }
 
 // カメラ距離でのソート用
-bool ParticleComponent::operator>(const ParticleComponent& rhs) const
+bool ParticleComponent::operator>(const ParticleComponent& _rhs) const
 {
 	float lenThis, lenRhs;
 	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
-	lenRhs = (mStaticCameraWorldPos - rhs.mOffset).LengthSq();
+	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
 	return lenThis > lenRhs;
 }
 

@@ -91,9 +91,9 @@ void Game::Termination()
 	SDL_Quit();
 }
 
-void Game::SetFirstScene(SceneBase* firstScene)
+void Game::SetFirstScene(SceneBase* _firstScene)
 {
-	mNowScene = firstScene;
+	mNowScene = _firstScene;
 }
 
 /*

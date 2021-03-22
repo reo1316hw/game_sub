@@ -5,9 +5,6 @@
 #include "MainCameraObject.h"
 
 PlayerObjectStateSprintLoop::PlayerObjectStateSprintLoop()
-	: mIsIdle(false)
-	, mIsRun(false)
-	, mIsAttack(false)
 {
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateSprintLoop\n");
 }
@@ -20,13 +17,13 @@ PlayerObjectStateSprintLoop::~PlayerObjectStateSprintLoop()
 PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, float _deltaTime)
 {
 	// いずれのボタンも押されていない
-	if (!mIsIdle /*&& !IsJump */&& !mIsAttack)
+	if (!mIdleFlag /*&& !IsJump */)
 	{
 		return PlayerState::PLAYER_STATE_RUN_END;
 	}
 
 	//ボタンが押されていない時
-	if (!mIsRun)
+	if (!mRunFlag)
 	{
 		return PlayerState::PLAYER_STATE_RUN_LOOP;
 	}
@@ -50,14 +47,14 @@ void PlayerObjectStateSprintLoop::Inipt(PlayerObject* _owner, const InputState& 
 	//bool isContollerInputOff = !INPUT_INSTANCE.IsLStickMove();
 
 	//方向キーが入力されたか
-	mIsIdle = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+	mIdleFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
 		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
 		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
 		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D); //||
 			  // isContollerInputOff;
 
 	//左Shiftキーが入力されたか
-	mIsRun = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+	mRunFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
 	//bool IsJump = INPUT_INSTANCE.IsKeyPushdown(KEY_B);
 

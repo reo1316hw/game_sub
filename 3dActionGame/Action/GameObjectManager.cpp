@@ -45,22 +45,10 @@ void GameObjectManager::UpdateGameObject(float _deltaTime)
 		cameraObject->Update(_deltaTime);
 	}
 
-	// チュートリアルを更新する
+	// 1マップ目を更新する
 	for (auto tutorialObject : mTutorialObjects)
 	{
 		tutorialObject->Update(_deltaTime);
-	}
-
-	// ステージ１を更新する
-	for (auto stage01Object : mStage01Objects)
-	{
-		stage01Object->Update(_deltaTime);
-	}
-
-	// ステージ２を更新する
-	for (auto stage02Object : mStage02Objects)
-	{
-		stage02Object->Update(_deltaTime);
 	}
 
 	mUpdatingGameObject = false;
@@ -73,14 +61,6 @@ void GameObjectManager::UpdateGameObject(float _deltaTime)
 		{
 			mTutorialObjects.emplace_back(pending);
 		}
-		if (pending->GetScene() == SceneBase::Scene::stage01)
-		{
-			mStage01Objects.emplace_back(pending);
-		}
-		if (pending->GetScene() == SceneBase::Scene::stage02)
-		{
-			mStage02Objects.emplace_back(pending);
-		}
 	}
 	mPendingGameObjects.clear();
 }
@@ -91,19 +71,15 @@ void GameObjectManager::ProcessInput(const InputState& _state)
 {
 	mUpdatingGameObject = true;
 
+	//カメラ
+	for (auto cameraObject : mCameraObjects)
+	{
+		cameraObject->ProcessInput(_state);
+	}
+	//1マップ目
 	for (auto tutorialObject : mTutorialObjects)
 	{
 		tutorialObject->ProcessInput(_state);
-	}
-
-	for (auto stage01Object : mStage01Objects)
-	{
-		stage01Object->ProcessInput(_state);
-	}
-
-	for (auto stage02Object : mStage02Objects)
-	{
-		stage02Object->ProcessInput(_state);
 	}
 
 	mUpdatingGameObject = false;
@@ -133,12 +109,6 @@ void GameObjectManager::AddGameObject(GameObject* _object)
 		case SceneBase::tutorial:
 			mTutorialObjects.emplace_back(_object);
 			break;
-		case SceneBase::stage01:
-			mStage01Objects.emplace_back(_object);
-			break;
-		case SceneBase::stage02:
-			mStage02Objects.emplace_back(_object);
-			break;
 		}
 	}
 }
@@ -156,28 +126,20 @@ void GameObjectManager::RemoveGameObject(GameObject * _object)
 		mPendingGameObjects.pop_back();
 	}
 
+
+	iter = std::find(mCameraObjects.begin(), mCameraObjects.end(), _object);
+	if (iter != mCameraObjects.end())
+	{
+		std::iter_swap(iter, mCameraObjects.end() - 1);
+		mCameraObjects.pop_back();
+	}
+
 	iter = std::find(mTutorialObjects.begin(), mTutorialObjects.end(), _object);
 	if (iter != mTutorialObjects.end())
 	{
 		std::iter_swap(iter, mTutorialObjects.end() - 1);
 		mTutorialObjects.pop_back();
 	}
-
-	iter = std::find(mStage01Objects.begin(), mStage01Objects.end(), _object);
-	if (iter != mStage01Objects.end())
-	{
-		std::iter_swap(iter, mStage01Objects.end() - 1);
-		mStage01Objects.pop_back();
-	}
-
-	iter = std::find(mStage02Objects.begin(), mStage02Objects.end(), _object);
-	if (iter != mStage02Objects.end())
-	{
-		std::iter_swap(iter, mStage02Objects.end() - 1);
-		mStage02Objects.pop_back();
-	}
-
-
 }
 
 void GameObjectManager::RemoveGameObjects(SceneBase::Scene _scene)
@@ -189,21 +151,6 @@ void GameObjectManager::RemoveGameObjects(SceneBase::Scene _scene)
 		while (!mTutorialObjects.empty())
 		{
 			delete mTutorialObjects.back();
-		}
-		break;
-
-	case SceneBase::stage01:
-
-		while (!mStage01Objects.empty())
-		{
-			delete mStage01Objects.back();
-		}
-		break;
-
-	case SceneBase::stage02:
-		while (!mStage02Objects.empty())
-		{
-			delete mStage02Objects.back();
 		}
 		break;
 	}

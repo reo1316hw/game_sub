@@ -56,7 +56,7 @@ VertexArray::VertexArray(const float* _verts, unsigned int _numVerts,
         reinterpret_cast<void*>(sizeof(float) * 6));	//オフセットポインタ
 }
 
-VertexArray::VertexArray(const void * verts, unsigned int _numVerts, Layout layout, const unsigned int * indices, unsigned int _numIndices)
+VertexArray::VertexArray(const void * _verts, unsigned int _numVerts, Layout _layout, const unsigned int * _indices, unsigned int _numIndices)
 	: mNumVerts(_numVerts)
 	, mNumIndices(_numIndices)
 {
@@ -66,7 +66,7 @@ VertexArray::VertexArray(const void * verts, unsigned int _numVerts, Layout layo
 
 	// 頂点レイアウトが スケルタルモデルなら　ボーンID、影響度分をサイズ増やす
 	unsigned vertexSize = 8 * sizeof(float);
-	if (layout == PosNormSkinTex)
+	if (_layout == PosNormSkinTex)
 	{
 		vertexSize = 8 * sizeof(float) + 8 * sizeof(char);
 	}
@@ -74,15 +74,15 @@ VertexArray::VertexArray(const void * verts, unsigned int _numVerts, Layout layo
 	// 頂点バッファの作成
 	glGenBuffers(1, &mVertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, mNumVerts * vertexSize, verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, mNumVerts * vertexSize, _verts, GL_STATIC_DRAW);
 
 	// インデックスバッファの作成
 	glGenBuffers(1, &mIndexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), _indices, GL_STATIC_DRAW);
 
 	// 頂点属性
-	if (layout == PosNormTex)
+	if (_layout == PosNormTex)
 	{
 		// float 3個分　→　位置 x,y,z　位置属性をセット
 		glEnableVertexAttribArray(0);
@@ -96,7 +96,7 @@ VertexArray::VertexArray(const void * verts, unsigned int _numVerts, Layout layo
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertexSize,
 			reinterpret_cast<void*>(sizeof(float) * 6));
 	}
-	else if (layout == PosNormSkinTex)
+	else if (_layout == PosNormSkinTex)
 	{
 		// float 3個分　→　位置 x,y,z　位置属性をセット
 		glEnableVertexAttribArray(0);

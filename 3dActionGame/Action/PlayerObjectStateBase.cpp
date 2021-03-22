@@ -1,7 +1,14 @@
 #include "PlayerObjectStateBase.h"
 
 PlayerObjectStateBase::PlayerObjectStateBase()
-	: mIsNextCombo(false)
+	: mNextComboFlag(false)
+	, mIdleFlag(false)
+	, mRunStartFlag(false)
+	, mRunFlag(false)
+	, mSprintFlag(false)
+	, mAttackFlag(false)
+	, mSwordDeliveryFlag(false)
+	, mDrawnSwordFlag(false)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mCharaSpeed(0.0f)

@@ -3,9 +3,6 @@
 #include "SkeletalMeshComponent.h"
 
 PlayerObjectStateSwordIdle::PlayerObjectStateSwordIdle()
-    : mIsSprint(false)
-    , mIsRun(false)
-    , mIsAttack(false)
 {
     printf("Create : [PlayerObjectStateBase] PlayerObjectStateSwordIdle\n");
 }
@@ -18,17 +15,17 @@ PlayerObjectStateSwordIdle::~PlayerObjectStateSwordIdle()
 // アイドル状態から他の状態への移行
 PlayerState PlayerObjectStateSwordIdle::Update(PlayerObject* _owner, float _deltaTime)
 {
-    if (mIsAttack)
+    if (mAttackFlag)
     {
         return PlayerState::PLAYER_STATE_ATTACK1;
     }
 
-    if (mIsRun)
+    if (mRunFlag)
     {
         return PlayerState::PLAYER_STATE_SWORD_RUN_LOOP;
     }
 
-    if (swordDelivery)
+    if (mSwordDeliveryFlag)
     {
         return PlayerState::PLAYER_STATE_SWORD_DELIVERY;
     }
@@ -45,19 +42,16 @@ void PlayerObjectStateSwordIdle::Inipt(PlayerObject* _owner, const InputState& _
    //}
 
    //方向キーが入力されたか
-    mIsRun = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+    mRunFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
         _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
         _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
         _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D);
 
-    //左Shiftキーが入力されたか
-    mIsSprint = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_LSHIFT);
-
     //Enterキーが入力されたか
-    mIsAttack = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
+    mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
 
     //Xキーが入力されたか
-    swordDelivery = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_X);
+    mSwordDeliveryFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_X);
 }
 
 void PlayerObjectStateSwordIdle::Enter(PlayerObject* _owner, float _deltaTime)

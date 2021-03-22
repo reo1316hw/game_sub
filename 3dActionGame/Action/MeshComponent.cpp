@@ -61,7 +61,7 @@ void MeshComponent::Draw(Shader* _shader)
 	}
 }
 
-void MeshComponent::SetTextureToShader(Shader* shader)
+void MeshComponent::SetTextureToShader(Shader* _shader)
 {
 	// メッシュテクスチャセット
 	int texID, stageCount = 0;
@@ -69,28 +69,28 @@ void MeshComponent::SetTextureToShader(Shader* shader)
 	{
 		glActiveTexture(GL_TEXTURE0 + stageCount);
 		glBindTexture(GL_TEXTURE_2D, texID);
-		shader->SetIntUniform("uDiffuseMap", stageCount);
+		_shader->SetIntUniform("uDiffuseMap", stageCount);
 		stageCount++;
 	}
 	texID = mMesh->GetTextureID(TextureStage::NormalMap); // 法線マップ
 	{
 		glActiveTexture(GL_TEXTURE0 + stageCount);
 		glBindTexture(GL_TEXTURE_2D, texID);
-		shader->SetIntUniform("uNormalMap", stageCount);
+		_shader->SetIntUniform("uNormalMap", stageCount);
 		stageCount++;
 	}
 	texID = mMesh->GetTextureID(TextureStage::SpecularMap); // スペキュラーマップ
 	{
 		glActiveTexture(GL_TEXTURE0 + stageCount);
 		glBindTexture(GL_TEXTURE_2D, texID);
-		shader->SetIntUniform("uSpecularMap", stageCount);
+		_shader->SetIntUniform("uSpecularMap", stageCount);
 		stageCount++;
 	}
 	texID = mMesh->GetTextureID(TextureStage::EmissiveMap); // 自己放射マップ
 	{
 		glActiveTexture(GL_TEXTURE0 + stageCount);
 		glBindTexture(GL_TEXTURE_2D, texID);
-		shader->SetIntUniform("uEmissiveMap", stageCount);
+		_shader->SetIntUniform("uEmissiveMap", stageCount);
 		stageCount++;
 	}
 }

@@ -1,6 +1,8 @@
 ﻿//=============================================================================
 //	@file	PhysicsWorld.h
 //	@brief	当たり判定を行う
+//	@autor	居本 和哉
+//	@date	2020/02/29
 //=============================================================================
 
 #pragma once
@@ -52,33 +54,17 @@ private:
 	void SphereAndSphere();
 	void BoxAndBox();
 
-    std::vector<BoxCollider*> mBoxes;
-	std::vector<BoxCollider*> mGroundBoxes;
-	std::vector<BoxCollider*> mGlassBoxes;
-	std::vector<BoxCollider*> mBlockBoxes;
-	std::vector<BoxCollider*> mVerticalMoveGroundBoxes;
-	std::vector<BoxCollider*> mJumpBoxes;
-	std::vector<BoxCollider*> mLateralMoveGroundBoxes;
-	std::vector<BoxCollider*> mPlayerBoxes;
-	std::vector<BoxCollider*> mUpBlockBoxes;
-	std::vector<BoxCollider*> mUpBlock_02Boxes;
-	std::vector<BoxCollider*> mVerticalBlockBoxes;
-	std::vector<BoxCollider*> mAerialBlockBoxes;
-	std::vector<BoxCollider*> mRightBlockBoxes;
-	std::vector<BoxCollider*> mLeftBlockBoxes;
-	std::vector<BoxCollider*> mRightOneBlockBoxes;
-	std::vector<BoxCollider*> mRightOneBlock_02Boxes;
-	std::vector<BoxCollider*> mLeftOneBlockBoxes;
-	std::vector<BoxCollider*> mLeftOneBlock_02Boxes;
-	std::vector<BoxCollider*> mDownBlockBoxes;
-	std::vector<BoxCollider*> mGoalBlockBoxes;
-	std::vector<BoxCollider*> mRespawn01Boxes;
-	std::vector<BoxCollider*> mRespawn02Boxes;
-	std::vector<BoxCollider*> mRespawn03Boxes;
-	std::vector<SphereCollider*> mSpheres;
-	std::vector<SphereCollider*> mPlayerSpheres;
-	onCollisionMap mCollisionFunction;
+    //std::vector<BoxCollider*> boxes;
+	//std::vector<SphereCollider*> spheres;
 
+	std::vector<BoxCollider*> mGroundBoxes;
+	std::vector<BoxCollider*> mWallBoxes;
+	std::vector<BoxCollider*> mPlayerBoxes;
+	std::vector<BoxCollider*> mEnemyBoxes;
+
+	std::vector<SphereCollider*> mPlayerSpheres;
+
+	onCollisionMap mCollisionFunction;
 };
 
 /*

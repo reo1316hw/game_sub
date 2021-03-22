@@ -21,7 +21,7 @@ PlayerState PlayerObjectStateAttack01::Update(PlayerObject* _owner, float _delta
 	if (!_owner->GetSkeletalMeshComp()->IsPlaying())
 	{
 		//_owner->RemoveAttackHitBox();
-		if (mIsNextCombo)
+		if (mNextComboFlag)
 		{
 			return PlayerState::PLAYER_STATE_ATTACK2;
 		}
@@ -51,7 +51,7 @@ void PlayerObjectStateAttack01::Inipt(PlayerObject* _owner, const InputState& _k
 	// 攻撃ボタン押されたら次のステートへ移行する準備
 	if (_keyState.m_keyboard.GetKeyState(SDL_SCANCODE_RETURN) == Pressed)
 	{
-		mIsNextCombo = true;
+		mNextComboFlag = true;
 	}
 	
 }
@@ -61,7 +61,7 @@ void PlayerObjectStateAttack01::Enter(PlayerObject* _owner, float _deltaTime)
 	// ATTACK1のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComp();
 	meshComp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK1),1.5f);
-	mIsNextCombo = false;
+	mNextComboFlag = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK1)->GetDuration();

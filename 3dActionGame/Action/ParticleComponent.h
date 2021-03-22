@@ -34,8 +34,8 @@ public:
 	void Draw(class Shader* _shader);
 
 	// カメラ距離でのソート用
-	bool operator < (const ParticleComponent& rhs) const;
-	bool operator > (const ParticleComponent& rhs) const;
+	bool operator < (const ParticleComponent& _rhs) const;
+	bool operator > (const ParticleComponent& _rhs) const;
 private:
 	//親オブジェクトクラスと画像を描画する位置の差
 	Vector3 mOffset;

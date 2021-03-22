@@ -39,7 +39,7 @@ public:
 	*/
 	void GameLoop();
 	// Å‰‚ÌƒV[ƒ“‚ğŒˆ‚ß‚éŠÖ”
-	void SetFirstScene(SceneBase* firstScene);
+	void SetFirstScene(SceneBase* _firstScene);
 
 	/*bool GetScene() { return isScene; };
 

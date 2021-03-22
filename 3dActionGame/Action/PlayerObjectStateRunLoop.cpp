@@ -4,13 +4,9 @@
 #include "GameObject.h"
 #include "MainCameraObject.h"
 
-PlayerObjectStateRunLoop::PlayerObjectStateRunLoop(bool _isDrawnSword)
-	: mIsIdle(false)
-	, mIsRunStart(false)
-	, mIsAttack(false)
-	, mIsDrawnSword(false)
+PlayerObjectStateRunLoop::PlayerObjectStateRunLoop(bool _drawnSwordFlag)
 {
-	mIsDrawnSword = _isDrawnSword;
+	mDrawnSwordFlag = _drawnSwordFlag;
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateRunLoop\n");
 }
 
@@ -24,16 +20,16 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, float _deltaT
 
 	MoveCalc(_owner, _deltaTime);
 
-	if (mIsDrawnSword)
+	if (mDrawnSwordFlag)
 	{
 		// いずれのボタンも押されていない
-		if (!mIsIdle /*&& !IsJump */ && !mIsAttack)
+		if (!mIdleFlag /*&& !IsJump */ && !mAttackFlag)
 		{
 			return PlayerState::PLAYER_STATE_SWORD_IDLE;
 		}
 
 		// 攻撃ボタンが押されたか？
-		if (mIsAttack)
+		if (mAttackFlag)
 		{
 			return PlayerState::PLAYER_STATE_ATTACK1;
 		}
@@ -43,12 +39,12 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, float _deltaT
 	else
 	{
 		// いずれのボタンも押されていない
-		if (!mIsIdle /*&& !IsJump */ && !mIsAttack)
+		if (!mIdleFlag /*&& !IsJump */ && !mAttackFlag)
 		{
 			return PlayerState::PLAYER_STATE_RUN_END;
 		}
 
-		if (mIsRunStart)
+		if (mRunStartFlag)
 		{
 			return PlayerState::PLAYER_STATE_RUN_START;
 		}
@@ -71,17 +67,17 @@ void PlayerObjectStateRunLoop::Inipt(PlayerObject* _owner, const InputState& _ke
 	//bool isContollerInputOff = !INPUT_INSTANCE.IsLStickMove();
 
 	//方向キーが入力されたか
-	mIsIdle = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+	mIdleFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
 				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
 				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
 				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D); //||
 			  // isContollerInputOff;
 
 	//左Shiftキーが入力されたか
-	mIsRunStart = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+	mRunStartFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
 	//Enterキーが入力されたか
-	mIsAttack = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
+	mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
 	//bool IsJump = INPUT_INSTANCE.IsKeyPushdown(KEY_B);
 
 	//値が更新され続けるのを防ぐために初期化
@@ -117,7 +113,7 @@ void PlayerObjectStateRunLoop::Inipt(PlayerObject* _owner, const InputState& _ke
 // RUN状態への切り替え処理
 void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, float _deltaTime)
 {
-	if (mIsDrawnSword)
+	if (mDrawnSwordFlag)
 	{
 		SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComp();
 		meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_SWORD_RUN_LOOP));

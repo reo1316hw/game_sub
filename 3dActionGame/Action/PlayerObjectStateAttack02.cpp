@@ -15,13 +15,13 @@ PlayerObjectStateAttack02::~PlayerObjectStateAttack02()
 	printf("Remove : [PlayerObjectStateBase] PlayerObjectStateAttack02\n");
 }
 
-PlayerState PlayerObjectStateAttack02::Update(PlayerObject* _owner, float __deltaTime)
+PlayerState PlayerObjectStateAttack02::Update(PlayerObject* _owner, float _deltaTime)
 {
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
 	if (!_owner->GetSkeletalMeshComp()->IsPlaying())
 	{
 		//_owner->RemoveAttackHitBox();
-		if (mIsNextCombo)
+		if (mNextComboFlag)
 		{
 			return PlayerState::PLAYER_STATE_ATTACK3;
 		}
@@ -29,15 +29,15 @@ PlayerState PlayerObjectStateAttack02::Update(PlayerObject* _owner, float __delt
 	}
 
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
-	mElapseTime += __deltaTime;
+	mElapseTime += _deltaTime;
 	const float PLAYER_ATTACK_SPEED = 100.0f;
 
 	// 経過割合をもとに移動処理
 	Vector3 pos, forward;
 	pos = _owner->GetPosition();
 	forward = _owner->GetForward();
-	float differencePos = 0.0f - PLAYER_ATTACK_SPEED * __deltaTime;
-	pos += Quintic::EaseIn(mElapseTime, PLAYER_ATTACK_SPEED * __deltaTime, differencePos, mTotalAnimTime) * forward;
+	float differencePos = 0.0f - PLAYER_ATTACK_SPEED * _deltaTime;
+	pos += Quintic::EaseIn(mElapseTime, PLAYER_ATTACK_SPEED * _deltaTime, differencePos, mTotalAnimTime) * forward;
 
 	_owner->SetPosition(pos);
 
@@ -49,16 +49,16 @@ void PlayerObjectStateAttack02::Inipt(PlayerObject* _owner, const InputState& _k
 	// 攻撃ボタン押されたら次のステートへ移行する準備
 	if (_keyState.m_keyboard.GetKeyState(SDL_SCANCODE_RETURN) == Pressed)
 	{
-		mIsNextCombo = true;
+		mNextComboFlag = true;
 	}
 }
 
-void PlayerObjectStateAttack02::Enter(PlayerObject* _owner, float __deltaTime)
+void PlayerObjectStateAttack02::Enter(PlayerObject* _owner, float _deltaTime)
 {
 	// ATTACK1のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComp();
 	meshComp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK2),1.5f);
-	mIsNextCombo = false;
+	mNextComboFlag = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK2)->GetDuration();
@@ -76,7 +76,7 @@ void PlayerObjectStateAttack02::Enter(PlayerObject* _owner, float __deltaTime)
 	//effect->SetEffectTime(mTotalAnimTime);
 }
 
-void PlayerObjectStateAttack02::Exit(PlayerObject* _owner, float __deltaTime)
+void PlayerObjectStateAttack02::Exit(PlayerObject* _owner, float _deltaTime)
 {
 	//_owner->RemoveAttackHitBox();
 }

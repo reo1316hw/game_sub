@@ -14,6 +14,7 @@ public:
 
 	//このクラスはポーズ中に別クラスから更新関数を呼ばれることがある
 	void UpdateGameObject(float _deltaTime = 1.0f)override;
+	void GameObjectInput(const InputState& _keyState)override;
 
 	/*
 	@param _offset　見たい座標との差
@@ -24,8 +25,19 @@ private:
 	//親オブジェクトとの差
 	Vector3 mOffsetPos;
 	//追従先のオブジェクト座標
-	Vector3 mLerpObject;               
+	Vector3 mLerpObject;
 	//追従先のオブジェクトを所持しているか
 	bool mHasParentObject;
+      
+	// カメラ周囲回転方向回転角
+	float mRotateYAngle;
+	// カメラ見降ろし方向回転角
+	float mLookDownAngle;
+
+
+	// 最大仰角
+	const float maxLookDownAngle = Math::ToRadians(80.0f);
+	// 最小仰角
+	const float minLookDownAngle = Math::ToRadians(0.0f);
 };
 

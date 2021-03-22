@@ -211,19 +211,19 @@ public:
 	@brief　オブジェクトの前方を表すベクトルを取得する
 	@param	forward(Vector3型)
 	*/
-	Vector3 GetForward() const { return Vector3::Transform(Vector3::UnitZ, mRotation); }
+	Vector3 GetForward() const { return Vector3::Transform(Vector3::UnitX, mRotation); }
 
 	/*
 	@brief　オブジェクトの右を表すベクトルを取得する
 	@param	right(Vector3型)
 	*/
-	Vector3 GetRight() const { return Vector3::Transform(Vector3::UnitX, mRotation); }
+	Vector3 GetRight() const { return Vector3::Transform(Vector3::UnitY, mRotation); }
 
 	/*
 	@brief　オブジェクトの上を表すベクトルを取得する
 	@param	up(Vector3型)
 	*/
-	Vector3 GetUp() const { return Vector3::Transform(Vector3::UnitY, mRotation); };
+	Vector3 GetUp() const { return Vector3::Transform(Vector3::UnitZ, mRotation); };
 	
 	/*
 	@brief　オブジェクトのタグを取得する
@@ -256,13 +256,13 @@ public:
 	@brief　シーンのタグを取得する
 	@return	sceneTag
 	*/
-	SceneBase::Scene GetScene() { return mSceneTag; };
+	SceneBase::Scene GetScene() const { return mSceneTag; };
 
 	/*
 	@brief　オブジェクトのAABBを取得する
 	@return	mAabb
 	*/
-	AABB GetObjectAABB() { return mAabb; };
+	AABB GetObjectAABB() const { return mAabb; };
 
 protected:
 	std::function<void(GameObject&)> GetOnCollisionFunc() { return std::bind(&GameObject::OnCollision, this, std::placeholders::_1); }

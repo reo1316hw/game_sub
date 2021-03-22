@@ -1,6 +1,8 @@
 ﻿//=============================================================================
 //	@file	PhysicsWorld.cpp
 //	@brief	当たり判定を行う
+//	@autor	居本 和哉
+//	@date	2020/02/29
 //=============================================================================
 
 #include "PhysicsWorld.h"
@@ -49,21 +51,71 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		return;
 	}
 
-	for (auto itr : mSpheres)
+	if (_box->GetTag() == ColliderTag::Player)
 	{
-		//コライダーの親オブジェクトがActiveじゃなければ終了する
-		if (itr->GetOwner()->GetState() != State::Active)
+		for (auto itr : mGroundBoxes)
 		{
-			continue;
+			if (itr == _box)
+			{
+				continue;
+			}
+			//コライダーの親オブジェクトがActiveじゃなければ終了する 
+			if (itr->GetOwner()->GetState() != State::Active)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->refresh();
+			}
 		}
-		bool hit = Intersect(itr->GetWorldSphere(),_box->GetWorldBox());
-		if (hit)
+		for (auto itr : mWallBoxes)
 		{
-			onCollisionFunc func = mCollisionFunction.at(_box);
-			func(*(itr->GetOwner()));
-			func = mCollisionFunction.at(itr);
-			func(*(_box->GetOwner()));
-			_box->refresh();
+			if (itr == _box)
+			{
+				continue;
+			}
+			//コライダーの親オブジェクトがActiveじゃなければ終了する
+			if (itr->GetOwner()->GetState() != State::Active)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->refresh();
+			}
+		}
+
+		for (auto itr : mEnemyBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			//コライダーの親オブジェクトがActiveじゃなければ終了する
+			if (itr->GetOwner()->GetState() != State::Active)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->refresh();
+			}
 		}
 	}
 }
@@ -76,544 +128,202 @@ void PhysicsWorld::HitCheck(SphereCollider * _sphere)
 		return;
 	}
 
-	//プレイヤーが何かと当たったら
-	if (_sphere->GetTag() == ColliderTag::Player)
-	{
-		//床
-		for (auto itr : mGroundBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する 
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//ガラス床
-		for (auto itr : mGlassBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//障害物
-		for (auto itr : mBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//縦移動床
-		for (auto itr : mVerticalMoveGroundBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//ジャンプ床
-		for (auto itr : mJumpBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//横移動床
-		for (auto itr : mLateralMoveGroundBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//上移動ブロック01
-		for (auto itr : mUpBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//上移動ブロック02
-		for (auto itr : mUpBlock_02Boxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//縦長障害物
-		for (auto itr : mVerticalBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//空中ブロック
-		for (auto itr : mAerialBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//右移動ブロック
-		for (auto itr : mRightBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//左移動ブロック
-		for (auto itr : mLeftBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//1マス右移動床01
-		for (auto itr : mRightOneBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//1マス右移動床02
-		for (auto itr : mRightOneBlock_02Boxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//1マス左移動床01
-		for (auto itr : mLeftOneBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//1マス左移動床02
-		for (auto itr : mLeftOneBlock_02Boxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//落ちるブロック
-		for (auto itr : mDownBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//ゴール柱
-		for (auto itr : mGoalBlockBoxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//リスポーン地点01
-		for (auto itr : mRespawn01Boxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//リスポーン地点02
-		for (auto itr : mRespawn02Boxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-		//リスポーン地点03
-		for (auto itr : mRespawn03Boxes)
-		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-			if (hit)
-			{
-				onCollisionFunc func = mCollisionFunction.at(_sphere);
-				func(*(itr->GetOwner()));
-				func = mCollisionFunction.at(itr);
-				func(*(_sphere->GetOwner()));
-				_sphere->refresh();
-			}
-		}
-	}
-
-	for (auto itr : mSpheres)
-	{
-		if (itr == _sphere)
-		{
-			continue;
-		}
-		//コライダーの親オブジェクトがActiveじゃなければ終了する
-		if (itr->GetOwner()->GetState() != State::Active)
-		{
-			continue;
-		}
-		bool hit = Intersect(itr->GetWorldSphere(), _sphere->GetWorldSphere());
-		if (hit)
-		{
-			onCollisionFunc func = mCollisionFunction.at(_sphere);
-			func(*(itr->GetOwner()));
-			func = mCollisionFunction.at(itr);
-			func(*(_sphere->GetOwner()));
-			/*_sphere->refresh();*/
-		}
-	}
-	for (auto itr : mBoxes)
-	{
-		//コライダーの親オブジェクトがActiveじゃなければ終了する
-		if (itr->GetOwner()->GetState() != State::Active)
-		{
-			continue;
-		}
-		bool hit = Intersect(_sphere->GetWorldSphere(),itr->GetWorldBox());
-		if (hit)
-		{
-			onCollisionFunc func = mCollisionFunction.at(_sphere);
-			func(*(itr->GetOwner()));
-			func = mCollisionFunction.at(itr);
-			func(*(_sphere->GetOwner()));
-			/*_sphere->refresh();*/
-		}
-	}
+	//if (_sphere->GetTag() == ColliderTag::isGround)
+	//{
+	//	for (auto itr : mGroundBoxes)
+	//	{
+	//		//コライダーの親オブジェクトがActiveじゃなければ終了する 
+	//		if (itr->GetOwner()->GetState() != State::Active)
+	//		{
+	//			continue;
+	//		}
+	//		bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
+	//		if (hit)
+	//		{
+	//			onCollisionFunc func = mCollisionFunction.at(_sphere);
+	//			func(*(itr->GetOwner()));
+	//			func = mCollisionFunction.at(itr);
+	//			func(*(_sphere->GetOwner()));
+	//			_sphere->refresh();
+	//		}
+	//	}
+	//	for (auto itr : mWallBoxes)
+	//	{
+	//		//コライダーの親オブジェクトがActiveじゃなければ終了する
+	//		if (itr->GetOwner()->GetState() != State::Active)
+	//		{
+	//			continue;
+	//		}
+	//		bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
+	//		if (hit)
+	//		{
+	//			onCollisionFunc func = mCollisionFunction.at(_sphere);
+	//			func(*(itr->GetOwner()));
+	//			func = mCollisionFunction.at(itr);
+	//			func(*(_sphere->GetOwner()));
+	//			_sphere->refresh();
+	//		}
+	//	}
+	//}
 }
 
 void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 {
-	mBoxes.emplace_back(_box);
-	//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
-	mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	if (_box->GetTag() == ColliderTag::Ground)
+	{
+		mGroundBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetTag() == ColliderTag::Wall)
+	{
+		mWallBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetTag() == ColliderTag::Player)
+	{
+		mPlayerBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetTag() == ColliderTag::Enemy)
+	{
+		mEnemyBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 }
 
 void PhysicsWorld::RemoveBox(BoxCollider * _box)
 {
-	auto iter = std::find(mBoxes.begin(), mBoxes.end(), _box);
-	if (iter != mBoxes.end())
+
+	auto groundBox = std::find(mGroundBoxes.begin(), mGroundBoxes.end(), _box);
+	if (groundBox != mGroundBoxes.end())
 	{
-		std::iter_swap(iter, mBoxes.end() - 1);
-		mBoxes.pop_back();
+		std::iter_swap(groundBox, mGroundBoxes.end() - 1);
+		mGroundBoxes.pop_back();
 	}
+	auto wallBox = std::find(mWallBoxes.begin(), mWallBoxes.end(), _box);
+	if (wallBox != mWallBoxes.end())
+	{
+		std::iter_swap(wallBox, mWallBoxes.end() - 1);
+		mWallBoxes.pop_back();
+	}
+	auto playerBox = std::find(mPlayerBoxes.begin(), mPlayerBoxes.end(), _box);
+	if (playerBox != mPlayerBoxes.end())
+	{
+		std::iter_swap(playerBox, mPlayerBoxes.end() - 1);
+		mPlayerBoxes.pop_back();
+	}
+
+	auto enemyBox = std::find(mEnemyBoxes.begin(), mEnemyBoxes.end(), _box);
+	if (enemyBox != mEnemyBoxes.end())
+	{
+		std::iter_swap(enemyBox, mEnemyBoxes.end() - 1);
+		mEnemyBoxes.pop_back();
+	}
+
     mCollisionFunction.erase(_box);
 }
 
 void PhysicsWorld::AddSphere(SphereCollider * _sphere, onCollisionFunc _func)
 {
-	mSpheres.emplace_back(_sphere);
+	mPlayerSpheres.emplace_back(_sphere);
     //コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
     mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_sphere), _func));
 }
 
 void PhysicsWorld::RemoveSphere(SphereCollider * _sphere)
 {
-	auto iter = std::find(mSpheres.begin(), mSpheres.end(), _sphere);
-	if (iter != mSpheres.end())
+	auto iter = std::find(mPlayerSpheres.begin(), mPlayerSpheres.end(), _sphere);
+	if (iter != mPlayerSpheres.end())
 	{
-		std::iter_swap(iter, mSpheres.end() - 1);
-		mSpheres.pop_back();
+		std::iter_swap(iter, mPlayerSpheres.end() - 1);
+		mPlayerSpheres.pop_back();
 	}
     mCollisionFunction.erase(_sphere);
 }
 
 void PhysicsWorld::SphereAndSphere()
 {
-	for (size_t i = 0; i < mSpheres.size(); i++)
-	{
-		if (mSpheres[i]->GetOwner()->GetState() != Active)
-		{
-			continue;
-		}
-		for (size_t j = i + 1; j < mSpheres.size(); j++)
-		{
-			if (mSpheres[j]->GetOwner()->GetState() != Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(mSpheres[i]->GetWorldSphere(), mSpheres[j]->GetWorldSphere());
+	//for (size_t i = 0; i < spheres.size(); i++)
+	//{
+	//	if (spheres[i]->GetOwner()->GetState() != Active)
+	//	{
+	//		continue;
+	//	}
+	//	for (size_t j = i + 1; j < spheres.size(); j++)
+	//	{
+	//		if (spheres[j]->GetOwner()->GetState() != Active)
+	//		{
+	//			continue;
+	//		}
+	//		bool hit = Intersect(spheres[i]->GetWorldSphere(), spheres[j]->GetWorldSphere());
 
-			if (hit)
-			{
-				SphereCollider* sphereA = mSpheres[i];
-				SphereCollider* sphereB = mSpheres[j];
+	//		if (hit)
+	//		{
+	//			SphereCollider* sphereA = spheres[i];
+	//			SphereCollider* sphereB = spheres[j];
 
-				//sphereA->GetOwner()->OnCollision(*(sphereB->GetOwner()));
-				//sphereB->GetOwner()->OnCollision(*(sphereA->GetOwner()));
-			}
-		}
-	}
+	//			//sphereA->GetOwner()->OnCollision(*(sphereB->GetOwner()));
+	//			//sphereB->GetOwner()->OnCollision(*(sphereA->GetOwner()));
+	//		}
+	//	}
+	//}
 }
 
 void PhysicsWorld::BoxAndBox()
 {
-	for (size_t i = 0; i < mBoxes.size(); i++)
-	{
-		if (mBoxes[i]->GetOwner()->GetState() != Active)
-		{
-			continue;
-		}
-		for (size_t j = i + 1; j < mBoxes.size(); j++)
-		{
-			if (mBoxes[j]->GetOwner()->GetState() != Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(mBoxes[i]->GetWorldBox(), mBoxes[j]->GetWorldBox());
+	//for (size_t i = 0; i < boxes.size(); i++)
+	//{
+	//	if (boxes[i]->GetOwner()->GetState() != Active)
+	//	{
+	//		continue;
+	//	}
+	//	for (size_t j = i + 1; j < boxes.size(); j++)
+	//	{
+	//		if (boxes[j]->GetOwner()->GetState() != Active)
+	//		{
+	//			continue;
+	//		}
+	//		bool hit = Intersect(boxes[i]->GetWorldBox(), boxes[j]->GetWorldBox());
 
-			if (hit)
-			{
-				BoxCollider* boxA = mBoxes[i];
-				BoxCollider* boxB = mBoxes[j];
+	//		if (hit)
+	//		{
+	//			BoxCollider* boxA = boxes[i];
+	//			BoxCollider* boxB = boxes[j];
 
-				//boxA->GetOwner()->OnCollision(*(boxB->GetOwner()));
-				//boxB->GetOwner()->OnCollision(*(boxA->GetOwner()));
-			}
-		}
-	}
+	//			//boxA->GetOwner()->OnCollision(*(boxB->GetOwner()));
+	//			//boxB->GetOwner()->OnCollision(*(boxA->GetOwner()));
+	//		}
+	//	}
+	//}
 }
 
 void PhysicsWorld::SphereAndBox()
 {
-	for (size_t i = 0; i < mSpheres.size(); i++)
-	{
-		if (mSpheres[i]->GetOwner()->GetState() != Active)
-		{
-			continue;
-		}
-		for (size_t j = 0; j < mBoxes.size(); j++)
-		{
-			if (mBoxes[j]->GetOwner()->GetState() != Active)
-			{
-				continue;
-			}
-			bool hit = Intersect(mSpheres[i]->GetWorldSphere(), mBoxes[j]->GetWorldBox());
+	//for (size_t i = 0; i < spheres.size(); i++)
+	//{
+	//	if (spheres[i]->GetOwner()->GetState() != Active)
+	//	{
+	//		continue;
+	//	}
+	//	for (size_t j = 0; j < boxes.size(); j++)
+	//	{
+	//		if (boxes[j]->GetOwner()->GetState() != Active)
+	//		{
+	//			continue;
+	//		}
+	//		bool hit = Intersect(spheres[i]->GetWorldSphere(), boxes[j]->GetWorldBox());
 
-			if (hit)
-			{
-				//spheres[i]->GetOwner()->OnCollision(*(boxes[j]->GetOwner()));
-				//boxes[j]->GetOwner()->OnCollision(*(spheres[i]->GetOwner()));
-			}
-		}
-	}
+	//		if (hit)
+	//		{
+	//			//spheres[i]->GetOwner()->OnCollision(*(boxes[j]->GetOwner()));
+	//			//boxes[j]->GetOwner()->OnCollision(*(spheres[i]->GetOwner()));
+	//		}
+	//	}
+	//}
 }
 
 /*
