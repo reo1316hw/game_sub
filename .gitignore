@@ -24,7 +24,7 @@
 *.la
 
 # Executables
-*.exe
-3dActionGame/Action/.vs/
-3dActionGame/Action/Debug/
-3dActionGame/Action/Release/
+GameProject/Action/.exe
+GameProject/Action/.vs
+GameProject/Action/Debug
+GameProject/Action/Release
