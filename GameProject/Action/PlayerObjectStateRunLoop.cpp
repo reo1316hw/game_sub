@@ -17,7 +17,6 @@ PlayerObjectStateRunLoop::~PlayerObjectStateRunLoop()
 
 PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, float _deltaTime)
 {
-
 	MoveCalc(_owner, _deltaTime);
 
 	if (mDrawnSwordFlag)

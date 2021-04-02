@@ -16,6 +16,8 @@ PlayerObjectStateBase::PlayerObjectStateBase()
 	, mForwardVec(Vector3::Zero)
 	, mRightVec(Vector3::Zero)
 	, mCharaForwardVec(Vector3::Zero)
+	, mAttackBoneIndex(0)
+	, mAttackMeshComponent(nullptr)
 {
 
 }

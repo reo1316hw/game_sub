@@ -2,6 +2,7 @@
 #include "PlayerObject.h"
 
 class InputSystem;
+class AttackMeshComponent;
 
 class PlayerObjectStateBase
 {
@@ -23,14 +24,16 @@ protected:
 	bool  mRunFlag;					//走っているか
 	bool  mSprintFlag;				//全力疾走するか
 	bool  mAttackFlag;				//攻撃するか
-	bool  mSwordDeliveryFlag;		//抜刀するか
-	bool  mDrawnSwordFlag;			//納刀するか
+	bool  mDrawnSwordFlag;			//抜刀するか
+	bool  mSwordDeliveryFlag;		//納刀するか
+
+	int	mAttackBoneIndex;  //gpSkelファイルの何番目のボーンか
 
 	float mElapseTime;    // このステートに入ってからの経過時刻
 	float mTotalAnimTime; // アニメーション総時間
+	float mCharaSpeed;	  // キャラの現在のスピード
 
-	//  キャラの現在のスピード
-	float mCharaSpeed;
+	AttackMeshComponent* mAttackMeshComponent;	//武器メッシュのポインタ
 
 	//向き
 	Vector3 mDirVec;
@@ -40,5 +43,10 @@ protected:
 	Vector3 mRightVec;
 	// キャラの前進ベクトル
 	Vector3 mCharaForwardVec;
+
+	Vector3 mDrawnSwordRot; //抜刀時の剣の円周率
+	Vector3 mDrawnSwordPos; //抜刀時の剣の座標
+	Vector3 mSwordDeliveryRot; //納刀時の剣の円周率
+	Vector3 mSwordDeliveryPos; //納刀時の剣の座標
 private:
 };

@@ -11,6 +11,7 @@ public:
 	~AttackMeshComponent();
 
 	int GetAttackBoneIndex() { return mAttackBoneIndex; };
+	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; };
 
 	void SetOffsetPosition(class Vector3& _offset);
 	void SetOffsetRotation(class Vector3& _rotation);
@@ -22,7 +23,7 @@ protected:
 	Matrix4                      mOffsetPos;
 	Matrix4                      mOffsetRotation;
 	Matrix4                      mComputeTransMatrix;
-	int                          mAttackBoneIndex;
+	int                          mAttackBoneIndex;			//gpSkelファイルの何番目のボーンか
 	Vector3                      mComputeAttachPos;
 	class SkeletalMeshComponent* mAttackSkeletalMesh;
 

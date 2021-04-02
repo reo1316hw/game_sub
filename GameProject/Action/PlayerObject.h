@@ -52,8 +52,6 @@ public:
 	Vector3 GetTargetPos() { return mTargetPos; };
 	Vector3 GetViewPos() { return mViewPos; };
 
-	void SetSwordRot(Vector3 _swordRot) { mSwordRot = _swordRot; };
-	void SetSwordPos(Vector3 _swordPos) { mSwordPos = _swordPos; };
 	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; };
 
 private:
@@ -77,9 +75,6 @@ private:
 	Vector3 mTargetPos;
 	//カメラのポジション
 	Vector3 mViewPos;
-
-	Vector3 mSwordRot; //剣の円周率
-	Vector3 mSwordPos; //剣の座標
 
 	int mAttackBoneIndex;
 

@@ -33,8 +33,6 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	, mOffsetPos(Vector3(150.0f,0.0f, 50.0f))
 	, mTargetPos(Vector3::Zero)
 	, mViewPos(Vector3::Zero)
-	, mSwordRot(Vector3::Zero)
-	, mSwordPos(Vector3::Zero)
 	, mPlayerBox(Vector3::Zero, Vector3::Zero)
 {
 	//GameObjectメンバ変数の初期化
@@ -66,12 +64,12 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_SWORD_RUN_LOOP)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
 	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_SPRINT_LOOP)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
 	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_RUN_END)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerRunToIdle.gpanim", false);
-	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPSTART)] = RENDERER->GetAnimation("Assets/valkiria_Jumpstart.gpanim");
-	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPLOOP)] = RENDERER->GetAnimation("Assets/valkiria_jumploop.gpanim");
-	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPEND)] = RENDERER->GetAnimation("Assets/valkiria_jumpend.gpanim");
 	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_ATTACK1)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack01.gpanim", false);
 	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_ATTACK2)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack02.gpanim",false);
 	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_ATTACK3)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack03.gpanim",false);
+	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPSTART)] = RENDERER->GetAnimation("Assets/valkiria_Jumpstart.gpanim");
+	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPLOOP)] = RENDERER->GetAnimation("Assets/valkiria_jumploop.gpanim");
+	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPEND)] = RENDERER->GetAnimation("Assets/valkiria_jumpend.gpanim");
 	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_HIT)] = RENDERER->GetAnimation("Assets/valkiria_hit.gpanim");
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
@@ -79,24 +77,30 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	//anim変数を速度0.5fで再生
 	mSkeltalMeshComponent->PlayAnimation(anim, 1.0f);
 
+	// 武器コンポーネント取付
+	// 剣
+	mMesh = RENDERER->GetMesh("Assets/Model/Player/valkiria_Sword.gpmesh");
+	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponent, "spine_01");
+	mWeaponMesh->SetMesh(mMesh);
+
 	// アクターステートプールの初期化
-	mStatePools.push_back(new PlayerObjectStateIdle);					// mStatePool[PLAYER_STATE_IDLE]
+	mStatePools.push_back(new PlayerObjectStateIdle(mWeaponMesh,mSkeltalMeshComponent, "spine_01"));					// mStatePool[PLAYER_STATE_IDLE]
 	mStatePools.push_back(new PlayerObjectStateSwordIdle);				// mStatePool[PLAYER_STATE_SWORD_IDLE]
-	mStatePools.push_back(new PlayerObjectStateSword(false,true));		// mStatePool[PLAYER_STATE_DRAWN_SWORD]
-	mStatePools.push_back(new PlayerObjectStateSword(true,true));		// mStatePool[PLAYER_STATE_DRAWN_SWORD_MOVE]
-	mStatePools.push_back(new PlayerObjectStateSword(false, false));	// mStatePool[PLAYER_STATE_SWORD_DELIVERY]
-	mStatePools.push_back(new PlayerObjectStateSword(true, false));		// mStatePool[PLAYER_STATE_SWORD_DELIVERY_MOVE]
+	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r",false,true));		// mStatePool[PLAYER_STATE_DRAWN_SWORD]
+	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r",true,true));		// mStatePool[PLAYER_STATE_DRAWN_SWORD_MOVE]
+	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r",false, false));	// mStatePool[PLAYER_STATE_SWORD_DELIVERY]
+	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r", true, false));		// mStatePool[PLAYER_STATE_SWORD_DELIVERY_MOVE]
 	mStatePools.push_back(new PlayerObjectStateRunStart);				// mStatepool[PLAYER_STATE_RUNS_TART]
 	mStatePools.push_back(new PlayerObjectStateRunLoop(false));			// mStatepool[PLAYER_STATE_RUN_LOOP]
 	mStatePools.push_back(new PlayerObjectStateRunLoop(true));			// mStatepool[PLAYER_STATE_SWORD_RUN_LOOP]
 	mStatePools.push_back(new PlayerObjectStateSprintLoop);				// mStatepool[PLAYER_STATE_SPRINT_LOOP]
 	mStatePools.push_back(new PlayerObjectStateRunEnd);					// mStatepool[PLAYER_STATE_RUN_END]
-	//mStatePools.push_back(new PlayerObjectStateJump);					// mStatepool[PLAYER_STATE_JUMP_START];  
-	//mStatePools.push_back(new PlayerObjectStateJumpLoop);				// mStatepool[PLAYER_STATE_JUMP_LOOP];
-	//mStatePools.push_back(new PlayerObjectStateJumpEnd);				// mStatepool[PLAYER_STATE_JUMP_END];
 	mStatePools.push_back(new PlayerObjectStateAttack01);				// mStatepool[PLAYER_STATE_ATTACK1];
 	mStatePools.push_back(new PlayerObjectStateAttack02);				// mStatepool[PLAYER_STATE_ATTACK2];
 	mStatePools.push_back(new PlayerObjectStateAttack03);				// mStatepool[PLAYER_STATE_ATTACK3];
+	//mStatePools.push_back(new PlayerObjectStateJump);					// mStatepool[PLAYER_STATE_JUMP_START];  
+	//mStatePools.push_back(new PlayerObjectStateJumpLoop);				// mStatepool[PLAYER_STATE_JUMP_LOOP];
+	//mStatePools.push_back(new PlayerObjectStateJumpEnd);				// mStatepool[PLAYER_STATE_JUMP_END];
 	//mStatePools.push_back(new PlayerObjectStateHit);
 	
 	// 当たり判定
@@ -107,15 +111,6 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 
 	//プレイヤーの回転
 	SelfRotation(Vector3::UnitZ, 270.0f);
-
-	// 武器コンポーネント取付
-	// 剣
-	mMesh = RENDERER->GetMesh("Assets/Model/Player/valkiria_Sword.gpmesh");
-	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponent, "index_01_r");
-	mWeaponMesh->SetMesh(mMesh);
-	mSwordRot = Vector3(-Math::PiOver2 * 0.6f, Math::Pi * 0.4f, 0.0f);
-	mSwordPos = Vector3(0.0f, 0.0f, 110.0f);
-	mAttackBoneIndex = mWeaponMesh->GetAttackBoneIndex();
 }
 
 PlayerObject::~PlayerObject()
@@ -148,11 +143,6 @@ void PlayerObject::UpdateGameObject(float _deltaTime)
 		mStatePools[static_cast<unsigned int>(mNextState)]->Enter(this, _deltaTime);
 		mNowState = mNextState;
 	}
-
-	// 武器の円周率をセット
-	mWeaponMesh->SetOffsetRotation(mSwordRot);
-	// 武器の座標をセット
-	mWeaponMesh->SetOffsetPosition(mSwordPos);
 }
 
 void PlayerObject::PausingUpdateGameObject()

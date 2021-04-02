@@ -5,11 +5,20 @@
 #include "GameObject.h"
 #include "MainCameraObject.h"
 #include "Math.h"
+#include "AttackMeshComponent.h"
 
-PlayerObjectStateSword::PlayerObjectStateSword(bool _moveFlag, bool _drawnSwordFlag)
+PlayerObjectStateSword::PlayerObjectStateSword(class AttackMeshComponent* _attackMesh, class SkeletalMeshComponent* _skMesh, const char* _AttachBoneName, bool _moveFlag, bool _drawnSwordFlag)
 {
+	mAttackMeshComponent = _attackMesh;
+    mAttackBoneIndex = _skMesh->GetBoneIndexFromName(_AttachBoneName);
 	mMoveFlag = _moveFlag;
 	mDrawnSwordFlag = _drawnSwordFlag;
+
+	mDrawnSwordRot = Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f);
+	mDrawnSwordPos = Vector3(-70.0f, -5.0f, 135.0f);
+	mSwordDeliveryRot = Vector3(-Math::PiOver2 * 0.6f, Math::Pi * 0.4f, 0.0f);
+	mSwordDeliveryPos = Vector3(0.0f, 0.0f, 110.0f);
+
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateDrawnSword\n");
 }
 
@@ -26,8 +35,10 @@ PlayerState PlayerObjectStateSword::Update(PlayerObject* _owner, float _deltaTim
 
 	if (mDrawnSwordFlag)
 	{
-		_owner->SetSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f));
-		_owner->SetSwordPos(Vector3(-70.0f, -5.0f, 135.0f));
+		// 武器の円周率をセット
+		mAttackMeshComponent->SetOffsetRotation(mDrawnSwordRot);
+		// 武器の座標をセット
+		mAttackMeshComponent->SetOffsetPosition(mDrawnSwordPos);
 
 		if (mMoveFlag)
 		{
@@ -67,8 +78,10 @@ PlayerState PlayerObjectStateSword::Update(PlayerObject* _owner, float _deltaTim
 		{
 			if (transitionFlag)
 			{
-				_owner->SetSwordRot(Vector3(-Math::PiOver2 * 0.6f, Math::Pi * 0.4f, 0.0f));
-				_owner->SetSwordPos(Vector3(0.0f, 0.0f, 110.0f));
+				// 武器の円周率をセット
+				mAttackMeshComponent->SetOffsetRotation(mSwordDeliveryRot);
+				// 武器の座標をセット
+				mAttackMeshComponent->SetOffsetPosition(mSwordDeliveryPos);
 
 				return PlayerState::PLAYER_STATE_IDLE;
 			}
@@ -161,6 +174,13 @@ void PlayerObjectStateSword::Enter(PlayerObject* _owner, float _deltaTime)
 			mElapseTime = 0.0f;
 		}
 	}
+
+	mAttackMeshComponent->SetAttackBoneIndex(mAttackBoneIndex);
+
+	// 武器の円周率をセット
+	mAttackMeshComponent->SetOffsetRotation(mDrawnSwordRot);
+	// 武器の座標をセット
+	mAttackMeshComponent->SetOffsetPosition(mDrawnSwordPos);
 }
 
 void PlayerObjectStateSword::MoveCalc(PlayerObject* _owner, float _deltaTime)
