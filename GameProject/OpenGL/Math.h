@@ -1,9 +1,5 @@
 #pragma once
 
-#include <cmath>
-#include <memory.h>
-#include <limits>
-
 namespace Math
 {
 	const float Pi = 3.1415926535f;

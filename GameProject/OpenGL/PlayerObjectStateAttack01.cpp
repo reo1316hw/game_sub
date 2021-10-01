@@ -1,9 +1,4 @@
-#include "PlayerObjectStateAttack01.h"
-#include "SkeletalMeshComponent.h"
-#include "Animation.h"
-#include "InputSystem.h"
-//#include "AudioManager.h"
-//#include "SwordEffectActor.h"
+#include "pch.h"
 
 PlayerObjectStateAttack01::PlayerObjectStateAttack01()
 {

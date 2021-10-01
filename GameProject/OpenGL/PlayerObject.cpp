@@ -1,32 +1,4 @@
-#include <string>
-
-#include "PlayerObject.h"
-#include "SkeletalMeshComponent.h"
-#include "AttackMeshComponent.h"
-#include "Skeleton.h"
-#include "MeshComponent.h"
-#include "Mesh.h"
-#include "Animation.h"
-#include "Renderer.h"
-#include "MainCameraObject.h"
-#include "InputSystem.h"
-#include "BoxCollider.h"
-
-#include "PlayerObjectStateBase.h"
-#include "PlayerObjectStateIdle.h"
-#include "PlayerObjectStateSwordIdle.h"
-#include "PlayerObjectStateSword.h"
-#include "PlayerObjectStateRunStart.h"
-#include "PlayerObjectStateRunLoop.h"
-#include "PlayerObjectStateSprintLoop.h"
-#include "PlayerObjectStateRunEnd.h"
-//#include "PlayerObjectStateJump.h"
-//#include "PlayerObjectStateJumpLoop.h"
-//#include "PlayerObjectStateJumpEnd.h"
-#include "PlayerObjectStateAttack01.h"
-#include "PlayerObjectStateAttack02.h"
-#include "PlayerObjectStateAttack03.h"
-//#include "PlayerObjectStateHit.h"
+#include "pch.h"
 
 PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const char* _gpanimName, const Tag& _objectTag, const SceneBase::Scene _sceneTag)
 	: GameObject(_objectTag, _sceneTag)

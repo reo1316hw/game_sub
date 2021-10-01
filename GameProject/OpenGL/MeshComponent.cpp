@@ -1,11 +1,4 @@
-#include "MeshComponent.h"
-#include "GameObject.h"
-#include "Game.h"
-#include "Shader.h"
-#include "Mesh.h"
-#include "Renderer.h"
-#include "VertexArray.h"
-#include "Texture.h"
+#include "pch.h"
 
 /*
 @param _skelton スケルトンデータを用いるか。

@@ -5,7 +5,7 @@
 #include "Collision.h"
 #include "SceneBase.h"
 
-
+// ‘O•ûéŒ¾
 class Game;
 class Vector3;
 class Matrix4;

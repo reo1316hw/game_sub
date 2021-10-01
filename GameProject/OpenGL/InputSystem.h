@@ -1,10 +1,5 @@
 #pragma once
 
-#include <SDL_scancode.h>
-#include <SDL_gamecontroller.h>
-#include <SDL_mouse.h>
-#include "Math.h"
-
 /*
 enum ButtonState
 ƒ{ƒ^ƒ“‚Ìó‘Ô‚ğ•\‚·

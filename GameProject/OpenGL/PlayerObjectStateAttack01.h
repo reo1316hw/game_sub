@@ -1,5 +1,4 @@
 #pragma once
-#include "PlayerObjectStateBase.h"
 
 class PlayerObjectStateAttack01 : public PlayerObjectStateBase
 {

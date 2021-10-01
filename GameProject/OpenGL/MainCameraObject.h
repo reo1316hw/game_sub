@@ -1,14 +1,13 @@
 #pragma once
-#include "GameObject.h"
 
 /*
 @file MainCameraObject.h
 @brief メインカメラ。GameObjectの静的オブジェクト カメラと衝突していないオブジェクトは更新を一時的に停止する
 */
-class MainCameraObject :
-	public GameObject
+class MainCameraObject : public GameObject
 {
 public:
+
 	MainCameraObject();
 	~MainCameraObject();
 
@@ -21,7 +20,9 @@ public:
 	@param _parentPos　見る座標
 	*/
 	void SetViewMatrixLerpObject(const Vector3& _offset, const Vector3& _parentPos);
+
 private:
+
 	//親オブジェクトとの差
 	Vector3 mOffsetPos;
 	//追従先のオブジェクト座標

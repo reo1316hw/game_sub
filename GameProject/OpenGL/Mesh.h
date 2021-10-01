@@ -1,11 +1,6 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include "Math.h"
-#include "Collision.h"
-
+// ‘O•ûéŒ¾
 class Renderer;
 class VertexArray;
 class Texture;

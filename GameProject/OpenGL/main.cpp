@@ -1,10 +1,4 @@
-//-----------------------------------------------------------------------------
-//	@brief	インクルード
-//-----------------------------------------------------------------------------
-#include "SDL.h"
-#include "Game.h"
-#include "SceneBase.h"
-#include "Tutorial.h"
+#include "pch.h"
 
 /*
 クラス内での宣言順番はpublic>protected>private>public(GetSet)の順

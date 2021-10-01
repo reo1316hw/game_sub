@@ -1,8 +1,4 @@
-#include "Sprite.h"
-#include "SceneBase.h"
-#include "Renderer.h"
-#include "SpriteComponent.h"
-#include "Texture.h"
+#include "pch.h"
 
 Sprite::Sprite(const std::string _fileName)
 	:GameObject(Tag::Other, SceneBase::Scene::other)

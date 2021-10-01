@@ -1,8 +1,4 @@
-#include "InputSystem.h"
-#include <SDL.h>
-#include <cstring>
-#include <stdio.h>
-#include <limits.h>
+#include "pch.h"
 
 bool InputSystem::mControllerConnected = 0;
 

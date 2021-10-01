@@ -1,7 +1,9 @@
 ﻿#pragma once
+
 class VertexArray
 {
 public:
+
 	// 頂点レイアウト列挙
 	enum Layout
 	{
@@ -39,6 +41,7 @@ public:
 	unsigned int GetNumVerts() const { return mNumVerts; }
 
 private:
+
 	//頂点バッファにある頂点の数
 	unsigned int mNumVerts;
 	//インデクスバッファにあるインデックスの数

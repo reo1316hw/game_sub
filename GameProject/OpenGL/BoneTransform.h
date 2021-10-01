@@ -1,5 +1,4 @@
 #pragma once
-#include "Math.h"
 
 /*
  @file BoneTransform.h
@@ -8,6 +7,7 @@
 class BoneTransform
 {
 public:
+
 	//‰ñ“]
 	Quaternion mRotation;                     
 	// ˆÚ“®

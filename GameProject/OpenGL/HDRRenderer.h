@@ -1,6 +1,4 @@
 #pragma once
-#include "Game.h"
-#include "Math.h"
 
 class HDRRenderer
 {

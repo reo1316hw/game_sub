@@ -1,20 +1,7 @@
-﻿//=============================================================================
-//	@file	PhysicsWorld.h
-//	@brief	当たり判定を行う
-//	@autor	居本 和哉
-//	@date	2020/02/29
-//=============================================================================
-
-#pragma once
-
-#include <vector>
-#include <map>
-#include <functional>
-#include "Math.h"
-#include "Collision.h"
-
+﻿#pragma once
 #define PHYSICS PhysicsWorld::GetInstance()
 
+// 前方宣言
 class Game;
 class GameObject;
 class BoxCollider;
@@ -24,9 +11,13 @@ class ColliderComponent;
 typedef std::function<void(GameObject&)> onCollisionFunc;
 typedef std::map<ColliderComponent*, std::function<void(GameObject&)>> onCollisionMap;
 
+/// <summary>
+/// 当たり判定を行う
+/// </summary>
 class PhysicsWorld
 {
 public:
+
 	static PhysicsWorld* GetInstance() { return mPhysics; }
 	static void CreateInstance();
 	static void DeleteInstance();
@@ -46,6 +37,7 @@ public:
 
 
 private:
+
 	//コンストラクタの隠蔽
 	PhysicsWorld();
 

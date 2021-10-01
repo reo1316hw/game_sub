@@ -1,8 +1,4 @@
-#include "PlayerObjectStateSprintLoop.h"
-#include "SkeletalMeshComponent.h"
-#include "InputSystem.h"
-#include "GameObject.h"
-#include "MainCameraObject.h"
+#include "pch.h"
 
 PlayerObjectStateSprintLoop::PlayerObjectStateSprintLoop()
 {

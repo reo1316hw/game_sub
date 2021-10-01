@@ -1,11 +1,4 @@
-#include "PlayerObjectStateSword.h"
-#include "SkeletalMeshComponent.h"
-#include "InputSystem.h"
-#include "Animation.h"
-#include "GameObject.h"
-#include "MainCameraObject.h"
-#include "Math.h"
-#include "AttackMeshComponent.h"
+#include "pch.h"
 
 PlayerObjectStateSword::PlayerObjectStateSword(class AttackMeshComponent* _attackMesh, class SkeletalMeshComponent* _skMesh, const char* _AttachBoneName, bool _moveFlag, bool _drawnSwordFlag)
 {

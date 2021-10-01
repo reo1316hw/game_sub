@@ -1,4 +1,4 @@
-#include "PlayerObjectStateBase.h"
+#include "pch.h"
 
 PlayerObjectStateBase::PlayerObjectStateBase()
 	: mNextComboFlag(false)

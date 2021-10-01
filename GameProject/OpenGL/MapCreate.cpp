@@ -1,9 +1,4 @@
-#include "MapCreate.h"
-#include "SceneBase.h"
-#include "GroundObject.h"
-#include "WallObject.h"
-#include "PlayerObject.h"
-#include "EnemyObject.h"
+#include "pch.h"
 
 MapCreate::MapCreate() :GameObject(Tag::Other,SceneBase::Scene::other)
 {

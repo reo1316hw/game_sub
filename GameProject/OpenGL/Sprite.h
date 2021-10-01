@@ -1,7 +1,6 @@
 #pragma once
-#include "GameObject.h"
-#include <string>
 
+// ‘O•ûéŒ¾
 class Texture;
 class SpriteComponent;
 

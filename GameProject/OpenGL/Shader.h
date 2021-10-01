@@ -1,9 +1,5 @@
 #pragma once
 
-#include <glew.h>
-#include <string>
-#include "Math.h"
-
 /*
 @file Shader.h
 @brief シェーダーデータ

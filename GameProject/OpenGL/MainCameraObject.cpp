@@ -1,7 +1,4 @@
-#include "MainCameraObject.h"
-#include "Renderer.h"
-#include "ColliderComponent.h"
-#include "InputSystem.h"
+#include "pch.h"
 
 MainCameraObject::MainCameraObject() 
 	: GameObject(Tag::Camera,SceneBase::Scene::other,true)

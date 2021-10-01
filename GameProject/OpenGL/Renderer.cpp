@@ -1,22 +1,4 @@
-#include "Renderer.h"
-#include "Texture.h"
-#include "Mesh.h"
-#include <algorithm>
-#include "Shader.h"
-#include "VertexArray.h"
-#include "SpriteComponent.h"
-#include "UIComponent.h"
-#include "MeshComponent.h"
-#include <glew.h>
-#include <fstream>
-#include <sstream>
-#include <document.h>
-
-#include "Skeleton.h"
-#include "Animation.h"
-#include "SkeletalMeshComponent.h"
-#include "HDRRenderer.h"
-
+#include "pch.h"
 
 Renderer* Renderer::mRenderer = nullptr;
 static bool saveFlag = false;

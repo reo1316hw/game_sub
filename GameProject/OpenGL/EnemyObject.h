@@ -1,13 +1,12 @@
 #pragma once
-#include "GameObject.h"
-#include  <string>
 
+// ‘O•ûéŒ¾
 class SkeletalMeshComponent;
 class MeshComponent;
 class Mesh;
 class BoxCollider;
 
-class EnemyObject :public GameObject
+class EnemyObject : public GameObject
 {
 public:
 	EnemyObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const char* _gpanimName, const Tag& _objectTag, const SceneBase::Scene _sceneTag);

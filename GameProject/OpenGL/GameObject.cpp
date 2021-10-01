@@ -1,11 +1,4 @@
-#include "Game.h"
-#include "Math.h"
-#include "GameObject.h"
-#include "Component.h"
-#include "InputSystem.h"
-#include "GameObjectManager.h"
-#include "PhysicsWorld.h"
-#include "MainCameraObject.h"
+#include "pch.h"
 
 int GameObject::mGameObjectId = 0;
 MainCameraObject* GameObject::mMainCamera = nullptr;

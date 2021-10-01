@@ -1,8 +1,4 @@
-#include "Tutorial.h"
-#include "Renderer.h"
-#include "GameObjectManager.h"
-#include "Sprite.h"
-#include "MapCreate.h"
+#include "pch.h"
 
 bool	Tutorial::mSendContinueTutorialFlag = false;
 

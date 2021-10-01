@@ -1,5 +1,4 @@
-﻿#include "VertexArray.h"
-#include <glew.h>
+﻿#include "pch.h"
 
 /*
 @param	頂点バッファの配列のポインタ

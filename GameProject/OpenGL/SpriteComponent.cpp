@@ -1,9 +1,4 @@
-#include "SpriteComponent.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "GameObject.h"
-#include "Game.h"
-#include "Renderer.h"
+#include "pch.h"
 
 SpriteComponent::SpriteComponent(GameObject * _owner, int _drawOrder)
     : Component(_owner)

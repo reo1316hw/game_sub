@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+class BoneTransform;
+
 /*
  @file Animation.h
  @fn Skeletonを用いたアニメーションのデータクラス
@@ -11,12 +13,15 @@
 class Animation
 {
 public:
+
 	/*
 	@fn アニメーション読み込み
 	@param アニメーションへのパス
 	*/
 	bool Load(const std::string& _fileName, bool _loop);
+
 private:
+
 	//アニメーションのためのボーン数
 	size_t mNumBones;
 	//アニメーションのフレーム数
@@ -33,8 +38,10 @@ private:
 	std::vector<std::vector<BoneTransform>> mTracks;
 
 	// ループアニメーションするか？
-	bool mIsLoopAnimation;                                       
+	bool mIsLoopAnimation;
+
 public: //ゲッターセッター
+
 	/*
 	 @fn ボーン数
 	*/

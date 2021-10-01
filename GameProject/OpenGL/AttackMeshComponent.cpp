@@ -1,14 +1,4 @@
-#include "AttackMeshComponent.h"
-#include "Game.h"
-#include "Renderer.h"
-#include "GameObject.h"
-#include "Shader.h"
-#include "Mesh.h"
-#include "MeshComponent.h"
-#include "SkeletalMeshComponent.h"
-#include "VertexArray.h"
-#include "Texture.h"
-#include <typeinfo>
+#include "pch.h"
 
 AttackMeshComponent::AttackMeshComponent(GameObject* _owner, SkeletalMeshComponent* _skMesh, const char* _AttachBoneName)
 	: MeshComponent(_owner)

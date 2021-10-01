@@ -1,14 +1,4 @@
-#include "SkeletalMeshComponent.h"
-#include "Shader.h"
-#include "Mesh.h"
-#include "GameObject.h"
-#include "Game.h"
-#include "Renderer.h"
-#include "Texture.h"
-#include "VertexArray.h"
-#include "Animation.h"
-#include "Skeleton.h"
-#include "GameObject.h"
+#include "pch.h"
 
 SkeletalMeshComponent::SkeletalMeshComponent(GameObject* _owner)
 	:MeshComponent(_owner, true)

@@ -1,16 +1,8 @@
-﻿//=============================================================================
-//	@file	BoxCollider.h
-//	@brief	ボックスの当たり判定を行うコンポーネント
-//=============================================================================
+﻿/// <summary>
+/// ボックスの当たり判定を行うコンポーネント
+/// </summary>
 
-//-----------------------------------------------------------------------------
-//	@brief	インクルード
-//-----------------------------------------------------------------------------
-#include "BoxCollider.h"
-#include "Math.h"
-#include "GameObject.h"
-#include "Collision.h"
-#include "Game.h"
+#include "pch.h"
 
 /**
 @brief	コンストラクタ
@@ -19,6 +11,7 @@
 @param	コンポーネントの更新順番（数値が小さいほど早く更新される）
 @param	当たり判定時に、めり込みから動かす処理の優先度を決める数値
 */
+
 BoxCollider::BoxCollider(GameObject* _owner, ColliderTag _tag,onCollisionFunc _func, int _updateOrder, int _collisionOrder)
 	: ColliderComponent(_owner,_tag, _updateOrder, _collisionOrder)
 	, mObjectBox(Vector3::Zero,Vector3::Zero)

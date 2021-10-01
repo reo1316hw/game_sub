@@ -1,9 +1,4 @@
-#include "UIComponent.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "GameObject.h"
-#include "Game.h"
-#include "Renderer.h"
+#include "Pch.h"
 
 int UIComponent::mUIid = 0;
 

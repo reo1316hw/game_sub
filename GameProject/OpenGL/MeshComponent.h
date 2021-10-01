@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Component.h"
-
+// 前方宣言
 class GameObject;
 class Shader;
 class Mesh;
@@ -13,6 +12,7 @@ class Mesh;
 class MeshComponent : public Component
 {
 public:
+
 	/*
 	@param _skelton スケルトンデータを用いるか。
 	@sa SkeletalMeshComponent.h
@@ -25,6 +25,7 @@ public:
 	@param	_shader 使用するシェーダークラスのポインタ
 	*/
     virtual void Draw(Shader* _shader);
+
 protected:
 
 	virtual void SetTextureToShader(class Shader* _shader);
@@ -37,7 +38,9 @@ protected:
 	bool mVisible;
 	//スケルトンデータを用いるか
 	bool mSkeltonFlag;
+
 public: //ゲッターセッター
+
 	/*
 	@brief　メッシュコンポーネントが使うMeshの設定
 	@param	_mesh 設定するMeshクラスのポインタ

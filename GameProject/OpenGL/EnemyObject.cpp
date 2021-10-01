@@ -1,15 +1,4 @@
-#include <string>
-
-#include "EnemyObject.h"
-#include "SkeletalMeshComponent.h"
-#include "Skeleton.h"
-#include "MeshComponent.h"
-#include "Mesh.h"
-#include "Animation.h"
-#include "Renderer.h"
-#include "MainCameraObject.h"
-#include "InputSystem.h"
-#include "BoxCollider.h"
+#include "pch.h"
 
 EnemyObject::EnemyObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const char* _gpanimName, const Tag& _objectTag, const SceneBase::Scene _sceneTag)
 	: GameObject(_objectTag, _sceneTag)

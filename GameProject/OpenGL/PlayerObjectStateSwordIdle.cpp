@@ -1,6 +1,4 @@
-#include "PlayerObjectStateSwordIdle.h"
-#include "InputSystem.h"
-#include "SkeletalMeshComponent.h"
+#include "pch.h"
 
 PlayerObjectStateSwordIdle::PlayerObjectStateSwordIdle()
 {

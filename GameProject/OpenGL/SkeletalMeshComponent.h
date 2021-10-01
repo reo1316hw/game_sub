@@ -1,6 +1,4 @@
 #pragma once
-#include "MeshComponent.h"
-#include "MatrixPalette.h"
 
 /*
 @file SkeletalMeshComponent.h
@@ -9,6 +7,7 @@
 class SkeletalMeshComponent : public MeshComponent
 {
 public:
+
 	SkeletalMeshComponent(class GameObject* _owner);
 
 	void Update(float _deltaTime) override;
@@ -36,6 +35,7 @@ public:
 	void GetMatrixFromBoneIndex(Matrix4& _boneWorldMatrix, int _boneIndex)const;
 
 protected:
+
 	/*
 	@fn 行列パレットの計算
 	*/
@@ -52,7 +52,9 @@ protected:
 	float mAnimTime;                                                       
 	//スケルトンデータに乗算する色
 	Vector3 mColor;
+
 public://ゲッターセッター
+
 	/*
 	@param _skeleton スケルトンデータ
 	*/

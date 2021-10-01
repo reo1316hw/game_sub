@@ -1,15 +1,13 @@
 #pragma once
-#include "Component.h"
-#include "Math.h"
 
 /*
  @file ParticleComponent.h
  @brief 画像を管理しそれを3D空間上に描画するクラス。
 */
-class ParticleComponent :
-	public Component
+class ParticleComponent : public Component
 {
 public:
+
 	//パーティクルに対するブレンドの種類
 	typedef enum PARTICLE_BLEND_ENUM
 	{
@@ -36,7 +34,9 @@ public:
 	// カメラ距離でのソート用
 	bool operator < (const ParticleComponent& _rhs) const;
 	bool operator > (const ParticleComponent& _rhs) const;
+
 private:
+
 	//親オブジェクトクラスと画像を描画する位置の差
 	Vector3 mOffset;
 	//画像に乗算する色
@@ -59,7 +59,9 @@ private:
 	int mDrawOrder;
 	//反転を行うか
 	bool mReverce;
+
 public: //ゲッターセッター
+
 	/*
 	@return テクスチャID
 	*/

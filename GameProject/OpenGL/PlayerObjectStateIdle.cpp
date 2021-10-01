@@ -1,7 +1,4 @@
-#include "PlayerObjectStateIdle.h"
-#include "InputSystem.h"
-#include "SkeletalMeshComponent.h"
-#include "AttackMeshComponent.h"
+#include "pch.h"
 
 PlayerObjectStateIdle::PlayerObjectStateIdle(class AttackMeshComponent* _attackMesh, class SkeletalMeshComponent* _skMesh, const char* _AttachBoneName)
 {

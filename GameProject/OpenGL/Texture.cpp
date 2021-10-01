@@ -1,8 +1,4 @@
-﻿#include "Texture.h"
-#include <glew.h>
-#include <SDL.h>
-#include <SDL_image.h>
-#include "Renderer.h"
+﻿#include "pch.h"
 
 Texture::Texture()
 	: mTextureID(0)

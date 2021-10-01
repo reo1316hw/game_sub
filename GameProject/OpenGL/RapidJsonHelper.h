@@ -1,13 +1,5 @@
 #pragma once
 
-#include "document.h"
-#include "filereadstream.h"
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <algorithm>
-
-
 /*
 @fn  jsonファイルのオープン
 @param _inputDocument rapidJsonオブジェクト

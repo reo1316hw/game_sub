@@ -1,9 +1,4 @@
-#include "PlayerObjectStateAttack03.h"
-#include "SkeletalMeshComponent.h"
-#include "Animation.h"
-#include "InputSystem.h"
-//#include "AudioManager.h"
-//#include "SwordEffectActor.h"
+#include "pch.h"
 
 //const Vector3 swordLocalPos(0, 0, 100);
 //const Vector3 swordLocalAngle(Math::ToRadians(80.0f), Math::ToRadians(40.0f), 0);

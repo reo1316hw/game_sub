@@ -1,5 +1,4 @@
 #pragma once
-#include "PlayerObjectStateBase.h"
 
 class PlayerObjectStateSwordIdle : public PlayerObjectStateBase
 {

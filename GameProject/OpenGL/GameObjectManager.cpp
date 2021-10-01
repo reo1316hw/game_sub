@@ -1,9 +1,4 @@
-#include "GameObjectManager.h"
-#include "GameObject.h"
-#include "InputSystem.h"
-#include "Renderer.h"
-#include "MainCameraObject.h"
-#include "SceneBase.h"
+#include "pch.h"
 
 GameObjectManager* GameObjectManager::mManager = nullptr;
 

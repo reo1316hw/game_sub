@@ -1,7 +1,4 @@
-#include "ParticleComponent.h"
-#include "Shader.h"
-#include "Renderer.h"
-#include "GameObject.h"
+#include "pch.h"
 
 // ビルボード行列
 Matrix4 ParticleComponent::mStaticBillboardMat;

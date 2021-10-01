@@ -1,12 +1,7 @@
 #pragma once
 #define GAME_OBJECT_MANAGER GameObjectManager::GetInstance()
 
-#include "SDL.h"
-#include <unordered_map>
-#include <vector>
-#include <string>
-#include "GameObject.h"
-
+// ‘O•ûéŒ¾
 class GameObject;
 struct InputState;
 

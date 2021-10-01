@@ -1,6 +1,4 @@
-#include "SDL.h"
-#include "FPS.h"
-#include "stdio.h"
+#include "pch.h"
 
 FPS::FPS()
 	: mSetFps(60)

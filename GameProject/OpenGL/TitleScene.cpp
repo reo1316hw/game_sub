@@ -1,9 +1,4 @@
-#include "TitleScene.h"
-#include "Tutorial.h"
-#include "Renderer.h"
-#include "GameObject.h"
-#include "InputSystem.h"
-#include "Sprite.h"
+#include "pch.h"
 
 TitleScene::TitleScene(const Scene& _scene)
 {

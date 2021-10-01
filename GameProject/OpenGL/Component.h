@@ -1,12 +1,12 @@
 #pragma once
 
-#include <cstdint>
-
+// 前方宣言
 class GameObject;
 
 class Component
 {
 public:
+
 	/*
 	@param	アタッチするゲームオブジェクトのポインタ
 	@param	コンポーネントの更新順番（数値が小さいほど早く更新される）
@@ -30,13 +30,16 @@ public:
 	@brief	Transformのワールド変換
 	*/
 	virtual void OnUpdateWorldTransform() {}
+
 protected:
 
 	//アタッチしているゲームオブジェクトのポインタ
 	GameObject* mOwner;			
 	// コンポーネントの更新順番（数値が小さいほど早く更新される）
 	int mUpdateOrder;
+
 public: //ゲッターセッター
+
 	/*
 	@return 更新順番
 	*/

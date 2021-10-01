@@ -1,8 +1,4 @@
 #pragma once
-#include <vector>
-
-#include"GameObject.h"
-#include "RapidJsonHelper.h"
 
 class MapCreate : public GameObject
 {

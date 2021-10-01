@@ -1,19 +1,14 @@
 #pragma once
-
-#include "SDL.h"
-#include "SceneBase.h"
+#include <SDL.h>
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include "SceneBase.h"
 
+// ‘O•ûéŒ¾
 class FPS;
 class GameObject;
 class InputSystem;
-
-enum SceneState
-{
-
-};
 
 /*
 @file Game.h

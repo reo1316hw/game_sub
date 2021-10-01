@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Component.h"
-
+// ‘O•ûéŒ¾
 class GameObject;
 class Shader;
 class Texture;
