@@ -3,7 +3,7 @@
 	"vertexformat":"PosNormSkinTex",
 	"shader":"Skinned",
 	"textures":[
-		"Assets/Model/Enemy/Enemy.png"
+		"Assets/Texture/Enemy.png"
 	],
 	"specularPower":100.0,
 	"vertices":[

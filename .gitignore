@@ -24,7 +24,12 @@
 *.la
 
 # Executables
-GameProject/Action/.exe
-GameProject/Action/.vs
-GameProject/Action/Debug
-GameProject/Action/Release
+GameProject/OpenGL/OpenGL.exe
+GameProject/.vs
+GameProject/OpenGL/.vs
+GameProject/x64
+GameProject/OpenGL/x64
+GameProject/Debug
+GameProject/OpenGL/Debug
+GameProject/Release
+GameProject/OpenGL/Release
