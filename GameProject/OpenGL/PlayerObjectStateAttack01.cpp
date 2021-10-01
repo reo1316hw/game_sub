@@ -18,10 +18,10 @@ PlayerState PlayerObjectStateAttack01::Update(PlayerObject* _owner, float _delta
 		//_owner->RemoveAttackHitBox();
 		if (mNextComboFlag)
 		{
-			return PlayerState::PLAYER_STATE_ATTACK2;
+			return PlayerState::ePlayerStateSecondAttack;
 		}
 
-		return PlayerState::PLAYER_STATE_SWORD_IDLE;
+		return PlayerState::ePlayerStateIdle;
 	}
 
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
@@ -37,14 +37,14 @@ PlayerState PlayerObjectStateAttack01::Update(PlayerObject* _owner, float _delta
 
 	_owner->SetPosition(pos);
 
-	return PlayerState::PLAYER_STATE_ATTACK1;
+	return PlayerState::ePlayerStateFirstAttack;
 }
 
 void PlayerObjectStateAttack01::Inipt(PlayerObject* _owner, const InputState& _keyState)
 {
 
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (_keyState.m_keyboard.GetKeyState(SDL_SCANCODE_RETURN) == Pressed)
+	if (_keyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Pressed)
 	{
 		mNextComboFlag = true;
 	}
@@ -55,11 +55,11 @@ void PlayerObjectStateAttack01::Enter(PlayerObject* _owner, float _deltaTime)
 {
 	// ATTACK1のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComp();
-	meshComp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK1),1.5f);
+	meshComp->PlayAnimation(_owner->GetAnim(PlayerState::ePlayerStateFirstAttack),1.5f);
 	mNextComboFlag = false;
 
 	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK1)->GetDuration();
+	mTotalAnimTime = _owner->GetAnim(PlayerState::ePlayerStateFirstAttack)->GetDuration();
 	mElapseTime = 0.0f;
 
 	/*owner->SetAttackHitBox(1.5f);*/

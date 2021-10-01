@@ -1,8 +1,7 @@
 #include "pch.h"
 
-PlayerObjectStateRunLoop::PlayerObjectStateRunLoop(bool _drawnSwordFlag)
+PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 {
-	mDrawnSwordFlag = _drawnSwordFlag;
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateRunLoop\n");
 }
 
@@ -14,44 +13,25 @@ PlayerObjectStateRunLoop::~PlayerObjectStateRunLoop()
 PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, float _deltaTime)
 {
 	MoveCalc(_owner, _deltaTime);
-
-	if (mDrawnSwordFlag)
+	
+	// いずれのボタンも押されていない
+	if (!mIdleFlag && !mAttackFlag)
 	{
-		// いずれのボタンも押されていない
-		if (!mIdleFlag /*&& !IsJump */ && !mAttackFlag)
-		{
-			return PlayerState::PLAYER_STATE_SWORD_IDLE;
-		}
-
-		// 攻撃ボタンが押されたか？
-		if (mAttackFlag)
-		{
-			return PlayerState::PLAYER_STATE_ATTACK1;
-		}
-
-		return PlayerState::PLAYER_STATE_SWORD_RUN_LOOP;
-	}
-	else
-	{
-		// いずれのボタンも押されていない
-		if (!mIdleFlag /*&& !IsJump */ && !mAttackFlag)
-		{
-			return PlayerState::PLAYER_STATE_RUN_END;
-		}
-
-		if (mRunStartFlag)
-		{
-			return PlayerState::PLAYER_STATE_RUN_START;
-		}
-
-		return PlayerState::PLAYER_STATE_RUN_LOOP;
+		return PlayerState::ePlayerStateIdle;
 	}
 
-	//// ジャンプボタンが押されたか？
-	//if (IsJump)
-	//{
-	//	return PlayerState::PLAYER_STATE_JUMPSTART;
-	//}
+	if (mSprintStartFlag)
+	{
+		return PlayerState::ePlayerStateSprintStart;
+	}
+
+	// 攻撃ボタンが押されたか？
+	if (mAttackFlag)
+	{
+		return PlayerState::ePlayerStateFirstAttack;
+	}
+
+	return PlayerState::ePlayerStateRunLoop;
 }
 
 void PlayerObjectStateRunLoop::Inipt(PlayerObject* _owner, const InputState& _keyState)
@@ -69,11 +49,10 @@ void PlayerObjectStateRunLoop::Inipt(PlayerObject* _owner, const InputState& _ke
 			  // isContollerInputOff;
 
 	//左Shiftキーが入力されたか
-	mRunStartFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+	mSprintStartFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
 	//Enterキーが入力されたか
-	mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RETURN);
-	//bool IsJump = INPUT_INSTANCE.IsKeyPushdown(KEY_B);
+	mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 
 	//値が更新され続けるのを防ぐために初期化
 	mDirVec = Vector3::Zero;
@@ -108,17 +87,8 @@ void PlayerObjectStateRunLoop::Inipt(PlayerObject* _owner, const InputState& _ke
 // RUN状態への切り替え処理
 void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, float _deltaTime)
 {
-	if (mDrawnSwordFlag)
-	{
-		SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComp();
-		meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_SWORD_RUN_LOOP));
-	}
-	else
-	{
-		SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComp();
-		meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_RUN_LOOP));
-	}
-	
+    SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComp();
+	meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::ePlayerStateRunLoop));
 }
 
 void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)

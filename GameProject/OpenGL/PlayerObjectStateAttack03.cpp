@@ -22,11 +22,11 @@ PlayerState PlayerObjectStateAttack03::Update(PlayerObject* _owner, float _delta
 		if (mElapseTime > mTotalAnimTime /*> cStopTime*/)
 		{
 			//_owner->RemoveAttackHitBox();
-			return PlayerState::PLAYER_STATE_SWORD_IDLE;
+			return PlayerState::ePlayerStateIdle;
 		}
 		else
 		{
-			return PlayerState::PLAYER_STATE_ATTACK3;
+			return PlayerState::ePlayerStateThirdAttack;
 		}
 	}
 
@@ -43,7 +43,7 @@ PlayerState PlayerObjectStateAttack03::Update(PlayerObject* _owner, float _delta
 
 	_owner->SetPosition(pos);
 
-	return PlayerState::PLAYER_STATE_ATTACK3;
+	return PlayerState::ePlayerStateThirdAttack;
 }
 
 void PlayerObjectStateAttack03::Inipt(PlayerObject* _owner, const InputState& _keyState)
@@ -54,10 +54,10 @@ void PlayerObjectStateAttack03::Enter(PlayerObject* _owner, float _deltaTime)
 {
 	// ATTACK3のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComp();
-	meshComp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK3),1.5f);
+	meshComp->PlayAnimation(_owner->GetAnim(PlayerState::ePlayerStateThirdAttack),1.5f);
 
 	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnim(PlayerState::PLAYER_STATE_ATTACK3)->GetDuration() - 0.6f;
+	mTotalAnimTime = _owner->GetAnim(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
 	mElapseTime = 0.0f;
 
 	//_owner->SetAttackHitBox(1.5f);

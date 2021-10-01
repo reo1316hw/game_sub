@@ -107,9 +107,6 @@
     <ClCompile Include="EnemyObject.cpp">
       <Filter>GameObject\Map</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjectStateIdle.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerObjectStateAttack01.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
@@ -117,12 +114,6 @@
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObjectStateAttack03.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateRunStart.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateRunEnd.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObjectStateSprintLoop.cpp">
@@ -137,12 +128,6 @@
     <ClCompile Include="AttackMeshComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjectStateSwordIdle.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateSword.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
     <ClCompile Include="RapidJsonHelper.cpp">
       <Filter>RapidJson</Filter>
     </ClCompile>
@@ -150,6 +135,15 @@
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="PlayerObjectStateIdle.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSprintStart.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateDashAttack.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -266,9 +260,6 @@
     <ClInclude Include="PlayerObjectStateBase.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjectStateIdle.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerObjectStateAttack01.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
@@ -276,12 +267,6 @@
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObjectStateAttack03.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateRunStart.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateRunEnd.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObjectStateSprintLoop.h">
@@ -293,16 +278,19 @@
     <ClInclude Include="AttackMeshComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjectStateSwordIdle.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateSword.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
     <ClInclude Include="RapidJsonHelper.h">
       <Filter>RapidJson</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PlayerObjectStateIdle.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSprintStart.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateDashAttack.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">

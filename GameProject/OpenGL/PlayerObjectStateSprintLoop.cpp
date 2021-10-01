@@ -12,36 +12,26 @@ PlayerObjectStateSprintLoop::~PlayerObjectStateSprintLoop()
 
 PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, float _deltaTime)
 {
-	// いずれのボタンも押されていない
-	if (!mIdleFlag /*&& !IsJump */)
-	{
-		return PlayerState::PLAYER_STATE_RUN_END;
-	}
+	MoveCalc(_owner, _deltaTime);
 
 	//ボタンが押されていない時
 	if (!mRunFlag)
 	{
-		return PlayerState::PLAYER_STATE_RUN_LOOP;
+		return PlayerState::ePlayerStateRunLoop;
+	}
+	else
+	{
+		if (mAttackFlag)
+		{
+			return PlayerState::ePlayerStateDashAttack;
+		}
 	}
 
-	//// ジャンプボタンが押されたか？
-	//if (IsJump)
-	//{
-	//	return PlayerState::PLAYER_STATE_JUMPSTART;
-	//}
-
-	MoveCalc(_owner, _deltaTime);
-
-	return PlayerState::PLAYER_STATE_SPRINT_LOOP;
+	return PlayerState::ePlayerStateSprintLoop;
 }
 
 void PlayerObjectStateSprintLoop::Inipt(PlayerObject* _owner, const InputState& _keyState)
 {
-
-	//// コントローラ入力されたか
-	//Vector2 stickL = INPUT_INSTANCE.GetLStick();
-	//bool isContollerInputOff = !INPUT_INSTANCE.IsLStickMove();
-
 	//方向キーが入力されたか
 	mIdleFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
 		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
@@ -51,8 +41,9 @@ void PlayerObjectStateSprintLoop::Inipt(PlayerObject* _owner, const InputState& 
 
 	//左Shiftキーが入力されたか
 	mRunFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
-
-	//bool IsJump = INPUT_INSTANCE.IsKeyPushdown(KEY_B);
+	 
+	//Enterキーが入力されたか
+	mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 
 	//値が更新され続けるのを防ぐために初期化
 	mDirVec = Vector3::Zero;
@@ -88,7 +79,7 @@ void PlayerObjectStateSprintLoop::Inipt(PlayerObject* _owner, const InputState& 
 void PlayerObjectStateSprintLoop::Enter(PlayerObject* _owner, float _deltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComp();
-	meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::PLAYER_STATE_SPRINT_LOOP));
+	meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::ePlayerStateSprintLoop));
 }
 
 void PlayerObjectStateSprintLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)

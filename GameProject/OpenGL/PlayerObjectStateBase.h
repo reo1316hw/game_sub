@@ -20,12 +20,12 @@ protected:
 	//const float JUMP_SPEED = 1000.0f;
 	bool  mNextComboFlag;			//次のコンボにつなげるか  
 	bool  mIdleFlag;				//待機するか
-	bool  mRunStartFlag;			//走り始めか
 	bool  mRunFlag;					//走っているか
+	bool  mSprintStartFlag;			//全力疾走始めか
 	bool  mSprintFlag;				//全力疾走するか
 	bool  mAttackFlag;				//攻撃するか
-	bool  mDrawnSwordFlag;			//抜刀するか
-	bool  mSwordDeliveryFlag;		//納刀するか
+	//bool  mDrawnSwordFlag;			//抜刀するか
+	//bool  mSwordDeliveryFlag;		//納刀するか
 
 	int	mAttackBoneIndex;  //gpSkelファイルの何番目のボーンか
 
@@ -44,9 +44,5 @@ protected:
 	// キャラの前進ベクトル
 	Vector3 mCharaForwardVec;
 
-	Vector3 mDrawnSwordRot; //抜刀時の剣の円周率
-	Vector3 mDrawnSwordPos; //抜刀時の剣の座標
-	Vector3 mSwordDeliveryRot; //納刀時の剣の円周率
-	Vector3 mSwordDeliveryPos; //納刀時の剣の座標
 private:
 };

@@ -11,10 +11,6 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	mTag = _objectTag;
 	SetScale(_size);
 	SetPosition(_pos);
-	/*gravity = GRAVITY;*/
-
-	//更新の度に左に移動するコンポーネントを生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
-	/*new TestComponent(this);*/
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponent = new SkeletalMeshComponent(this);
@@ -24,56 +20,44 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	mSkeltalMeshComponent->SetSkeleton(RENDERER->GetSkeleton(_gpskelName));
 
 	// アニメーションの取得 & アニメーション配列にセット
-	mAnimTypes.resize(static_cast<unsigned int>(PlayerState::PLAYER_STATE_NUM));
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_IDLE)] = RENDERER->GetAnimation(_gpanimName, true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_SWORD_IDLE)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordIdle.gpanim", true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_DRAWN_SWORD)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDrawnSword.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_DRAWN_SWORD_MOVE)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDrawnSword.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_SWORD_DELIVERY)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordDelivery.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_SWORD_DELIVERY_MOVE)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordDelivery.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_RUN_START)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerIdleToRun.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_RUN_LOOP)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSlowRun.gpanim", true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_SWORD_RUN_LOOP)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_SPRINT_LOOP)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_RUN_END)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerRunToIdle.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_ATTACK1)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack01.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_ATTACK2)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack02.gpanim",false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_ATTACK3)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack03.gpanim",false);
-	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPSTART)] = RENDERER->GetAnimation("Assets/valkiria_Jumpstart.gpanim");
-	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPLOOP)] = RENDERER->GetAnimation("Assets/valkiria_jumploop.gpanim");
-	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_JUMPEND)] = RENDERER->GetAnimation("Assets/valkiria_jumpend.gpanim");
-	//mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_HIT)] = RENDERER->GetAnimation("Assets/valkiria_hit.gpanim");
+	mAnimTypes.resize(static_cast<unsigned int>(PlayerState::ePlayerStateNum));
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateIdle)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordIdle.gpanim", true);
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateRunLoop)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateSprintStart)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerIdleToRun.gpanim", false);
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateSprintLoop)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateFirstAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack01.gpanim", false);
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateSecondAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack02.gpanim", false);
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateThirdAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack03.gpanim", false);
+	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateDashAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDashAttack.gpanim", false);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
-	const Animation* anim = mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_IDLE)];
+	const Animation* anim = mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateIdle)];
 	//anim変数を速度0.5fで再生
 	mSkeltalMeshComponent->PlayAnimation(anim, 1.0f);
 
 	// 武器コンポーネント取付
 	// 剣
 	mMesh = RENDERER->GetMesh("Assets/Model/Sword/Sword.gpmesh");
-	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponent, "spine_01");
+	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponent, "index_01_r");
 	mWeaponMesh->SetMesh(mMesh);
 
+	mSwordRot = Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f);
+	mSwordPos = Vector3(-70.0f, -5.0f, 135.0f);
+
+	// 武器の円周率をセット
+	mWeaponMesh->SetOffsetRotation(mSwordRot);
+	// 武器の座標をセット
+	mWeaponMesh->SetOffsetPosition(mSwordPos);
+
 	// アクターステートプールの初期化
-	mStatePools.push_back(new PlayerObjectStateIdle(mWeaponMesh,mSkeltalMeshComponent, "spine_01"));					// mStatePool[PLAYER_STATE_IDLE]
-	mStatePools.push_back(new PlayerObjectStateSwordIdle);				// mStatePool[PLAYER_STATE_SWORD_IDLE]
-	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r",false,true));		// mStatePool[PLAYER_STATE_DRAWN_SWORD]
-	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r",true,true));		// mStatePool[PLAYER_STATE_DRAWN_SWORD_MOVE]
-	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r",false, false));	// mStatePool[PLAYER_STATE_SWORD_DELIVERY]
-	mStatePools.push_back(new PlayerObjectStateSword(mWeaponMesh, mSkeltalMeshComponent, "index_01_r", true, false));		// mStatePool[PLAYER_STATE_SWORD_DELIVERY_MOVE]
-	mStatePools.push_back(new PlayerObjectStateRunStart);				// mStatepool[PLAYER_STATE_RUNS_TART]
-	mStatePools.push_back(new PlayerObjectStateRunLoop(false));			// mStatepool[PLAYER_STATE_RUN_LOOP]
-	mStatePools.push_back(new PlayerObjectStateRunLoop(true));			// mStatepool[PLAYER_STATE_SWORD_RUN_LOOP]
-	mStatePools.push_back(new PlayerObjectStateSprintLoop);				// mStatepool[PLAYER_STATE_SPRINT_LOOP]
-	mStatePools.push_back(new PlayerObjectStateRunEnd);					// mStatepool[PLAYER_STATE_RUN_END]
-	mStatePools.push_back(new PlayerObjectStateAttack01);				// mStatepool[PLAYER_STATE_ATTACK1];
-	mStatePools.push_back(new PlayerObjectStateAttack02);				// mStatepool[PLAYER_STATE_ATTACK2];
-	mStatePools.push_back(new PlayerObjectStateAttack03);				// mStatepool[PLAYER_STATE_ATTACK3];
-	//mStatePools.push_back(new PlayerObjectStateJump);					// mStatepool[PLAYER_STATE_JUMP_START];  
-	//mStatePools.push_back(new PlayerObjectStateJumpLoop);				// mStatepool[PLAYER_STATE_JUMP_LOOP];
-	//mStatePools.push_back(new PlayerObjectStateJumpEnd);				// mStatepool[PLAYER_STATE_JUMP_END];
-	//mStatePools.push_back(new PlayerObjectStateHit);
+	mStatePools.push_back(new PlayerObjectStateIdle());			// mStatePool[PLAYER_STATE_SWORD_IDLE]
+	mStatePools.push_back(new PlayerObjectStateRunLoop);	// mStatepool[PLAYER_STATE_SWORD_RUN_LOOP]
+	mStatePools.push_back(new PlayerObjectStateSprintStart);		// mStatepool[PLAYER_STATE_RUNS_TART]
+	mStatePools.push_back(new PlayerObjectStateSprintLoop);		// mStatepool[PLAYER_STATE_SPRINT_LOOP]
+	mStatePools.push_back(new PlayerObjectStateAttack01);		// mStatepool[PLAYER_STATE_ATTACK1];
+	mStatePools.push_back(new PlayerObjectStateAttack02);		// mStatepool[PLAYER_STATE_ATTACK2];
+	mStatePools.push_back(new PlayerObjectStateAttack03);		// mStatepool[PLAYER_STATE_ATTACK3];
+	mStatePools.push_back(new PlayerObjectStateDashAttack);		// mStatepool[ePlayerStateDashAttack];
 	
 	// 当たり判定
 	mMesh = new Mesh;
