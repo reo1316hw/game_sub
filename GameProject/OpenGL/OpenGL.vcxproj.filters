@@ -107,15 +107,6 @@
     <ClCompile Include="EnemyObject.cpp">
       <Filter>GameObject\Map</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjectStateAttack01.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateAttack02.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateAttack03.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerObjectStateSprintLoop.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
@@ -142,6 +133,15 @@
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObjectStateDashAttack.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateFirstAttack.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSecondAttack.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateThirdAttack.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -260,15 +260,6 @@
     <ClInclude Include="PlayerObjectStateBase.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjectStateAttack01.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateAttack02.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateAttack03.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerObjectStateSprintLoop.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
@@ -289,6 +280,15 @@
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObjectStateDashAttack.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateFirstAttack.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSecondAttack.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateThirdAttack.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
   </ItemGroup>

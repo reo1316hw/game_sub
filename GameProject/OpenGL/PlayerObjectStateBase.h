@@ -3,36 +3,64 @@
 // 前方宣言
 class AttackMeshComponent;
 
+/// <summary>
+/// プレイヤーステートの基底クラス
+/// </summary>
 class PlayerObjectStateBase
 {
 public:
 
+	/// <summary>
+    /// コンストラクタ
+    /// </summary>
 	PlayerObjectStateBase();
 
+	/// <summary>
+    /// デストラクタ
+    /// </summary>
 	virtual ~PlayerObjectStateBase() {};
 
-	virtual PlayerState Update(class PlayerObject* _owner, float _deltaTime) = 0;
+	/// <summary>
+    /// 更新処理
+    /// </summary>
+    /// <param name="_owner"> プレイヤー(親)のポインタ </param>
+    /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+    /// <returns> プレイヤーの状態 </returns>
+	virtual PlayerState Update(PlayerObject* _owner, const float _DeltaTime) = 0;
 
-	virtual void Input(class PlayerObject* _owner, const InputState& _keyState) {};
+	/// <summary>
+	/// 入力処理
+	/// </summary>
+	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+	/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+	virtual void Input(PlayerObject* _owner, const InputState& _KeyState) {};
 
-	virtual void Enter(class PlayerObject* _owner, float _deltaTime) = 0;
+	/// <summary>
+	/// プレイヤーの状態が変更して、最初に1回だけ呼び出される関数
+	/// </summary>
+	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	virtual void Enter(PlayerObject* _owner, const float _DeltaTime) = 0;
 
-	virtual void Exit(class PlayerObject* _owner, float _deltaTime) {};
+	/// <summary>
+    /// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
+    /// </summary>
+    /// <param name="_owner"> プレイヤー(親)のポインタ </param>
+    /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	virtual void Exit(PlayerObject* _owner, const float _DeltaTime) {};
 
 protected:
 
 	// 次のコンボにつなげるか
-	bool  mNextComboFlag;
+	bool mIsNextCombo;
 	// 待機するか
-	bool  mIdleFlag;
+	bool mIsIdle;
 	// 走っているか
-	bool  mRunFlag;
-	// 全力疾走始めか
-	bool  mSprintStartFlag;
+	bool mIsRun;
 	// 全力疾走するか
-	bool  mSprintFlag;
+	bool mIsSprint;
 	// 攻撃するか
-	bool  mAttackFlag;
+	bool mIsAttack;
 
 	// gpSkelファイルの何番目のボーンか
 	int	mAttackBoneIndex;

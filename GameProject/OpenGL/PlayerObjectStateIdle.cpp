@@ -1,31 +1,33 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PlayerObjectStateIdle::PlayerObjectStateIdle()
 {
-    printf("Create : [PlayerObjectStateBase] PlayerObjectStateIdle\n");
 }
 
-PlayerObjectStateIdle::~PlayerObjectStateIdle()
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+/// <returns> プレイヤーの状態 </returns>
+PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-    printf("Remove : [PlayerObjectStateBase] PlayerObjectStateIdle\n");
-}
-
-// アイドル状態から他の状態への移行
-PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, float _deltaTime)
-{
-    if (mSprintFlag)
+    if (mIsSprint)
     {
-        if (mRunFlag)
+        if (mIsRun)
         {
             return PlayerState::ePlayerStateSprintStart;
         }
     }
-    else if (mRunFlag)
+    else if (mIsRun)
     {
         return PlayerState::ePlayerStateRunLoop;
     }
 
-    if (mAttackFlag)
+    if (mIsAttack)
     {
         return PlayerState::ePlayerStateFirstAttack;
     }
@@ -33,24 +35,34 @@ PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, float _deltaTime
     return PlayerState::ePlayerStateIdle;
 }
 
-void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _keyState)
+/// <summary>
+/// 入力処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
-    //左Shiftキーが入力されたか
-    mSprintFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_LSHIFT) == Held;
-
    //方向キーが入力されたか
-    mRunFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held ||
-               _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) == Held ||
-               _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) == Held ||
-               _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) == Held;
+    mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+             _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
+             _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
+             _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D);
+
+    //左Shiftキーが入力されたか
+    mIsSprint = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
     //Spaceキーが入力されたか
-    mAttackFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released;
+    mIsAttack = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 }
 
-void PlayerObjectStateIdle::Enter(PlayerObject* _owner, float _deltaTime)
+/// <summary>
+/// プレイヤーの状態が変更して、最初に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
     // アイドル状態のアニメーション再生
-    SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComp();
-    meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::ePlayerStateIdle));
+    SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
+    meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateIdle));
 }

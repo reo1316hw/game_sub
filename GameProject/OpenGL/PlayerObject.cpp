@@ -1,47 +1,62 @@
 #include "pch.h"
 
-PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const Tag& _objectTag, const SceneBase::Scene _sceneTag)
-	: GameObject(_objectTag, _sceneTag)
-	, mOffsetPos(Vector3(150.0f,0.0f, 50.0f))
-	, mTargetPos(Vector3::Zero)
-	, mViewPos(Vector3::Zero)
-	, mPlayerBox(Vector3::Zero, Vector3::Zero)
-	, MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
-	, MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_Pos"> 座標 </param>
+/// <param name="_Scale"> 大きさ </param>
+/// <param name="_GpmeshName"> gpmeshのパス </param>
+/// <param name="_GpskelName"> gpskelのパス </param>
+/// <param name="_ObjectTag"> タグ </param>
+/// <param name="_SceneTag"> シーンタグ </param>
+PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
+    : GameObject(_ObjectTag, _SceneTag)
+    , MCameraOffset(Vector3(150.0f,0.0f, 50.0f))
+	, MTargetOffset(Vector3(0.0f, 0.0f, 40.0f))
+    , MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
+    , MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
+	, MPlayRate(1.0f)
+	, MAngle(270.0f)
+    , mTargetPos(Vector3::Zero)
+    , mCameraPos(Vector3::Zero)
+    , mBox(Vector3::Zero, Vector3::Zero)
+    , mNowState(PlayerState::ePlayerStateIdle)
+    , mNextState(PlayerState::ePlayerStateIdle)
 {
-	//GameObjectメンバ変数の初期化
-	mTag = _objectTag;
-	SetScale(_size);
-	SetPosition(_pos);
+	// GameObjectメンバ変数の初期化
+	mTag = _ObjectTag;
+	SetScale(_Scale);
+	SetPosition(_Pos);
 
-	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
-	mSkeltalMeshComponent = new SkeletalMeshComponent(this);
-	//Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
-	mSkeltalMeshComponent->SetMesh(RENDERER->GetMesh(_gpmeshName));
-	//Rendererクラス内のSkeletonデータ読み込み関数を利用してSkeletonをセット(.gpskel)
-	mSkeltalMeshComponent->SetSkeleton(RENDERER->GetSkeleton(_gpskelName));
+	// 生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
+	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);
+	// Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
+	mSkeltalMeshComponentPtr->SetMesh(RENDERER->GetMesh(_GpmeshName));
+	// Rendererクラス内のSkeletonデータ読み込み関数を利用してSkeletonをセット(.gpskel)
+	mSkeltalMeshComponentPtr->SetSkeleton(RENDERER->GetSkeleton(_GpskelName));
 
 	// アニメーションの取得 & アニメーション配列にセット
-	mAnimTypes.resize(static_cast<unsigned int>(PlayerState::ePlayerStateNum));
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateIdle)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordIdle.gpanim", true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateRunLoop)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateSprintStart)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerIdleToRun.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateSprintLoop)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateFirstAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack01.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateSecondAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack02.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateThirdAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack03.gpanim", false);
-	mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateDashAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDashAttack.gpanim", false);
+	mAnimTypes.resize((int)PlayerState::ePlayerStateNum);
+	mAnimTypes[(int)PlayerState::ePlayerStateIdle] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordIdle.gpanim", true);
+	mAnimTypes[(int)PlayerState::ePlayerStateRunLoop] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
+	mAnimTypes[(int)PlayerState::ePlayerStateSprintStart] = RENDERER->GetAnimation("Assets/Model/Player/PlayerIdleToRun.gpanim", false);
+	mAnimTypes[(int)PlayerState::ePlayerStateSprintLoop] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
+	mAnimTypes[(int)PlayerState::ePlayerStateFirstAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack01.gpanim", false);
+	mAnimTypes[(int)PlayerState::ePlayerStateSecondAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack02.gpanim", false);
+	mAnimTypes[(int)PlayerState::ePlayerStateThirdAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack03.gpanim", false);
+	mAnimTypes[(int)PlayerState::ePlayerStateDashAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDashAttack.gpanim", false);
 
-	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
-	const Animation* anim = mAnimTypes[static_cast<unsigned int>(PlayerState::ePlayerStateIdle)];
-	//anim変数を速度0.5fで再生
-	mSkeltalMeshComponent->PlayAnimation(anim, 1.0f);
+	// Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
+	const Animation* anim = mAnimTypes[(int)PlayerState::ePlayerStateIdle];
+	// anim変数を速度1.0fで再生
+	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
-	// 武器コンポーネント取付
-	// 剣
-	mMesh = RENDERER->GetMesh("Assets/Model/Sword/Sword.gpmesh");
-	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponent, "index_01_r");
-	mWeaponMesh->SetMesh(mMesh);
+	// 武器のメッシュ当たり判定
+	mMeshPtr = new Mesh;
+	mMeshPtr = RENDERER->GetMesh("Assets/Model/Sword/Sword.gpmesh");
+	// 武器
+	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponentPtr, "index_01_r");
+	mWeaponMesh->SetMesh(mMeshPtr);
 
 	// 武器の円周率をセット
 	mWeaponMesh->SetOffsetRotation(MSwordRot);
@@ -49,73 +64,94 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	mWeaponMesh->SetOffsetPosition(MSwordPos);
 
 	// アクターステートプールの初期化
-	mStatePools.push_back(new PlayerObjectStateIdle());			// mStatePool[PLAYER_STATE_SWORD_IDLE]
-	mStatePools.push_back(new PlayerObjectStateRunLoop);	// mStatepool[PLAYER_STATE_SWORD_RUN_LOOP]
-	mStatePools.push_back(new PlayerObjectStateSprintStart);		// mStatepool[PLAYER_STATE_RUNS_TART]
-	mStatePools.push_back(new PlayerObjectStateSprintLoop);		// mStatepool[PLAYER_STATE_SPRINT_LOOP]
-	mStatePools.push_back(new PlayerObjectStateAttack01);		// mStatepool[PLAYER_STATE_ATTACK1];
-	mStatePools.push_back(new PlayerObjectStateAttack02);		// mStatepool[PLAYER_STATE_ATTACK2];
-	mStatePools.push_back(new PlayerObjectStateAttack03);		// mStatepool[PLAYER_STATE_ATTACK3];
-	mStatePools.push_back(new PlayerObjectStateDashAttack);		// mStatepool[ePlayerStateDashAttack];
+	mStatePools.push_back(new PlayerObjectStateIdle());	      // mStatePool[ePlayerStateIdle]
+	mStatePools.push_back(new PlayerObjectStateRunLoop);	  // mStatepool[ePlayerStateRunLoop]
+	mStatePools.push_back(new PlayerObjectStateSprintStart);  // mStatepool[ePlayerStateSprintStart]
+	mStatePools.push_back(new PlayerObjectStateSprintLoop);	  // mStatepool[ePlayerStateSprintLoop]
+	mStatePools.push_back(new PlayerObjectStateFirstAttack);  // mStatepool[ePlayerStateFirstAttack];
+	mStatePools.push_back(new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
+	mStatePools.push_back(new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
+	mStatePools.push_back(new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
 	
-	// 当たり判定
-	mMesh = new Mesh;
-	mMesh = RENDERER->GetMesh(_gpmeshName);
-	mBoxCollider = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
-	mBoxCollider->SetObjectBox(mMesh->GetBox());
+	// メッシュ当たり判定
+	mMeshPtr = RENDERER->GetMesh(_GpmeshName);
+	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
+	mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
 
-	//プレイヤーの回転
-	SelfRotation(Vector3::UnitZ, 270.0f);
+	// 回転処理
+	SelfRotation(Vector3::UnitZ, MAngle);
 }
 
+/// <summary>
+/// オブジェクトの更新処理
+/// </summary>
+/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObject::UpdateGameObject(float _deltaTime)
 {
-	mTargetPos = Vector3(mPosition.x, mPosition.y, mPosition.z + 40.0f);
-	mViewPos = mMainCamera->GetPosition();
-	mMainCamera->SetViewMatrixLerpObject(mOffsetPos, mTargetPos);
+	mTargetPos = mPosition + MTargetOffset;
+	mCameraPos = mMainCamera->GetPosition();
+	mMainCamera->SetViewMatrixLerpObject(MCameraOffset, mTargetPos);
 
 	// ステート外部からステート変更があったか？
 	if (mNowState != mNextState)
 	{
-		mStatePools[static_cast<unsigned int>(mNowState)]->Exit(this, _deltaTime);
-		mStatePools[static_cast<unsigned int>(mNextState)]->Enter(this, _deltaTime);
+		mStatePools[(int)(mNowState)]->Exit(this, _deltaTime);
+		mStatePools[(int)(mNextState)]->Enter(this, _deltaTime);
 		mNowState = mNextState;
 		return;
 	}
 
 	// ステート実行
-	mNextState = mStatePools[static_cast<unsigned int>(mNowState)]->Update(this, _deltaTime);
+	mNextState = mStatePools[(int)mNowState]->Update(this, _deltaTime);
 
 	// ステート内部からステート変更あったか？
 	if (mNowState != mNextState)
 	{
-		mStatePools[static_cast<unsigned int>(mNowState)]->Exit(this, _deltaTime);
-		mStatePools[static_cast<unsigned int>(mNextState)]->Enter(this, _deltaTime);
+		mStatePools[(int)mNowState]->Exit(this, _deltaTime);
+		mStatePools[(int)mNextState]->Enter(this, _deltaTime);
 		mNowState = mNextState;
 	}
 }
 
-void PlayerObject::PausingUpdateGameObject()
+/// <summary>
+/// 入力を引数で受け取る更新関数
+/// 基本的にここで入力情報を変数に保存しUpdateGameObjectで更新を行う
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+void PlayerObject::GameObjectInput(const InputState& _KeyState)
 {
-
+	mStatePools[(int)mNowState]->Input(this, _KeyState);
 }
 
-void PlayerObject::GameObjectInput(const InputState& _keyState)
+/// <summary>
+/// 回転処理
+/// </summary>
+/// <param name="_Axis"> 軸 </param>
+/// <param name="_Angle"> 角度 </param>
+void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
 {
-	mStatePools[static_cast<unsigned int>(mNowState)]->Input(this, _keyState);
+	float radian = Math::ToRadians(_angle);
+	Quaternion rot = this->GetRotation();
+	Quaternion inc(_axis, radian);
+	Quaternion target = Quaternion::Concatenate(rot, inc);
+	SetRotation(target);
 }
 
-void PlayerObject::OnCollision(const GameObject& _hitObject)
+/// <summary>
+/// ヒットされた時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObject::OnCollision(const GameObject& _HitObject)
 {
+	mBox = mBoxColliderPtr->GetWorldBox();
+
 	//押し戻し処理
-	mPlayerBox = mBoxCollider->GetWorldBox();
-
-	float dx1 = _hitObject.GetObjectAABB().m_min.x - mPlayerBox.m_max.x;
-	float dx2 = _hitObject.GetObjectAABB().m_max.x - mPlayerBox.m_min.x;
-	float dy1 = _hitObject.GetObjectAABB().m_min.y - mPlayerBox.m_max.y;
-	float dy2 = _hitObject.GetObjectAABB().m_max.y - mPlayerBox.m_min.y;
-	float dz1 = _hitObject.GetObjectAABB().m_min.z - mPlayerBox.m_max.z;
-	float dz2 = _hitObject.GetObjectAABB().m_max.z - mPlayerBox.m_min.z;
+	float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;
+	float dx2 = _HitObject.GetObjectAABB().m_max.x - mBox.m_min.x;
+	float dy1 = _HitObject.GetObjectAABB().m_min.y - mBox.m_max.y;
+	float dy2 = _HitObject.GetObjectAABB().m_max.y - mBox.m_min.y;
+	float dz1 = _HitObject.GetObjectAABB().m_min.z - mBox.m_max.z;
+	float dz2 = _HitObject.GetObjectAABB().m_max.z - mBox.m_min.z;
 
 	float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
 	float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
@@ -135,13 +171,4 @@ void PlayerObject::OnCollision(const GameObject& _hitObject)
 	{
 		mPosition.z += dz;
 	}
-}
-
-void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
-{
-	float radian = Math::ToRadians(_angle);
-	Quaternion rot = this->GetRotation();
-	Quaternion inc(_axis, radian);
-	Quaternion target = Quaternion::Concatenate(rot, inc);
-	SetRotation(target);
 }

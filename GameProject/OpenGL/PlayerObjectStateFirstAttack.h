@@ -1,21 +1,21 @@
 #pragma once
 
 /// <summary>
-/// 待機状態
+/// 1段階目の攻撃
 /// </summary>
-class PlayerObjectStateIdle : public PlayerObjectStateBase
+class PlayerObjectStateFirstAttack : public PlayerObjectStateBase
 {
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	PlayerObjectStateIdle();
+	PlayerObjectStateFirstAttack();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PlayerObjectStateIdle() {};
+	~PlayerObjectStateFirstAttack() {};
 
 	/// <summary>
 	/// 更新処理
@@ -40,4 +40,15 @@ public:
 	void Enter(PlayerObject* _owner, const float _DeltaTime)override;
 
 private:
+
+	// 攻撃時の速度
+	const float MPlayerAttackSpeed;
+	// アニメーションの再生速度
+	const float MPlayRate;
+
+	// コンボ有効フレーム
+	const int MValidComboFrame;
+
+	// フレーム数
+	size_t mNumFrame;
 };

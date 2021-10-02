@@ -2,81 +2,137 @@
 
 // 前方宣言
 class SkeletalMeshComponent;
-class MeshComponent;
-class Mesh;
-class BoxCollider;
 class Animation;
 class PlayerObjectStateBase;
 class AttackMeshComponent;
 
+/// <summary>
+/// プレイヤーの状態
+/// </summary>
 enum class PlayerState
 {
-	ePlayerStateIdle = 0,		// 待機
+	ePlayerStateIdle = 0,		// 待機状態
 	ePlayerStateRunLoop,		// 走っている状態
-	ePlayerStateSprintStart,	// 全力疾走始め
+	ePlayerStateSprintStart,	// 全力疾走を始める状態
 	ePlayerStateSprintLoop,		// 全力疾走している状態
-	ePlayerStateFirstAttack,	// 攻撃1
-	ePlayerStateSecondAttack,	// 攻撃2
-	ePlayerStateThirdAttack,	// 攻撃3
+	ePlayerStateFirstAttack,	// 1段階目の攻撃
+	ePlayerStateSecondAttack,	// 2段階目の攻撃
+	ePlayerStateThirdAttack,	// 3段階目の攻撃
 	ePlayerStateDashAttack,     // ダッシュ攻撃
 
 	ePlayerStateNum,   // 総アニメーション数
 };
 
+/// <summary>
+/// プレイヤー
+/// </summary>
 class PlayerObject : public GameObject
 {
 public:
 
-	PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const Tag& _objectTag, const SceneBase::Scene _sceneTag);
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_Pos"> 座標 </param>
+	/// <param name="_Scale"> 大きさ </param>
+	/// <param name="_GpmeshName"> gpmeshのパス </param>
+	/// <param name="_GpskelName"> gpskelのパス </param>
+	/// <param name="_ObjectTag"> タグ </param>
+	/// <param name="_SceneTag"> シーンタグ </param>
+	PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag);
 
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~PlayerObject() {};
 
-	SkeletalMeshComponent* GetSkeletalMeshComp() { return mSkeltalMeshComponent; };
-	const Animation* GetAnim(PlayerState _state) { return mAnimTypes[static_cast<unsigned int>(_state)]; };
-
+	/// <summary>
+	/// オブジェクトの更新処理
+	/// </summary>
+	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
-	void GameObjectInput(const InputState& _keyState)override;
-	void SelfRotation(Vector3 _axis, float _angle);
-	void PausingUpdateGameObject()override;
 
-	Vector3 GetTargetPos() { return mTargetPos; };
-	Vector3 GetViewPos() { return mViewPos; };
-
-	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; };
+	/// <summary>
+	/// 入力を引数で受け取る更新関数
+	/// 基本的にここで入力情報を変数に保存しUpdateGameObjectで更新を行う
+	/// </summary>
+	/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+	void GameObjectInput(const InputState& _KeyState)override;
 
 private:
 
-	//剣の初期回転値
+	/// <summary>
+	/// 回転処理
+	/// </summary>
+	/// <param name="_Axis"> 軸 </param>
+	/// <param name="_Angle"> 角度 </param>
+	void SelfRotation(const Vector3 _Axis, const float _Angle);
+
+	/// <summary>
+	/// ヒットされた時の処理
+	/// </summary>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(const GameObject& _HitObject)override;
+
+	// カメラ座標との差
+	const Vector3 MCameraOffset;
+	// 見たい座標との差
+	const Vector3 MTargetOffset;
+	// 剣の初期回転値
 	const Vector3 MSwordRot;
-	//剣の初期座標
+	// 剣の初期座標
 	const Vector3 MSwordPos;
+	// アニメーションの再生速度
+	const float MPlayRate;
+	// 角度
+	const float MAngle;
 
-	// 重力
-	const float GRAVITY = 100.0f;
-
-	std::vector<const class Animation*>      mAnimTypes;
+	// アニメーション可変長コンテナ
+	std::vector<const Animation*>       mAnimTypes;
 	// ステートクラスプール
-	std::vector<class PlayerObjectStateBase*> mStatePools;
+	std::vector<PlayerObjectStateBase*> mStatePools;
+
+	// 見る対象のポジション
+	Vector3 mTargetPos;
+	// カメラのポジション
+	Vector3 mCameraPos;
+
+	// 矩形当たり判定
+	AABB mBox;
 
 	// 現在のステート
 	PlayerState mNowState;
 	// 次のステート
 	PlayerState mNextState;
-
-	AABB mPlayerBox;
-
+	
 	// 武器メッシュ
 	AttackMeshComponent* mWeaponMesh;
 
-	//見たい座標との差
-	Vector3 mOffsetPos;
-	//見る対象のポジション
-	Vector3 mTargetPos;
-	//カメラのポジション
-	Vector3 mViewPos;
+public:// ゲッターセッター
 
-	int mAttackBoneIndex;
-	
-	void OnCollision(const GameObject& _hitObject)override;
+	/// <summary>
+	/// Animationのポインタを取得
+	/// </summary>
+	/// <param name="_State"> プレイヤーの状態 </param>
+	/// <returns> Animationのポインタ </returns>
+	const Animation* GetAnimPtr(const PlayerState _State) const { return mAnimTypes[(int)_State]; };
+
+	/// <summary>
+	/// SkeletalMeshComponentのポインタを取得
+	/// </summary>
+	/// <returns> SkeletalMeshComponentのポインタ </returns>
+	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; };
+
+	/// <summary>
+	/// 見る対象のポジションを取得
+	/// </summary>
+	/// <returns> 見る対象のポジション </returns>
+	Vector3 GetTargetPos() { return mTargetPos; };
+
+	/// <summary>
+	/// カメラのポジションを取得
+	/// </summary>
+	/// <returns> カメラのポジション </returns>
+	Vector3 GetCameraPos() { return mCameraPos; };
 };
 

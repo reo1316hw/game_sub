@@ -1,12 +1,14 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PlayerObjectStateBase::PlayerObjectStateBase()
-	: mNextComboFlag(false)
-	, mIdleFlag(false)
-	, mSprintStartFlag(false)
-	, mRunFlag(false)
-	, mSprintFlag(false)
-	, mAttackFlag(false)
+	: mIsNextCombo(false)
+	, mIsIdle(false)
+	, mIsRun(false)
+	, mIsSprint(false)
+	, mIsAttack(false)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mCharaSpeed(0.0f)

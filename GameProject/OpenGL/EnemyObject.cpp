@@ -15,21 +15,21 @@ EnemyObject::EnemyObject(const Vector3& _pos, const Vector3& _size, const std::s
 	/*new TestComponent(this);*/
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
-	mSkeltalMeshComponent = new SkeletalMeshComponent(this);
+	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);
 	//Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
-	mSkeltalMeshComponent->SetMesh(RENDERER->GetMesh(_gpmeshName));
+	mSkeltalMeshComponentPtr->SetMesh(RENDERER->GetMesh(_gpmeshName));
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してSkeletonをセット(.gpskel)
-	mSkeltalMeshComponent->SetSkeleton(RENDERER->GetSkeleton(_gpskelName));
+	mSkeltalMeshComponentPtr->SetSkeleton(RENDERER->GetSkeleton(_gpskelName));
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = RENDERER->GetAnimation(_gpanimName, true);
 	//anim変数を速度0.5fで再生
-	mSkeltalMeshComponent->PlayAnimation(anim, 1.0f);
+	mSkeltalMeshComponentPtr->PlayAnimation(anim, 1.0f);
 
 	// 当たり判定
-	mMesh = new Mesh;
-	mMesh = RENDERER->GetMesh(_gpmeshName);
-	mBoxCollider = new BoxCollider(this, ColliderTag::Enemy, GetOnCollisionFunc());
-	mBoxCollider->SetObjectBox(mMesh->GetBox());
+	mMeshPtr = new Mesh;
+	mMeshPtr = RENDERER->GetMesh(_gpmeshName);
+	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Enemy, GetOnCollisionFunc());
+	mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
 }
 
 EnemyObject::~EnemyObject()

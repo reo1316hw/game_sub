@@ -1,20 +1,53 @@
 #pragma once
 
+/// <summary>
+/// ダッシュ攻撃
+/// </summary>
 class PlayerObjectStateDashAttack : public PlayerObjectStateBase
 {
 public:
 
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	PlayerObjectStateDashAttack();
 
-	~PlayerObjectStateDashAttack();
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~PlayerObjectStateDashAttack() {};
 
-	PlayerState Update(PlayerObject* _owner, float _deltaTime)override;
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	/// <returns> プレイヤーの状態 </returns>
+	PlayerState Update(PlayerObject* _owner, const float _DeltaTime)override;
 
-	void Input(class PlayerObject* _owner, const InputState& _keyState)override;
+	/// <summary>
+	/// 入力処理
+	/// </summary>
+	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+	/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+	void Input(PlayerObject* _owner, const InputState& _KeyState)override;
 
-	void Enter(class PlayerObject* _owner, float _deltaTime)override;
+	/// <summary>
+	/// プレイヤーの状態が変更して、最初に1回だけ呼び出される関数
+	/// </summary>
+	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	void Enter(PlayerObject* _owner, const float _DeltaTime)override;
 
 private:
+
+	// 攻撃時の速度
+	const float MPlayerAttackSpeed;
+	// アニメーションの再生速度
+	const float MPlayRate;
+
+	// コンボ有効フレーム
+	const int MValidComboFrame;
 
 	// フレーム数
 	size_t mNumFrame;

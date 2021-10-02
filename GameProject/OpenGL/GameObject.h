@@ -289,13 +289,13 @@ protected:
 	int mMyObjectId;
 
 	//ゲームオブジェクトのスケルトンメッシュ
-	SkeletalMeshComponent* mSkeltalMeshComponent;
+	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
 	//ゲームオブジェクトのメッシュ
-	MeshComponent* mMeshComponent;
+	MeshComponent* mMeshComponentPtr;
 	//ゲームオブジェクトの当たり判定
-	BoxCollider* mBoxCollider;
+	BoxCollider* mBoxColliderPtr;
 	//当たり判定をmeshにするためのインスタンス
-	Mesh* mMesh;
+	Mesh* mMeshPtr;
 
 	//Transform
 	Vector3 mPosition;

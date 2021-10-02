@@ -13,15 +13,15 @@ WallObject::WallObject(const Vector3& _pos, const Vector3& _size, const std::str
 	case SceneBase::Scene::tutorial:
 
 		//生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
-		mMeshComponent = new MeshComponent(this);
+		mMeshComponentPtr = new MeshComponent(this);
 		//Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
-		mMeshComponent->SetMesh(RENDERER->GetMesh(_gpmeshName));
+		mMeshComponentPtr->SetMesh(RENDERER->GetMesh(_gpmeshName));
 
 		// 当たり判定
-		mMesh = new Mesh;
-		mMesh = RENDERER->GetMesh(_gpmeshName);
-		mBoxCollider = new BoxCollider(this, ColliderTag::Wall, GetOnCollisionFunc());
-		mBoxCollider->SetObjectBox(mMesh->GetBox());
+		mMeshPtr = new Mesh;
+		mMeshPtr = RENDERER->GetMesh(_gpmeshName);
+		mBoxColliderPtr = new BoxCollider(this, ColliderTag::Wall, GetOnCollisionFunc());
+		mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
 
 		break;
 	}
@@ -33,5 +33,5 @@ WallObject::~WallObject()
 
 void WallObject::UpdateGameObject(float _deltaTime)
 {
-	mAabb = mBoxCollider->GetWorldBox();
+	mAabb = mBoxColliderPtr->GetWorldBox();
 }

@@ -1,32 +1,36 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PlayerObjectStateSprintLoop::PlayerObjectStateSprintLoop()
+	: MMoveSpeed(750.0f)
+	, MDirThreshold(0.5f)
 {
-	printf("Create : [PlayerObjectStateBase] PlayerObjectStateSprintLoop\n");
-	mCharaSpeed = 0.0f;
 }
 
-PlayerObjectStateSprintLoop::~PlayerObjectStateSprintLoop()
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+/// <returns> プレイヤーの状態 </returns>
+PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	printf("Remove : [PlayerObjectStateBase] PlayerObjectStateSprintLoop\n");
-}
-
-PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, float _deltaTime)
-{
-	MoveCalc(_owner, _deltaTime);
+	MoveCalc(_owner, _DeltaTime);
 
 	//ボタンが押されていない時
-	if (!mRunFlag)
+	if (!mIsSprint)
 	{
 		return PlayerState::ePlayerStateRunLoop;
 	}
 	else
 	{
-		if (!mIdleFlag)
+		if (!mIsRun)
 		{
 			return PlayerState::ePlayerStateIdle;
 		}
-		if (mAttackFlag)
+		if (mIsAttack)
 		{
 			return PlayerState::ePlayerStateDashAttack;
 		}
@@ -35,76 +39,90 @@ PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, float _del
 	return PlayerState::ePlayerStateSprintLoop;
 }
 
-void PlayerObjectStateSprintLoop::Input(PlayerObject* _owner, const InputState& _keyState)
+/// <summary>
+/// 入力処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+void PlayerObjectStateSprintLoop::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
 	//方向キーが入力されたか
-	mIdleFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
-		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
-		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D);
+	mIsRun   = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+		       _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
+		       _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
+		       _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D);
 
 	//左Shiftキーが入力されたか
-	mRunFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+	mIsSprint = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 	 
 	//Enterキーが入力されたか
-	mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
+	mIsAttack = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 
 	//値が更新され続けるのを防ぐために初期化
 	mDirVec = Vector3::Zero;
 	
 	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
-	if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP) == 1 ||
-		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) == 1)
+	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
 	{
 		mDirVec += mForwardVec;
 	}
 	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
-	else if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == 1 ||
-		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) == 1)
+	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
 	{
 		mDirVec -= mForwardVec;
 	}
-	
+
 	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
-	if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == 1 ||
-		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) == 1)
+	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
 	{
 		mDirVec -= mRightVec;
 	}
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
-	else if (_keyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == 1 ||
-		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) == 1)
+	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
 	{
 		mDirVec += mRightVec;
 	}
 }
 
-// RUN状態への切り替え処理
-void PlayerObjectStateSprintLoop::Enter(PlayerObject* _owner, float _deltaTime)
+/// <summary>
+/// プレイヤーの状態が変更して、最初に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void PlayerObjectStateSprintLoop::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
-	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComp();
-	meshcomp->PlayAnimation(_owner->GetAnim(PlayerState::ePlayerStateSprintLoop));
+	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateSprintLoop));
 }
 
-void PlayerObjectStateSprintLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)
+/// <summary>
+/// 移動処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void PlayerObjectStateSprintLoop::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
 	// 速度初期化
 	mCharaSpeed = 0.0f;
-	// 移動速度
-	const float PLAYER_SPEED = 750.0f;
 
 	// カメラからみた前進方向を取得
-	Vector3 targetPos = _owner->GetTargetPos();
-	Vector3 viewPos = _owner->GetViewPos();
-	mForwardVec = targetPos - viewPos;
-	mForwardVec.z = 0.0f; // 高さ方向を無視
+	const Vector3 TargetPos = _owner->GetTargetPos();
+	const Vector3 CameraPos = _owner->GetCameraPos();
+
+	mForwardVec = TargetPos - CameraPos;
+	// 高さ方向を無視
+	mForwardVec.z = 0.0f; 
 
 	// カメラ前方ベクトルと右方向ベクトル算出
 	mForwardVec = Vector3::Normalize(mForwardVec);
 	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
 
 	// 入力キーの総和
-	if (mDirVec.LengthSq() > 0.5f)
+	if (mDirVec.LengthSq() >= MDirThreshold)
 	{
 		// 方向キー入力
 		mCharaForwardVec = mDirVec;
@@ -114,10 +132,10 @@ void PlayerObjectStateSprintLoop::MoveCalc(PlayerObject* _owner, float _deltaTim
 		_owner->RotateToNewForward(mCharaForwardVec);
 
 		// 現在のスピードを保存
-		mCharaSpeed = PLAYER_SPEED * _deltaTime;
+		mCharaSpeed = MMoveSpeed * _DeltaTime;
 	}
 
-	// 移動処理
+	// 座標
 	Vector3 position = _owner->GetPosition();
 	position += mCharaSpeed * mCharaForwardVec;
 
