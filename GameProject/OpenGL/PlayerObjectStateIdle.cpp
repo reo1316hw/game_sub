@@ -33,19 +33,19 @@ PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, float _deltaTime
     return PlayerState::ePlayerStateIdle;
 }
 
-void PlayerObjectStateIdle::Inipt(PlayerObject* _owner, const InputState& _keyState)
+void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _keyState)
 {
     //左Shiftキーが入力されたか
-    mSprintFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_LSHIFT);
+    mSprintFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_LSHIFT) == Held;
 
    //方向キーが入力されたか
-    mRunFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
-        _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
-        _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-        _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D);
+    mRunFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held ||
+               _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) == Held ||
+               _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) == Held ||
+               _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) == Held;
 
-    //Enterキーが入力されたか
-    mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
+    //Spaceキーが入力されたか
+    mAttackFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released;
 }
 
 void PlayerObjectStateIdle::Enter(PlayerObject* _owner, float _deltaTime)

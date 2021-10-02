@@ -1,6 +1,7 @@
 #include "pch.h"
 
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
+	: mNumFrame(0)
 {
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateDashAttack\n");
 }
@@ -18,10 +19,16 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, float _del
 		//_owner->RemoveAttackHitBox();
 		if (mNextComboFlag)
 		{
-			return PlayerState::ePlayerStateFirstAttack;
+ 			return PlayerState::ePlayerStateFirstAttack;
 		}
 
 		return PlayerState::ePlayerStateIdle;
+	}
+
+	// フレーム数を減らしていく
+	if (mNumFrame > 0)
+	{
+		--mNumFrame;
 	}
 
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
@@ -32,7 +39,7 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, float _del
 	Vector3 pos, forward;
 	pos = _owner->GetPosition();
 	forward = _owner->GetForward();
-	float differencePos = /*-5.0f*/ 0.0f - PLAYER_ATTACK_SPEED * _deltaTime;
+	float differencePos = 0.0f - PLAYER_ATTACK_SPEED * _deltaTime;
 	pos += Quintic::EaseIn(mElapseTime, PLAYER_ATTACK_SPEED * _deltaTime, differencePos, mTotalAnimTime) * forward;
 
 	_owner->SetPosition(pos);
@@ -40,15 +47,13 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, float _del
 	return PlayerState::ePlayerStateDashAttack;
 }
 
-void PlayerObjectStateDashAttack::Inipt(PlayerObject* _owner, const InputState& _keyState)
+void PlayerObjectStateDashAttack::Input(PlayerObject* _owner, const InputState& _keyState)
 {
-
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (_keyState.m_keyboard.GetKeyState(SDL_SCANCODE_RETURN) == Pressed)
+	if (mNumFrame <= 5 && _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
 		mNextComboFlag = true;
 	}
-
 }
 
 void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, float _deltaTime)
@@ -60,21 +65,6 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, float _deltaTime)
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnim(PlayerState::ePlayerStateDashAttack)->GetDuration() - 0.4f;
+	mNumFrame = _owner->GetAnim(PlayerState::ePlayerStateDashAttack)->GetNumFrames();
 	mElapseTime = 0.0f;
-
-	/*owner->SetAttackHitBox(1.5f);*/
-
-	//// effect発生
-	//SwordEffectActor* effect = new SwordEffectActor(owner);
-	//Vector3 localPos, localAngle;
-	//localPos = Vector3(50, 0, 100);
-	//localAngle = Vector3(Math::ToRadians(30.0f), 0, Math::ToRadians(-30.0f));
-	//effect->SetLocalPos(localPos);
-	//effect->SetLocalRotation(localAngle);
-	//effect->SetEffectTime(mTotalAnimTime);
-}
-
-void PlayerObjectStateDashAttack::Exit(PlayerObject* _owner, float _deltaTime)
-{
-	//_owner->RemoveAttackHitBox();
 }

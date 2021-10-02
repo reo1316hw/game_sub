@@ -395,8 +395,6 @@ bool Intersect(const Sphere & _sphere, const AABB & _AABB)
 	bool hit = _AABB.Contains(_sphere.m_center);
 	if (hit)
 	{
-		printf("%f,%f\n",_sphere.m_center,_sphere.m_radius);
-		printf("%f,%f\n", _AABB.m_min, _AABB.m_max);
 		return true;
 	}
 	float distanceSquared = _AABB.MinDistanceSquared(_sphere.m_center);

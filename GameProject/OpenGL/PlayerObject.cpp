@@ -1,11 +1,13 @@
 #include "pch.h"
 
-PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const char* _gpanimName, const Tag& _objectTag, const SceneBase::Scene _sceneTag)
+PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std::string _gpmeshName, const char* _gpskelName, const Tag& _objectTag, const SceneBase::Scene _sceneTag)
 	: GameObject(_objectTag, _sceneTag)
 	, mOffsetPos(Vector3(150.0f,0.0f, 50.0f))
 	, mTargetPos(Vector3::Zero)
 	, mViewPos(Vector3::Zero)
 	, mPlayerBox(Vector3::Zero, Vector3::Zero)
+	, MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
+	, MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
 {
 	//GameObjectメンバ変数の初期化
 	mTag = _objectTag;
@@ -41,13 +43,10 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponent, "index_01_r");
 	mWeaponMesh->SetMesh(mMesh);
 
-	mSwordRot = Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f);
-	mSwordPos = Vector3(-70.0f, -5.0f, 135.0f);
-
 	// 武器の円周率をセット
-	mWeaponMesh->SetOffsetRotation(mSwordRot);
+	mWeaponMesh->SetOffsetRotation(MSwordRot);
 	// 武器の座標をセット
-	mWeaponMesh->SetOffsetPosition(mSwordPos);
+	mWeaponMesh->SetOffsetPosition(MSwordPos);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());			// mStatePool[PLAYER_STATE_SWORD_IDLE]
@@ -67,11 +66,6 @@ PlayerObject::PlayerObject(const Vector3& _pos, const Vector3& _size, const std:
 
 	//プレイヤーの回転
 	SelfRotation(Vector3::UnitZ, 270.0f);
-}
-
-PlayerObject::~PlayerObject()
-{
-
 }
 
 void PlayerObject::UpdateGameObject(float _deltaTime)
@@ -108,24 +102,7 @@ void PlayerObject::PausingUpdateGameObject()
 
 void PlayerObject::GameObjectInput(const InputState& _keyState)
 {
-	mStatePools[static_cast<unsigned int>(mNowState)]->Inipt(this, _keyState);
-
-	//// 攻撃ボタン押されたら次のステートへ移行する準備
-	//if (_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_RETURN) == 1)
-	//{
-	//	// アニメーション再生時間取得
-	//	mTotalAnimTime = mAnimTypes[static_cast<unsigned int>(PlayerState::PLAYER_STATE_ATTACK1)]->GetDuration();
-	//	mElapseTime = 0.0f;
-	//	attackFlag = true;
-	//}
-
-	//// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
-	//if (_keyState.Controller.GetButtonValue(SDL_CONTROLLER_BUTTON_A) == 1 ||
-	//	_keyState.Keyboard.GetKeyValue(SDL_SCANCODE_SPACE) == 1)
-	//{
-	//	dirVec += jumpVec;
-	//	buttonFlag = true;
-	//}
+	mStatePools[static_cast<unsigned int>(mNowState)]->Input(this, _keyState);
 }
 
 void PlayerObject::OnCollision(const GameObject& _hitObject)
@@ -156,7 +133,6 @@ void PlayerObject::OnCollision(const GameObject& _hitObject)
 
 	if (Math::Abs(dz) <= Math::Abs(dx) && Math::Abs(dz) <= Math::Abs(dy))
 	{
-		//charaSpeed = 0.0f;
 		mPosition.z += dz;
 	}
 }

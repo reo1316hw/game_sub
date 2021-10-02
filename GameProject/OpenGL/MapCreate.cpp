@@ -230,7 +230,6 @@ void MapCreate::CreatePlayer()
 				case(1):
 					new PlayerObject(objectPos, objectSize, "Assets/Model/Player/Player.gpmesh"
 														  , "Assets/Model/Player/Player.gpskel"
-						                                  , "Assets/Model/Player/PlayerIdle.gpanim"
 														  , Tag::Player
 						                                  , SceneBase::tutorial);
 					break;

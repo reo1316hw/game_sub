@@ -34,25 +34,19 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, float _deltaT
 	return PlayerState::ePlayerStateRunLoop;
 }
 
-void PlayerObjectStateRunLoop::Inipt(PlayerObject* _owner, const InputState& _keyState)
+void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _keyState)
 {
-
-	//// コントローラ入力されたか
-	//Vector2 stickL = INPUT_INSTANCE.GetLStick();
-	//bool isContollerInputOff = !INPUT_INSTANCE.IsLStickMove();
+	//左Shiftキーが入力されたか
+	mSprintFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_LSHIFT) == Held;
 
 	//方向キーが入力されたか
-	mIdleFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
-				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
-				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-				_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D); //||
-			  // isContollerInputOff;
+	mRunFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held ||
+		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) == Held ||
+		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) == Held ||
+		_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) == Held;
 
-	//左Shiftキーが入力されたか
-	mSprintStartFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
-
-	//Enterキーが入力されたか
-	mAttackFlag = _keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
+	//Spaceキーが入力されたか
+	mAttackFlag = _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released;
 
 	//値が更新され続けるのを防ぐために初期化
 	mDirVec = Vector3::Zero;
@@ -93,15 +87,6 @@ void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, float _deltaTime)
 
 void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)
 {
-	/*if (buttonFlag == false)
-	{
-		mCharaSpeed -= 1.0f;
-		if (mCharaSpeed <= 0.0f)
-		{
-			mCharaSpeed = 0.0f;
-		}
-	}*/
-
 	// 移動速度
 	const float PLAYER_SPEED = 300.0f;
 
@@ -114,18 +99,6 @@ void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)
 	// カメラ前方ベクトルと右方向ベクトル算出
 	mForwardVec = Vector3::Normalize(mForwardVec);
 	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
-	//jumpVec = Vector3::Cross(Vector3::UnitY, mForwardVec);
-
-	//// 右方向ベクトルからカメラ回転角を算出
-	//float forwardAngle = 0.0f;
-	//float angleSign;
-	//Vector3 tmpVec;
-	//forwardAngle = acosf(Vector3::Dot(Vector3::UnitX, mRightVec));
-
-	//// 右回転か左回転か？
-	//tmpVec = Vector3::Cross(Vector3::UnitX, mRightVec);
-	//angleSign = (tmpVec.z > 0.0) ? 1.0f : -1.0f;
-	//forwardAngle *= angleSign;
 
 	// 入力キーの総和
 	if (mDirVec.LengthSq() > 0.5f)
@@ -139,11 +112,6 @@ void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, float _deltaTime)
 
 		// 現在のスピードを保存
 		mCharaSpeed = PLAYER_SPEED * _deltaTime;
-
-		/*if (mCharaSpeed >= 10.0f)
-		{
-			mCharaSpeed = 10.0f;
-		}*/
 	}
 
 	// 移動処理

@@ -13,8 +13,8 @@ public:
 	int GetAttackBoneIndex() { return mAttackBoneIndex; };
 	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; };
 
-	void SetOffsetPosition(class Vector3& _offset);
-	void SetOffsetRotation(class Vector3& _rotation);
+	void SetOffsetPosition(const Vector3& _offset);
+	void SetOffsetRotation(const Vector3& _rotation);
 
 	void Draw(class Shader* _shader)override;
 	const Vector3& GetAttachPosisiton()const { return mComputeAttachPos; }

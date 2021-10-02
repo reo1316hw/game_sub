@@ -23,27 +23,12 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, float _de
 		}
 	}
 
-	//// ジャンプ開始・ジャンプループ/終了アニメ
-	//const Animation* runStart = _owner->GetAnim(PlayerState::PLAYER_STATE_RUN_START);
-	//const Animation* runLoop = _owner->GetAnim(PlayerState::PLAYER_STATE_RUN_LOOP);
-
-	//// 現在再生中のアニメを取得
-	//SkeletalMeshComponent* skeltalMesh = _owner->GetSkeletalMeshComp();
-	//const Animation* nowAnim = skeltalMesh->GetNowPlayingAnimation();
-
 	MoveCalc(_owner, _deltaTime);
-
-	//// 開始アニメ終了ならジャンプループアニメに移行
-	//if (nowAnim == runStart && skeltalMesh->IsPlaying())
-	//{
-	//	//skeltalMesh->PlayAnimation(runLoop);
-	//	return PlayerState::PLAYER_STATE_RUN_LOOP;
-	//}
 
 	return PlayerState::ePlayerStateSprintStart;
 }
 
-void PlayerObjectStateSprintStart::Inipt(PlayerObject* _owner, const InputState& _keyState)
+void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState& _keyState)
 {
 	//値が更新され続けるのを防ぐために初期化
 	mDirVec = Vector3::Zero;
@@ -87,11 +72,6 @@ void PlayerObjectStateSprintStart::Enter(PlayerObject* _owner, float _deltaTime)
 	mCharaSpeed = 0.0f;
 }
 
-void PlayerObjectStateSprintStart::Exit(PlayerObject* _owner, float _deltaTime)
-{
-
-}
-
 void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, float _deltaTime)
 {
 	// 移動速度
@@ -106,18 +86,6 @@ void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, float _deltaTi
 	// カメラ前方ベクトルと右方向ベクトル算出
 	mForwardVec = Vector3::Normalize(mForwardVec);
 	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
-	//jumpVec = Vector3::Cross(Vector3::UnitY, mForwardVec);
-
-	//// 右方向ベクトルからカメラ回転角を算出
-	//float forwardAngle = 0.0f;
-	//float angleSign;
-	//Vector3 tmpVec;
-	//forwardAngle = acosf(Vector3::Dot(Vector3::UnitX, mRightVec));
-
-	//// 右回転か左回転か？
-	//tmpVec = Vector3::Cross(Vector3::UnitX, mRightVec);
-	//angleSign = (tmpVec.z > 0.0) ? 1.0f : -1.0f;
-	//forwardAngle *= angleSign
 
 	// 入力キーの総和
 	if (mDirVec.LengthSq() > 0.5f)

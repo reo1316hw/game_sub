@@ -46,10 +46,6 @@ PlayerState PlayerObjectStateAttack03::Update(PlayerObject* _owner, float _delta
 	return PlayerState::ePlayerStateThirdAttack;
 }
 
-void PlayerObjectStateAttack03::Inipt(PlayerObject* _owner, const InputState& _keyState)
-{
-}
-
 void PlayerObjectStateAttack03::Enter(PlayerObject* _owner, float _deltaTime)
 {
 	// ATTACK3のアニメーション再生
@@ -59,16 +55,4 @@ void PlayerObjectStateAttack03::Enter(PlayerObject* _owner, float _deltaTime)
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnim(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
 	mElapseTime = 0.0f;
-
-	//_owner->SetAttackHitBox(1.5f);
-	//// 剣エフェクト発生
-	//SwordEffectActor* effect = new SwordEffectActor(_owner);
-	//effect->SetLocalPos(swordLocalPos);
-	//effect->SetLocalRotation(swordLocalAngle);
-	//effect->SetEffectTime(mTotalAnimTime + cStopTime);
-}
-
-void PlayerObjectStateAttack03::Exit(PlayerObject* _owner, float _deltaTime)
-{
-	//_owner->RemoveAttackHitBox();
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 
 PlayerObjectStateAttack02::PlayerObjectStateAttack02()
+	: mNumFrame(0)
 {
 	printf("Create : [PlayerObjectStateBase] PlayerObjectStateAttack02\n");
 }
@@ -23,6 +24,12 @@ PlayerState PlayerObjectStateAttack02::Update(PlayerObject* _owner, float _delta
 		return PlayerState::ePlayerStateIdle;
 	}
 
+	// フレーム数を減らしていく
+	if (mNumFrame > 0)
+	{
+	    --mNumFrame;
+	}
+
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _deltaTime;
 	const float PLAYER_ATTACK_SPEED = 100.0f;
@@ -39,12 +46,12 @@ PlayerState PlayerObjectStateAttack02::Update(PlayerObject* _owner, float _delta
 	return PlayerState::ePlayerStateSecondAttack;
 }
 
-void PlayerObjectStateAttack02::Inipt(PlayerObject* _owner, const InputState& _keyState)
+void PlayerObjectStateAttack02::Input(PlayerObject* _owner, const InputState& _keyState)
 {
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (_keyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Pressed)
+	if (mNumFrame <= 2 && _keyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
-		mNextComboFlag = true;
+ 		mNextComboFlag = true;
 	}
 }
 
@@ -57,21 +64,6 @@ void PlayerObjectStateAttack02::Enter(PlayerObject* _owner, float _deltaTime)
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnim(PlayerState::ePlayerStateSecondAttack)->GetDuration();
+	mNumFrame = _owner->GetAnim(PlayerState::ePlayerStateDashAttack)->GetNumFrames();
 	mElapseTime = 0.0f;
-
-	//_owner->SetAttackHitBox(1.5f);
-
-	//// 剣エフェクト発生
-	//SwordEffectActor* effect = new SwordEffectActor(_owner);
-	//Vector3 localPos, localAngle;
-	//localPos = Vector3(50, 0, 100);
-	//localAngle = Vector3(Math::ToRadians(-180.0f), 0, 0);
-	//effect->SetLocalPos(localPos);
-	//effect->SetLocalRotation(localAngle);
-	//effect->SetEffectTime(mTotalAnimTime);
-}
-
-void PlayerObjectStateAttack02::Exit(PlayerObject* _owner, float _deltaTime)
-{
-	//_owner->RemoveAttackHitBox();
 }

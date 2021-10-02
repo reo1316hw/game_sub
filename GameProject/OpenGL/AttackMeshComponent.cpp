@@ -14,12 +14,12 @@ AttackMeshComponent::~AttackMeshComponent()
 	//printf("Remove : AttachMeshComponent [%d]\n", mID);
 }
 
-void AttackMeshComponent::SetOffsetPosition(Vector3& offset)
+void AttackMeshComponent::SetOffsetPosition(const Vector3& offset)
 {
 	mOffsetPos = Matrix4::CreateTranslation(offset);
 }
 
-void AttackMeshComponent::SetOffsetRotation(Vector3& rotation)
+void AttackMeshComponent::SetOffsetRotation(const Vector3& rotation)
 {
 	mOffsetRotation = Matrix4::CreateRotationY(rotation.y)
 		* Matrix4::CreateRotationX(rotation.x)
