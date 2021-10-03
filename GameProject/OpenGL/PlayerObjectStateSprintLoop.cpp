@@ -143,20 +143,20 @@ void PlayerObjectStateSprintLoop::Enter(PlayerObject* _owner, const float _Delta
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateSprintLoop::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
-	// 速度初期化
-	mCharaSpeed = 0.0f;
-
 	// カメラからみた前進方向を取得
-	const Vector3 TargetPos = _owner->GetTargetPos();
-	const Vector3 CameraPos = _owner->GetCameraPos();
+	Vector3 targetPos = _owner->GetTargetPos();
+	Vector3 cameraPos = _owner->GetCameraPos();
 
-	mForwardVec = TargetPos - CameraPos;
+	mForwardVec = targetPos - cameraPos;
 	// 高さ方向を無視
 	mForwardVec.z = 0.0f; 
 
 	// カメラ前方ベクトルと右方向ベクトル算出
 	mForwardVec = Vector3::Normalize(mForwardVec);
 	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+
+	// 速度初期化
+	mCharaSpeed = 0.0f;
 
 	// 入力キーの総和
 	if (mDirVec.LengthSq() >= MDirThreshold)

@@ -44,8 +44,6 @@ void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _KeySt
 {
     //左スティックの入力値の値(-1~1)
     Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
-    //移動するための左スティックのしきい値
-    const float LeftAxisThreshold = 0.3f;
 
    //方向キーが入力されたか
     mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||

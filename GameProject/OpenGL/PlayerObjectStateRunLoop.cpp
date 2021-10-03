@@ -49,8 +49,6 @@ void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _Ke
 {
 	//左スティックの入力値の値(-1~1)
 	Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
-	//移動するための左スティックのしきい値
-	const float LeftAxisThreshold = 0.3f;
 
 	//方向キーが入力されたか
 	mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
@@ -145,10 +143,10 @@ void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, const float _DeltaTim
 void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
 	// カメラからみた前進方向を取得
-	const Vector3 TargetPos = _owner->GetTargetPos();
-	const Vector3 CameraPos = _owner->GetCameraPos();
+	Vector3 targetPos = _owner->GetTargetPos();
+	Vector3 cameraPos = _owner->GetCameraPos();
 
-	mForwardVec = TargetPos - CameraPos;
+	mForwardVec = targetPos - cameraPos;
 	// 高さ方向を無視
 	mForwardVec.z = 0.0f;
 

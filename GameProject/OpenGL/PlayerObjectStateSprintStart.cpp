@@ -122,10 +122,10 @@ void PlayerObjectStateSprintStart::Enter(PlayerObject* _owner, const float _Delt
 void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
 	// ƒJƒƒ‰‚©‚ç‚İ‚½‘Oi•ûŒü‚ğæ“¾
-	const Vector3 TargetPos = _owner->GetTargetPos();
-	const Vector3 CameraPos = _owner->GetCameraPos();
+	Vector3 targetPos = _owner->GetTargetPos();
+	Vector3 cameraPos = _owner->GetCameraPos();
 
-	mForwardVec = TargetPos - CameraPos;
+	mForwardVec = targetPos - cameraPos;
 	// ‚‚³•ûŒü‚ğ–³‹
 	mForwardVec.z = 0.0f;
 
