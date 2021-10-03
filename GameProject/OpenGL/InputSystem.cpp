@@ -233,16 +233,6 @@ void InputSystem::Update()
 	mState.m_mouse.mMousePos.x = static_cast<float>(x) - 1024.0f / 2;
 	mState.m_mouse.mMousePos.y = 768.0f / 2 - static_cast<float>(y);
 
-	//コントローラー
-	//・ボタン
-	for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++)
-	{
-		mState.m_controller.mCurrButtons[i] =
-			SDL_GameControllerGetButton(mController,
-				SDL_GameControllerButton(i));
-	}
-
-
 	// コントローラが無い場合は early exitする
 	if (mController != NULL)
 	{
@@ -267,13 +257,15 @@ void InputSystem::Update()
 		// LPAD入力をベクトル化する
 		const float maxInput = 32767.0f;
 		mState.m_controller.mLAxis.x = (float)mState.m_controller.mAxisValues[SDL_CONTROLLER_AXIS_LEFTX];
-		mState.m_controller.mLAxis.y= (float)mState.m_controller.mAxisValues[SDL_CONTROLLER_AXIS_LEFTY];
+		mState.m_controller.mLAxis.y = (float)mState.m_controller.mAxisValues[SDL_CONTROLLER_AXIS_LEFTY];
+		mState.m_controller.mRAxis.x = (float)mState.m_controller.mAxisValues[SDL_CONTROLLER_AXIS_RIGHTX];
+		mState.m_controller.mRAxis.y = (float)mState.m_controller.mAxisValues[SDL_CONTROLLER_AXIS_RIGHTY];
 		
-		//printf("%f\n", (float)state.Controller.axisValues[SDL_CONTROLLER_AXIS_LEFTX]);
 		//スティックの入力に最低値を設ける(定数以下はカット)
-		mState.m_controller.mLAxis.x= (fabs(mState.m_controller.mLAxis.x) < (float)7849) ? 0.0f : mState.m_controller.mLAxis.x / maxInput;
-		mState.m_controller.mLAxis.y= (fabs(mState.m_controller.mLAxis.y) < (float)8689) ? 0.0f : mState.m_controller.mLAxis.y / maxInput;
-
+		mState.m_controller.mLAxis.x = (fabs(mState.m_controller.mLAxis.x) < (float)7849) ? 0.0f : mState.m_controller.mLAxis.x / maxInput;
+		mState.m_controller.mLAxis.y = (fabs(mState.m_controller.mLAxis.y) < (float)8689) ? 0.0f : mState.m_controller.mLAxis.y / maxInput;
+		mState.m_controller.mRAxis.x = (fabs(mState.m_controller.mRAxis.x) < (float)7849) ? 0.0f : mState.m_controller.mRAxis.x / maxInput;
+		mState.m_controller.mRAxis.y = (fabs(mState.m_controller.mRAxis.y) < (float)8689) ? 0.0f : mState.m_controller.mRAxis.y / maxInput;
 	}
 }
 

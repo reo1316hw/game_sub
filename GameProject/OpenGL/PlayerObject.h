@@ -20,7 +20,7 @@ enum class PlayerState
 	ePlayerStateThirdAttack,	// 3段階目の攻撃
 	ePlayerStateDashAttack,     // ダッシュ攻撃
 
-	ePlayerStateNum,   // 総アニメーション数
+	ePlayerStateNum,            // 総アニメーション数
 };
 
 /// <summary>

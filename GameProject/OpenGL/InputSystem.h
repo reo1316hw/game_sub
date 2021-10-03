@@ -107,9 +107,12 @@ public://ゲッターセッター
 class ControllerState
 {
 public:
+
 	// InputSystemから容易に更新できるようにする
 	friend class InputSystem;
+
 private:
+
 	//現在のボタンの入力状態
 	Uint8 mCurrButtons[SDL_CONTROLLER_BUTTON_MAX];
 	//１フレーム前のボタンの入力状態
@@ -117,7 +120,11 @@ private:
 
 	//両スティックの情報
 	float mAxisValues[SDL_CONTROLLER_AXIS_MAX];
+
 	Vector2 mLAxis;
+
+	Vector2 mRAxis;
+
 public://ゲッターセッター
 	/*
 	@brief	現在の入力状態のみを取得する
@@ -140,11 +147,18 @@ public://ゲッターセッター
 	@return スティックの入力情報
 	*/
 	float GetAxisValue(const SDL_GameControllerAxis _iAxis) const;
+
 	/*
-	@brief スティックの入力を0~1で返す
-	@return スティックの入力情報
+	@brief  左スティックの入力を0~1で返す
+	@return 左スティックの入力情報
 	*/
 	const Vector2& GetLAxisVec() const { return mLAxis; }
+
+	/*
+	@brief  右スティックの入力を0~1で返す
+	@return 右スティックの入力情報
+	*/
+	const Vector2& GetRAxisVec() const { return mRAxis; }
 };
 
 /*

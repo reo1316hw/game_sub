@@ -42,17 +42,34 @@ PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, const float _Del
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
+    //左スティックの入力値の値(-1~1)
+    Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
+    //移動するための左スティックのしきい値
+    const float LeftAxisThreshold = 0.3f;
+
    //方向キーが入力されたか
     mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
              _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
              _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-             _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D);
+             _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) ||
+             _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP) ||
+             _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) ||
+             _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
+             _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+
+
+    if (leftAxis.x != 0.0f || leftAxis.y != 0.0f)
+    {
+        mIsRun = true;
+    }
 
     //左Shiftキーが入力されたか
-    mIsSprint = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+    mIsSprint = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) ||
+                _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
     //Spaceキーが入力されたか
-    mIsAttack = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
+    mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_A) ||
+                _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 }
 
 /// <summary>

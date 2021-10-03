@@ -6,6 +6,7 @@
 PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 	: MMoveSpeed(300.0f)
 	, MDirThreshold(0.5f)
+	, MLeftAxisThreshold(0.3f)
 {
 }
 
@@ -46,17 +47,33 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
+	//左スティックの入力値の値(-1~1)
+	Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
+	//移動するための左スティックのしきい値
+	const float LeftAxisThreshold = 0.3f;
+
 	//方向キーが入力されたか
 	mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
 		     _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
 		     _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-		     _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) ;
+		     _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) ||
+		     _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP)   ||
+		     _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) ||
+		     _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
+	         _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+
+	if (leftAxis.x != 0.0f || leftAxis.y != 0.0f)
+	{
+		mIsRun = true;
+	}
 
 	//左Shiftキーが入力されたか
-	mIsSprint = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+	mIsSprint = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) ||
+		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
 	//Spaceキーが入力されたか
-	mIsAttack = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
+	mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_A) ||
+		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 
 	//値が更新され続けるのを防ぐために初期化
 	mDirVec = Vector3::Zero;
@@ -83,6 +100,27 @@ void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _Ke
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
 		     _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
+	{
+		mDirVec += mRightVec;
+	}
+
+	//左スティック入力時の前移動
+	if (leftAxis.y <= -MLeftAxisThreshold)
+	{
+		mDirVec += mForwardVec;
+	}
+	//左スティック入力時の後移動
+	if (leftAxis.y >= MLeftAxisThreshold)
+	{
+		mDirVec -= mForwardVec;
+	}
+	//左スティック入力時の左移動
+	if (leftAxis.x <= -MLeftAxisThreshold)
+	{
+		mDirVec -= mRightVec;
+	}
+	//左スティック入力時の右移動
+	if (leftAxis.x >= MLeftAxisThreshold)
 	{
 		mDirVec += mRightVec;
 	}

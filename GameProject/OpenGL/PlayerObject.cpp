@@ -11,7 +11,7 @@
 /// <param name="_SceneTag"> シーンタグ </param>
 PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
     : GameObject(_ObjectTag, _SceneTag)
-    , MCameraOffset(Vector3(150.0f,0.0f, 50.0f))
+    , MCameraOffset(Vector3(-150.0f,-150.0f,-150.0f))
 	, MTargetOffset(Vector3(0.0f, 0.0f, 40.0f))
     , MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
     , MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
@@ -36,18 +36,18 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mSkeltalMeshComponentPtr->SetSkeleton(RENDERER->GetSkeleton(_GpskelName));
 
 	// アニメーションの取得 & アニメーション配列にセット
-	mAnimTypes.resize((int)PlayerState::ePlayerStateNum);
-	mAnimTypes[(int)PlayerState::ePlayerStateIdle] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordIdle.gpanim", true);
-	mAnimTypes[(int)PlayerState::ePlayerStateRunLoop] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
-	mAnimTypes[(int)PlayerState::ePlayerStateSprintStart] = RENDERER->GetAnimation("Assets/Model/Player/PlayerIdleToRun.gpanim", false);
-	mAnimTypes[(int)PlayerState::ePlayerStateSprintLoop] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
-	mAnimTypes[(int)PlayerState::ePlayerStateFirstAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack01.gpanim", false);
-	mAnimTypes[(int)PlayerState::ePlayerStateSecondAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack02.gpanim", false);
-	mAnimTypes[(int)PlayerState::ePlayerStateThirdAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack03.gpanim", false);
-	mAnimTypes[(int)PlayerState::ePlayerStateDashAttack] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDashAttack.gpanim", false);
+	mAnimTypes.resize(static_cast<int>(PlayerState::ePlayerStateNum));
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateIdle)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordIdle.gpanim", true);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateRunLoop)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateSprintStart)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerIdleToRun.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateSprintLoop)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateFirstAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack01.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateSecondAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack02.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateThirdAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerAttack03.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDashAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDashAttack.gpanim", false);
 
 	// Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
-	const Animation* anim = mAnimTypes[(int)PlayerState::ePlayerStateIdle];
+	const Animation* anim = mAnimTypes[static_cast<int>(PlayerState::ePlayerStateIdle)];
 	// anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
@@ -90,25 +90,26 @@ void PlayerObject::UpdateGameObject(float _deltaTime)
 {
 	mTargetPos = mPosition + MTargetOffset;
 	mCameraPos = mMainCamera->GetPosition();
-	mMainCamera->SetViewMatrixLerpObject(MCameraOffset, mTargetPos);
+	// 見たい座標の設定
+	mMainCamera->SetViewObject(MCameraOffset, mTargetPos);
 
 	// ステート外部からステート変更があったか？
 	if (mNowState != mNextState)
 	{
-		mStatePools[(int)(mNowState)]->Exit(this, _deltaTime);
-		mStatePools[(int)(mNextState)]->Enter(this, _deltaTime);
+		mStatePools[static_cast<int>(mNowState)]->Exit(this, _deltaTime);
+		mStatePools[static_cast<int>(mNextState)]->Enter(this, _deltaTime);
 		mNowState = mNextState;
 		return;
 	}
 
 	// ステート実行
-	mNextState = mStatePools[(int)mNowState]->Update(this, _deltaTime);
+	mNextState = mStatePools[static_cast<int>(mNowState)]->Update(this, _deltaTime);
 
 	// ステート内部からステート変更あったか？
 	if (mNowState != mNextState)
 	{
-		mStatePools[(int)mNowState]->Exit(this, _deltaTime);
-		mStatePools[(int)mNextState]->Enter(this, _deltaTime);
+		mStatePools[static_cast<int>(mNowState)]->Exit(this, _deltaTime);
+		mStatePools[static_cast<int>(mNextState)]->Enter(this, _deltaTime);
 		mNowState = mNextState;
 	}
 }
@@ -120,7 +121,7 @@ void PlayerObject::UpdateGameObject(float _deltaTime)
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObject::GameObjectInput(const InputState& _KeyState)
 {
-	mStatePools[(int)mNowState]->Input(this, _KeyState);
+	mStatePools[static_cast<int>(mNowState)]->Input(this, _KeyState);
 }
 
 /// <summary>

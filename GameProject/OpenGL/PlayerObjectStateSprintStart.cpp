@@ -8,6 +8,7 @@ PlayerObjectStateSprintStart::PlayerObjectStateSprintStart()
 	, MMaxSpeed(12.0f)
 	, MPlayRate(1.2f)
 	, MDirThreshold(0.5f)
+	, MLeftAxisThreshold(0.3f)
 {
 }
 
@@ -42,6 +43,9 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, const flo
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
+	//左スティックの入力値の値(-1~1)
+	Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
+	
 	//値が更新され続けるのを防ぐために初期化
 	mDirVec = Vector3::Zero;
 
@@ -67,6 +71,27 @@ void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState&
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
+	{
+		mDirVec += mRightVec;
+	}
+
+	//左スティック入力時の前移動
+	if (leftAxis.y <= -MLeftAxisThreshold)
+	{
+		mDirVec += mForwardVec;
+	}
+	//左スティック入力時の後移動
+	if (leftAxis.y >= MLeftAxisThreshold)
+	{
+		mDirVec -= mForwardVec;
+	}
+	//左スティック入力時の左移動
+	if (leftAxis.x <= -MLeftAxisThreshold)
+	{
+		mDirVec -= mRightVec;
+	}
+	//左スティック入力時の右移動
+	if (leftAxis.x >= MLeftAxisThreshold)
 	{
 		mDirVec += mRightVec;
 	}

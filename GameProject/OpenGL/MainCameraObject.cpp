@@ -1,91 +1,117 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 MainCameraObject::MainCameraObject() 
 	: GameObject(Tag::Camera,SceneBase::Scene::other,true)
-	, mRotateYAngle(Math::Pi)
-	, mLookDownAngle(maxLookDownAngle)
+	, MMinLookDownAngle(Math::ToRadians(0.0f))
+	, MMaxLookDownAngle(Math::ToRadians(80.0f))
+	, MRightAxisThreshold(0.3f)
+	, MAddRotate(0.04f)
+	, mHasTarget(false)
+	, mRotateZAngle(Math::Pi)
+	, mRotateYAngle(0.0f)
+	, mOwnerOffset(Vector3::Zero)
+	, mTargetPos(Vector3::Zero)
 {
 	SetPosition(Vector3(0,0,0));
 	mTag = Tag::Camera;
 }
 
-MainCameraObject::~MainCameraObject()
-{
-}
-
+/// <summary>
+/// オブジェクトの更新処理
+/// </summary>
+/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void MainCameraObject::UpdateGameObject(float _deltaTime)
 {
-	/*Vector3 pos = offsetPos + mPosition;
-	pos.x = mLerpObject.x + offsetPos.x;
-	pos.y = mLerpObject.y + offsetPos.y;
-	pos.z = mLerpObject.z + offsetPos.z;
-	mPosition = pos;*/
-	//mPosition = Vector3::Lerp(mPosition, pos, _deltaTime * 3.0f);
-	//Vector3 aa = mPosition;
-	//aa.z = 0;
-
 	// 見降ろし角度の角度制限
-	if (mLookDownAngle < minLookDownAngle)
+	if (mRotateYAngle < MMinLookDownAngle)
 	{
-		mLookDownAngle = minLookDownAngle;
+		mRotateYAngle = MMinLookDownAngle;
 	}
-	if (mLookDownAngle > maxLookDownAngle)
+	if (mRotateYAngle > MMaxLookDownAngle)
 	{
-		mLookDownAngle = maxLookDownAngle;
+		mRotateYAngle = MMaxLookDownAngle;
 	}
+
+	// 回転後の座標
+	Vector3 rotatePos;
 
 	// ヨー回転・ピッチ回転
-	Vector3 rotatePos;
-	float distance = -150.0f;
-	rotatePos.x = distance * cosf(mLookDownAngle) * sinf(mRotateYAngle);
-	rotatePos.y = distance * cosf(mLookDownAngle) * cosf(mRotateYAngle);
-	rotatePos.z = distance * sinf(-mLookDownAngle);
+	rotatePos.x = mOwnerOffset.x * cosf(mRotateYAngle) * sinf(mRotateZAngle);
+	rotatePos.y = mOwnerOffset.y * cosf(mRotateYAngle) * cosf(mRotateZAngle);
+	rotatePos.z = mOwnerOffset.z * sinf(-mRotateYAngle);
 
-	mPosition = rotatePos + mLerpObject;
+	mPosition = rotatePos + mTargetPos;
 
-	Matrix4 view = Matrix4::CreateLookAt(mPosition, mLerpObject, Vector3::UnitZ);
+	// 見たい座標を見る処理
+	Matrix4 view = Matrix4::CreateLookAt(mPosition, mTargetPos, Vector3::UnitZ);
 	RENDERER->SetViewMatrix(view);
 	SetPosition(mPosition);
-
-	/*float radian = Math::ToRadians(angle);
-	Quaternion rot = this->GetRotation();
-	Quaternion inc(Vector3::UnitZ, radian);
-	Quaternion target = Quaternion::Concatenate(rot, inc);
-	SetRotation(target);*/
 }
 
-void MainCameraObject::GameObjectInput(const InputState& _keyState)
+/// <summary>
+/// 入力を引数で受け取る更新関数
+/// 基本的にここで入力情報を変数に保存しUpdateGameObjectで更新を行う
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+void MainCameraObject::GameObjectInput(const InputState& _KeyState)
 {
-	const float rotate = 0.03f;
+	//右スティックの入力値の値(-1~1)
+	Vector2 rightAxis = _KeyState.m_controller.GetRAxisVec();
+
 	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
-	if (_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_UP) == 1)
+	if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_UP) == Held)
 	{
-		mLookDownAngle += rotate;
+		mRotateYAngle -= MAddRotate;
 	}
 	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
-	if (_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_DOWN) == 1)
+	if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_DOWN) == Held)
 	{
-		mLookDownAngle -= rotate;
+		mRotateYAngle += MAddRotate;
 	}
 	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
-	if (_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LEFT) == 1)
+	if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_LEFT) == Held)
 	{
-		mRotateYAngle += rotate;
+		mRotateZAngle += MAddRotate;
 	}
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
-	if (_keyState.m_keyboard.GetKeyValue(SDL_SCANCODE_RIGHT) == 1)
+	if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_RIGHT) == Held)
 	{
-		mRotateYAngle -= rotate;
+		mRotateZAngle -= MAddRotate;
+	}
+
+	//右スティック入力時の前移動
+	if (rightAxis.y <= -MRightAxisThreshold)
+	{
+		mRotateYAngle -= MAddRotate;
+	}
+	//右スティック入力時の後移動
+	if (rightAxis.y >= MRightAxisThreshold)
+	{
+		mRotateYAngle += MAddRotate;
+	}
+	//右スティック入力時の左移動
+	if (rightAxis.x <= -MRightAxisThreshold)
+	{
+		mRotateZAngle += MAddRotate;
+	}
+	//右スティック入力時の右移動
+	if (rightAxis.x >= MRightAxisThreshold)
+	{
+		mRotateZAngle -= MAddRotate;
 	}
 }
 
-/*
-@param _offset　見たい座標との差
-@param _parentPos　見る座標
-*/
-void MainCameraObject::SetViewMatrixLerpObject(const Vector3 & _offset, const Vector3 & _parentPos)
+/// <summary>
+/// 見たい座標を設定
+/// </summary>
+/// <param name="_Offset"> 見たい座標との差 </param>
+/// <param name="_TargetPos"> 見る座標 </param>
+void MainCameraObject::SetViewObject(const Vector3 & _Offset, const Vector3 & _TargetPos)
 {
-	mHasParentObject = true;
-	mOffsetPos = _offset;
-	mLerpObject = _parentPos;
+	mHasTarget = true;
+	mOwnerOffset = _Offset;
+	mTargetPos = _TargetPos;
 }

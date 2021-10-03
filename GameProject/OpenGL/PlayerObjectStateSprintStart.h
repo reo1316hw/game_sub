@@ -56,4 +56,6 @@ private:
 	const float MPlayRate;
 	// 向きのしきい値
 	const float MDirThreshold;
+	//移動するための左スティックのしきい値
+	const float MLeftAxisThreshold;
 };
