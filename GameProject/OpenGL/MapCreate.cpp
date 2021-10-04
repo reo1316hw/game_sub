@@ -1,6 +1,8 @@
 #include "pch.h"
 
-MapCreate::MapCreate() :GameObject(Tag::Other,SceneBase::Scene::other)
+MapCreate::MapCreate() 
+	:GameObject(Tag::Other,SceneBase::Scene::other)
+    , mPlayerPtr(nullptr)
 {
 	mSizeX = 0;
 	mSizeY = 0;
@@ -200,9 +202,9 @@ void MapCreate::CreateEnemy()
 				case(25):
 					new EnemyObject(objectPos, objectSize , "Assets/Model/Enemy/Enemy.gpmesh"
 														  , "Assets/Model/Enemy/Enemy.gpskel"
-														  , "Assets/Model/Enemy/EnemyIdle.gpanim"
 														  , Tag::Enemy
-														  , SceneBase::tutorial);
+														  , SceneBase::tutorial
+					                                      , mPlayerPtr);
 					break;
 				}
 				break;
@@ -228,7 +230,7 @@ void MapCreate::CreatePlayer()
 				switch (name)
 				{
 				case(1):
-					new PlayerObject(objectPos, objectSize, "Assets/Model/Player/Player.gpmesh"
+					mPlayerPtr = new PlayerObject(objectPos, objectSize, "Assets/Model/Player/Player.gpmesh"
 														  , "Assets/Model/Player/Player.gpskel"
 														  , Tag::Player
 						                                  , SceneBase::tutorial);
@@ -238,7 +240,6 @@ void MapCreate::CreatePlayer()
 			}
 		}
 	}
-
 }
 
 bool MapCreate::readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName)

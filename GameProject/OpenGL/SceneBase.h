@@ -50,7 +50,6 @@ protected:
     InputSystem* mInputSystem;
 
     MapCreate*    mMapCreate;
-    PlayerObject* mPlayer;
     Goal*         mGoalLine;
     HeartUI*      mHeartUI;
 

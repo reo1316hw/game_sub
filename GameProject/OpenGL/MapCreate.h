@@ -36,5 +36,7 @@ private:
 	int		mSizeY;
 	int		mSizeZ;
 	float	mOffset;
+
+	PlayerObject* mPlayerPtr;
 };
 

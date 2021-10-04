@@ -11,13 +11,13 @@ class AttackMeshComponent;
 /// </summary>
 enum class PlayerState
 {
-	ePlayerStateIdle = 0,		// 待機状態
-	ePlayerStateRunLoop,		// 走っている状態
-	ePlayerStateSprintStart,	// 全力疾走を始める状態
-	ePlayerStateSprintLoop,		// 全力疾走している状態
-	ePlayerStateFirstAttack,	// 1段階目の攻撃
-	ePlayerStateSecondAttack,	// 2段階目の攻撃
-	ePlayerStateThirdAttack,	// 3段階目の攻撃
+	ePlayerStateIdle = 0,		// 待機
+	ePlayerStateRunLoop,		// 走っている
+	ePlayerStateSprintStart,	// 全力疾走始め
+	ePlayerStateSprintLoop,		// 全力疾走している
+	ePlayerStateFirstAttack,	// 1段階目の通常攻撃
+	ePlayerStateSecondAttack,	// 2段階目の通常攻撃
+	ePlayerStateThirdAttack,	// 3段階目の通常攻撃
 	ePlayerStateDashAttack,     // ダッシュ攻撃
 
 	ePlayerStateNum,            // 総アニメーション数
@@ -104,9 +104,10 @@ private:
 	PlayerState mNowState;
 	// 次のステート
 	PlayerState mNextState;
-	
 	// 武器メッシュ
 	AttackMeshComponent* mWeaponMesh;
+	//ゲームオブジェクトのスケルトンメッシュ
+	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
 
 public:// ゲッターセッター
 

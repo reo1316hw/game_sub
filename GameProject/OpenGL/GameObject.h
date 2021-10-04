@@ -288,8 +288,6 @@ protected:
 	//このゲームオブジェクトのID
 	int mMyObjectId;
 
-	//ゲームオブジェクトのスケルトンメッシュ
-	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
 	//ゲームオブジェクトのメッシュ
 	MeshComponent* mMeshComponentPtr;
 	//ゲームオブジェクトの当たり判定

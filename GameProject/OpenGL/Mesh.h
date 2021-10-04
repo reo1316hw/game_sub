@@ -46,7 +46,7 @@ private:
 	float mLuminance;
 	// 透明度
 	float mAlpha;
-
+	// 矩形当たり判定
 	AABB mBox;
 
 	// テクスチャステージに割り当てられたテクスチャ

@@ -13,15 +13,14 @@ Tutorial::Tutorial(const Scene& _scene)
 	dir.m_specColor = Vector3(0.4f, 0.4f, 0.4f);
 
 	SetScene(_scene);
-	//sprite = new Sprite("Assets/forest.png");
 
 	mMapCreate = new MapCreate();
 	if (!mMapCreate->OpenFile())
 	{
+		mMapCreate->CreatePlayer();
 		mMapCreate->CreateGround();
 		mMapCreate->CreateWall();
-		mMapCreate->CreatePlayer();
-		//mMapCreate->CreateEnemy();
+		mMapCreate->CreateEnemy();
 	}
 }
 

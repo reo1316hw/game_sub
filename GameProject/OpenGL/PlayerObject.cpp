@@ -51,12 +51,12 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
-	// 武器のメッシュ当たり判定
-	mMeshPtr = new Mesh;
-	mMeshPtr = RENDERER->GetMesh("Assets/Model/Sword/Sword.gpmesh");
+	//// 武器のメッシュ当たり判定
+	//mMeshPtr = new Mesh;
+	//mMeshPtr = RENDERER->GetMesh("Assets/Model/Sword/Sword.gpmesh");
 	// 武器
 	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponentPtr, "index_01_r");
-	mWeaponMesh->SetMesh(mMeshPtr);
+	mWeaponMesh->SetMesh(RENDERER->GetMesh("Assets/Model/Sword/Sword.gpmesh"));
 
 	// 武器の円周率をセット
 	mWeaponMesh->SetOffsetRotation(MSwordRot);

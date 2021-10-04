@@ -51,6 +51,8 @@
 #include "PlayerObjectStateThirdAttack.h"
 #include "PlayerObjectStateDashAttack.h"
 #include "EnemyObject.h"
+#include "EnemyObjectStateBase.h"
+#include "EnemyObjectStateTrack.h"
 #include "GroundObject.h"
 #include "WallObject.h"
 #include "MainCameraObject.h"

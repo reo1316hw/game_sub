@@ -104,9 +104,6 @@
     <ClCompile Include="GroundObject.cpp">
       <Filter>GameObject\Map</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyObject.cpp">
-      <Filter>GameObject\Map</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerObjectStateSprintLoop.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
@@ -143,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="PlayerObjectStateThirdAttack.cpp">
       <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObject.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateBase.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateTrack.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +257,6 @@
     <ClInclude Include="GroundObject.h">
       <Filter>GameObject\Map</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyObject.h">
-      <Filter>GameObject\Map</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerObject.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
@@ -290,6 +293,15 @@
     </ClInclude>
     <ClInclude Include="PlayerObjectStateThirdAttack.h">
       <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObject.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateBase.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateTrack.h">
+      <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +349,9 @@
     </Filter>
     <Filter Include="GameObject\Map\Player">
       <UniqueIdentifier>{fb49822a-16ec-4cda-bd96-92719707cbc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy">
+      <UniqueIdentifier>{490dc89b-5731-4103-9417-f686277e5bd7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
