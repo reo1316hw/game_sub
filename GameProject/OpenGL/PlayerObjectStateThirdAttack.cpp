@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
-	: MPlayerAttackSpeed(150.0f)
+	: MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
 {
 }
@@ -22,9 +22,9 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	// 前方ベクトル
 	Vector3 forward = _owner->GetForward();
 	// 開始速度
-	float startSpeed = MPlayerAttackSpeed * _DeltaTime;
+	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
-	float endSpeed = -MPlayerAttackSpeed * _DeltaTime;
+	float endSpeed = -MAttackSpeed * _DeltaTime;
 
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;

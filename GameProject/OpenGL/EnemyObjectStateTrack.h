@@ -42,6 +42,9 @@ private:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void MoveCalc(EnemyObject* _owner, const float _DeltaTime);
 
+	// 止まる距離
+	const float MDistanceStop;
+
 	// 移動速度
 	float mMoveSpeed;
 

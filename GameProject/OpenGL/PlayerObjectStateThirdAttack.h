@@ -35,7 +35,7 @@ public:
 private:
 
 	// 攻撃時の速度
-	const float MPlayerAttackSpeed;
+	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
 };

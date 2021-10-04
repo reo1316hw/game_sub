@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
-	: MPlayerAttackSpeed(300.0f)
+	: MAttackSpeed(300.0f)
 	, mNumFrame(0)
 	, MPlayRate(1.5f)
 	, MValidComboFrame(5)
@@ -32,8 +32,8 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 	Vector3 pos, forward;
 	pos = _owner->GetPosition();
 	forward = _owner->GetForward();
-	float differencePos = -MPlayerAttackSpeed * _DeltaTime;
-	pos += Quintic::EaseIn(mElapseTime, MPlayerAttackSpeed * _DeltaTime, differencePos, mTotalAnimTime) * forward;
+	float differencePos = -MAttackSpeed * _DeltaTime;
+	pos += Quintic::EaseIn(mElapseTime, MAttackSpeed * _DeltaTime, differencePos, mTotalAnimTime) * forward;
 
 	_owner->SetPosition(pos);
 

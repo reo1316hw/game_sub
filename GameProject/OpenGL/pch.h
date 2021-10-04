@@ -53,6 +53,8 @@
 #include "EnemyObject.h"
 #include "EnemyObjectStateBase.h"
 #include "EnemyObjectStateTrack.h"
+#include "EnemyObjectStateWait.h"
+#include "EnemyObjectStateAttack.h"
 #include "GroundObject.h"
 #include "WallObject.h"
 #include "MainCameraObject.h"

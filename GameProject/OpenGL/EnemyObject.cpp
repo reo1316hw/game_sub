@@ -33,8 +33,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	// アニメーションの取得 & アニメーション配列にセット
 	mAnimTypes.resize(static_cast<int>(EnemyState::eEnemyStateNum));
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateTrack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyIdle.gpanim", true);
-	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateWait)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSwordRun.gpanim", true);
-	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerIdleToRun.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateWait)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyIdle.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateAttack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyIdle.gpanim", true);
 	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateMove)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
@@ -42,10 +42,10 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	//anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, 1.0f);
 
-	//// アクターステートプールの初期化
+	// アクターステートプールの初期化
 	mStatePools.push_back(new EnemyObjectStateTrack(_playerPtr));	      // mStatePool[eEnemyStateTrack]
-	//mStatePools.push_back(new PlayerObjectStateRunLoop);	  // mStatepool[ePlayerStateRunLoop]
-	//mStatePools.push_back(new PlayerObjectStateSprintStart);  // mStatepool[ePlayerStateSprintStart]
+	mStatePools.push_back(new EnemyObjectStateWait(_playerPtr));	      // mStatepool[eEnemyStateWait]
+	mStatePools.push_back(new EnemyObjectStateAttack(_playerPtr));        // mStatepool[eEnemyStateAttack]
 	//mStatePools.push_back(new PlayerObjectStateSprintLoop);	  // mStatepool[ePlayerStateSprintLoop]
 	//mStatePools.push_back(new PlayerObjectStateFirstAttack);  // mStatepool[ePlayerStateFirstAttack];
 	//mStatePools.push_back(new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
