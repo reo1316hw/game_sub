@@ -28,6 +28,9 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 		return EnemyState::eEnemyStateTrack;
 	}
 
+	dirPlayerVec.Normalize();
+	_owner->RotateToNewForward(dirPlayerVec);
+
 	return EnemyState::eEnemyStateWait;
 }
 

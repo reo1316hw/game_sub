@@ -1,21 +1,22 @@
 #pragma once
 
 /// <summary>
-/// 攻撃状態
+/// 移動状態
 /// </summary>
-class EnemyObjectStateAttack : public EnemyObjectStateBase
+class EnemyObjectStateMove : public EnemyObjectStateBase
 {
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyObjectStateAttack();
+	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemyObjectStateMove(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~EnemyObjectStateAttack() {};
+	~EnemyObjectStateMove() {};
 
 	/// <summary>
 	/// 更新処理
@@ -41,11 +42,18 @@ private:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void MoveCalc(EnemyObject* _owner, const float _DeltaTime);
 
-	// 攻撃時の速度
-	const float MAttackSpeed;
+	// 遷移するタイミング
+	const int MTransitionTimingNum;
 
-	// このステートに入ってからの経過時刻
-	float mElapseTime;
-	// アニメーション総時間
-	float mTotalAnimTime;
+	// 移動しているか
+	bool mIsMoving;
+
+	// 移動する時間のカウント変数
+	int mPeriodMoveCount;
+
+	// 移動速度
+	float mMoveSpeed;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 };

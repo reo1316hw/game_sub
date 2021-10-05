@@ -25,15 +25,19 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 		--mNumFrame;
 	}
 
+	// 座標
+	Vector3 pos = _owner->GetPosition();
+	// 前方ベクトル
+	Vector3 forward = _owner->GetForward();
+	// 開始速度
+	float startSpeed = MAttackSpeed * _DeltaTime;
+	// 終了速度
+	float endSpeed = -MAttackSpeed * _DeltaTime;
+
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
-
 	// 経過割合をもとに移動処理
-	Vector3 pos, forward;
-	pos = _owner->GetPosition();
-	forward = _owner->GetForward();
-	float differencePos = -MAttackSpeed * _DeltaTime;
-	pos += Quintic::EaseIn(mElapseTime, MAttackSpeed * _DeltaTime, differencePos, mTotalAnimTime) * forward;
+	pos += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
 
 	_owner->SetPosition(pos);
 

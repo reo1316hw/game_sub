@@ -55,6 +55,7 @@
 #include "EnemyObjectStateTrack.h"
 #include "EnemyObjectStateWait.h"
 #include "EnemyObjectStateAttack.h"
+#include "EnemyObjectStateMove.h"
 #include "GroundObject.h"
 #include "WallObject.h"
 #include "MainCameraObject.h"

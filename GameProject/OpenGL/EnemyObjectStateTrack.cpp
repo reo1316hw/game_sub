@@ -32,6 +32,7 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	}
 
 	dirPlayerVec.Normalize();
+	_owner->RotateToNewForward(dirPlayerVec);
 	position += mMoveSpeed * dirPlayerVec;
 	// キャラの位置・スピード・変換行列の再計算の必要をセット
 	_owner->SetPosition(position);

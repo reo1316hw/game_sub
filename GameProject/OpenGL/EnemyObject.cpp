@@ -35,7 +35,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateTrack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyIdle.gpanim", true);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateWait)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyIdle.gpanim", false);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateAttack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyIdle.gpanim", true);
-	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateMove)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFastRun.gpanim", true);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyIdle.gpanim", false);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(EnemyState::eEnemyStateTrack)];
@@ -45,8 +45,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	// アクターステートプールの初期化
 	mStatePools.push_back(new EnemyObjectStateTrack(_playerPtr));	      // mStatePool[eEnemyStateTrack]
 	mStatePools.push_back(new EnemyObjectStateWait(_playerPtr));	      // mStatepool[eEnemyStateWait]
-	mStatePools.push_back(new EnemyObjectStateAttack(_playerPtr));        // mStatepool[eEnemyStateAttack]
-	//mStatePools.push_back(new PlayerObjectStateSprintLoop);	  // mStatepool[ePlayerStateSprintLoop]
+	mStatePools.push_back(new EnemyObjectStateAttack);        // mStatepool[eEnemyStateAttack]
+	mStatePools.push_back(new EnemyObjectStateMove(_playerPtr));	      // mStatepool[eEnemyStateMove]
 	//mStatePools.push_back(new PlayerObjectStateFirstAttack);  // mStatepool[ePlayerStateFirstAttack];
 	//mStatePools.push_back(new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
 	//mStatePools.push_back(new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
