@@ -46,15 +46,12 @@ private:
 	void SphereAndSphere();
 	void BoxAndBox();
 
-    //std::vector<BoxCollider*> boxes;
-	//std::vector<SphereCollider*> spheres;
-
 	std::vector<BoxCollider*> mGroundBoxes;
 	std::vector<BoxCollider*> mWallBoxes;
 	std::vector<BoxCollider*> mPlayerBoxes;
 	std::vector<BoxCollider*> mEnemyBoxes;
 
-	std::vector<SphereCollider*> mPlayerSpheres;
+	std::vector<SphereCollider*> mWeaponSpheres;
 
 	onCollisionMap mCollisionFunction;
 };

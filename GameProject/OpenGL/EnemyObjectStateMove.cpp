@@ -2,6 +2,7 @@
 
 EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
+	, mIsDamage(false)
 	, mIsMoving(false)
 	, mMoveSpeed(1.0f)
 	, mPeriodMoveCount(0)
@@ -46,6 +47,10 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 		mIsMoving = false;
 		return EnemyState::eEnemyStateWait;
 	}
+	else if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 
 	return EnemyState::eEnemyStateMove;
 }
@@ -55,5 +60,16 @@ void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateMove));
 
+	mIsDamage = false;
 	mPeriodMoveCount = 0;
+}
+
+void EnemyObjectStateMove::OnColision(const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::Weapon)
+	{
+		mIsDamage = true;
+	}
 }

@@ -2,8 +2,9 @@
 
 EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 	: MDistanceStop(20000.0f)
-	, mPlayerPtr(_playerPtr)
 	, MTransitionTimingNum(120)
+	, mIsDamage(false)
+	, mPlayerPtr(_playerPtr)
 	, mTransitionCount(0)
 {
 }
@@ -27,6 +28,10 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 	{
 		return EnemyState::eEnemyStateTrack;
 	}
+	else if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 
 	dirPlayerVec.Normalize();
 	_owner->RotateToNewForward(dirPlayerVec);
@@ -39,5 +44,16 @@ void EnemyObjectStateWait::Enter(EnemyObject* _owner, const float _DeltaTime)
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateWait));
 
+	mIsDamage = false;
 	mTransitionCount = 0;
+}
+
+void EnemyObjectStateWait::OnColision(const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::Weapon)
+	{
+		mIsDamage = true;
+	}
 }

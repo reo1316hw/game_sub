@@ -12,10 +12,10 @@ enum class ColliderTag
 	Other = 0,
 	Camera = 1,
 	Player = 2,
-	Ground = 3,
-	Wall = 4,
-	Enemy = 5,
-	isGround = 6,
+	Weapon = 3,
+	Ground = 4,
+	Wall = 5,
+	Enemy = 6,
 	Swith = 7
 };
 

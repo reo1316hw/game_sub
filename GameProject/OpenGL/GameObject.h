@@ -63,7 +63,8 @@ enum Tag
 	SideSuperLongWall = 24,
 	VerticalSuperLongWall = 25,
 	Enemy = 26,
-	Swith = 27
+	Weapon = 27,
+	Swith = 28
 };
 
 /*
@@ -265,6 +266,7 @@ public:
 	AABB GetObjectAABB() const { return mBox; };
 
 protected:
+
 	std::function<void(GameObject&)> GetOnCollisionFunc() { return std::bind(&GameObject::OnCollision, this, std::placeholders::_1); }
 	virtual void OnCollision(const GameObject& _hitObject) {}
 
@@ -277,22 +279,22 @@ protected:
 	//衝突時のリアクション関数(ColliderComponentにこの関数のアドレスを渡す) Enter...衝突した Stay...衝突している
 	virtual void OnTriggerStay(ColliderComponent* _colliderPair) {};
 
-	//オブジェクトのAABB
+	// オブジェクトのAABB
 	AABB mBox;
-	//ゲームオブジェクトの状態
+	// ゲームオブジェクトの状態
 	State mState;
-	//ゲームオブジェクトのタグ
+	// ゲームオブジェクトのタグ
 	Tag mTag;
-	//ゲームオブジェクトのID、カウント用
+	// ゲームオブジェクトのID、カウント用
 	static int mGameObjectId;
-	//このゲームオブジェクトのID
+	// このゲームオブジェクトのID
 	int mMyObjectId;
 
-	//ゲームオブジェクトのメッシュ
+	// ゲームオブジェクトのメッシュ
 	MeshComponent* mMeshComponentPtr;
-	//ゲームオブジェクトの当たり判定
+	// 矩形の当たり判定
 	BoxCollider* mBoxColliderPtr;
-	//当たり判定をmeshにするためのインスタンス
+	// 当たり判定をmeshにするためのインスタンス
 	Mesh* mMeshPtr;
 
 	//Transform
@@ -322,6 +324,7 @@ protected:
 	std::vector<class Component*>mComponents;
 
 private:
+
 	//シーンを跨ぐ際に解放されるオブジェクトかどうか、カメラなどが対象になる
 	bool mReUseObject;
 };

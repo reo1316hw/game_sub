@@ -6,6 +6,7 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 	: MDistanceStop(20000.0f)
+	, mIsDamage(false)
 	, mMoveSpeed(2.0f)
 	, mPlayerPtr(_playerPtr)
 {
@@ -30,6 +31,10 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	{
 		return EnemyState::eEnemyStateWait;
 	}
+	else if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 
 	dirPlayerVec.Normalize();
 	_owner->RotateToNewForward(dirPlayerVec);
@@ -49,4 +54,16 @@ void EnemyObjectStateTrack::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateTrack));
+
+	mIsDamage = false;
+}
+
+void EnemyObjectStateTrack::OnColision(const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::Weapon)
+	{
+		mIsDamage = true;
+	}
 }

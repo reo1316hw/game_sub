@@ -39,5 +39,11 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	virtual void Exit(EnemyObject* _owner, const float _DeltaTime) {};
 
+	/// <summary>
+    /// ヒットされた時の処理
+    /// </summary>
+    /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	virtual void OnColision(const GameObject& _HitObject) {};
+
 private:
 };

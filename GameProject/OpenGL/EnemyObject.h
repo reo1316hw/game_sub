@@ -14,6 +14,8 @@ enum class EnemyState
 	eEnemyStateWait,            // 待機
 	eEnemyStateAttack,          // 攻撃
 	eEnemyStateMove,            // 移動
+	eEnemyStateDamage,          // ダメージを受けた
+	eEnemyStateDeath,           // 死亡
 
 	eEnemyStateNum,             // 総アニメーション数
 };

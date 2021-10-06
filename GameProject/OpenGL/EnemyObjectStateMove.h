@@ -33,6 +33,12 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
+	/// <summary>
+	/// ヒットされた時の処理
+	/// </summary>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnColision(const GameObject& _HitObject)override;
+
 private:
 
 	/// <summary>
@@ -47,6 +53,8 @@ private:
 
 	// 移動しているか
 	bool mIsMoving;
+	// ダメージを受けたか
+	bool mIsDamage;
 
 	// 移動する時間のカウント変数
 	int mPeriodMoveCount;

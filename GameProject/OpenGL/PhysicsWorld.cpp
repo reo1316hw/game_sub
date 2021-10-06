@@ -175,6 +175,24 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->refresh();
 			}
 		}
+
+		for (auto itr : mWeaponSpheres)
+		{
+			//コライダーの親オブジェクトがActiveじゃなければ終了する
+			if (itr->GetOwner()->GetState() != State::Active)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldSphere(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->refresh();
+			}
+		}
 		//for (auto itr : mPlayerBoxes)
 		//{
 		//	if (itr == _box)
@@ -207,26 +225,9 @@ void PhysicsWorld::HitCheck(SphereCollider * _sphere)
 		return;
 	}
 
-	//if (_sphere->GetTag() == ColliderTag::isGround)
+	//if (_sphere->GetTag() == ColliderTag::Weapon)
 	//{
-	//	for (auto itr : mGroundBoxes)
-	//	{
-	//		//コライダーの親オブジェクトがActiveじゃなければ終了する 
-	//		if (itr->GetOwner()->GetState() != State::Active)
-	//		{
-	//			continue;
-	//		}
-	//		bool hit = Intersect(_sphere->GetWorldSphere(), itr->GetWorldBox());
-	//		if (hit)
-	//		{
-	//			onCollisionFunc func = mCollisionFunction.at(_sphere);
-	//			func(*(itr->GetOwner()));
-	//			func = mCollisionFunction.at(itr);
-	//			func(*(_sphere->GetOwner()));
-	//			_sphere->refresh();
-	//		}
-	//	}
-	//	for (auto itr : mWallBoxes)
+	//	for (auto itr : mEnemyBoxes)
 	//	{
 	//		//コライダーの親オブジェクトがActiveじゃなければ終了する
 	//		if (itr->GetOwner()->GetState() != State::Active)
@@ -308,18 +309,18 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 
 void PhysicsWorld::AddSphere(SphereCollider * _sphere, onCollisionFunc _func)
 {
-	mPlayerSpheres.emplace_back(_sphere);
+	mWeaponSpheres.emplace_back(_sphere);
     //コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
     mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_sphere), _func));
 }
 
 void PhysicsWorld::RemoveSphere(SphereCollider * _sphere)
 {
-	auto iter = std::find(mPlayerSpheres.begin(), mPlayerSpheres.end(), _sphere);
-	if (iter != mPlayerSpheres.end())
+	auto iter = std::find(mWeaponSpheres.begin(), mWeaponSpheres.end(), _sphere);
+	if (iter != mWeaponSpheres.end())
 	{
-		std::iter_swap(iter, mPlayerSpheres.end() - 1);
-		mPlayerSpheres.pop_back();
+		std::iter_swap(iter, mWeaponSpheres.end() - 1);
+		mWeaponSpheres.pop_back();
 	}
     mCollisionFunction.erase(_sphere);
 }

@@ -32,17 +32,19 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
-private:
-
 	/// <summary>
-	/// 移動処理
+	/// ヒットされた時の処理
 	/// </summary>
-	/// <param name="_owner"> エネミー(親)のポインタ </param>
-	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void MoveCalc(EnemyObject* _owner, const float _DeltaTime);
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnColision(const GameObject& _HitObject)override;
+
+private:
 
 	// 攻撃時の速度
 	const float MAttackSpeed;
+
+	// ダメージを受けたか
+	bool mIsDamage;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;

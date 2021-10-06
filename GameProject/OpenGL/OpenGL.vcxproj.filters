@@ -159,6 +159,12 @@
     <ClCompile Include="EnemyObjectStateMove.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyObjectStateDamage.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateDeath.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -319,6 +325,12 @@
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyObjectStateMove.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateDamage.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateDeath.h">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

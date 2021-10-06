@@ -2,6 +2,7 @@
 
 EnemyObjectStateAttack::EnemyObjectStateAttack()
 	: MAttackSpeed(300.0f)
+	, mIsDamage(false)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 {
@@ -30,6 +31,10 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	{
 		return EnemyState::eEnemyStateMove;
 	}
+	else if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 	/*if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		return EnemyState::eEnemyStateWait;
@@ -43,7 +48,18 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttack));
 
+	mIsDamage = false;
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration();
 	mElapseTime = 0.0f;
+}
+
+void EnemyObjectStateAttack::OnColision(const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::Weapon)
+	{
+		mIsDamage = true;
+	}
 }
