@@ -42,9 +42,4 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
-
-	// このステートに入ってからの経過時刻
-	float mElapseTime;
-	// アニメーション総時間
-	float mTotalAnimTime;
 };

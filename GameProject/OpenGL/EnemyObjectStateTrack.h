@@ -41,8 +41,8 @@ public:
 
 private:
 
-	// ~‚Ü‚é‹——£
-	const float MDistanceStop;
+	// ó‘Ô‚ğ•Ï‚¦‚é‚½‚ß‚Ì‹——£
+	const float MTransitionStateDistance;
 
 	// ƒ_ƒ[ƒW‚ğó‚¯‚½‚©
 	bool mIsDamage;

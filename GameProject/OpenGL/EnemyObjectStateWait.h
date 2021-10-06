@@ -44,8 +44,8 @@ private:
 	// 遷移するタイミング
 	const int MTransitionTimingNum;
 
-	// 止まる距離
-	const float MDistanceStop;
+	// 状態を変えるための距離
+	const float MTransitionStateDistance;
 
 	// ダメージを受けたか
 	bool mIsDamage;

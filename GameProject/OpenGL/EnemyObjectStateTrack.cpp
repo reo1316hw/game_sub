@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
-	: MDistanceStop(20000.0f)
+	: MTransitionStateDistance(15000.0f)
 	, mIsDamage(false)
 	, mMoveSpeed(2.0f)
 	, mPlayerPtr(_playerPtr)
@@ -27,9 +27,19 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	// プレイヤーに向いたベクトル
 	Vector3 dirPlayerVec = playerPos - position;
 
-	if (dirPlayerVec.LengthSq() <= MDistanceStop)
+	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 	{
-		return EnemyState::eEnemyStateWait;
+		// ランダム値
+		int randNum = rand() % 100;
+
+		if (randNum < 50)
+		{
+			return EnemyState::eEnemyStateWait;
+		}
+		else
+		{
+			return EnemyState::eEnemyStateMove;
+		}
 	}
 	else if (mIsDamage)
 	{

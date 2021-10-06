@@ -2,10 +2,12 @@
 
 EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
+	, MTransitionStateDistance(15000.0f)
 	, mIsDamage(false)
 	, mIsMoving(false)
 	, mMoveSpeed(1.0f)
 	, mPeriodMoveCount(0)
+	, mPlayerPtr(_playerPtr)
 {
 }
 
@@ -16,6 +18,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	// 右方ベクトル
 	Vector3 rightVec = _owner->GetRight();
 	rightVec.z = 0.0f;
+
 
 	// ランダム値
 	int randNum = rand() % 100;
@@ -38,6 +41,14 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 		++mPeriodMoveCount;
 	}
 
+	// プレイヤーの座標
+	Vector3 playerPos = mPlayerPtr->GetPosition();
+	// プレイヤーに向いたベクトル
+	Vector3 dirPlayerVec = playerPos - pos;
+	dirPlayerVec.Normalize();
+	_owner->RotateToNewForward(dirPlayerVec);
+
+	// 速度ベクトル
 	Vector3 vel = mMoveSpeed * rightVec;
 	pos += vel;
 	_owner->SetPosition(pos);
@@ -45,7 +56,23 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	if (mPeriodMoveCount >= MTransitionTimingNum)
 	{
 		mIsMoving = false;
-		return EnemyState::eEnemyStateWait;
+
+		if (dirPlayerVec.LengthSq() >= MTransitionStateDistance)
+		{
+			// ランダム値
+		    int randNum = rand() % 100;
+		    
+		    if (randNum < 50)
+		    {
+		    	return EnemyState::eEnemyStateWait;
+		    }
+		    else
+		    {
+		    	return EnemyState::eEnemyStateAttack;
+		    }
+		}
+
+		return EnemyState::eEnemyStateTrack;
 	}
 	else if (mIsDamage)
 	{

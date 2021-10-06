@@ -42,6 +42,8 @@ private:
 
 	// 攻撃時の速度
 	const float MAttackSpeed;
+	// アニメーションの再生速度
+	const float MPlayRate;
 
 	// ダメージを受けたか
 	bool mIsDamage;

@@ -50,6 +50,8 @@ private:
 
 	// 遷移するタイミング
 	const int MTransitionTimingNum;
+	// 状態を変えるための距離
+	const float MTransitionStateDistance;
 
 	// 移動しているか
 	bool mIsMoving;

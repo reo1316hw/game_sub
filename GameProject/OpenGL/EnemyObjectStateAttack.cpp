@@ -1,7 +1,8 @@
 #include "pch.h"
 
 EnemyObjectStateAttack::EnemyObjectStateAttack()
-	: MAttackSpeed(300.0f)
+	: MAttackSpeed(150.0f)
+	, MPlayRate(1.5f)
 	, mIsDamage(false)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
@@ -26,19 +27,25 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 
 	_owner->SetPosition(pos);
 
-	// アニメーションが終了したら待機状態へ
-	if (mElapseTime >= 0.3f)
+	// アニメーションが終了したら移動状態へ
+	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return EnemyState::eEnemyStateMove;
+		// ランダム値
+		int randNum = rand() % 100;
+		
+		if (randNum < 50)
+		{
+			return EnemyState::eEnemyStateWait;
+		}
+		else
+		{
+			return EnemyState::eEnemyStateMove;
+		}
 	}
 	else if (mIsDamage)
 	{
 		return EnemyState::eEnemyStateDamage;
 	}
-	/*if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
-	{
-		return EnemyState::eEnemyStateWait;
-	}*/
 
 	return EnemyState::eEnemyStateAttack;
 }
@@ -46,11 +53,11 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttack));
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttack), MPlayRate);
 
 	mIsDamage = false;
 	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration();
+	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration() - 0.5f;
 	mElapseTime = 0.0f;
 }
 

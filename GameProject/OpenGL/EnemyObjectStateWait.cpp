@@ -1,7 +1,7 @@
 #include "pch.h"
 
 EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
-	: MDistanceStop(20000.0f)
+	: MTransitionStateDistance(15000.0f)
 	, MTransitionTimingNum(120)
 	, mIsDamage(false)
 	, mPlayerPtr(_playerPtr)
@@ -22,9 +22,20 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 
 	if (mTransitionCount >= MTransitionTimingNum)
 	{
-		return EnemyState::eEnemyStateAttack;
+		// ƒ‰ƒ“ƒ_ƒ€’l
+		int randNum = rand() % 100;
+
+		if (randNum < 50)
+		{
+			return EnemyState::eEnemyStateMove;
+
+		}
+		else
+		{
+			return EnemyState::eEnemyStateAttack;
+		}
 	}
-	else if (dirPlayerVec.LengthSq() >= MDistanceStop)
+	else if (dirPlayerVec.LengthSq() >= MTransitionStateDistance)
 	{
 		return EnemyState::eEnemyStateTrack;
 	}

@@ -75,12 +75,6 @@ private:
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 	void OnCollision(const GameObject& _HitObject)override;
 
-	/// <summary>
-	/// 武器がオブジェクトとヒットした時の処理
-	/// </summary>
-	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollisionWeapon(const GameObject& _HitObject);
-
 	// カメラ座標との差
 	const Vector3 MCameraOffset;
 	// 見たい座標との差
