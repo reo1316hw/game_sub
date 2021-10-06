@@ -262,7 +262,7 @@ public:
 	@brief　オブジェクトのAABBを取得する
 	@return	mAabb
 	*/
-	AABB GetObjectAABB() const { return mAabb; };
+	AABB GetObjectAABB() const { return mBox; };
 
 protected:
 	std::function<void(GameObject&)> GetOnCollisionFunc() { return std::bind(&GameObject::OnCollision, this, std::placeholders::_1); }
@@ -278,7 +278,7 @@ protected:
 	virtual void OnTriggerStay(ColliderComponent* _colliderPair) {};
 
 	//オブジェクトのAABB
-	AABB mAabb;
+	AABB mBox;
 	//ゲームオブジェクトの状態
 	State mState;
 	//ゲームオブジェクトのタグ
@@ -320,6 +320,7 @@ protected:
 	SceneBase::Scene mSceneTag;
 	//アタッチされているコンポーネント
 	std::vector<class Component*>mComponents;
+
 private:
 	//シーンを跨ぐ際に解放されるオブジェクトかどうか、カメラなどが対象になる
 	bool mReUseObject;

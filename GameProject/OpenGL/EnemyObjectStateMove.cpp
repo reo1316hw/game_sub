@@ -36,7 +36,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	{
 		++mPeriodMoveCount;
 	}
-	
+
 	Vector3 vel = mMoveSpeed * rightVec;
 	pos += vel;
 	_owner->SetPosition(pos);

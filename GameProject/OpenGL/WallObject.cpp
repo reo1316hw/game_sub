@@ -33,5 +33,5 @@ WallObject::~WallObject()
 
 void WallObject::UpdateGameObject(float _deltaTime)
 {
-	mAabb = mBoxColliderPtr->GetWorldBox();
+	mBox = mBoxColliderPtr->GetWorldBox();
 }

@@ -33,7 +33,7 @@ GroundObject::~GroundObject()
 
 void GroundObject::UpdateGameObject(float _deltaTime)
 {
-	mAabb = mBoxColliderPtr->GetWorldBox();
+	mBox = mBoxColliderPtr->GetWorldBox();
 }
 
 void GroundObject::OnCollision(const GameObject& _hitObject)

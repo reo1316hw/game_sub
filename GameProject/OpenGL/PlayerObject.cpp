@@ -19,7 +19,6 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, MAngle(270.0f)
     , mTargetPos(Vector3::Zero)
     , mCameraPos(Vector3::Zero)
-    , mBox(Vector3::Zero, Vector3::Zero)
     , mNowState(PlayerState::ePlayerStateIdle)
     , mNextState(PlayerState::ePlayerStateIdle)
 {
@@ -73,10 +72,16 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mStatePools.push_back(new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
 	mStatePools.push_back(new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
 	
-	// メッシュ当たり判定
-	mMeshPtr = RENDERER->GetMesh(_GpmeshName);
-	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
-	mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
+	//// メッシュ当たり判定
+	//mMeshPtr = RENDERER->GetMesh(_GpmeshName);
+	//mBoxColliderPtr = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
+	//mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
+
+	// 矩形当たり判定
+	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 180.0f));
+
+	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Enemy, GetOnCollisionFunc());
+	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// 回転処理
 	SelfRotation(Vector3::UnitZ, MAngle);
@@ -112,6 +117,8 @@ void PlayerObject::UpdateGameObject(float _deltaTime)
 		mStatePools[static_cast<int>(mNextState)]->Enter(this, _deltaTime);
 		mNowState = mNextState;
 	}
+
+	mBox = mBoxColliderPtr->GetWorldBox();
 }
 
 /// <summary>
@@ -144,8 +151,6 @@ void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObject::OnCollision(const GameObject& _HitObject)
 {
-	mBox = mBoxColliderPtr->GetWorldBox();
-
 	//押し戻し処理
 	float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;
 	float dx2 = _HitObject.GetObjectAABB().m_max.x - mBox.m_min.x;
@@ -158,18 +163,20 @@ void PlayerObject::OnCollision(const GameObject& _HitObject)
 	float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
 	float dz = Math::Abs(dz1) < Math::Abs(dz2) ? dz1 : dz2;
 
-	if (Math::Abs(dx) <= Math::Abs(dy) && Math::Abs(dx) <= Math::Abs(dz))
+	if (Math::Abs(dx) <= Math::Abs(dy)/* && Math::Abs(dx) <= Math::Abs(dz)*/)
 	{
 		mPosition.x += dx;
 	}
-
-	if (Math::Abs(dy) <= Math::Abs(dx) && Math::Abs(dy) <= Math::Abs(dz))
+	else if (Math::Abs(dy) <= Math::Abs(dx) /*&& Math::Abs(dy) <= Math::Abs(dz)*/)
 	{
 		mPosition.y += dy;
 	}
+	//else
+	//	//if (Math::Abs(dz) <= Math::Abs(dx) && Math::Abs(dz) <= Math::Abs(dy))
+	//{
+	//	mPosition.z += dz;
+	//}
 
-	if (Math::Abs(dz) <= Math::Abs(dx) && Math::Abs(dz) <= Math::Abs(dy))
-	{
-		mPosition.z += dz;
-	}
+	SetPosition(mPosition);
+	
 }

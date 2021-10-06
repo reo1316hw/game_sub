@@ -12,7 +12,7 @@ GameObject::GameObject(const Tag& _objectTag, SceneBase::Scene _sceneTag, bool _
 	, mWorldTransform()
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
-	, mAabb(Vector3::Zero, Vector3::Zero)
+	, mBox(Vector3::Zero, Vector3::Zero)
 	, mScale(Vector3(1.0f, 1.0f, 1.0f))
 	, mRotation(Quaternion::Identity)
 	, mMyObjectId(mGameObjectId)

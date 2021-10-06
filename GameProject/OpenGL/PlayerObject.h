@@ -97,9 +97,6 @@ private:
 	// カメラのポジション
 	Vector3 mCameraPos;
 
-	// 矩形当たり判定
-	AABB mBox;
-
 	// 現在のステート
 	PlayerState mNowState;
 	// 次のステート

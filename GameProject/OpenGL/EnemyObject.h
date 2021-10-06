@@ -61,8 +61,6 @@ private:
 	std::vector<const Animation*>       mAnimTypes;
 	// ステートクラスプール
 	std::vector<EnemyObjectStateBase*> mStatePools;
-	// 矩形当たり判定
-	AABB mBox;
 	// 現在のステート
 	EnemyState mNowState;
 	// 次のステート
