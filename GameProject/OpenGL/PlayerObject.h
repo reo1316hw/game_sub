@@ -79,10 +79,6 @@ private:
 	const Vector3 MCameraOffset;
 	// 見たい座標との差
 	const Vector3 MTargetOffset;
-	// 剣の初期回転値
-	const Vector3 MSwordRot;
-	// 剣の初期座標
-	const Vector3 MSwordPos;
 	// アニメーションの再生速度
 	const float MPlayRate;
 	// 角度
@@ -102,12 +98,8 @@ private:
 	PlayerState mNowState;
 	// 次のステート
 	PlayerState mNextState;
-	// 武器メッシュ
-	AttackMeshComponent* mWeaponMesh;
 	// ゲームオブジェクトのスケルトンメッシュ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
-	// 球状の当たり判定
-	SphereCollider* mSphereCollider;
 
 public:// ゲッターセッター
 

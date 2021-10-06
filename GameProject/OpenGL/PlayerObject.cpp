@@ -13,17 +13,13 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
     : GameObject(_ObjectTag, _SceneTag)
     , MCameraOffset(Vector3(-150.0f,-150.0f,-150.0f))
 	, MTargetOffset(Vector3(0.0f, 0.0f, 40.0f))
-    , MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
-    , MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
 	, MPlayRate(1.0f)
 	, MAngle(270.0f)
     , mTargetPos(Vector3::Zero)
     , mCameraPos(Vector3::Zero)
     , mNowState(PlayerState::ePlayerStateIdle)
     , mNextState(PlayerState::ePlayerStateIdle)
-	, mWeaponMesh(nullptr)
 	, mSkeltalMeshComponentPtr(nullptr)
-	, mSphereCollider(nullptr)
 {
 	// GameObjectメンバ変数の初期化
 	mTag = _ObjectTag;
@@ -54,20 +50,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
 	// 武器
-	mWeaponMesh = new AttackMeshComponent(this, mSkeltalMeshComponentPtr, "index_01_r");
-	mWeaponMesh->SetMesh(RENDERER->GetMesh("Assets/Model/Sword/Sword.gpmesh"));
-
-	// 武器の円周率をセット
-	mWeaponMesh->SetOffsetRotation(MSwordRot);
-	// 武器の座標をセット
-	mWeaponMesh->SetOffsetPosition(MSwordPos);
-
-	// 半径
-	float radius = 1.0f;
-	// 武器の球状当たり判定
-	Sphere weaponSphere = Sphere(mWeaponMesh->GetAttachPosisiton(), radius);
-	mSphereCollider = new SphereCollider(this, ColliderTag::Weapon, GetOnCollisionFunc());
-	mSphereCollider->SetObjectSphere(weaponSphere);
+	new PlayerWeaponObject(this, mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::Weapon, _SceneTag);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	      // mStatePool[ePlayerStateIdle]

@@ -165,6 +165,9 @@
     <ClCompile Include="EnemyObjectStateDeath.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerWeaponObject.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -332,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="EnemyObjectStateDeath.h">
       <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerWeaponObject.h">
+      <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
