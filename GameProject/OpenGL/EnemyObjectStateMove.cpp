@@ -3,7 +3,7 @@
 EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
 	, mIsMoving(false)
-	, mMoveSpeed(0.5f)
+	, mMoveSpeed(1.0f)
 	, mPeriodMoveCount(0)
 {
 }
@@ -25,12 +25,11 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 		if (randNum < 50)
 		{
 			mIsMoving = true;
-			rightVec *= 1.0f;
 		}
 		else
 		{
 			mIsMoving = true;
-			rightVec *= -1.0f;
+			mMoveSpeed *= -1.0f;
 		}
 	}
 	else
@@ -38,11 +37,13 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 		++mPeriodMoveCount;
 	}
 	
-	pos += mMoveSpeed * rightVec;
+	Vector3 vel = mMoveSpeed * rightVec;
+	pos += vel;
 	_owner->SetPosition(pos);
 
 	if (mPeriodMoveCount >= MTransitionTimingNum)
 	{
+		mIsMoving = false;
 		return EnemyState::eEnemyStateWait;
 	}
 
@@ -53,4 +54,6 @@ void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateMove));
+
+	mPeriodMoveCount = 0;
 }

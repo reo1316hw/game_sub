@@ -26,7 +26,7 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	_owner->SetPosition(pos);
 
 	// アニメーションが終了したら待機状態へ
-	if (mElapseTime >= 0.5f)
+	if (mElapseTime >= 0.3f)
 	{
 		return EnemyState::eEnemyStateMove;
 	}
