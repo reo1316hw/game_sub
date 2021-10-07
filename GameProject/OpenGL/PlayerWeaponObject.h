@@ -13,6 +13,9 @@ public:
 
 	void UpdateGameObject(float _deltaTime)override;
 
+	const Vector3& GetAttachPosisiton()const { return mComputeAttachPos; }
+	const Matrix4& GetAttachTransMatrix()const { return mComputeTransMatrix; }
+
 private:
 
 	void OnCollision(const GameObject& _hitObject)override;
@@ -26,6 +29,7 @@ private:
 
 	Matrix4 mOffsetPos;
 	Matrix4 mOffsetRotation;
+	Matrix4 mComputeTransMatrix;
 
 	// アタッチされているオブジェクト
 	GameObject* mOwner;

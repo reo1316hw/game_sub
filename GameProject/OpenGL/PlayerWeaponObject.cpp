@@ -14,13 +14,8 @@ PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent
 	SetScale(mOwner->GetScale());
 
 	// 武器
-	mWeaponMesh = new AttackMeshComponent(mOwner, _skMesh, "index_01_r");
+	mWeaponMesh = new AttackMeshComponent(this, _skMesh, "index_01_r");
 	mWeaponMesh->SetMesh(RENDERER->GetMesh(_GpmeshName));
-
-	// 武器の円周率をセット
-	mWeaponMesh->SetOffsetRotation(MSwordRot);
-	// 武器の座標をセット
-	mWeaponMesh->SetOffsetPosition(MSwordPos);
 
 	mOffsetRotation = Matrix4::CreateRotationY(MSwordRot.y)
 		* Matrix4::CreateRotationX(MSwordRot.x)
@@ -34,17 +29,26 @@ PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent
 	// アタッチ位置算出＆更新
 	Vector3 pos = Vector3::Zero;
 	mComputeAttachPos = Vector3::Transform(pos, finalMat);
+	mComputeTransMatrix = finalMat;
 
 	// 半径
-	float radius = 10.0f;
+	float radius = 1.0f;
 	// 武器の球状当たり判定
-	mWeaponSphere = Sphere(mComputeAttachPos + Vector3(70.0f,0.0f,150.0f), radius);
+	mWeaponSphere = Sphere(mComputeAttachPos + Vector3(70.0f,-60.0f,-60.0f), radius);
 	mSphereCollider = new SphereCollider(this, ColliderTag::Weapon, GetOnCollisionFunc());
 	mSphereCollider->SetObjectSphere(mWeaponSphere);
 }
 
 void PlayerWeaponObject::UpdateGameObject(float _deltaTime)
 {
+	//Matrix4 finalMat, animationMat;
+	//finalMat = mOffsetRotation * mOffsetPos * animationMat;
+
+	//// アタッチ位置算出＆更新
+	//Vector3 pos(0, 0, 0);
+	//mComputeAttachPos = Vector3::Transform(pos, finalMat);
+	//mComputeTransMatrix = finalMat;
+
 	SetPosition(mOwner->GetPosition());
 }
 
