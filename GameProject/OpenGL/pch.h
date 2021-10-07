@@ -80,7 +80,6 @@
 #include "Texture.h"
 #include "VertexArray.h"
 #include "MeshComponent.h"
-#include "AttackMeshComponent.h"
 #include "SkeletalMeshComponent.h"
 #include "ParticleComponent.h"
 #include "SpriteComponent.h"

@@ -113,9 +113,6 @@
     <ClCompile Include="PlayerObjectStateRunLoop.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
-    <ClCompile Include="AttackMeshComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="RapidJsonHelper.cpp">
       <Filter>RapidJson</Filter>
     </ClCompile>
@@ -286,9 +283,6 @@
     </ClInclude>
     <ClInclude Include="PlayerObjectStateRunLoop.h">
       <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="AttackMeshComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="RapidJsonHelper.h">
       <Filter>RapidJson</Filter>

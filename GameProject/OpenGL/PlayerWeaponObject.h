@@ -13,9 +13,6 @@ public:
 
 	void UpdateGameObject(float _deltaTime)override;
 
-	const Vector3& GetAttachPosisiton()const { return mComputeAttachPos; }
-	const Matrix4& GetAttachTransMatrix()const { return mComputeTransMatrix; }
-
 private:
 
 	void OnCollision(const GameObject& _hitObject)override;
@@ -27,18 +24,29 @@ private:
 	// 剣のアタッチされている座標
 	Vector3 mComputeAttachPos;
 
+	//gpSkelファイルの何番目のボーンか
+	int mAttackBoneIndex;
+
 	Matrix4 mOffsetPos;
 	Matrix4 mOffsetRotation;
-	Matrix4 mComputeTransMatrix;
 
 	// アタッチされているオブジェクト
 	GameObject* mOwner;
 
+	// SkeletalMeshComponentポインタ
+	SkeletalMeshComponent* mAttackSkeletalMesh;
 	// 武器の球状当たり判定
 	Sphere mWeaponSphere;
 	// 武器メッシュ
-	AttackMeshComponent* mWeaponMesh;
+	MeshComponent* mWeaponMesh;
 	// 球状の当たり判定
 	SphereCollider* mSphereCollider;
+
+public:// ゲッターセッター
+
+	int GetAttackBoneIndex() { return mAttackBoneIndex; };
+	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; };
+
+	const Vector3& GetAttachPosisiton()const { return mComputeAttachPos; }
 };
 

@@ -40,8 +40,8 @@ void MeshComponent::Draw(Shader* _shader)
 			_shader->SetFloatUniform("uLuminance", mMesh->GetLuminace());
 
 			_shader->SetFloatUniform("uAlpha", mMesh->GetAlpha());
-			// Set the active texture
 
+			// Set the active texture
 			// メッシュに定義されているテクスチャをセット
 			SetTextureToShader(_shader);
 
