@@ -10,7 +10,7 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return EnemyState::eEnemyStateWait;
+		return EnemyState::eEnemyStateDeath;
 	}
 	else if (mIsDamage)
 	{

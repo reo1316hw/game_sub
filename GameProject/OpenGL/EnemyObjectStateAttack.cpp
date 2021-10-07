@@ -44,7 +44,7 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	}
 	else if (mIsDamage)
 	{
-		return EnemyState::eEnemyStateDamage;
+ 		return EnemyState::eEnemyStateDamage;
 	}
 
 	return EnemyState::eEnemyStateAttack;

@@ -21,6 +21,14 @@ private:
 	const Vector3 MSwordRot;
 	// 剣の初期座標
 	const Vector3 MSwordPos;
+	// 剣のアタッチされている座標
+	Vector3 mComputeAttachPos;
+
+	Matrix4 mOffsetPos;
+	Matrix4 mOffsetRotation;
+
+	// アタッチされているオブジェクト
+	GameObject* mOwner;
 
 	// 武器の球状当たり判定
 	Sphere mWeaponSphere;
