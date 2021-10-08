@@ -9,6 +9,7 @@
 class FPS;
 class GameObject;
 class InputSystem;
+struct InputState;
 
 /*
 @file Game.h
@@ -51,7 +52,7 @@ private:
 	/*
 	@brief  “ü—ÍŠÖ˜A‚Ìˆ—
 	*/
-    void ProcessInput();
+    InputState ProcessInput();
 	/*
 	@brief  •`‰æŠÖ˜A‚Ìˆ—
 	*/

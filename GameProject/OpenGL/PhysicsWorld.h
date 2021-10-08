@@ -7,6 +7,7 @@ class GameObject;
 class BoxCollider;
 class SphereCollider;
 class ColliderComponent;
+class Shader;
 
 typedef std::function<void(GameObject&)> onCollisionFunc;
 typedef std::map<ColliderComponent*, std::function<void(GameObject&)>> onCollisionMap;
@@ -17,6 +18,8 @@ typedef std::map<ColliderComponent*, std::function<void(GameObject&)>> onCollisi
 class PhysicsWorld
 {
 public:
+
+	~PhysicsWorld();
 
 	static PhysicsWorld* GetInstance() { return mPhysics; }
 	static void CreateInstance();
@@ -34,6 +37,9 @@ public:
 
 	void SphereAndBox();
 
+	void DebugShowBoxLists();                                          // ボックスリスト表示（デバッグ用)
+	void DebugShowBox();                                               // デバッグ用ボックス表示
+	void ToggleDebugMode() { mBoolDebugMode = !mBoolDebugMode; }       // デバッグモード
 
 private:
 
@@ -45,6 +51,16 @@ private:
 	void SphereAndSphere();
 	void BoxAndBox();
 
+	void InitBoxVertices();
+
+	void DrawBoxs(std::vector<class BoxCollider*>& boxs, const Vector3& color);
+
+	// ボックス描画用のVAO 
+	unsigned int mBoxVAO; 
+
+	// デバッグモード
+	bool mBoolDebugMode;
+
 	std::vector<BoxCollider*> mGroundBoxes;
 	std::vector<BoxCollider*> mWallBoxes;
 	std::vector<BoxCollider*> mPlayerBoxes;
@@ -52,6 +68,9 @@ private:
 	std::vector<BoxCollider*> mWeaponBoxes;
 
 	onCollisionMap mCollisionFunction;
+
+	Shader* mLineShader; // ライン描画用シェーダー
+
 };
 
 /*

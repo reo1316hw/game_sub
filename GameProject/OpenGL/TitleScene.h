@@ -6,7 +6,7 @@ public:
 	TitleScene(const Scene& _scene);
 	~TitleScene();
 
-	SceneBase* update() override;
+	SceneBase* Update(const InputState& _KeyState)override;
 private:
 };
 

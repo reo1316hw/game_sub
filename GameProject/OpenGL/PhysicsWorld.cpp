@@ -7,7 +7,18 @@
 PhysicsWorld* PhysicsWorld::mPhysics = nullptr;
 
 PhysicsWorld::PhysicsWorld()
+	: mBoolDebugMode(false)
 {
+	InitBoxVertices();
+
+	mLineShader = new Shader();
+	mLineShader->Load("shaders/LineWorld.vert", "shaders/Line.frag");
+}
+
+// デストラクタ
+PhysicsWorld::~PhysicsWorld()
+{
+	delete mLineShader;
 }
 
 void PhysicsWorld::CreateInstance()
@@ -25,6 +36,105 @@ void PhysicsWorld::DeleteInstance()
 		delete mPhysics;
 		mPhysics = nullptr;
 	}
+}
+
+void PhysicsWorld::DebugShowBox()
+{
+	// デバッグモードか？
+	if (!mBoolDebugMode)
+	{
+		return;
+	}
+
+	// AABB描画準備
+	Matrix4 scale, trans, world, view, proj, viewProj;
+	view = RENDERER->GetViewMatrix();
+	proj = RENDERER->GetProjectionMatrix();
+	viewProj = view * proj;
+	mLineShader->SetActive();
+	mLineShader->SetMatrixUniform("uViewProj", viewProj);
+
+	// 当たり判定ボックス描画
+	DrawBoxs(mGroundBoxes, Color::Red);
+	DrawBoxs(mWallBoxes, Color::Blue);
+	DrawBoxs(mPlayerBoxes, Color::LightPink);
+	DrawBoxs(mEnemyBoxes, Color::White);
+	DrawBoxs(mWeaponBoxes, Color::LightGreen);
+}
+
+void PhysicsWorld::DrawBoxs(std::vector<class BoxCollider*>& boxs, const Vector3& color)
+{
+	Matrix4 scaleMat, posMat, worldMat;
+	Vector3 scale, pos;
+
+	mLineShader->SetVectorUniform("uColor", color);
+	for (auto item : boxs)
+	{
+		AABB box = AABB(Vector3::Zero, Vector3::Zero);
+		Vector3 min, max;
+		box = item->GetWorldBox();
+
+		// ボックスのスケールと位置を取得
+		min = box.m_min;
+		max = box.m_max;
+		scale = max - min;
+		pos = min;
+
+		scaleMat = Matrix4::CreateScale(scale);
+		posMat = Matrix4::CreateTranslation(pos);
+
+		worldMat = scaleMat * posMat;
+		mLineShader->SetMatrixUniform("uWorld", worldMat);
+
+		glBindVertexArray(mBoxVAO);
+		glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
+	}
+
+}
+
+void PhysicsWorld::InitBoxVertices()
+{
+	// ボックス頂点リスト
+	float vertices[] = {
+		0.0f, 0.0f, 0.0f,  // min
+		1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,  // max
+		0.0f, 1.0f, 1.0f,
+	};
+	// ボックスのラインリスト
+	unsigned int lineList[] = {
+		0,1,
+		1,2,
+		2,3,
+		3,0,
+		4,5,
+		5,6,
+		6,7,
+		7,4,
+		0,4,
+		1,5,
+		2,6,
+		3,7,
+	};
+	unsigned int vbo, ebo;
+	glGenVertexArrays(1, &mBoxVAO);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+	glBindVertexArray(mBoxVAO);
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(lineList), lineList, GL_STATIC_DRAW);
+	}
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
 }
 
 void PhysicsWorld::HitCheck()

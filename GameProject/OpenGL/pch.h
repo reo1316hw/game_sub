@@ -94,4 +94,6 @@
 #include "Math.h"
 #include "RapidJsonHelper.h"
 
+#include "DebugGrid.h"
+
 #endif

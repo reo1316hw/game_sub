@@ -12,9 +12,6 @@ TitleScene::TitleScene(const Scene& _scene)
 
 	SetScene(_scene);
 
-	mInputSystem = new InputSystem();
-	mInputSystem->Initialize();
-
 	/*mEmissiveTexture = RENDERER->GetTexture("Assets/title.png");
 	mTexture->SetLuminace(1.0f);*/
 	//mSprite->SetTexture(mTexture, mEmissiveTexture);
@@ -31,14 +28,8 @@ TitleScene::~TitleScene()
 	/*GAME_OBJECT_MANAGER->RemoveGameObject();*/
 }
 
-SceneBase* TitleScene::update()
+SceneBase* TitleScene::Update(const InputState& _KeyState)
 {
-	mInputSystem->PrepareForUpdate();
-	mInputSystem->Update();
-
-	const InputState& sceneState = mInputSystem->GetState();
-
-
 	//if (sceneState.Keyboard.GetKeyState(SDL_SCANCODE_E) == Released)
 	//{
 	//	/*return new Tutorial(tutorial);*/
@@ -46,8 +37,8 @@ SceneBase* TitleScene::update()
 	//	return new Stage02Scene(stage02);
 	//}
 
-	if (sceneState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_START) == 1 ||
-		sceneState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE) == 1)
+	if (_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_START) == 1 ||
+		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE) == 1)
 	{
 		return new Tutorial(tutorial);
 		//return new Stage01Scene(stage01);

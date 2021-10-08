@@ -14,6 +14,9 @@ Tutorial::Tutorial(const Scene& _scene)
 
 	SetScene(_scene);
 
+	Vector3 color(0, 1, 0);
+	mGrid = new DebugGrid(1000.0f, 30, color);
+
 	mMapCreate = new MapCreate();
 	if (!mMapCreate->OpenFile())
 	{
@@ -31,7 +34,12 @@ Tutorial::~Tutorial()
 	/*GAME_OBJECT_MANAGER->RemoveGameObject();*/
 }
 
-SceneBase* Tutorial::update()
+SceneBase* Tutorial::Update(const InputState& _KeyState)
 {
+	if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_0) == Released)
+	{
+		PHYSICS->ToggleDebugMode();
+	}
+
 	return this;
 }

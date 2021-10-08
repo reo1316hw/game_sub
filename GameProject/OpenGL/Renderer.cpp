@@ -259,6 +259,8 @@ void Renderer::Draw()
 	// HDRBufferにレンダリングしたときのDepth情報をスクリーンにコピー
 	mHDRRenderer->CopyDepthToScreen();
 
+	// 当たり判定デバッグBoxの表示
+	PHYSICS->DebugShowBox();
 	
 	mBasicShader->SetActive();
 	mBasicShader->SetMatrixUniform("uViewProj", mView * mProjection);

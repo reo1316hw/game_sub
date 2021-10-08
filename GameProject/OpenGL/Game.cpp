@@ -96,12 +96,12 @@ void Game::GameLoop()
 	while (mRunningFlag)
 	{
 		//入力関連の処理
-		ProcessInput();
+		const InputState& state = ProcessInput();
 
 		SceneBase* tmpScene;
 
 		// 実行中のシーンを更新処理
-		tmpScene = mNowScene->update();
+		tmpScene = mNowScene->Update(state);
 
 		// シーンの切り替えが発生した？
 		if (tmpScene != mNowScene)
@@ -138,7 +138,7 @@ void Game::UnloadData()
 /*
 @brief  入力関連の処理
 */
-void Game::ProcessInput()
+InputState Game::ProcessInput()
 {
 	mInputSystem->PrepareForUpdate();
 
@@ -168,6 +168,8 @@ void Game::ProcessInput()
 	}
 
 	GAME_OBJECT_MANAGER->ProcessInput(state);
+
+	return state;
 }
 
 /*
