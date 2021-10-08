@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
 	: MAttackSpeed(150.0f)
-	, MPlayRate(1.5f)
+	, MPlayRate(2.0f)
 	, mWeaponPtr(_weaponPtr)
 {
 }
@@ -37,10 +37,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		if (mElapseTime > mTotalAnimTime)
-		{
-			return PlayerState::ePlayerStateIdle;
-		}
+		return PlayerState::ePlayerStateIdle;
 	}
 
 	return PlayerState::ePlayerStateThirdAttack;

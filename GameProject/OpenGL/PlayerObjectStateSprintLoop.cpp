@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateSprintLoop::PlayerObjectStateSprintLoop()
-	: MMoveSpeed(750.0f)
+	: MMoveSpeed(500.0f)
 	, MDirThreshold(0.5f)
 	, MLeftAxisThreshold(0.3f)
 {

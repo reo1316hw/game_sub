@@ -6,7 +6,7 @@
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(PlayerWeaponObject* _weaponPtr)
 	: MAttackSpeed(300.0f)
 	, mNumFrame(0)
-	, MPlayRate(1.5f)
+	, MPlayRate(1.3f)
 	, MValidComboFrame(5)
 	, mWeaponPtr(_weaponPtr)
 {
@@ -89,7 +89,7 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 	mElapseTime = 0.0f;
 
 	// ‹éŒ`“–‚½‚è”»’è¶¬
-	mWeaponPtr->AddAttackHitSphere(2.0f);
+	mWeaponPtr->AddAttackHitSphere(3.0f);
 }
 
 /// <summary>
