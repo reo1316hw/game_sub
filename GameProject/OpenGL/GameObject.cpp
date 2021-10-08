@@ -203,7 +203,7 @@ void GameObject::ComputeWorldTransform()
 void GameObject::FixCollision(const AABB & _myAABB, const AABB & _pairAABB, const Tag& _pairTag)
 {
 	Vector3 ment = Vector3(0, 0, 0);
-	calcCollisionFixVec(_myAABB, _pairAABB, ment);
+	CalcCollisionFixVec(_myAABB, _pairAABB, ment);
 	SetPosition(GetPosition() + (ment));
 }
 

@@ -16,8 +16,6 @@ public:
 
 private:
 
-	DebugGrid* mGrid;
-
 	static bool mSendContinueTutorialFlag;
 
 	bool mContinueTutorialFlag;

@@ -4,9 +4,9 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
-	: MBoxEnableTiming(20)
+	: MBoxEnableTiming(30)
 	, MAttackSpeed(150.0f)
-	, MPlayRate(2.0f)
+	, MPlayRate(1.5f)
 	, mHitUntilCount(0)
 	, mWeaponPtr(_weaponPtr)
 {

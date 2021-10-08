@@ -96,7 +96,7 @@ void Game::GameLoop()
 	while (mRunningFlag)
 	{
 		//“ü—ÍŠÖ˜A‚Ìˆ—
-		const InputState& state = ProcessInput();
+ 		const InputState& state = ProcessInput();
 
 		SceneBase* tmpScene;
 

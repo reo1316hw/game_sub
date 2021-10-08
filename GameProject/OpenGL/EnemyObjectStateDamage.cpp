@@ -2,7 +2,6 @@
 
 EnemyObjectStateDamage::EnemyObjectStateDamage()
     : MDamageSpeed(100.0f)
-    , mIsDamage(false)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 {
@@ -31,10 +30,6 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 	{
 		return EnemyState::eEnemyStateWait;
 	}
-	else if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateDamage;
-	}
 
 	return EnemyState::eEnemyStateDamage;
 }
@@ -47,16 +42,5 @@ void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration();
 
-	mIsDamage = false;
 	mElapseTime = 0.0f;
-}
-
-void EnemyObjectStateDamage::OnColision(const GameObject& _HitObject)
-{
-	Tag tag = _HitObject.GetTag();
-
-	if (tag == Tag::Weapon)
-	{
-		mIsDamage = true;
-	}
 }

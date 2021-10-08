@@ -64,13 +64,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mStatePools.push_back(new PlayerObjectStateThirdAttack(mWeaponPtr));  // mStatepool[ePlayerStateThirdAttack];
 	mStatePools.push_back(new PlayerObjectStateDashAttack(mWeaponPtr));   // mStatepool[ePlayerStateDashAttack];
 
-	//// ƒƒbƒVƒ…“–‚½‚è”»’è
-	//mMeshPtr = RENDERER->GetMesh(_GpmeshName);
-	//mBoxColliderPtr = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
-	//mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
-
 	// ‹éŒ`“–‚½‚è”»’è
-	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 180.0f));
+	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));
 
 	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Player, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);

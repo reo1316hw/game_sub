@@ -4,39 +4,43 @@
 
 #include "pch.h"
 
-/**
-@brief	コンストラクタ
-@param	アタッチするゲームオブジェクトのポインタ
-@param	他のオブジェクトと当たった時に呼ばれる関数ポインタ(GetOnCollisionFuncを呼ぶ)
-@param	コンポーネントの更新順番（数値が小さいほど早く更新される）
-@param	当たり判定時に、めり込みから動かす処理の優先度を決める数値
-*/
-SphereCollider::SphereCollider(GameObject* _owner, ColliderTag _tag, onCollisionFunc _func, int _updateOrder, int _collisionOrder)
-	: ColliderComponent(_owner,_tag, _updateOrder, _collisionOrder)
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_owner"> 親クラスのポインタ </param>
+/// <param name="_ColliderTag"> 当たり判定のタグ </param>
+/// <param name="_Func"> OnCollision関数のポインタ </param>
+/// <param name="_UpdateOrder"> 更新処理の優先度 </param>
+/// <param name="_CollisionOrder"> 当たり判定処理の優先度 </param>
+SphereCollider::SphereCollider(GameObject* _owner, const ColliderTag _ColliderTag, const onCollisionFunc _Func, const int _UpdateOrder, const int _CollisionOrder)
+	: ColliderComponent(_owner, _ColliderTag, _UpdateOrder, _CollisionOrder)
 	, mObjectSphere( Vector3::Zero,0.0f )
 	, mWorldSphere( Vector3::Zero,0.0f )
 {
-	PHYSICS->AddSphere(this, _func);
+	PHYSICS->AddSphere(this, _Func);
 }
 
-/**
-@brief	デストラクタ
-*/
+/// <summary>
+/// デストラクタ
+/// </summary>
 SphereCollider::~SphereCollider()
 {
 	PHYSICS->RemoveSphere(this);
 }
 
-/**
-@brief	Transformのワールド変換
-*/
+/// <summary>
+/// Transformのワールド変換
+/// </summary>
 void SphereCollider::OnUpdateWorldTransform()
 {
-	refresh();
+	Refresh();
 	PHYSICS->HitCheck(this);
 }
 
-void SphereCollider::refresh()
+/// <summary>
+/// 押し戻し処理が行われたら行列変換を行う
+/// </summary>
+void SphereCollider::Refresh()
 {
 	//ワールド座標での中心位置を更新する
 	mWorldSphere.m_center = mObjectSphere.m_center + mOwner->GetPosition();

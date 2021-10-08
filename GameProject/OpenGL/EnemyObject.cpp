@@ -50,17 +50,9 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mStatePools.push_back(new EnemyObjectStateMove(_playerPtr));	// mStatepool[eEnemyStateMove]
 	mStatePools.push_back(new EnemyObjectStateDamage);              // mStatepool[eEnemyStateDamage];
 	mStatePools.push_back(new EnemyObjectStateDeath);               // mStatepool[eEnemyStateDeath];
-	//mStatePools.push_back(new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
-	//mStatePools.push_back(new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
-
-	//// ƒƒbƒVƒ…“–‚½‚è”»’è
-	//mMeshPtr = RENDERER->GetMesh(_GpmeshName);
-
-	//mBoxColliderPtr = new BoxCollider(this, ColliderTag::Enemy, GetOnCollisionFunc());
-	//mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
 
 	// ‹éŒ`“–‚½‚è”»’è
-	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 180.0f));
+	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));
 
 	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Enemy, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);

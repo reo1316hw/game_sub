@@ -7,47 +7,61 @@ class BoxCollider final : public ColliderComponent
 {
 public:
 
-	/**
-	@brief	コンストラクタ
-	@param	アタッチするゲームオブジェクトのポインタ
-	@param	他のオブジェクトと当たった時に呼ばれる関数ポインタ(GetOnCollisionFuncを呼ぶ)
-	@param	コンポーネントの更新順番（数値が小さいほど早く更新される）
-	@param	当たり判定時に、めり込みから動かす処理の優先度を決める数値
-	*/
-	BoxCollider(GameObject* _owner, ColliderTag _tag,onCollisionFunc _func, int _updateOrder = 200, int _collisionOrder = 100);
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_owner"> 親クラスのポインタ </param>
+	/// <param name="_ColliderTag"> 当たり判定のタグ </param>
+	/// <param name="_Func"> OnCollision関数のポインタ </param>
+	/// <param name="_UpdateOrder"> 更新処理の優先度 </param>
+	/// <param name="_CollisionOrder"> 当たり判定処理の優先度 </param>
+	BoxCollider(GameObject* _owner, const ColliderTag _ColliderTag, const onCollisionFunc _Func, const int _UpdateOrder = 200, const int _CollisionOrder = 100);
 	
-	/**
-	@brief	デストラクタ
-	*/
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	virtual ~BoxCollider();
 
-	/**
-	@brief	Transformのワールド変換
-	*/
+	/// <summary>
+	/// Transformのワールド変換
+	/// </summary>
 	void OnUpdateWorldTransform() override;
-	void refresh();
-	/**
-	@brief	当たり判定に使うAABBの設定
-	@param	オブジェクトの大きさに合わせたAABBの構造体
-	*/
-	void SetObjectBox(const AABB& _box) { mObjectBox = _box; }
 
-	/**
-	@brief	当たり判定時に使うワールド空間でのAABBを取得する
-	@return 中心をワールド座標に合わせたAABBの構造体
-	*/
-	AABB GetWorldBox() const { return mWorldBox; }
-
-	// 矩形当たり判定の移動情報をセット
-	void  SetForceTransForm(Matrix4 transform);
+	/// <summary>
+	/// 押し戻し処理が行われたら行列変換を行う
+	/// </summary>
+	void Refresh();
 
 private:
 
 	// オーナーの移動処理を無視するか
 	bool mIsIgnoreOwener;
+	// 回転させるか
 	bool mShouldRotate;
 
-	AABB mObjectBox;			//オブジェクトに設定する用のボックス（中心をオブジェクトの中心にする）
-	AABB mWorldBox;			//当たり判定するときに使うボックス（中心をワールド座標の中心にする）
+	// オブジェクトに設定する用のボックス（中心をオブジェクトの中心にする）
+	AABB mObjectBox;
+	// 当たり判定するときに使うボックス（中心をワールド座標の中心にする）
+	AABB mWorldBox;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 当たり判定に使うAABBの設定
+	/// </summary>
+	/// <param name="_box"> オブジェクトの大きさに合わせたAABBの構造体 </param>
+	void SetObjectBox(const AABB& _box) { mObjectBox = _box; }
+
+	/// <summary>
+	/// 当たり判定時に使うワールド空間でのAABBを取得する
+	/// </summary>
+	/// <returns> 中心をワールド座標に合わせたAABBの構造体 </returns>
+	AABB GetWorldBox() const { return mWorldBox; }
+	
+	/// <summary>
+	/// 矩形当たり判定の行列変換を行う
+	/// </summary>
+	/// <param name="transform"> アタッチされたオブジェクトのワールド行列 </param>
+	void  SetForceTransForm(Matrix4 transform);
 };
 

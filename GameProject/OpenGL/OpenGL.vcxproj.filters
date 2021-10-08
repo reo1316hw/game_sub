@@ -168,7 +168,6 @@
     <ClCompile Include="PlayerWeaponObject.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
-    <ClCompile Include="DebugGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -340,7 +339,6 @@
     <ClInclude Include="PlayerWeaponObject.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
-    <ClInclude Include="DebugGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">

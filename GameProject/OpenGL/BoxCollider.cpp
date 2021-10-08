@@ -4,42 +4,45 @@
 
 #include "pch.h"
 
-/**
-@brief	コンストラクタ
-@param	アタッチするゲームオブジェクトのポインタ
-@param	他のオブジェクトと当たった時に呼ばれる関数ポインタ(GetOnCollisionFuncを呼ぶ)
-@param	コンポーネントの更新順番（数値が小さいほど早く更新される）
-@param	当たり判定時に、めり込みから動かす処理の優先度を決める数値
-*/
-
-BoxCollider::BoxCollider(GameObject* _owner, ColliderTag _tag,onCollisionFunc _func, int _updateOrder, int _collisionOrder)
-	: ColliderComponent(_owner,_tag, _updateOrder, _collisionOrder)
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_owner"> 親クラスのポインタ </param>
+/// <param name="_ColliderTag"> 当たり判定のタグ </param>
+/// <param name="_Func"> OnCollision関数のポインタ </param>
+/// <param name="_UpdateOrder"> 更新処理の優先度 </param>
+/// <param name="_CollisionOrder"> 当たり判定処理の優先度 </param>
+BoxCollider::BoxCollider(GameObject* _owner, const ColliderTag _ColliderTag, const onCollisionFunc _Func, const int _UpdateOrder, const int _CollisionOrder)
+	: ColliderComponent(_owner, _ColliderTag, _UpdateOrder, _CollisionOrder)
 	, mIsIgnoreOwener(false)
 	, mShouldRotate(true)
 	, mObjectBox(Vector3::Zero,Vector3::Zero)
 	, mWorldBox(Vector3::Zero,Vector3::Zero)
 {
-	PHYSICS->AddBox(this,_func);
+	PHYSICS->AddBox(this, _Func);
 }
 
-/**
-@brief	デストラクタ
-*/
+/// <summary>
+/// デストラクタ
+/// </summary>
 BoxCollider::~BoxCollider()
 {
 	PHYSICS->RemoveBox(this);
 }
 
-/**
-@brief	Transformのワールド変換
-*/
+/// <summary>
+/// Transformのワールド変換
+/// </summary>
 void BoxCollider::OnUpdateWorldTransform()
 {
-	refresh();
+	Refresh();
 	PHYSICS->HitCheck(this);
 }
 
-void BoxCollider::refresh()
+/// <summary>
+/// 押し戻し処理が行われたら行列変換を行う
+/// </summary>
+void BoxCollider::Refresh()
 {
 	// 基底クラスのGameObjectからでなく強制位置モードならOnWorldTransformを無視する
 	if (mIsIgnoreOwener)
@@ -61,7 +64,10 @@ void BoxCollider::refresh()
 	mWorldBox.m_max += mOwner->GetPosition();
 }
 
-// 強制的にボックスに対し変換行列
+/// <summary>
+/// 矩形当たり判定の行列変換を行う
+/// </summary>
+/// <param name="transform"> アタッチされたオブジェクトのワールド行列 </param>
 void BoxCollider::SetForceTransForm(Matrix4 transform)
 {
 	mIsIgnoreOwener = true;
@@ -71,6 +77,12 @@ void BoxCollider::SetForceTransForm(Matrix4 transform)
 	// スケーリング
 	mWorldBox.m_min = (mObjectBox.m_min * mOwner->GetScale());
 	mWorldBox.m_max = (mObjectBox.m_max * mOwner->GetScale());
+
+	// 回転
+	if (mShouldRotate)
+	{
+		mWorldBox.Rotate(Quaternion::MatrixToQuaternion(transform));
+	}
 
 	mWorldBox.m_min = Vector3::Transform(mWorldBox.m_min, transform);
 	mWorldBox.m_max = Vector3::Transform(mWorldBox.m_max, transform);

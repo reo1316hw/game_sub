@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(PlayerWeaponObject* _weaponPtr)
-	: MBoxEnableTiming(10)
+	: MBoxEnableTiming(20)
 	, MAttackSpeed(300.0f)
 	, mHitUntilCount(0)
 	, mNumFrame(0)

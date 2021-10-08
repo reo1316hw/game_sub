@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(PlayerWeaponObject* _weaponPtr)
-	: MBoxEnableTiming(5)
+	: MBoxEnableTiming(20)
 	, MAttackSpeed(50.0f)
 	, mHitUntilCount(0)
     , mNumFrame(0)

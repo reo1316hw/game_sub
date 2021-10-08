@@ -71,7 +71,7 @@ private:
 	void SelfRotation(const Vector3 _Axis, const float _Angle);
 
 	/// <summary>
-	/// ヒットされた時の処理
+	/// ヒットした時の処理
 	/// </summary>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 	void OnCollision(const GameObject& _HitObject)override;
@@ -103,7 +103,7 @@ private:
 	PlayerState mNowState;
 	// 次のステート
 	PlayerState mNextState;
-	// ゲームオブジェクトのスケルトンメッシュ
+	// スケルトンメッシュのポインタ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
 	// プレイヤー武器のポインタ
 	PlayerWeaponObject* mWeaponPtr;
@@ -118,9 +118,9 @@ public:// ゲッターセッター
 	const Animation* GetAnimPtr(const PlayerState _State) const { return mAnimTypes[(int)_State]; };
 
 	/// <summary>
-	/// SkeletalMeshComponentのポインタを取得
+	/// スケルトンメッシュのポインタを取得
 	/// </summary>
-	/// <returns> SkeletalMeshComponentのポインタ </returns>
+	/// <returns> スケルトンメッシュのポインタ </returns>
 	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; };
 
 	/// <summary>

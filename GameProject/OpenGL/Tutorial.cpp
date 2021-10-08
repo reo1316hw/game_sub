@@ -14,9 +14,6 @@ Tutorial::Tutorial(const Scene& _scene)
 
 	SetScene(_scene);
 
-	Vector3 color(0, 1, 0);
-	mGrid = new DebugGrid(1000.0f, 30, color);
-
 	mMapCreate = new MapCreate();
 	if (!mMapCreate->OpenFile())
 	{

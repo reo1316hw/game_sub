@@ -7,43 +7,50 @@ class SphereCollider final : public ColliderComponent
 {
 public:
 
-	/**
-	@brief	コンストラクタ
-	@param	アタッチするゲームオブジェクトのポインタ
-	@param	他のオブジェクトと当たった時に呼ばれる関数ポインタ(GetOnCollisionFuncを呼ぶ)
-	@param	コンポーネントの更新順番（数値が小さいほど早く更新される）
-	@param	当たり判定時に、めり込みから動かす処理の優先度を決める数値
-	*/
-	SphereCollider(GameObject* _owner, ColliderTag _tag, onCollisionFunc _func, int _updateOrder = 200, int _collisionOrder = 100);
+	/// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="_owner"> 親クラスのポインタ </param>
+    /// <param name="_ColliderTag"> 当たり判定のタグ </param>
+    /// <param name="_Func"> OnCollision関数のポインタ </param>
+    /// <param name="_UpdateOrder"> 更新処理の優先度 </param>
+    /// <param name="_CollisionOrder"> 当たり判定処理の優先度 </param>
+	SphereCollider(GameObject* _owner, const ColliderTag _ColliderTag, const onCollisionFunc _Func, const int _UpdateOrder = 200, const int _CollisionOrder = 100);
 
-	/**
-	@brief	デストラクタ
-	*/
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	virtual ~SphereCollider();
 
-	/**
-	@brief	Transformのワールド変換
-	*/
+	/// <summary>
+	/// Transformのワールド変換
+	/// </summary>
 	void OnUpdateWorldTransform() override;
-	void refresh();
+
+	/// <summary>
+    /// 押し戻し処理が行われたら行列変換を行う
+    /// </summary>
+	void Refresh();
 
 private:
 
-	Sphere mObjectSphere;	//オブジェクトに設定する用の球（中心をオブジェクトの中心にする）
-	Sphere mWorldSphere;	//当たり判定するときに使う球（中心をワールド座標の中心にする）
+	//オブジェクトに設定する用の球（中心をオブジェクトの中心にする）
+	Sphere mObjectSphere;
+	//当たり判定するときに使う球（中心をワールド座標の中心にする）
+	Sphere mWorldSphere;
 
 public:
 
-	/**
-	@brief	当たり判定に使うSphereの設定
-	@param	オブジェクトの大きさに合わせたSphereの構造体
-	*/
+	/// <summary>
+	/// 当たり判定に使うSphereの設定
+	/// </summary>
+	/// <param name="_sphere"> オブジェクトの大きさに合わせたSphereの構造体 </param>
 	void SetObjectSphere(const Sphere& _sphere) { mObjectSphere = _sphere; }
 
-	/**
-	@brief	当たり判定時に使うワールド空間でのSphereを取得する
-	@return 中心をワールド座標に合わせたSphereの構造体
-	*/
+	/// <summary>
+	/// 当たり判定時に使うワールド空間でのSphereを取得する
+	/// </summary>
+	/// <returns> 中心をワールド座標に合わせたSphereの構造体 </returns>
 	Sphere GetWorldSphere() const { return mWorldSphere; }
 };
 
