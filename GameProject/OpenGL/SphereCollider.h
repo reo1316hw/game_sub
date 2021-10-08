@@ -27,6 +27,16 @@ public:
 	void OnUpdateWorldTransform() override;
 	void refresh();
 
+private:
+
+	// オーナーの移動処理を無視するか
+	bool mIsIgnoreOwener;
+
+	Sphere mObjectSphere;	//オブジェクトに設定する用の球（中心をオブジェクトの中心にする）
+	Sphere mWorldSphere;	//当たり判定するときに使う球（中心をワールド座標の中心にする）
+
+public:
+
 	/**
 	@brief	当たり判定に使うSphereの設定
 	@param	オブジェクトの大きさに合わせたSphereの構造体
@@ -39,11 +49,7 @@ public:
 	*/
 	Sphere GetWorldSphere() const { return mWorldSphere; }
 
-
-private:
-
-	Sphere mObjectSphere;	//オブジェクトに設定する用の球（中心をオブジェクトの中心にする）
-	Sphere mWorldSphere;	//当たり判定するときに使う球（中心をワールド座標の中心にする）
-
+	// 球状当たり判定の移動情報をセット
+	void  SetSphereTransForm(Matrix4 transform); 
 };
 

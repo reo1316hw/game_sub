@@ -6,6 +6,7 @@ class Animation;
 class PlayerObjectStateBase;
 class AttackMeshComponent;
 class SphereCollider;
+class PlayerWeaponObject;
 
 /// <summary>
 /// プレイヤーの状態
@@ -102,12 +103,10 @@ private:
 	PlayerState mNowState;
 	// 次のステート
 	PlayerState mNextState;
-	// 武器メッシュ
-	AttackMeshComponent* mWeaponMesh;
 	// ゲームオブジェクトのスケルトンメッシュ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
-	// 球状の当たり判定
-	SphereCollider* mSphereCollider;
+	// プレイヤー武器のポインタ
+	PlayerWeaponObject* mWeaponPtr;
 
 public:// ゲッターセッター
 

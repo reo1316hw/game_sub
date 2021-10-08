@@ -21,6 +21,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, mNowState(PlayerState::ePlayerStateIdle)
 	, mNextState(PlayerState::ePlayerStateIdle)
 	, mSkeltalMeshComponentPtr(nullptr)
+	, mWeaponPtr(nullptr)
 {
 	// GameObjectメンバ変数の初期化
 	mTag = _ObjectTag;
@@ -51,17 +52,17 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
 	// 武器
-	new PlayerWeaponObject(this, mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::Weapon, _SceneTag);
+	mWeaponPtr = new PlayerWeaponObject(this, mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::Weapon, _SceneTag);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	      // mStatePool[ePlayerStateIdle]
 	mStatePools.push_back(new PlayerObjectStateRunLoop);	  // mStatepool[ePlayerStateRunLoop]
 	mStatePools.push_back(new PlayerObjectStateSprintStart);  // mStatepool[ePlayerStateSprintStart]
 	mStatePools.push_back(new PlayerObjectStateSprintLoop);	  // mStatepool[ePlayerStateSprintLoop]
-	mStatePools.push_back(new PlayerObjectStateFirstAttack);  // mStatepool[ePlayerStateFirstAttack];
-	mStatePools.push_back(new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
-	mStatePools.push_back(new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
-	mStatePools.push_back(new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
+	mStatePools.push_back(new PlayerObjectStateFirstAttack(mWeaponPtr));  // mStatepool[ePlayerStateFirstAttack];
+	mStatePools.push_back(new PlayerObjectStateSecondAttack(mWeaponPtr)); // mStatepool[ePlayerStateSecondAttack];
+	mStatePools.push_back(new PlayerObjectStateThirdAttack(mWeaponPtr));  // mStatepool[ePlayerStateThirdAttack];
+	mStatePools.push_back(new PlayerObjectStateDashAttack(mWeaponPtr));   // mStatepool[ePlayerStateDashAttack];
 
 	//// メッシュ当たり判定
 	//mMeshPtr = RENDERER->GetMesh(_GpmeshName);

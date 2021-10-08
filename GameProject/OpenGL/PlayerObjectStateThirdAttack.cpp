@@ -3,9 +3,10 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
+PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
 	: MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
+	, mWeaponPtr(_weaponPtr)
 {
 }
 
@@ -59,4 +60,18 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
 	mElapseTime = 0.0f;
+
+	// 矩形当たり判定生成
+	mWeaponPtr->AddAttackHitSphere(3.0f);
+}
+
+/// <summary>
+/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void PlayerObjectStateThirdAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
+{
+	// 矩形当たり判定消去
+	mWeaponPtr->RemoveAttackHitSphere();
 }

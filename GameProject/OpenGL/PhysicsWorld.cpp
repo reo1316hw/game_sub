@@ -186,7 +186,7 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 			bool hit = Intersect(itr->GetWorldSphere(), _box->GetWorldBox());
 			if (hit)
 			{
-				onCollisionFunc func = mCollisionFunction.at(_box);
+ 				onCollisionFunc func = mCollisionFunction.at(_box);
 				func(*(itr->GetOwner()));
 				func = mCollisionFunction.at(itr);
 				func(*(_box->GetOwner()));

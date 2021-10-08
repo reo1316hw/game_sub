@@ -12,22 +12,46 @@ PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent
 	// GameObjectメンバ変数の初期化
 	mTag = _ObjectTag;
 
-	// 武器
+	// 武器のメッシュ
 	mWeaponMesh = new AttackMeshComponent(this, _skMesh ,"index_01_r");
 	mWeaponMesh->SetMesh(RENDERER->GetMesh(_GpmeshName));
 	mWeaponMesh->SetOffsetRotation(MSwordRot);
 	mWeaponMesh->SetOffsetPosition(MSwordPos);
 
 	// 半径
-	float radius = 1.0f;
+	float radius = 30.0f;
 	// 武器の球状当たり判定
-	mWeaponSphere = Sphere(Vector3(0.0f, -50.0f, 0.0f), radius);
+	mWeaponSphere = Sphere(Vector3(0.0f, -50.0f, -50.0f), radius);
+}
+
+void PlayerWeaponObject::AddAttackHitSphere(const float _Scale)
+{
 	mSphereCollider = new SphereCollider(this, ColliderTag::Weapon, GetOnCollisionFunc());
-	mSphereCollider->SetObjectSphere(mWeaponSphere);
+
+	Sphere sphere = mWeaponSphere;
+	sphere.m_radius *= _Scale;
+
+	mSphereCollider->SetObjectSphere(sphere);
+}
+
+void PlayerWeaponObject::RemoveAttackHitSphere()
+{
+	if (mSphereCollider)
+	{
+		delete mSphereCollider;
+		mSphereCollider = nullptr;
+	}
 }
 
 void PlayerWeaponObject::UpdateGameObject(float _deltaTime)
 {
+	// 武器を振っているときの当たり判定の更新処理
+	if (mSphereCollider)
+	{
+		Matrix4 mat = mWeaponMesh->GetAttachTransMatrix();
+		mSphereCollider->SetSphereTransForm(mat);
+	}
+
 	// 座標
 	Vector3 pos = mOwner->GetPosition();
 	SetPosition(pos);

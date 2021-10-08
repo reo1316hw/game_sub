@@ -3,11 +3,12 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
+PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack(PlayerWeaponObject* _weaponPtr)
 	: MAttackSpeed(100.0f)
 	, mNumFrame(0)
 	, MPlayRate(1.5f)
 	, MValidComboFrame(2)
+	, mWeaponPtr(_weaponPtr)
 {
 }
 
@@ -85,4 +86,18 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateSecondAttack)->GetDuration();
 	mNumFrame = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetNumFrames();
 	mElapseTime = 0.0f;
+
+	// 矩形当たり判定生成
+	mWeaponPtr->AddAttackHitSphere(2.0f);
+}
+
+/// <summary>
+/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void PlayerObjectStateSecondAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
+{
+	// 矩形当たり判定消去
+	mWeaponPtr->RemoveAttackHitSphere();
 }

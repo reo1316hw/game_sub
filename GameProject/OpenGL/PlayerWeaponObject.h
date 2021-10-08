@@ -11,6 +11,9 @@ public:
 
 	~PlayerWeaponObject() {};
 
+	void AddAttackHitSphere(const float _Scale = 1.0f);
+	void RemoveAttackHitSphere();
+
 	void UpdateGameObject(float _deltaTime)override;
 
 private:

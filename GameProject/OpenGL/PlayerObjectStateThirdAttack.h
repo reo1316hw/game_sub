@@ -10,7 +10,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	PlayerObjectStateThirdAttack();
+	PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr);
 
 	/// <summary>
     /// デストラクタ
@@ -32,10 +32,20 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Enter(PlayerObject* _owner, const float _DeltaTime)override;
 
+	/// <summary>
+	/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
+	/// </summary>
+	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	void Exit(PlayerObject* _owner, const float _DeltaTime)override;
+
 private:
 
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
+
+	// プレイヤー武器のポインタ
+	PlayerWeaponObject* mWeaponPtr;
 };

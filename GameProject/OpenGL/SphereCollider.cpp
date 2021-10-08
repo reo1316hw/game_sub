@@ -13,6 +13,7 @@
 */
 SphereCollider::SphereCollider(GameObject* _owner, ColliderTag _tag, onCollisionFunc _func, int _updateOrder, int _collisionOrder)
 	: ColliderComponent(_owner,_tag, _updateOrder, _collisionOrder)
+	, mIsIgnoreOwener(false)
 	, mObjectSphere( Vector3::Zero,0.0f )
 	, mWorldSphere( Vector3::Zero,0.0f )
 {
@@ -38,8 +39,25 @@ void SphereCollider::OnUpdateWorldTransform()
 
 void SphereCollider::refresh()
 {
+	// 基底クラスのGameObjectからでなく強制位置モードならOnWorldTransformを無視する
+	if (mIsIgnoreOwener)
+	{
+		return;
+	}
+
 	//ワールド座標での中心位置を更新する
 	mWorldSphere.m_center = mObjectSphere.m_center + mOwner->GetPosition();
+	//ワールド空間での球の大きさを更新する
+	mWorldSphere.m_radius = mObjectSphere.m_radius * mOwner->GetScale();
+}
+
+// 強制的に球に対し変換行列
+void SphereCollider::SetSphereTransForm(Matrix4 transform)
+{
+	mIsIgnoreOwener = true;
+
+	mWorldSphere.m_center = Vector3::Transform(mWorldSphere.m_center + mObjectSphere.m_center, transform);
+
 	//ワールド空間での球の大きさを更新する
 	mWorldSphere.m_radius = mObjectSphere.m_radius * mOwner->GetScale();
 }
