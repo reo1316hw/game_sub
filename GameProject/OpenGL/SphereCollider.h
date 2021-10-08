@@ -29,9 +29,6 @@ public:
 
 private:
 
-	// オーナーの移動処理を無視するか
-	bool mIsIgnoreOwener;
-
 	Sphere mObjectSphere;	//オブジェクトに設定する用の球（中心をオブジェクトの中心にする）
 	Sphere mWorldSphere;	//当たり判定するときに使う球（中心をワールド座標の中心にする）
 
@@ -48,8 +45,5 @@ public:
 	@return 中心をワールド座標に合わせたSphereの構造体
 	*/
 	Sphere GetWorldSphere() const { return mWorldSphere; }
-
-	// 球状当たり判定の移動情報をセット
-	void  SetSphereTransForm(Matrix4 transform); 
 };
 

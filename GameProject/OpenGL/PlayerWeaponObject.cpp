@@ -4,10 +4,10 @@ PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent
 	: GameObject(_ObjectTag, _SceneTag)
 	, MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
 	, MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
-	, mWeaponSphere(Vector3::Zero, 0.0f)
+	, mWeaponBox(Vector3::Zero, Vector3::Zero)
 	, mOwner(_owner)
 	, mWeaponMesh(nullptr)
-	, mSphereCollider(nullptr)
+	, mBoxCollider(nullptr)
 {
 	// GameObjectメンバ変数の初期化
 	mTag = _ObjectTag;
@@ -18,43 +18,43 @@ PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent
 	mWeaponMesh->SetOffsetRotation(MSwordRot);
 	mWeaponMesh->SetOffsetPosition(MSwordPos);
 
-	// 半径
-	float radius = 30.0f;
-	// 武器の球状当たり判定
-	mWeaponSphere = Sphere(Vector3(0.0f, -50.0f, -50.0f), radius);
+	// 武器の矩形当たり判定
+	mWeaponBox = AABB(Vector3(-10.0f, -10.0f, 0.0f), Vector3(10.0f, 10.0f, 100.0f));
+	//mWeaponBox = AABB(mWeaponMesh->GetMesh()->GetBox());
 }
 
-void PlayerWeaponObject::AddAttackHitSphere(const float _Scale)
+void PlayerWeaponObject::AddAttackHitBox(const float _Scale)
 {
-	mSphereCollider = new SphereCollider(this, ColliderTag::Weapon, GetOnCollisionFunc());
+	mBoxCollider = new BoxCollider(this, ColliderTag::Weapon, GetOnCollisionFunc());
 
-	Sphere sphere = mWeaponSphere;
-	sphere.m_radius *= _Scale;
+	AABB box = mWeaponBox;
+	box.m_min *= _Scale;
+	box.m_max *= _Scale;
 
-	mSphereCollider->SetObjectSphere(sphere);
+	mBoxCollider->SetObjectBox(box);
 }
 
-void PlayerWeaponObject::RemoveAttackHitSphere()
+void PlayerWeaponObject::RemoveAttackHitBox()
 {
-	if (mSphereCollider)
+	if (mBoxCollider)
 	{
-		delete mSphereCollider;
-		mSphereCollider = nullptr;
+		delete mBoxCollider;
+		mBoxCollider = nullptr;
 	}
 }
 
 void PlayerWeaponObject::UpdateGameObject(float _deltaTime)
 {
 	// 武器を振っているときの当たり判定の更新処理
-	if (mSphereCollider)
+	if (mBoxCollider)
 	{
 		Matrix4 mat = mWeaponMesh->GetAttachTransMatrix();
-		mSphereCollider->SetSphereTransForm(mat);
-	}
+		mBoxCollider->SetForceTransForm(mat);
 
-	// 座標
-	Vector3 pos = mOwner->GetPosition();
-	SetPosition(pos);
+		// 座標
+		Vector3 pos = mat.GetTranslation();
+		SetPosition(pos);
+	}
 }
 
 void PlayerWeaponObject::OnCollision(const GameObject& _hitObject)

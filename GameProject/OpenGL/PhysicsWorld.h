@@ -32,7 +32,6 @@ public:
 	void AddSphere(SphereCollider* _sphere, onCollisionFunc _func);
 	void RemoveSphere(SphereCollider* _sphere);
 
-
 	void SphereAndBox();
 
 
@@ -50,8 +49,7 @@ private:
 	std::vector<BoxCollider*> mWallBoxes;
 	std::vector<BoxCollider*> mPlayerBoxes;
 	std::vector<BoxCollider*> mEnemyBoxes;
-
-	std::vector<SphereCollider*> mWeaponSpheres;
+	std::vector<BoxCollider*> mWeaponBoxes;
 
 	onCollisionMap mCollisionFunction;
 };

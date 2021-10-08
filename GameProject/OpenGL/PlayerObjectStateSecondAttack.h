@@ -48,6 +48,8 @@ public:
 
 private:
 
+	// 当たり判定を有効にするタイミング
+	const int MBoxEnableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -56,6 +58,8 @@ private:
 	// コンボ有効フレーム
 	const size_t MValidComboFrame;
 
+	// 当たり判定するまでのカウント
+	int mHitUntilCount;
 	// フレーム数
 	size_t mNumFrame;
 

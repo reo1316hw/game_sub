@@ -38,10 +38,16 @@ public:
 	*/
 	AABB GetWorldBox() const { return mWorldBox; }
 
+	// 矩形当たり判定の移動情報をセット
+	void  SetForceTransForm(Matrix4 transform);
+
 private:
+
+	// オーナーの移動処理を無視するか
+	bool mIsIgnoreOwener;
+	bool mShouldRotate;
 
 	AABB mObjectBox;			//オブジェクトに設定する用のボックス（中心をオブジェクトの中心にする）
 	AABB mWorldBox;			//当たり判定するときに使うボックス（中心をワールド座標の中心にする）
-	bool mShouldRotate;
 };
 

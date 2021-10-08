@@ -11,8 +11,8 @@ public:
 
 	~PlayerWeaponObject() {};
 
-	void AddAttackHitSphere(const float _Scale = 1.0f);
-	void RemoveAttackHitSphere();
+	void AddAttackHitBox(const float _Scale = 1.0f);
+	void RemoveAttackHitBox();
 
 	void UpdateGameObject(float _deltaTime)override;
 
@@ -26,13 +26,13 @@ private:
 	const Vector3 MSwordPos;
 
 	// 武器の球状当たり判定
-	Sphere mWeaponSphere;
+	AABB mWeaponBox;
 	// アタッチされているオブジェクト
 	GameObject* mOwner;
 	// 武器メッシュ
 	AttackMeshComponent* mWeaponMesh;
 	// 球の当たり判定を行うコンポーネントのポインタ
-	SphereCollider* mSphereCollider;
+	BoxCollider* mBoxCollider;
 };
 
 

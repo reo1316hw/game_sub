@@ -4,7 +4,9 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack(PlayerWeaponObject* _weaponPtr)
-	: MAttackSpeed(100.0f)
+	: MBoxEnableTiming(10)
+	, MAttackSpeed(100.0f)
+	, mHitUntilCount(0)
 	, mNumFrame(0)
 	, MPlayRate(1.5f)
 	, MValidComboFrame(2)
@@ -20,12 +22,6 @@ PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack(PlayerWeaponObject*
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	// フレーム数を減らしていく
-	if (mNumFrame > 0)
-	{
-	    --mNumFrame;
-	}
-
 	// 座標
 	Vector3 pos = _owner->GetPosition();
 	// 前方ベクトル
@@ -41,6 +37,20 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 	pos += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
 
 	_owner->SetPosition(pos);
+
+	// フレーム数を減らしていく
+	if (mNumFrame > 0)
+	{
+		--mNumFrame;
+	}
+
+	++mHitUntilCount;
+
+	if (mHitUntilCount == MBoxEnableTiming)
+	{
+		// 矩形当たり判定生成
+		mWeaponPtr->AddAttackHitBox();
+	}
 
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -86,9 +96,7 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateSecondAttack)->GetDuration();
 	mNumFrame = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetNumFrames();
 	mElapseTime = 0.0f;
-
-	// 矩形当たり判定生成
-	mWeaponPtr->AddAttackHitSphere(2.0f);
+	mHitUntilCount = 0;
 }
 
 /// <summary>
@@ -99,5 +107,5 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 void PlayerObjectStateSecondAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
 	// 矩形当たり判定消去
-	mWeaponPtr->RemoveAttackHitSphere();
+	mWeaponPtr->RemoveAttackHitBox();
 }

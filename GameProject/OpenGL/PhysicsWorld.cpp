@@ -176,14 +176,14 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//	}
 		//}
 
-		for (auto itr : mWeaponSpheres)
+		for (auto itr : mWeaponBoxes)
 		{
 			//コライダーの親オブジェクトがActiveじゃなければ終了する
 			if (itr->GetOwner()->GetState() != State::Active)
 			{
 				continue;
 			}
-			bool hit = Intersect(itr->GetWorldSphere(), _box->GetWorldBox());
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
 			if (hit)
 			{
  				onCollisionFunc func = mCollisionFunction.at(_box);
@@ -273,6 +273,12 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetTag() == ColliderTag::Weapon)
+	{
+		mWeaponBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 }
 
 void PhysicsWorld::RemoveBox(BoxCollider * _box)
@@ -304,25 +310,32 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 		mEnemyBoxes.pop_back();
 	}
 
+	auto weaponBox = std::find(mWeaponBoxes.begin(), mWeaponBoxes.end(), _box);
+	if (weaponBox != mWeaponBoxes.end())
+	{
+		std::iter_swap(weaponBox, mWeaponBoxes.end() - 1);
+		mWeaponBoxes.pop_back();
+	}
+
     mCollisionFunction.erase(_box);
 }
 
 void PhysicsWorld::AddSphere(SphereCollider * _sphere, onCollisionFunc _func)
 {
-	mWeaponSpheres.emplace_back(_sphere);
+	//mWeaponSpheres.emplace_back(_sphere);
     //コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
-    mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_sphere), _func));
+    //mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_sphere), _func));
 }
 
 void PhysicsWorld::RemoveSphere(SphereCollider * _sphere)
 {
-	auto iter = std::find(mWeaponSpheres.begin(), mWeaponSpheres.end(), _sphere);
+	/*auto iter = std::find(mWeaponSpheres.begin(), mWeaponSpheres.end(), _sphere);
 	if (iter != mWeaponSpheres.end())
 	{
 		std::iter_swap(iter, mWeaponSpheres.end() - 1);
 		mWeaponSpheres.pop_back();
 	}
-    mCollisionFunction.erase(_sphere);
+    mCollisionFunction.erase(_sphere);*/
 }
 
 void PhysicsWorld::SphereAndSphere()

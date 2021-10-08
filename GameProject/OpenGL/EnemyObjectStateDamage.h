@@ -40,15 +40,11 @@ public:
 
 private:
 
-	// アニメーションするタイミング
-	const int MAnimationTiming;
 	// ダメージ時の速度
 	const float MDamageSpeed;
 
 	// ダメージを受けたか
 	bool mIsDamage;
-	// アニメーションするまでのカウント
-	int mAnimateUntilCount;
 	// このステートに入ってからの経過時刻
 	float mElapseTime;
 	// アニメーション総時間

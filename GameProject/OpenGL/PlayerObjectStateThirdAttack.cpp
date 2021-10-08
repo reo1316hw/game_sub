@@ -4,8 +4,10 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
-	: MAttackSpeed(150.0f)
+	: MBoxEnableTiming(20)
+	, MAttackSpeed(150.0f)
 	, MPlayRate(2.0f)
+	, mHitUntilCount(0)
 	, mWeaponPtr(_weaponPtr)
 {
 }
@@ -34,6 +36,14 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 
 	_owner->SetPosition(pos);
 
+	++mHitUntilCount;
+
+	if (mHitUntilCount == MBoxEnableTiming)
+	{
+		// 矩形当たり判定生成
+		mWeaponPtr->AddAttackHitBox();
+	}
+
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -57,9 +67,7 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
 	mElapseTime = 0.0f;
-
-	// 矩形当たり判定生成
-	mWeaponPtr->AddAttackHitSphere(3.0f);
+	mHitUntilCount = 0;
 }
 
 /// <summary>
@@ -70,5 +78,5 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 void PlayerObjectStateThirdAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
 	// 矩形当たり判定消去
-	mWeaponPtr->RemoveAttackHitSphere();
+	mWeaponPtr->RemoveAttackHitBox();
 }

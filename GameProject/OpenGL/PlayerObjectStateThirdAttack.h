@@ -41,10 +41,15 @@ public:
 
 private:
 
+	// 当たり判定を有効にするタイミング
+	const int MBoxEnableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
+
+	// 当たり判定するまでのカウント
+	int mHitUntilCount;
 
 	// プレイヤー武器のポインタ
 	PlayerWeaponObject* mWeaponPtr;
