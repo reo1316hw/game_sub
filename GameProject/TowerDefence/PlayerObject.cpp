@@ -52,7 +52,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
 	// 武器
-	mWeaponPtr = new PlayerWeaponObject(this, mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::Weapon, _SceneTag);
+	mWeaponPtr = new PlayerWeaponObject(this, mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon, _SceneTag);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	      // mStatePool[ePlayerStateIdle]

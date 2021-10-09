@@ -114,7 +114,7 @@ void EnemyObjectStateMove::OnColision(const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::Weapon)
+	if (tag == Tag::eWeapon)
 	{
 		mIsDamage = true;
 	}

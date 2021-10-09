@@ -96,7 +96,7 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 	mStatePools[static_cast<int>(mNowState)]->OnColision(_HitObject);
 	mTag = _HitObject.GetTag();
 
-	if (mTag == Tag::Player)
+	if (mTag == Tag::ePlayer)
 	{
 		//‰Ÿ‚µ–ß‚µˆ—
 		float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;

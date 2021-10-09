@@ -34,37 +34,21 @@ enum State
 	@enum　GameObjectタグ
 	衝突相手を判別するために使用
 	*/
+
+/// <summary>
+/// GameObjectタグ
+/// 衝突相手を判別するために使用
+/// </summary>
 enum Tag
 {
-	Other = 0,
-	Camera = 1,
-	Player = 2,
-	EightTimesSeventeenGround = 3,
-	SixTimesThreeGround = 4,
-	FourTimesFiveGround = 5,
-	ThreeTimesFourGround = 6,
-	TwentyFiveTimesTwoGround = 7,
-	TwelveTimesThirteenGround = 8,
-	ThreeTimesNineGround01 = 9,
-	NineTimesTwoGround = 10,
-	ThreeTimesNineGround02 = 11,
-	SevenTimesSevenGround = 12,
-	ThirteenTimesThreeGround = 13,
-	ThreeTimesThreeGround = 14,
-	ElevenTimesOneGround = 15,
-	NineteenTimesNineteenGround = 16,
-	SideSuperShortWall = 17,
-	VerticalSuperShortWall = 18,
-	SideShortWall = 19,
-	VerticalShortWall = 20,
-	UsuallyWall = 21,
-	SideLongWall = 22,
-	VerticalLongWall = 23,
-	SideSuperLongWall = 24,
-	VerticalSuperLongWall = 25,
-	Enemy = 26,
-	Weapon = 27,
-	Swith = 28
+	eOther = 0,
+	eCamera,
+	ePlayer,
+	eWeapon,
+	eGround,
+	eEnemyGenerator,
+	eTranslucentWall,
+	eTower
 };
 
 /*

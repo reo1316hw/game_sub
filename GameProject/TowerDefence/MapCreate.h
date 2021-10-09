@@ -1,42 +1,74 @@
 #pragma once
 
+/// <summary>
+/// マップデータのオブジェクトの番号
+/// </summary>
+enum MapDataNum
+{
+	ePlayerNum = 1,
+	eGroundNum,
+	eEnemyGeneratorNum,
+	eTranslucentWallNum,
+	eTowerNum
+};
+
+/// <summary>
+/// マップを生成
+/// </summary>
 class MapCreate : public GameObject
 {
 public:
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	MapCreate();
+
+	/// <summary>
+    /// デストラクタ
+    /// </summary>
 	~MapCreate();
 
-	//jsonから読み込んで可変長コンテナに格納する関数
-	bool OpenFile();
+	/// <summary>
+	/// jsonファイルをRapidJsonで読み込んで、マップデータを可変長配列に格納する
+	/// </summary>
+	void OpenFile();
 
-	//全ての"床"を生成し配置する関数
-	void CreateGround();
-	//全ての"プレイヤー"を生成し配置する関数
-	void CreatePlayer();
-	//全ての"壁"を生成し配置する関数
-	void CreateWall();
-	//全ての"敵"を生成し配置する関数
-	void CreateEnemy();
+	/// <summary>
+	/// マップデータにアクセスする
+	/// </summary>
+	/// <param name="_mapData"> マップデータ </param>
+	void AccessMapData(std::vector<std::vector<int>> _mapData);
+
+	/// <summary>
+	/// オブジェクトを生成する
+	/// </summary>
+	/// <param name="_Name"> マップデータの要素 </param>
+	/// <param name="_ObjectPos"> オブジェクトの座標 </param>
+	void CreateGameObject(const unsigned int _Name, const Vector3 _ObjectPos);
 
 private:
+
 	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
 	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);
+	
+	// 静的オブジェクトの大きさ
+	const Vector3 MStaticObjectSize;
+	// プレイヤーの大きさ
+	const Vector3 MPersonSize;
 
-	//jsonから読み込んだ"プレイヤー"データを格納するための可変長コンテナ
+	//jsonから読み込んだプレイヤーのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mPlayerMapData;
-	//jsonから読み込んだ"床"データを格納するための可変長コンテナ
-	std::vector<std::vector<int>> mGroundMapData;
-	//jsonから読み込んだ"壁"データを格納するための可変長コンテナ
-	std::vector<std::vector<int>> mWallMapData;
-	//jsonから読み込んだ"エネミー"データを格納するための可変長コンテナ
-	std::vector<std::vector<int>> mEnemyMapData;
+	//jsonから読み込んだ静的オブジェクトのマップデータを格納するための可変長配列
+	std::vector<std::vector<int>> mStaticObjectMapData;
 
-	int		mScene;
+	// マップデータの横のタイル数
 	int		mSizeX;
+	// マップデータの縦のタイル数
 	int		mSizeY;
-	int		mSizeZ;
+	// オブジェクトごとの距離
 	float	mOffset;
 
+	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };
-

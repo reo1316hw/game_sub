@@ -24,10 +24,11 @@ void main()
     hdrColor += bloomColor1 + bloomColor2 + bloomColor3; //+ bloomColor4 + bloomColor5; 
   
     // 露出トーンマッピング
-//    vec3 mapped = vec3(1.0) - exp(-hdrColor * exposure);
+    vec3 mapped = vec3(1.0) - exp(-hdrColor * exposure);
     
     // ガンマコレクション
-    //const float gamma = 2.2;
-    //mapped = pow(mapped, vec3(1.0 / gamma));  
-    FragColor = vec4(hdrColor, 1.0);
+    const float gamma = 2.2;
+    mapped = pow(mapped, vec3(1.0 / gamma));
+
+    FragColor = vec4(mapped, 1.0);
 }  

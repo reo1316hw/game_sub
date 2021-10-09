@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 MainCameraObject::MainCameraObject() 
-	: GameObject(Tag::Camera,SceneBase::Scene::other,true)
+	: GameObject(Tag::eCamera,SceneBase::Scene::other,true)
 	, MMinLookDownAngle(Math::ToRadians(0.0f))
 	, MMaxLookDownAngle(Math::ToRadians(80.0f))
 	, MRightAxisThreshold(0.3f)
@@ -16,7 +16,7 @@ MainCameraObject::MainCameraObject()
 	, mTargetPos(Vector3::Zero)
 {
 	SetPosition(Vector3(0,0,0));
-	mTag = Tag::Camera;
+	mTag = Tag::eCamera;
 }
 
 /// <summary>

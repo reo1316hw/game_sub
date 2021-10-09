@@ -1,245 +1,114 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 MapCreate::MapCreate() 
-	:GameObject(Tag::Other,SceneBase::Scene::other)
+	:GameObject(Tag::eOther,SceneBase::Scene::other)
+	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
+	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
     , mPlayerPtr(nullptr)
 {
 	mSizeX = 0;
 	mSizeY = 0;
-	mSizeZ = 0;
 	mOffset = 200;
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 MapCreate::~MapCreate()
 {
-	mGroundMapData.clear();
-	mWallMapData.clear();
 	mPlayerMapData.clear();
-	mEnemyMapData.clear();
+	mStaticObjectMapData.clear();
 }
 
-bool MapCreate::OpenFile()
+/// <summary>
+/// jsonファイルをRapidJsonで読み込んで、マップデータを可変長配列に格納する
+/// </summary>
+void MapCreate::OpenFile()
 {
-	mScene = SceneBase::GetScene();
-
-	//-----------------------------------------------
-	//----------------tutorial-----------------------
-	//-----------------------------------------------
-	if (mScene == SceneBase::tutorial)
+	// プレイヤーのデータの読み込み
+	if (!readTiledJson(mPlayerMapData, "Assets/Config/Fix3dActionGame.json", "Player"))
 	{
-		//床データの読み込み
-		if (!readTiledJson(mGroundMapData, "Assets/Config/3dActionGame.json", "Ground"))
-		{
-			printf("don't have Layer/Ground\n");
-			return true;
-		}
-
-		mSizeX = mGroundMapData[0].size();
-		mSizeY = mGroundMapData[0].size();
-		//mSizeZ = mGroundMapData[0].size();
-
-		//壁データの読み込み
-		if (!readTiledJson(mWallMapData, "Assets/Config/3dActionGame.json", "Wall"))
-		{
-			printf("don't have Layer/Wall\n");
-			return true;
-		}
-
-		//プレイヤーデータの読み込み
-		if (!readTiledJson(mPlayerMapData, "Assets/Config/3dActionGame.json", "Player"))
-		{
-			printf("don't have Layer/player\n");
-			return true;
-		}
-
-		//エネミーデータの読み込み
-		if (!readTiledJson(mEnemyMapData, "Assets/Config/3dActionGame.json", "Enemy"))
-		{
-			printf("don't have Layer/Enemy\n");
-			return true;
-		}
+		printf("don't have Layer/Player\n");
+		return;
 	}
 
-	return false;
+	// 静的マップデータの読み込み
+	if (!readTiledJson(mStaticObjectMapData, "Assets/Config/Fix3dActionGame.json", "StaticObject"))
+	{
+		printf("don't have Layer/StaticObject\n");
+		return;
+	}
+
+	mSizeX = mStaticObjectMapData[0].size();
+	mSizeY = mStaticObjectMapData.size();
+	
+	AccessMapData(mPlayerMapData);
+	AccessMapData(mStaticObjectMapData);
 }
 
-void MapCreate::CreateGround()
+/// <summary>
+/// マップデータにアクセスする
+/// </summary>
+/// <param name="_mapData"> マップデータ </param>
+void MapCreate::AccessMapData(std::vector<std::vector<int>> _mapData)
 {
-	for (float ix = 0; ix < mSizeX; ix++)
+	for (int iy = 0; iy < mSizeY; iy++)
 	{
-		for (float iy = 0; iy < mSizeY; iy++)
+		for (int ix = 0; ix < mSizeX; ix++)
 		{
-			const unsigned int name = mGroundMapData[(int)ix][(int)iy];
-			Vector3 objectPos		= Vector3(mOffset * ix, -mOffset * iy, 0.0f);
-			Vector3 objectPosEvenX	= Vector3(mOffset * ix, -mOffset * iy + 100.0f, 0.0f);
-			Vector3 objectPosEvenY	= Vector3(mOffset * ix + 100.0f, -mOffset * iy, 0.0f);
-			//Vector3 objectPosEvenXY = Vector3(mOffset * ix - 100.0f, -100.0f, -mOffset * iz - 100.0f);
-			Vector3 objectSize = Vector3(1.0f, 1.0f, 1.0f);
+			unsigned int Name = _mapData[iy][ix];
+			Vector3 ObjectPos = Vector3(mOffset * ix, mOffset * iy, 0.0f);
 
-			switch (mScene)
-			{
-			case SceneBase::tutorial:
-
-				switch (name)
-				{
-				case(11):
-					new GroundObject(objectPosEvenX, objectSize, "Assets/Model/Ground/8Times17_Ground.gpmesh", Tag::EightTimesSeventeenGround, SceneBase::tutorial);
-					break;
-				case(12):
-					new GroundObject(objectPosEvenX, objectSize, "Assets/Model/Ground/6Times3_Ground.gpmesh", Tag::SixTimesThreeGround, SceneBase::tutorial);
-					break;
-				case(13):
-					new GroundObject(objectPosEvenX, objectSize, "Assets/Model/Ground/4Times5_Ground.gpmesh", Tag::FourTimesFiveGround, SceneBase::tutorial);
-					break;
-				case(14):
-					new GroundObject(objectPosEvenY, objectSize, "Assets/Model/Ground/3Times4_Ground.gpmesh", Tag::ThreeTimesFourGround, SceneBase::tutorial);
-					break;
-				case(15):
-					new GroundObject(objectPosEvenY, objectSize, "Assets/Model/Ground/25Times2_Ground.gpmesh", Tag::TwentyFiveTimesTwoGround, SceneBase::tutorial);
-					break;
-				case(16):
-					new GroundObject(objectPosEvenX, objectSize, "Assets/Model/Ground/12Times13_Ground.gpmesh", Tag::TwelveTimesThirteenGround, SceneBase::tutorial);
-					break;
-				case(17):
-					new GroundObject(objectPos, objectSize, "Assets/Model/Ground/3Times9_Ground.gpmesh", Tag::ThreeTimesNineGround01, SceneBase::tutorial);
-					break;
-				case(18):
-					new GroundObject(objectPosEvenY, objectSize, "Assets/Model/Ground/9Times2_Ground.gpmesh", Tag::NineTimesTwoGround, SceneBase::tutorial);
-					break;
-				case(19):
-					new GroundObject(objectPos, objectSize, "Assets/Model/Ground/3Times9_Ground.gpmesh", Tag::ThreeTimesNineGround02, SceneBase::tutorial);
-					break;
-				case(20):
-					new GroundObject(objectPos, objectSize, "Assets/Model/Ground/7Times7_Ground.gpmesh", Tag::SevenTimesSevenGround, SceneBase::tutorial);
-					break;
-				case(21):
-					new GroundObject(objectPos, objectSize, "Assets/Model/Ground/13Times3_Ground.gpmesh", Tag::ThirteenTimesThreeGround, SceneBase::tutorial);
-					break;
-				case(22):
-					new GroundObject(objectPos, objectSize, "Assets/Model/Ground/3Times3_Ground.gpmesh", Tag::ThreeTimesThreeGround, SceneBase::tutorial);
-					break;
-				case(23):
-					new GroundObject(objectPos, objectSize, "Assets/Model/Ground/11Times1_Ground.gpmesh", Tag::ElevenTimesOneGround, SceneBase::tutorial);
-					break;
-				case(24):
-					new GroundObject(objectPos, objectSize, "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::NineteenTimesNineteenGround, SceneBase::tutorial);
-					break;
-				}
-				break;
-			}
+			CreateGameObject(Name, ObjectPos);
 		}
 	}
 }
 
-void MapCreate::CreateWall()
+/// <summary>
+/// オブジェクトを生成する
+/// </summary>
+/// <param name="_Name"> マップデータの要素 </param>
+/// <param name="_ObjectPos"> オブジェクトの座標 </param>
+void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _ObjectPos)
 {
-	for (float ix = 0; ix < mSizeX; ix++)
+	switch (_Name)
 	{
-		for (float iy = 0; iy < mSizeY; iy++)
-		{
-			const unsigned int name = mWallMapData[(int)ix][(int)iy];
-			Vector3 objectPos	= Vector3(mOffset * ix, -mOffset * iy + 100.0f, 1000.0f);
-			Vector3 objectPos02 = Vector3(mOffset * ix + 100.0f, -mOffset * iy, 1000.0f);
-			Vector3 objectSize	= Vector3(1.0f, 1.0f, 1.0f);
+	case(MapDataNum::ePlayerNum):
 
-			switch (mScene)
-			{
-			case SceneBase::tutorial:
+		mPlayerPtr = new PlayerObject(_ObjectPos, MPersonSize
+			                          , "Assets/Model/Player/Player.gpmesh"
+			                          , "Assets/Model/Player/Player.gpskel"
+			                          , Tag::ePlayer
+			                          , SceneBase::tutorial);
+		break;
 
-				switch (name)
-				{
-				case(2):
-					new WallObject(objectPos, objectSize, "Assets/Model/Wall/SideSuperShortWall.gpmesh", Tag::SideSuperShortWall, SceneBase::tutorial);
-					break;
-				case(3):
-					new WallObject(objectPos02, objectSize, "Assets/Model/Wall/VerticalSuperShortWall.gpmesh", Tag::VerticalSuperShortWall, SceneBase::tutorial);
-					break;
-				case(4):
-					new WallObject(objectPos, objectSize, "Assets/Model/Wall/SideShortWall.gpmesh", Tag::SideShortWall, SceneBase::tutorial);
-					break;
-				case(5):
-					new WallObject(objectPos02, objectSize, "Assets/Model/Wall/VerticalShortWall.gpmesh", Tag::VerticalShortWall, SceneBase::tutorial);
-					break;
-				case(6):
-					new WallObject(objectPos, objectSize, "Assets/Model/Wall/UsuallyWall.gpmesh", Tag::UsuallyWall, SceneBase::tutorial);
-					break;
-				case(7):
-					new WallObject(objectPos, objectSize, "Assets/Model/Wall/SideLongWall.gpmesh", Tag::SideLongWall, SceneBase::tutorial);
-					break;
-				case(8):
-					new WallObject(objectPos02, objectSize, "Assets/Model/Wall/VerticalLongWall.gpmesh", Tag::VerticalLongWall, SceneBase::tutorial);
-					break;
-				case(9):
-					new WallObject(objectPos, objectSize, "Assets/Model/Wall/SideSuperLongWall.gpmesh", Tag::SideSuperLongWall, SceneBase::tutorial);
-					break;
-				case(10):
-					new WallObject(objectPos02, objectSize, "Assets/Model/Wall/VerticalSuperLongWall.gpmesh", Tag::VerticalSuperLongWall, SceneBase::tutorial);
-					break;
-				}
-				break;
-			}
+	case(MapDataNum::eGroundNum):
 
-		}
-	}
-}
+		new GroundObject(_ObjectPos - Vector3(0.0f, 0.0f, 100.0f), MStaticObjectSize, "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround, SceneBase::tutorial);
+		break;
 
-void MapCreate::CreateEnemy()
-{
-	for (float ix = 0; ix < mSizeX; ix++)
-	{
-		for (float iy = 0; iy < mSizeY; iy++)
-		{
-			const unsigned int name = mEnemyMapData[(int)ix][(int)iy];
-			Vector3 objectPos = Vector3(mOffset * ix, -mOffset * iy, 100.0f);
-			Vector3 objectSize = Vector3(0.5f, 0.5f, 0.5f);
+	case(MapDataNum::eEnemyGeneratorNum):
+	
+		new EnemyObject(_ObjectPos, MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh"
+						, "Assets/Model/Enemy/Enemy.gpskel"
+						, Tag::eEnemyGenerator
+						, SceneBase::tutorial
+						, mPlayerPtr);
+		break;
 
-			switch (mScene)
-			{
-			case SceneBase::tutorial:
+	case(MapDataNum::eTranslucentWallNum):
 
-				switch (name)
-				{
-				case(25):
-					new EnemyObject(objectPos, objectSize , "Assets/Model/Enemy/Enemy.gpmesh"
-														  , "Assets/Model/Enemy/Enemy.gpskel"
-														  , Tag::Enemy
-														  , SceneBase::tutorial
-					                                      , mPlayerPtr);
-					break;
-				}
-				break;
-			}
-		}
-	}
-}
+		//new WallObject(_ObjectPos, MStaticObjectSize, "Assets/Model/Wall/VerticalSuperLongWall.gpmesh", Tag::eTranslucentWall, SceneBase::tutorial);
+		break;
+	
+	case(MapDataNum::eTowerNum):
 
-void MapCreate::CreatePlayer()
-{
-	for (float ix = 0; ix < mSizeX; ix++)
-	{
-		for (float iy = 0; iy < mSizeY; iy++)
-		{
-			const unsigned int name = mPlayerMapData[(int)ix][(int)iy];
-			Vector3 objectPos = Vector3(mOffset * ix, -mOffset * iy, 100.0f);
-			Vector3 objectSize = Vector3(0.5f, 0.5f, 0.5f);
-
-			switch (mScene)
-			{
-			case SceneBase::tutorial:
-
-				switch (name)
-				{
-				case(1):
-					mPlayerPtr = new PlayerObject(objectPos, objectSize, "Assets/Model/Player/Player.gpmesh"
-														  , "Assets/Model/Player/Player.gpskel"
-														  , Tag::Player
-						                                  , SceneBase::tutorial);
-					break;
-				}
-				break;
-			}
-		}
-	}
+		new WallObject(_ObjectPos, MStaticObjectSize * 100.0f, "Assets/Model/Wall/Block.gpmesh", Tag::eTranslucentWall, SceneBase::tutorial);
+		break;
+    }
 }
 
 bool MapCreate::readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName)

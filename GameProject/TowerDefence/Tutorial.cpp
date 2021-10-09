@@ -14,14 +14,8 @@ Tutorial::Tutorial(const Scene& _scene)
 
 	SetScene(_scene);
 
-	mMapCreate = new MapCreate();
-	if (!mMapCreate->OpenFile())
-	{
-		mMapCreate->CreatePlayer();
-		mMapCreate->CreateGround();
-		mMapCreate->CreateWall();
-		mMapCreate->CreateEnemy();
-	}
+    mMapCreate = new MapCreate();
+	mMapCreate->OpenFile();
 }
 
 Tutorial::~Tutorial()
