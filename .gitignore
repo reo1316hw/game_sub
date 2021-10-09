@@ -24,12 +24,12 @@
 *.la
 
 # Executables
-GameProject/OpenGL/OpenGL.exe
+GameProject/TowerDefence/TowerDefence.exe
 GameProject/.vs
-GameProject/OpenGL/.vs
+GameProject/TowerDefence/.vs
 GameProject/x64
-GameProject/OpenGL/x64
+GameProject/TowerDefence/x64
 GameProject/Debug
-GameProject/OpenGL/Debug
+GameProject/TowerDefence/Debug
 GameProject/Release
-GameProject/OpenGL/Release
+GameProject/TowerDefence/Release
