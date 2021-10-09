@@ -1,5 +1,9 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
 	, MTransitionStateDistance(15000.0f)
@@ -11,6 +15,12 @@ EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 {
 }
 
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+/// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
@@ -82,6 +92,11 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	return EnemyState::eEnemyStateMove;
 }
 
+/// <summary>
+/// エネミーの状態が変更して、最初に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
@@ -91,6 +106,10 @@ void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mPeriodMoveCount = 0;
 }
 
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateMove::OnColision(const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();

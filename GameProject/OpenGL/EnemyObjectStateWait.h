@@ -34,7 +34,7 @@ public:
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-	/// ヒットされた時の処理
+	/// ヒットした時の処理
 	/// </summary>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 	void OnColision(const GameObject& _HitObject)override;

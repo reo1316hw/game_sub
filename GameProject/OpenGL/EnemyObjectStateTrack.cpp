@@ -68,6 +68,10 @@ void EnemyObjectStateTrack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mIsDamage = false;
 }
 
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateTrack::OnColision(const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();

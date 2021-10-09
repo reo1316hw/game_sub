@@ -1,5 +1,8 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 EnemyObjectStateAttack::EnemyObjectStateAttack()
 	: MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
@@ -9,6 +12,12 @@ EnemyObjectStateAttack::EnemyObjectStateAttack()
 {
 }
 
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+/// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
@@ -50,6 +59,11 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	return EnemyState::eEnemyStateAttack;
 }
 
+/// <summary>
+/// エネミーの状態が変更して、最初に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
@@ -61,6 +75,10 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mElapseTime = 0.0f;
 }
 
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateAttack::OnColision(const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();

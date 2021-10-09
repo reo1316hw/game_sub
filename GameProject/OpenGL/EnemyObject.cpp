@@ -88,7 +88,7 @@ void EnemyObject::UpdateGameObject(float _deltaTime)
 }
 
 /// <summary>
-/// ヒットされた時の処理
+/// ヒットした時の処理
 /// </summary>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObject::OnCollision(const GameObject& _HitObject)

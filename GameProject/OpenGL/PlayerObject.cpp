@@ -133,7 +133,7 @@ void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
 }
 
 /// <summary>
-/// ヒットされた時の処理
+/// ヒットした時の処理
 /// </summary>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObject::OnCollision(const GameObject& _HitObject)
