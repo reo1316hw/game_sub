@@ -3,10 +3,11 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-MapCreate::MapCreate() 
-	:GameObject(Tag::eOther,SceneBase::Scene::other)
+MapCreate::MapCreate()
+	:GameObject(Tag::eOther, SceneBase::Scene::other)
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
+	, MShiftVec(Vector3(0.0f, 0.0f, 100.0f))
     , mPlayerPtr(nullptr)
 {
 	mSizeX = 0;
@@ -86,10 +87,13 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		break;
 
 	case(MapDataNum::eGroundNum):
+	{
+		// 床の座標
+		Vector3 groundPos = _ObjectPos - MShiftVec;
 
-		new GroundObject(_ObjectPos - Vector3(0.0f, 0.0f, 100.0f), MStaticObjectSize, "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround, SceneBase::tutorial);
+		new GroundObject(groundPos, MStaticObjectSize, "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround, SceneBase::tutorial);
 		break;
-
+	}
 	case(MapDataNum::eEnemyGeneratorNum):
 	
 		new EnemyObject(_ObjectPos, MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh"

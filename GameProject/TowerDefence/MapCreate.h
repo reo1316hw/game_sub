@@ -56,6 +56,8 @@ private:
 	const Vector3 MStaticObjectSize;
 	// プレイヤーの大きさ
 	const Vector3 MPersonSize;
+	// 丁度よい位置にずらすためのベクトル
+	const Vector3 MShiftVec;
 
 	//jsonから読み込んだプレイヤーのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mPlayerMapData;
