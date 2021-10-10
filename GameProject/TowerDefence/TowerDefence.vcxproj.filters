@@ -168,6 +168,12 @@
     <ClCompile Include="PlayerWeaponObject.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyGenerator.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectManager.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -338,6 +344,12 @@
     </ClInclude>
     <ClInclude Include="PlayerWeaponObject.h">
       <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyGenerator.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectManager.h">
+      <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

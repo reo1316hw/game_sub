@@ -1,5 +1,8 @@
 #pragma once
 
+// 前方宣言
+class EnemyObjectManager;
+
 /// <summary>
 /// マップデータのオブジェクトの番号
 /// </summary>
@@ -65,12 +68,14 @@ private:
 	std::vector<std::vector<int>> mStaticObjectMapData;
 
 	// マップデータの横のタイル数
-	int		mSizeX;
+	int   mSizeX;
 	// マップデータの縦のタイル数
-	int		mSizeY;
+	int   mSizeY;
 	// オブジェクトごとの距離
-	float	mOffset;
+	float mOffset;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
+	// エネミーマネージャーのポインタ
+	EnemyObjectManager* mEnemyObjectManagerPtr;
 };

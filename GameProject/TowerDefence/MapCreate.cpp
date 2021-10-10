@@ -20,6 +20,7 @@ MapCreate::MapCreate()
 /// </summary>
 MapCreate::~MapCreate()
 {
+	delete mEnemyObjectManagerPtr;
 	mPlayerMapData.clear();
 	mStaticObjectMapData.clear();
 }
@@ -46,7 +47,12 @@ void MapCreate::OpenFile()
 	mSizeX = mStaticObjectMapData[0].size();
 	mSizeY = mStaticObjectMapData.size();
 	
+	// エネミーマネージャー生成
+	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eEnemyManager, SceneBase::tutorial);
+
+	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
+	// 静的オブジェクトのマップデータにアクセスする
 	AccessMapData(mStaticObjectMapData);
 }
 
@@ -96,11 +102,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	}
 	case(MapDataNum::eEnemyGeneratorNum):
 	
-		new EnemyObject(_ObjectPos, MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh"
-						, "Assets/Model/Enemy/Enemy.gpskel"
-						, Tag::eEnemyGenerator
-						, SceneBase::tutorial
-						, mPlayerPtr);
+		mEnemyObjectManagerPtr->CreateEnemyGenerator(_ObjectPos, MPersonSize, mPlayerPtr);
 		break;
 
 	case(MapDataNum::eTranslucentWallNum):
@@ -110,7 +112,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	
 	case(MapDataNum::eTowerNum):
 
-		new WallObject(_ObjectPos, MStaticObjectSize * 100.0f, "Assets/Model/Wall/Block.gpmesh", Tag::eTranslucentWall, SceneBase::tutorial);
+		//new WallObject(_ObjectPos, MStaticObjectSize * 100.0f, "Assets/Model/Wall/Block.gpmesh", Tag::eTranslucentWall, SceneBase::tutorial);
 		break;
     }
 }

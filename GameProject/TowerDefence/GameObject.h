@@ -46,7 +46,9 @@ enum Tag
 	ePlayer,
 	eWeapon,
 	eGround,
+	eEnemyManager,
 	eEnemyGenerator,
+	eEnemy,
 	eTranslucentWall,
 	eTower
 };

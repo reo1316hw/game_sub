@@ -20,7 +20,7 @@ Tutorial::Tutorial(const Scene& _scene)
 
 Tutorial::~Tutorial()
 {
-	GAME_OBJECT_MANAGER->RemoveGameObjects(tutorial);
+	//GAME_OBJECT_MANAGER->RemoveGameObjects(tutorial);
 	delete mMapCreate;
 	/*GAME_OBJECT_MANAGER->RemoveGameObject();*/
 }

@@ -114,15 +114,7 @@ void GameObjectManager::AddGameObject(GameObject* _object)
 */
 void GameObjectManager::RemoveGameObject(GameObject * _object)
 {
-	auto iter = std::find(mPendingGameObjects.begin(), mPendingGameObjects.end(), _object);
-	if (iter != mPendingGameObjects.end())
-	{
-		std::iter_swap(iter, mPendingGameObjects.end() - 1);
-		mPendingGameObjects.pop_back();
-	}
-
-
-	iter = std::find(mCameraObjects.begin(), mCameraObjects.end(), _object);
+	auto iter = std::find(mCameraObjects.begin(), mCameraObjects.end(), _object);
 	if (iter != mCameraObjects.end())
 	{
 		std::iter_swap(iter, mCameraObjects.end() - 1);
@@ -186,7 +178,7 @@ void GameObjectManager::RemoveGameObjects(SceneBase::Scene _scene)
 
 //GameObject * GameObjectManager::FindGameObject(Tag _tag)
 //{
-//	for (auto itr : gameObjects)
+//	for (auto itr : mTutorialObjects)
 //	{
 //		if (itr->GetTag() == _tag)
 //		{
@@ -220,8 +212,13 @@ GameObjectManager::GameObjectManager()
 
 GameObjectManager::~GameObjectManager()
 {
-	/*while (!gameObjects.empty())
+	while (!mCameraObjects.empty())
 	{
-		delete gameObjects.back();
-	}*/
+		delete mCameraObjects.back();
+	}
+
+	while (!mTutorialObjects.empty())
+	{
+		delete mTutorialObjects.back();
+	}
 }
