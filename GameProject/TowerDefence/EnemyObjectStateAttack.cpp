@@ -78,8 +78,9 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 /// <summary>
 /// ヒットした時の処理
 /// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyObjectStateAttack::OnColision(const GameObject& _HitObject)
+void EnemyObjectStateAttack::OnColision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();
 
@@ -88,9 +89,9 @@ void EnemyObjectStateAttack::OnColision(const GameObject& _HitObject)
 		mIsDamage = true;
 	}
 
-	if (tag == Tag::eEnemy)
-	{
-		_HitObject.GetPosition();
-		mIsHitEnemy = true;
-	}
+	//if (tag == Tag::eEnemy)
+	//{
+	//	_HitObject.GetPosition();
+	//	mIsHitEnemy = true;
+	//}
 }

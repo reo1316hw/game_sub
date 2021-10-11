@@ -12,7 +12,6 @@ EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 	, mIsHitEnemy(false)
 	, mMoveSpeed(1.0f)
 	, mPeriodMoveCount(0)
-	, mPosition(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -26,7 +25,7 @@ EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	mPosition = _owner->GetPosition();
+	Vector3 position = _owner->GetPosition();
 	// 右方ベクトル
 	Vector3 rightVec = _owner->GetRight();
 	rightVec.z = 0.0f;
@@ -56,19 +55,13 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
-	Vector3 dirPlayerVec = playerPos - mPosition;
-	dirPlayerVec.Normalize();
-	_owner->RotateToNewForward(dirPlayerVec);
-
-	// 速度ベクトル
-	Vector3 vel = mMoveSpeed * rightVec;
-	mPosition += vel;
+	Vector3 dirPlayerVec = playerPos - position;
 
 	if (mPeriodMoveCount >= MTransitionTimingNum)
 	{
 		mIsMoving = false;
 
-		if (dirPlayerVec.LengthSq() >= MTransitionStateDistance)
+		if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 		{
 			// ランダム値
 		    int randNum = rand() % 100;
@@ -94,11 +87,17 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 
 		if (mIsHitEnemy)
 		{
-			mPosition = Vector3::Lerp(mPosition)
+			return EnemyState::eEnemyStateWait;
 		}
 	}
 
-	_owner->SetPosition(mPosition);
+	dirPlayerVec.Normalize();
+	_owner->RotateToNewForward(dirPlayerVec);
+
+	// 速度ベクトル
+	Vector3 vel = mMoveSpeed * rightVec;
+	position += vel;
+	_owner->SetPosition(position);
 
 	return EnemyState::eEnemyStateMove;
 }
@@ -121,8 +120,9 @@ void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 /// <summary>
 /// ヒットした時の処理
 /// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyObjectStateMove::OnColision(const GameObject& _HitObject)
+void EnemyObjectStateMove::OnColision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();
 
@@ -133,16 +133,6 @@ void EnemyObjectStateMove::OnColision(const GameObject& _HitObject)
 
 	if (tag == Tag::eEnemy)
 	{
-		Vector3 hitEnemyPos = _HitObject.GetPosition();
-
-		Vector3 dirHitEnemyVec = mPosition - hitEnemyPos;
-
-		dirHitEnemyVec.Normalize();
-
-		Vector3 vec = 50.0f * dirHitEnemyVec;
-
-		mLerpPos += vec;
-
 		mIsHitEnemy = true;
 	}
 }

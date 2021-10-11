@@ -93,10 +93,11 @@ void EnemyObject::UpdateGameObject(float _deltaTime)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObject::OnCollision(const GameObject& _HitObject)
 {
-	mStatePools[static_cast<int>(mNowState)]->OnColision(_HitObject);
-	mTag = _HitObject.GetTag();
+	mStatePools[static_cast<int>(mNowState)]->OnColision(this, _HitObject);
 
-	if (mTag == Tag::ePlayer)
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::ePlayer)
 	{
 		//押し戻し処理
 		float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;

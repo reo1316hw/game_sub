@@ -154,7 +154,6 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
-
 		for (auto itr : mWeaponBoxes)
 		{
 			//コライダーの親オブジェクトがActiveじゃなければ終了する

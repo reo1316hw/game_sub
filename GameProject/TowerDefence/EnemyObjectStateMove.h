@@ -36,8 +36,9 @@ public:
 	/// <summary>
 	/// ヒットした時の処理
 	/// </summary>
+	/// <param name="_owner"> エネミー(親)のポインタ </param>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnColision(const GameObject& _HitObject)override;
+	void OnColision(EnemyObject* _owner, const GameObject& _HitObject)override;
 
 private:
 
@@ -65,10 +66,6 @@ private:
 
 	// 移動速度
 	float mMoveSpeed;
-
-	Vector3 mPosition;
-
-	Vector3 mLerpPos;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

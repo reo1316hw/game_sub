@@ -8,7 +8,6 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 	: MTransitionStateDistance(15000.0f)
 	, MTransitionTimingNum(120)
 	, mIsDamage(false)
-	, mIsHitEnemy(false)
 	, mPlayerPtr(_playerPtr)
 	, mTransitionCount(0)
 {
@@ -50,17 +49,9 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 	{
 		return EnemyState::eEnemyStateTrack;
 	}
-	else
+	else if(mIsDamage)
 	{
-		if (mIsDamage)
-		{
-		    return EnemyState::eEnemyStateDamage;
-		}
-
-		if (mIsHitEnemy)
-		{
-			return EnemyState::eEnemyStateMove;
-		}
+		return EnemyState::eEnemyStateDamage;
 	}
 
 	dirPlayerVec.Normalize();
@@ -80,15 +71,15 @@ void EnemyObjectStateWait::Enter(EnemyObject* _owner, const float _DeltaTime)
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateWait));
 
 	mIsDamage = false;
-	mIsHitEnemy = false;
 	mTransitionCount = 0;
 }
 
 /// <summary>
 /// ヒットした時の処理
 /// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyObjectStateWait::OnColision(const GameObject& _HitObject)
+void EnemyObjectStateWait::OnColision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();
 
@@ -96,10 +87,4 @@ void EnemyObjectStateWait::OnColision(const GameObject& _HitObject)
 	{
 		mIsDamage = true;
 	}
-
-	//if (tag == Tag::eEnemy)
-	//{
-	//	_HitObject.GetPosition();
-	//	mIsHitEnemy = true;
-	//}
 }
