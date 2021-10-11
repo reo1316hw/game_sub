@@ -49,6 +49,8 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+	// エネミーと当たったか
+	bool mIsHitEnemy;
 
 	// 遷移するためのカウント変数
 	int mTransitionCount;

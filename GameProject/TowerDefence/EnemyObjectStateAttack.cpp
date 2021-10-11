@@ -87,4 +87,10 @@ void EnemyObjectStateAttack::OnColision(const GameObject& _HitObject)
 	{
 		mIsDamage = true;
 	}
+
+	if (tag == Tag::eEnemy)
+	{
+		_HitObject.GetPosition();
+		mIsHitEnemy = true;
+	}
 }

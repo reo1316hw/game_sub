@@ -47,6 +47,8 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+	// エネミーと当たったか
+	bool mIsHitEnemy;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;

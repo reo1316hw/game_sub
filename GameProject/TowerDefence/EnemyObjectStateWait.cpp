@@ -8,6 +8,7 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 	: MTransitionStateDistance(15000.0f)
 	, MTransitionTimingNum(120)
 	, mIsDamage(false)
+	, mIsHitEnemy(false)
 	, mPlayerPtr(_playerPtr)
 	, mTransitionCount(0)
 {
@@ -49,9 +50,17 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 	{
 		return EnemyState::eEnemyStateTrack;
 	}
-	else if (mIsDamage)
+	else
 	{
-		return EnemyState::eEnemyStateDamage;
+		if (mIsDamage)
+		{
+		    return EnemyState::eEnemyStateDamage;
+		}
+
+		if (mIsHitEnemy)
+		{
+			return EnemyState::eEnemyStateMove;
+		}
 	}
 
 	dirPlayerVec.Normalize();
@@ -71,6 +80,7 @@ void EnemyObjectStateWait::Enter(EnemyObject* _owner, const float _DeltaTime)
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateWait));
 
 	mIsDamage = false;
+	mIsHitEnemy = false;
 	mTransitionCount = 0;
 }
 
@@ -86,4 +96,10 @@ void EnemyObjectStateWait::OnColision(const GameObject& _HitObject)
 	{
 		mIsDamage = true;
 	}
+
+	//if (tag == Tag::eEnemy)
+	//{
+	//	_HitObject.GetPosition();
+	//	mIsHitEnemy = true;
+	//}
 }

@@ -57,12 +57,18 @@ private:
 	bool mIsMoving;
 	// ダメージを受けたか
 	bool mIsDamage;
+	// エネミーと当たったか
+	bool mIsHitEnemy;
 
 	// 移動する時間のカウント変数
 	int mPeriodMoveCount;
 
 	// 移動速度
 	float mMoveSpeed;
+
+	Vector3 mPosition;
+
+	Vector3 mLerpPos;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

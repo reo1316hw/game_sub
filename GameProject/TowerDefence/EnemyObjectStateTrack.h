@@ -46,6 +46,8 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+	// エネミーと当たったか
+	bool mIsHitEnemy;
 
 	// 移動速度
 	float mMoveSpeed;

@@ -52,7 +52,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mStatePools.push_back(new EnemyObjectStateDeath);               // mStatepool[eEnemyStateDeath];
 
 	// ‹éŒ`“–‚½‚è”»’è
-	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));
+	mBox = AABB(Vector3(-15.0f, -15.0f, 0.0f), Vector3(15.0f, 15.0f, 170.0f));
 
 	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Enemy, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
