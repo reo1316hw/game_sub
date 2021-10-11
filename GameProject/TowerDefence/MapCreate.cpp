@@ -111,11 +111,6 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 
 		//new WallObject(_ObjectPos, MStaticObjectSize, "Assets/Model/Wall/VerticalSuperLongWall.gpmesh", Tag::eTranslucentWall, SceneBase::tutorial);
 		break;
-	
-	case(MapDataNum::eTowerNum):
-
-		//new WallObject(_ObjectPos, MStaticObjectSize * 100.0f, "Assets/Model/Wall/Block.gpmesh", Tag::eTranslucentWall, SceneBase::tutorial);
-		break;
     }
 }
 

@@ -11,8 +11,7 @@ enum MapDataNum
 	ePlayerNum = 1,
 	eGroundNum,
 	eEnemyGeneratorNum,
-	eTranslucentWallNum,
-	eTowerNum
+	eTranslucentWallNum
 };
 
 /// <summary>
