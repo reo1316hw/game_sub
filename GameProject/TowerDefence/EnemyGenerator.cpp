@@ -18,6 +18,10 @@ EnemyGenerator::EnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, const
 	SetPosition(_Pos);
 }
 
+/// <summary>
+/// エネミーの生成
+/// </summary>
+/// <returns> エネミーのポインタ</returns>
 EnemyObject* EnemyGenerator::CreateEnemyObject()
 {
 	return new EnemyObject(mPosition, mScale, "Assets/Model/Enemy/Enemy.gpmesh"

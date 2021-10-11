@@ -7,9 +7,10 @@
 /// <param name="_SceneTag"> シーンタグ </param>
 EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
 	: GameObject(_ObjectTag, _SceneTag)
-	, MCreateTiming(300)
-	, mUntilCreateCount(0)
-	, mCreateCount(0)
+	, MInOutElementsTiming(300)
+	, MMaxNumEnemysExist(100)
+	, mUntilInOutElementsCount(0)
+	, mEnemyObject(nullptr)
 {
 	mTag = _ObjectTag;
 }
@@ -22,42 +23,69 @@ EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::S
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 void EnemyObjectManager::CreateEnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, PlayerObject* _playerPtr)
 {
-	mEnemyGeneratorPools.push_back(new EnemyGenerator(_Pos, _Scale, Tag::eEnemyGenerator, SceneBase::tutorial, _playerPtr));
+	mEnemyGeneratorList.push_back(new EnemyGenerator(_Pos, _Scale, Tag::eEnemyGenerator, SceneBase::tutorial, _playerPtr));
 }
 
-void EnemyObjectManager::RemoveEnemyObjectElements()
+/// <summary>
+/// オブジェクトの更新処理
+/// </summary>
+/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void EnemyObjectManager::UpdateGameObject(float _deltaTime)
 {
-	/*auto iter = std::find(mEnemyObjectPools.begin(), mEnemyObjectPools.end(), mEnemyObject);
-	if (iter != mEnemyObjectPools.end())
-	{
-		std::iter_swap(iter, mEnemyObjectPools.end() - 1);
-		mEnemyObjectPools.pop_back();
-	}*/
+	++mUntilInOutElementsCount;
 
-	for (auto itr : mEnemyObjectPools)
+	if (mUntilInOutElementsCount >= MInOutElementsTiming)
+	{
+		// 死亡状態の要素を配列から出す処理
+		PutOutDeathElements();
+		// 新たな要素を配列に入れる処理
+		InsertNewElements();
+		
+		mUntilInOutElementsCount = 0;
+	}
+}
+
+/// <summary>
+/// 死亡状態の要素を配列から出す処理
+/// </summary>
+void EnemyObjectManager::PutOutDeathElements()
+{
+	for (auto itr : mEnemyObjectList)
 	{
 		if (itr->GetState() == Dead)
 		{
-			std::iter_swap(itr, mEnemyObjectPools.end() - 1);
-			mEnemyObjectPools.pop_back();
+			// 配列の要素を削除
+			RemoveEnemyObjectElements(itr);
 		}
 	}
 }
 
-void EnemyObjectManager::UpdateGameObject(float _deltaTime)
+/// <summary>
+/// 新たな要素を配列に入れる処理
+/// </summary>
+void EnemyObjectManager::InsertNewElements()
 {
-	++mUntilCreateCount;
-
-	if (mUntilCreateCount >= MCreateTiming && mEnemyObjectPools.size() < 100)
+	if (mEnemyObjectList.size() < MMaxNumEnemysExist)
 	{
-		mUntilCreateCount = 0;
-
-		for (auto itr : mEnemyGeneratorPools)
+		for (auto itr : mEnemyGeneratorList)
 		{
+			// エネミーを生成
 			mEnemyObject = itr->CreateEnemyObject();
-			mEnemyObjectPools.push_back(mEnemyObject);
+			mEnemyObjectList.push_back(mEnemyObject);
 		}
 	}
+}
 
-    RemoveEnemyObjectElements();
+/// <summary>
+/// 配列の要素を削除
+/// </summary>
+/// <param name="_enemyObjectPtr"> エネミーのポインター </param>
+void EnemyObjectManager::RemoveEnemyObjectElements(EnemyObject* _enemyObjectPt)
+{
+	auto iter = std::find(mEnemyObjectList.begin(), mEnemyObjectList.end(), _enemyObjectPt);
+	if (iter != mEnemyObjectList.end())
+	{
+		std::iter_swap(iter, mEnemyObjectList.end() - 1);
+		mEnemyObjectList.pop_back();
+	}
 }

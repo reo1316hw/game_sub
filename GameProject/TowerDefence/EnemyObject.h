@@ -20,6 +20,9 @@ enum class EnemyState
 	eEnemyStateNum,             // 総アニメーション数
 };
 
+/// <summary>
+/// エネミー
+/// </summary>
 class EnemyObject : public GameObject
 {
 public:

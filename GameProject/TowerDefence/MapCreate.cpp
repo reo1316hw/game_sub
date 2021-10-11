@@ -9,6 +9,7 @@ MapCreate::MapCreate()
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
 	, MShiftVec(Vector3(0.0f, 0.0f, 100.0f))
     , mPlayerPtr(nullptr)
+	, mEnemyObjectManagerPtr(nullptr)
 {
 	mSizeX = 0;
 	mSizeY = 0;
@@ -102,6 +103,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	}
 	case(MapDataNum::eEnemyGeneratorNum):
 	
+		// エネミーの生成器を生成
 		mEnemyObjectManagerPtr->CreateEnemyGenerator(_ObjectPos, MPersonSize, mPlayerPtr);
 		break;
 

@@ -22,6 +22,10 @@ public:
     /// </summary>
 	~EnemyGenerator() {};
 
+	/// <summary>
+	/// エネミーの生成
+	/// </summary>
+	/// <returns> エネミーのポインタ</returns>
 	EnemyObject* CreateEnemyObject();
 
 private:
