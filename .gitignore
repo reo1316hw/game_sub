@@ -25,6 +25,8 @@
 
 # Executables
 GameProject/TowerDefence/TowerDefence.exe
+GameProject/TowerDefence/TowerDefence.ilk
+GameProject/TowerDefence/TowerDefence.pdb
 GameProject/.vs
 GameProject/TowerDefence/.vs
 GameProject/x64
