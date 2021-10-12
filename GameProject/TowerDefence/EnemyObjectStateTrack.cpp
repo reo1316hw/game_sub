@@ -31,15 +31,19 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 	{
 		// ƒ‰ƒ“ƒ_ƒ€’l
-		int randNum = rand() % 100;
-
-		if (randNum < 50)
+		int randNum = rand() % 90;
+		
+		if (randNum < 30)
 		{
 			return EnemyState::eEnemyStateWait;
 		}
+		else if(randNum >= 30 && randNum < 60)
+		{
+			return EnemyState::eEnemyStateLeftMove;
+		}
 		else
 		{
-			return EnemyState::eEnemyStateMove;
+			return EnemyState::eEnemyStateRightMove;
 		}
 	}
 	else if (mIsDamage)

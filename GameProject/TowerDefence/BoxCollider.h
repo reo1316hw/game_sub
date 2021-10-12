@@ -11,11 +11,11 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_owner"> 親クラスのポインタ </param>
-	/// <param name="_ColliderTag"> 当たり判定のタグ </param>
+	/// <param name="_ObjectTag"> 当たり判定のタグ </param>
 	/// <param name="_Func"> OnCollision関数のポインタ </param>
 	/// <param name="_UpdateOrder"> 更新処理の優先度 </param>
 	/// <param name="_CollisionOrder"> 当たり判定処理の優先度 </param>
-	BoxCollider(GameObject* _owner, const ColliderTag _ColliderTag, const onCollisionFunc _Func, const int _UpdateOrder = 200, const int _CollisionOrder = 100);
+	BoxCollider(GameObject* _owner, const Tag& _ObjectTag, const onCollisionFunc _Func, const int _UpdateOrder = 200, const int _CollisionOrder = 100);
 	
 	/// <summary>
 	/// デストラクタ

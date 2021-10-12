@@ -53,14 +53,10 @@ private:
 	// 剣の初期座標
 	const Vector3 MSwordPos;
 
-	// 武器の球状当たり判定
+	// 武器の矩形当たり判定
 	AABB mWeaponBox;
-	// アタッチされているオブジェクト
-	GameObject* mOwner;
 	// 武器メッシュ
 	AttackMeshComponent* mWeaponMesh;
-	// 球の当たり判定を行うコンポーネントのポインタ
-	BoxCollider* mBoxCollider;
 };
 
 

@@ -13,7 +13,8 @@ enum class EnemyState
 	eEnemyStateTrack = 0,       // 追跡
 	eEnemyStateWait,            // 待機
 	eEnemyStateAttack,          // 攻撃
-	eEnemyStateMove,            // 移動
+	eEnemyStateLeftMove,        // 左移動
+	eEnemyStateRightMove,        // 右移動
 	eEnemyStateDamage,          // ダメージを受けた
 	eEnemyStateDeath,           // 死亡
 

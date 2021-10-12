@@ -40,15 +40,19 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		// ƒ‰ƒ“ƒ_ƒ€’l
-		int randNum = rand() % 100;
+		int randNum = rand() % 90;
 		
-		if (randNum < 50)
+		if (randNum < 30)
 		{
 			return EnemyState::eEnemyStateWait;
 		}
+		else if(randNum >= 30 && randNum < 60)
+		{
+			return EnemyState::eEnemyStateLeftMove;
+		}
 		else
 		{
-			return EnemyState::eEnemyStateMove;
+			return EnemyState::eEnemyStateRightMove;
 		}
 	}
 	else if (mIsDamage)

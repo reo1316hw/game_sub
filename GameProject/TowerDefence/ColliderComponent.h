@@ -3,22 +3,6 @@
 // 前方宣言
 class GameObject;
 
-/*
-@enum　GameObjectタグ
-衝突相手を判別するために使用
-*/
-enum class ColliderTag
-{
-	Other = 0,
-	Camera = 1,
-	Player = 2,
-	Weapon = 3,
-	Ground = 4,
-	Wall = 5,
-	Enemy = 6,
-	Swith = 7
-};
-
 /// <summary>
 /// 当たり判定を行うコンポーネントの基底クラス
 /// </summary>
@@ -32,19 +16,13 @@ public:
     @param	コンポーネントの更新順番（数値が小さいほど早く更新される）
     @param  当たり判定時に、めり込みから動かす処理の優先度を決める数値
     */
-	ColliderComponent(GameObject* _owner, ColliderTag _tag, int _updateOrder = 200,int _collisionOrder = 100);
+	ColliderComponent(GameObject* _owner, const Tag& _ObjectTag, int _updateOrder = 200,int _collisionOrder = 100);
 
 	/**
 	@brief	めり込み動かす際の優先度を示す数値を取得する
 	@return 優先度を示す数値(int)
 	*/
 	int GetCollisionOrder() const { return mCollisionOrder; }
-
-	ColliderTag GetTag() const { return mTag; };
-
-protected:
-
-	ColliderTag mTag;
 
 private:
 

@@ -8,7 +8,7 @@
 EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
 	: GameObject(_ObjectTag, _SceneTag)
 	, MInOutElementsTiming(300)
-	, MMaxNumEnemysExist(100)
+	, MMaxNumEnemysExist(1)
 	, mUntilInOutElementsCount(0)
 	, mEnemyObject(nullptr)
 {

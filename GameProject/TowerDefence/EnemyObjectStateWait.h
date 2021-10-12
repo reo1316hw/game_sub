@@ -54,6 +54,9 @@ private:
 	// 遷移するためのカウント変数
 	int mTransitionCount;
 
+	// 座標
+	Vector3 mPosition;
+
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };

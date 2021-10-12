@@ -20,7 +20,7 @@ GroundObject::GroundObject(const Vector3& _pos, const Vector3& _size, const std:
 		// “–‚½‚è”»’è
 		mMeshPtr = new Mesh;
 		mMeshPtr = RENDERER->GetMesh(_gpmeshName);
-		mBoxColliderPtr = new BoxCollider(this, ColliderTag::Ground, GetOnCollisionFunc());
+		mBoxColliderPtr = new BoxCollider(this, _objectTag, GetOnCollisionFunc());
 		mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
 
 		break;

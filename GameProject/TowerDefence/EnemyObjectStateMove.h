@@ -10,8 +10,9 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
+	/// <param name="_State"> エネミーの状態 </param>
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
-	EnemyObjectStateMove(PlayerObject* _playerPtr);
+	EnemyObjectStateMove(const EnemyState& _State, PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -66,6 +67,9 @@ private:
 
 	// 移動速度
 	float mMoveSpeed;
+
+	// エネミーの状態
+	EnemyState mEnemyState;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

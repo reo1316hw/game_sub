@@ -3,8 +3,9 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
+/// <param name="_State"> エネミーの状態 </param>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
+EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
 	, MTransitionStateDistance(15000.0f)
 	, mIsMoving(false)
@@ -12,6 +13,7 @@ EnemyObjectStateMove::EnemyObjectStateMove(PlayerObject* _playerPtr)
 	, mIsHitEnemy(false)
 	, mMoveSpeed(1.0f)
 	, mPeriodMoveCount(0)
+	, mEnemyState(_State)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -30,37 +32,25 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	Vector3 rightVec = _owner->GetRight();
 	rightVec.z = 0.0f;
 
-
-	// ランダム値
-	int randNum = rand() % 100;
-
-	if (!mIsMoving)
-	{
-		// 逆向きのベクトルに変換
-		if (randNum < 50)
-		{
-			mIsMoving = true;
-		}
-		else
-		{
-			mIsMoving = true;
-			mMoveSpeed *= -1.0f;
-		}
-	}
-	else
-	{
-		++mPeriodMoveCount;
-	}
-
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
 	Vector3 dirPlayerVec = playerPos - position;
 
+	if (mEnemyState == EnemyState::eEnemyStateLeftMove)
+	{
+		rightVec *= -1.0f;
+	}
+
+	// 速度ベクトル
+	Vector3 vel = mMoveSpeed * rightVec;
+	position += vel;
+	_owner->SetPosition(position);
+    
+	++mPeriodMoveCount;
+
 	if (mPeriodMoveCount >= MTransitionTimingNum)
 	{
-		mIsMoving = false;
-
 		if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 		{
 			// ランダム値
@@ -87,19 +77,31 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 
 		if (mIsHitEnemy)
 		{
-			return EnemyState::eEnemyStateWait;
+			// ランダム値
+			int randNum = rand() % 100;
+
+			if (randNum < 50)
+			{
+				return EnemyState::eEnemyStateWait;
+			}
+			else
+			{
+				if (mEnemyState == EnemyState::eEnemyStateLeftMove)
+				{
+					return EnemyState::eEnemyStateRightMove;
+				}
+				else
+				{
+					return EnemyState::eEnemyStateLeftMove;
+				}
+			}
 		}
 	}
 
 	dirPlayerVec.Normalize();
 	_owner->RotateToNewForward(dirPlayerVec);
 
-	// 速度ベクトル
-	Vector3 vel = mMoveSpeed * rightVec;
-	position += vel;
-	_owner->SetPosition(position);
-
-	return EnemyState::eEnemyStateMove;
+	return mEnemyState;
 }
 
 /// <summary>
@@ -110,7 +112,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateMove));
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(mEnemyState));
 
 	mIsDamage = false;
 	mIsHitEnemy = false;
@@ -131,7 +133,7 @@ void EnemyObjectStateMove::OnColision(EnemyObject* _owner, const GameObject& _Hi
 		mIsDamage = true;
 	}
 
-	if (tag == Tag::eEnemy)
+	if (tag == Tag::eStopLateralMoveEnemy)
 	{
 		mIsHitEnemy = true;
 	}

@@ -13,9 +13,7 @@ PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent
 	, MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
 	, MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
 	, mWeaponBox(Vector3::Zero, Vector3::Zero)
-	, mOwner(_owner)
 	, mWeaponMesh(nullptr)
-	, mBoxCollider(nullptr)
 {
 	// GameObjectƒƒ“ƒo•Ï”‚Ì‰Šú‰»
 	mTag = _ObjectTag;
@@ -36,13 +34,13 @@ PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent
 /// <param name="_Scale"> “–‚½‚è”»’è‚Ì‘å‚«‚³ </param>
 void PlayerWeaponObject::AddAttackHitBox(const float _Scale)
 {
-	mBoxCollider = new BoxCollider(this, ColliderTag::Weapon, GetOnCollisionFunc());
+	mBoxColliderPtr = new BoxCollider(this, Tag::eWeapon, GetOnCollisionFunc());
 
 	AABB box = mWeaponBox;
 	box.m_min *= _Scale;
 	box.m_max *= _Scale;
 
-	mBoxCollider->SetObjectBox(box);
+	mBoxColliderPtr->SetObjectBox(box);
 }
 
 /// <summary>
@@ -50,10 +48,10 @@ void PlayerWeaponObject::AddAttackHitBox(const float _Scale)
 /// </summary>
 void PlayerWeaponObject::RemoveAttackHitBox()
 {
-	if (mBoxCollider)
+	if (mBoxColliderPtr)
 	{
-		delete mBoxCollider;
-		mBoxCollider = nullptr;
+		delete mBoxColliderPtr;
+		mBoxColliderPtr = nullptr;
 	}
 }
 
@@ -64,10 +62,10 @@ void PlayerWeaponObject::RemoveAttackHitBox()
 void PlayerWeaponObject::UpdateGameObject(float _deltaTime)
 {
 	// •Ší‚ğU‚Á‚Ä‚¢‚é‚Æ‚«‚Ì“–‚½‚è”»’è‚ÌXVˆ—
-	if (mBoxCollider)
+	if (mBoxColliderPtr)
 	{
 		Matrix4 mat = mWeaponMesh->GetAttachTransMatrix();
-		mBoxCollider->SetForceTransForm(mat);
+		mBoxColliderPtr->SetForceTransForm(mat);
 	}
 }
 

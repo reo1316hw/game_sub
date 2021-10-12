@@ -34,7 +34,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateTrack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyTrack.gpanim", true);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateWait)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyWait.gpanim", true);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateAttack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyAttack.gpanim", false);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyMove.gpanim", true);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateLeftMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyMove.gpanim", true);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateRightMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyMove.gpanim", true);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDamage.gpanim", false);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDeath.gpanim", false);
 
@@ -47,15 +48,21 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mStatePools.push_back(new EnemyObjectStateTrack(_playerPtr));	// mStatePool[eEnemyStateTrack]
 	mStatePools.push_back(new EnemyObjectStateWait(_playerPtr));	// mStatepool[eEnemyStateWait]
 	mStatePools.push_back(new EnemyObjectStateAttack);              // mStatepool[eEnemyStateAttack]
-	mStatePools.push_back(new EnemyObjectStateMove(_playerPtr));	// mStatepool[eEnemyStateMove]
+	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateLeftMove, _playerPtr));	// mStatepool[eEnemyStateLeftMove]
+	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateRightMove, _playerPtr));	// mStatepool[eEnemyStateRightMove]
 	mStatePools.push_back(new EnemyObjectStateDamage);              // mStatepool[eEnemyStateDamage];
 	mStatePools.push_back(new EnemyObjectStateDeath);               // mStatepool[eEnemyStateDeath];
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-15.0f, -15.0f, 0.0f), Vector3(15.0f, 15.0f, 170.0f));
 
-	mBoxColliderPtr = new BoxCollider(this, ColliderTag::Enemy, GetOnCollisionFunc());
+	mBoxColliderPtr = new BoxCollider(this, Tag::eEnemy, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
+
+	// エネミーの横移動を止めるためのオブジェクトを生成
+	new StopLateralMoveEnemy(this, Tag::eStopLateralMoveEnemy, _SceneTag);
+	// エネミーの縦移動を止めるためのオブジェクトを生成
+	new StopVerticalMoveEnemy(this, Tag::eStopVerticalMoveEnemy, _SceneTag);
 }
 
 /// <summary>

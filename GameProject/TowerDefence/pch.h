@@ -53,6 +53,8 @@
 #include "PlayerWeaponObject.h"
 #include "EnemyObjectManager.h"
 #include "EnemyObject.h"
+#include "StopVerticalMoveEnemy.h"
+#include "StopLateralMoveEnemy.h"
 #include "EnemyGenerator.h"
 #include "EnemyObjectStateBase.h"
 #include "EnemyObjectStateTrack.h"
