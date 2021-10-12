@@ -174,12 +174,6 @@
     <ClCompile Include="EnemyObjectManager.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="StopLateralMoveEnemy.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="StopVerticalMoveEnemy.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -355,12 +349,6 @@
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyObjectManager.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="StopLateralMoveEnemy.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="StopVerticalMoveEnemy.h">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

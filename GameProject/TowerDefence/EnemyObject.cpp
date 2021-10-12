@@ -58,11 +58,12 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 
 	mBoxColliderPtr = new BoxCollider(this, Tag::eEnemy, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
+}
 
-	// エネミーの横移動を止めるためのオブジェクトを生成
-	new StopLateralMoveEnemy(this, Tag::eStopLateralMoveEnemy, _SceneTag);
-	// エネミーの縦移動を止めるためのオブジェクトを生成
-	new StopVerticalMoveEnemy(this, Tag::eStopVerticalMoveEnemy, _SceneTag);
+void EnemyObject::Separation(const Vector3& _Dir)
+{
+	Vector3 vec = 4.0f * _Dir;
+	mStatePools[static_cast<int>(mNowState)]->Separation(this, vec);
 }
 
 /// <summary>
@@ -104,8 +105,8 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::ePlayer)
-	{
+	//if (tag == Tag::ePlayer)
+	//{
 		//押し戻し処理
 		float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;
 		float dx2 = _HitObject.GetObjectAABB().m_max.x - mBox.m_min.x;
@@ -133,5 +134,5 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 		//}
 
 		SetPosition(mPosition);
-	}
+	/*}*/
 }

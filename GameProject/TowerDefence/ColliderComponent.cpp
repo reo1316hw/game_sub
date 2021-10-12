@@ -14,6 +14,5 @@ ColliderComponent::ColliderComponent(GameObject* _owner, const Tag& _ObjectTag, 
 	: Component(_owner, _updateOrder)
 	, mTriggerFlag(false)
 	, mCollisionOrder(_collisionOrder)
-	//, mTag(_ObjectTag)
 {
 }

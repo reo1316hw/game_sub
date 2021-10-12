@@ -33,6 +33,8 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
+	void Separation(EnemyObject* _owner, const Vector3& _Dir)override;
+
 	/// <summary>
 	/// ヒットした時の処理
 	/// </summary>
@@ -53,6 +55,8 @@ private:
 
 	// 座標
 	Vector3 mPosition;
+
+	Vector3 mVec;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

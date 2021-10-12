@@ -10,7 +10,6 @@ EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObjec
 	, MTransitionStateDistance(15000.0f)
 	, mIsMoving(false)
 	, mIsDamage(false)
-	, mIsHitEnemy(false)
 	, mMoveSpeed(1.0f)
 	, mPeriodMoveCount(0)
 	, mEnemyState(_State)
@@ -74,28 +73,6 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 		{
 			return EnemyState::eEnemyStateDamage;
 		}
-
-		if (mIsHitEnemy)
-		{
-			// ƒ‰ƒ“ƒ_ƒ€’l
-			int randNum = rand() % 100;
-
-			if (randNum < 50)
-			{
-				return EnemyState::eEnemyStateWait;
-			}
-			else
-			{
-				if (mEnemyState == EnemyState::eEnemyStateLeftMove)
-				{
-					return EnemyState::eEnemyStateRightMove;
-				}
-				else
-				{
-					return EnemyState::eEnemyStateLeftMove;
-				}
-			}
-		}
 	}
 
 	dirPlayerVec.Normalize();
@@ -115,7 +92,6 @@ void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(mEnemyState));
 
 	mIsDamage = false;
-	mIsHitEnemy = false;
 	mPeriodMoveCount = 0;
 }
 
@@ -131,10 +107,5 @@ void EnemyObjectStateMove::OnColision(EnemyObject* _owner, const GameObject& _Hi
 	if (tag == Tag::eWeapon)
 	{
 		mIsDamage = true;
-	}
-
-	if (tag == Tag::eStopLateralMoveEnemy)
-	{
-		mIsHitEnemy = true;
 	}
 }

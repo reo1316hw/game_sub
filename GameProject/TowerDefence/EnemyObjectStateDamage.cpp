@@ -19,7 +19,7 @@ EnemyObjectStateDamage::EnemyObjectStateDamage()
 EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	Vector3 pos = _owner->GetPosition();
+	Vector3 position = _owner->GetPosition();
 	// 前方ベクトル
 	Vector3 forward = _owner->GetForward();
 	// 開始速度
@@ -30,9 +30,9 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	pos += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
+	position += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
 
-	_owner->SetPosition(pos);
+	_owner->SetPosition(position);
 	
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())

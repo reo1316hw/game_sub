@@ -9,7 +9,6 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 	, MTransitionTimingNum(120)
 	, mIsDamage(false)
 	, mTransitionCount(0)
-	, mPosition(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -23,11 +22,11 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	mPosition = _owner->GetPosition();
+	Vector3 position = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトルsd
-	Vector3 dirPlayerVec = playerPos - mPosition;
+	Vector3 dirPlayerVec = playerPos - position;
 
 	++mTransitionCount;
 
@@ -91,35 +90,4 @@ void EnemyObjectStateWait::OnColision(EnemyObject* _owner, const GameObject& _Hi
 	{
 		mIsDamage = true;
 	}
-
-	//if (tag == Tag::eEnemy)
-	//{
-	//	//押し戻し処理
-	//	float dx1 = _HitObject.GetObjectAABB().m_min.x - _owner->GetObjectAABB().m_max.x;
-	//	float dx2 = _HitObject.GetObjectAABB().m_max.x - _owner->GetObjectAABB().m_min.x;
-	//	float dy1 = _HitObject.GetObjectAABB().m_min.y - _owner->GetObjectAABB().m_max.y;
-	//	float dy2 = _HitObject.GetObjectAABB().m_max.y - _owner->GetObjectAABB().m_min.y;
-	//	float dz1 = _HitObject.GetObjectAABB().m_min.z - _owner->GetObjectAABB().m_max.z;
-	//	float dz2 = _HitObject.GetObjectAABB().m_max.z - _owner->GetObjectAABB().m_min.z;
-
-	//	float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
-	//	float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
-	//	float dz = Math::Abs(dz1) < Math::Abs(dz2) ? dz1 : dz2;
-
-	//	if (Math::Abs(dx) <= Math::Abs(dy) /*&& Math::Abs(dx) <= Math::Abs(dz)*/)
-	//	{
-	//		mPosition.x += dx;
-	//	}
-	//	else if (Math::Abs(dy) <= Math::Abs(dx) /*&& Math::Abs(dy) <= Math::Abs(dz)*/)
-	//	{
-	//		mPosition.y += dy;
-	//	}
-	//	//else
-	//	////if (Math::Abs(dz) <= Math::Abs(dx) && Math::Abs(dz) <= Math::Abs(dy))
-	//	//{
-	//	//	mPosition.z += dz;
-	//	//}
-
-	//	_owner->SetPosition(mPosition);
-	//}
 }

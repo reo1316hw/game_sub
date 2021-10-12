@@ -8,7 +8,7 @@
 EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
 	: GameObject(_ObjectTag, _SceneTag)
 	, MInOutElementsTiming(300)
-	, MMaxNumEnemysExist(1)
+	, MMaxNumEnemysExist(100)
 	, mUntilInOutElementsCount(0)
 	, mEnemyObject(nullptr)
 {
@@ -42,6 +42,29 @@ void EnemyObjectManager::UpdateGameObject(float _deltaTime)
 		InsertNewElements();
 		
 		mUntilInOutElementsCount = 0;
+	}
+
+	for (auto itr : mEnemyObjectList)
+	{
+		Vector3 position = itr->GetPosition();
+
+		for (auto otherItr : mEnemyObjectList)
+		{
+			if (otherItr == itr)
+			{
+				continue;
+			}
+
+			Vector3 otherPosition = otherItr->GetPosition();
+
+			Vector3 dis = otherPosition - position;
+
+			if (dis.LengthSq() <= 5000.0f)
+			{
+				dis.Normalize();
+				itr->Separation(dis);
+			}
+		}
 	}
 }
 

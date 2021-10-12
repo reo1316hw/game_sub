@@ -33,5 +33,4 @@ public:
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
 private:
-
 };

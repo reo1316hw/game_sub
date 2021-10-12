@@ -46,6 +46,8 @@ public:
 	/// </summary>
 	~EnemyObject() {};
 
+	void Separation(const Vector3& _Dir);
+
 	/// <summary>
     /// オブジェクトの更新処理
     /// </summary>

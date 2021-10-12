@@ -39,6 +39,8 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	virtual void Exit(EnemyObject* _owner, const float _DeltaTime) {};
 
+	virtual void Separation(EnemyObject* _owner, const Vector3& _Dir) {};
+
 	/// <summary>
 	/// ヒットした時の処理
 	/// </summary>

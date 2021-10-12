@@ -50,8 +50,6 @@ enum Tag
 	eEnemyGenerator,
 	eEnemy,
 	eTranslucentWall,
-	eStopLateralMoveEnemy,
-	eStopVerticalMoveEnemy,
 };
 
 /*
