@@ -61,6 +61,7 @@
 #include "EnemyObjectStateTrack.h"
 #include "EnemyObjectStateWait.h"
 #include "EnemyObjectStateAttack.h"
+#include "EnemyObjectStateAttackReady.h"
 #include "EnemyObjectStateMove.h"
 #include "EnemyObjectStateDamage.h"
 #include "EnemyObjectStateDeath.h"
