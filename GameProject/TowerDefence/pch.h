@@ -52,6 +52,8 @@
 #include "PlayerObjectStateDashAttack.h"
 #include "PlayerWeaponObject.h"
 #include "EnemyObjectManager.h"
+#include "SearchReferenceEnemy.h"
+#include "PutOutDeathEnemy.h"
 #include "EnemyObject.h"
 #include "EnemyGenerator.h"
 #include "EnemyObjectStateBase.h"

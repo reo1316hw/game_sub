@@ -13,6 +13,14 @@ EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::S
 	, mEnemyObject(nullptr)
 {
 	mTag = _ObjectTag;
+
+	// 基準となるエネミーをエネミー配列から検索するクラスを生成
+	mSearchReferenceEnemyPtr = new SearchReferenceEnemy();
+}
+
+EnemyObjectManager::~EnemyObjectManager()
+{
+	delete mSearchReferenceEnemyPtr;
 }
 
 /// <summary>
@@ -32,55 +40,11 @@ void EnemyObjectManager::CreateEnemyGenerator(const Vector3& _Pos, const Vector3
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectManager::UpdateGameObject(float _deltaTime)
 {
-	++mUntilInOutElementsCount;
+	// 基準となるエネミーを検索
+	mEnemyObjectList = mSearchReferenceEnemyPtr->Search(mEnemyObjectList);
 
-	if (mUntilInOutElementsCount >= MInOutElementsTiming)
-	{
-		// 死亡状態の要素を配列から出す処理
-		PutOutDeathElements();
-		// 新たな要素を配列に入れる処理
-		InsertNewElements();
-		
-		mUntilInOutElementsCount = 0;
-	}
-
-	for (auto itr : mEnemyObjectList)
-	{
-		Vector3 position = itr->GetPosition();
-
-		for (auto otherItr : mEnemyObjectList)
-		{
-			if (otherItr == itr)
-			{
-				continue;
-			}
-
-			Vector3 otherPosition = otherItr->GetPosition();
-
-			Vector3 dis = otherPosition - position;
-
-			if (dis.LengthSq() <= 5000.0f)
-			{
-				dis.Normalize();
-				itr->Separation(dis);
-			}
-		}
-	}
-}
-
-/// <summary>
-/// 死亡状態の要素を配列から出す処理
-/// </summary>
-void EnemyObjectManager::PutOutDeathElements()
-{
-	for (auto itr : mEnemyObjectList)
-	{
-		if (itr->GetState() == Dead)
-		{
-			// 配列の要素を削除
-			RemoveEnemyObjectElements(itr);
-		}
-	}
+	// 新たな要素を配列に入れる処理
+	InsertNewElements();
 }
 
 /// <summary>
@@ -96,19 +60,5 @@ void EnemyObjectManager::InsertNewElements()
 			mEnemyObject = itr->CreateEnemyObject();
 			mEnemyObjectList.push_back(mEnemyObject);
 		}
-	}
-}
-
-/// <summary>
-/// 配列の要素を削除
-/// </summary>
-/// <param name="_enemyObjectPtr"> エネミーのポインター </param>
-void EnemyObjectManager::RemoveEnemyObjectElements(EnemyObject* _enemyObjectPt)
-{
-	auto iter = std::find(mEnemyObjectList.begin(), mEnemyObjectList.end(), _enemyObjectPt);
-	if (iter != mEnemyObjectList.end())
-	{
-		std::iter_swap(iter, mEnemyObjectList.end() - 1);
-		mEnemyObjectList.pop_back();
 	}
 }

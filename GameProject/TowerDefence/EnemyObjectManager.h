@@ -3,6 +3,7 @@
 // 前方宣言
 class EnemyGenerator;
 class EnemyObject;
+class SearchReferenceEnemy;
 
 /// <summary>
 /// エネミーの管理
@@ -21,7 +22,7 @@ public:
     /// <summary>
     /// デストラクタ
     /// </summary>
-    ~EnemyObjectManager() {};
+    ~EnemyObjectManager();
     
 	/// <summary>
 	/// エネミー生成器を生成
@@ -40,20 +41,9 @@ public:
 private:
 
     /// <summary>
-    /// 死亡状態の要素を配列から出す処理
-    /// </summary>
-    void PutOutDeathElements();
-
-    /// <summary>
     /// 新たな要素を配列に入れる処理
     /// </summary>
     void InsertNewElements();
-
-    /// <summary>
-    /// 配列の要素を削除
-    /// </summary>
-    /// <param name="_enemyObjectPtr"> エネミーのポインター </param>
-    void RemoveEnemyObjectElements(EnemyObject* _enemyObjectPtr);
 
     // 配列の要素を出し入れするタイミング
     const int MInOutElementsTiming;
@@ -63,6 +53,8 @@ private:
     // 配列の要素を出し入れするまでのカウント
     int mUntilInOutElementsCount;
 
+    // 基準となるエネミーをエネミー配列から検索するクラスのポインタ
+    SearchReferenceEnemy* mSearchReferenceEnemyPtr;
     // エネミーのポインタ
     EnemyObject* mEnemyObject;
 
