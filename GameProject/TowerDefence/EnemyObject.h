@@ -46,7 +46,11 @@ public:
 	/// </summary>
 	~EnemyObject() {};
 
-	void Separation(const Vector3& _Dir);
+	/// <summary>
+	/// エネミー同士の引き離し
+	/// </summary>
+	/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
+	void Separation(const Vector3& _DirTargetEnemyVec);
 
 	/// <summary>
     /// オブジェクトの更新処理
@@ -64,6 +68,8 @@ private:
 
 	// アニメーションの再生速度
 	const float MPlayRate;
+	// 引き離しベクトルの長さ
+	const float MSeparationVecLength;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>       mAnimTypes;

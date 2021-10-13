@@ -14,6 +14,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	const Tag& _ObjectTag, const SceneBase::Scene _SceneTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag, _SceneTag)
 	, MPlayRate(1.0f)
+	, MSeparationVecLength(4.0f)
 	, mNowState(EnemyState::eEnemyStateTrack)
 	, mNextState(EnemyState::eEnemyStateTrack)
 {
@@ -60,10 +61,15 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mBoxColliderPtr->SetObjectBox(mBox);
 }
 
-void EnemyObject::Separation(const Vector3& _Dir)
+/// <summary>
+/// エネミー同士の引き離し
+/// </summary>
+/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
+void EnemyObject::Separation(const Vector3& _DirTargetEnemyVec)
 {
-	Vector3 vec = 4.0f * _Dir;
-	mStatePools[static_cast<int>(mNowState)]->Separation(this, vec);
+	// 引き離しベクトル
+	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
+	mStatePools[static_cast<int>(mNowState)]->Separation(this, separationVec);
 }
 
 /// <summary>

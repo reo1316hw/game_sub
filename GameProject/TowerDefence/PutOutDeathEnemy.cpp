@@ -11,11 +11,12 @@ PutOutDeathEnemy::PutOutDeathEnemy()
 /// <summary>
 /// 死亡状態のエネミーを配列から出す
 /// </summary>
-/// <param name="_enemyList"> エネミーの動的配列 </param>
+/// <param name="_enemyObjectList"> エネミーの動的配列 </param>
 /// <param name="_enemyObjectPtr"> エネミーのポインター </param>
-std::vector<EnemyObject*> PutOutDeathEnemy::PutOut(std::vector<EnemyObject*> _enemyList, EnemyObject* _enemyObjectPtr)
+/// <returns> 更新されたエネミーの動的配列 </returns>
+std::vector<EnemyObject*> PutOutDeathEnemy::PutOut(std::vector<EnemyObject*> _enemyObjectList, EnemyObject* _enemyObjectPtr)
 {
-	mEnemyObjectList = _enemyList;
+	mEnemyObjectList = _enemyObjectList;
 	mEnemyObjectPtr = _enemyObjectPtr;
 
 	if (mEnemyObjectPtr->GetState() == Dead)

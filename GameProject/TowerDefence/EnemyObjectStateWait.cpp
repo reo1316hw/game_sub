@@ -6,9 +6,12 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 	: MTransitionStateDistance(15000.0f)
+	, MVecShortenVelue(0.1f)
 	, MTransitionTimingNum(120)
 	, mIsDamage(false)
 	, mTransitionCount(0)
+	, mPosition(Vector3::Zero)
+	, mVelocity(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -22,11 +25,11 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトルsd
-	Vector3 dirPlayerVec = playerPos - position;
+	Vector3 dirPlayerVec = playerPos - mPosition;
 
 	++mTransitionCount;
 
@@ -75,6 +78,20 @@ void EnemyObjectStateWait::Enter(EnemyObject* _owner, const float _DeltaTime)
 
 	mIsDamage = false;
 	mTransitionCount = 0;
+}
+
+/// <summary>
+/// エネミー同士の引き離し
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_SeparationVec"> 引き離しベクトル </param>
+void EnemyObjectStateWait::Separation(EnemyObject* _owner, const Vector3& _SeparationVec)
+{
+	/*mVelocity -= _SeparationVec;
+	mVelocity *= MVecShortenVelue;
+
+	mPosition += mVelocity;
+	_owner->SetPosition(mPosition);*/
 }
 
 /// <summary>

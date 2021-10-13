@@ -34,6 +34,13 @@ public:
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
+    /// エネミー同士の引き離し
+    /// </summary>
+    /// <param name="_owner"> エネミー(親)のポインタ </param>
+    /// <param name="_SeparationVec"> 引き離しベクトル </param>
+	void Separation(EnemyObject* _owner, const Vector3& _SeparationVec)override;
+
+	/// <summary>
 	/// ヒットした時の処理
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
@@ -47,12 +54,19 @@ private:
 
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
+	// ベクトルを短くする値
+	const float MVecShortenVelue;
 
 	// ダメージを受けたか
 	bool mIsDamage;
 
 	// 遷移するためのカウント変数
 	int mTransitionCount;
+
+	// 座標
+	Vector3 mPosition;
+	// 速度
+	Vector3 mVelocity;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

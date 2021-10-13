@@ -8,11 +8,14 @@
 EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
 	, MTransitionStateDistance(15000.0f)
+	, MVecShortenVelue(0.5f)
 	, mIsMoving(false)
 	, mIsDamage(false)
 	, mMoveSpeed(1.0f)
 	, mPeriodMoveCount(0)
 	, mEnemyState(_State)
+	, mPosition(Vector3::Zero)
+	, mVelocity(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -26,7 +29,7 @@ EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObjec
 EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
 	// 右方ベクトル
 	Vector3 rightVec = _owner->GetRight();
 	rightVec.z = 0.0f;
@@ -34,7 +37,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
-	Vector3 dirPlayerVec = playerPos - position;
+	Vector3 dirPlayerVec = playerPos - mPosition;
 
 	if (mEnemyState == EnemyState::eEnemyStateLeftMove)
 	{
@@ -42,9 +45,9 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	}
 
 	// 速度ベクトル
-	Vector3 vel = mMoveSpeed * rightVec;
-	position += vel;
-	_owner->SetPosition(position);
+	mVelocity = mMoveSpeed * rightVec;
+	mPosition += mVelocity;
+	_owner->SetPosition(mPosition);
     
 	++mPeriodMoveCount;
 
@@ -93,6 +96,20 @@ void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 
 	mIsDamage = false;
 	mPeriodMoveCount = 0;
+}
+
+/// <summary>
+/// エネミー同士の引き離し
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_SeparationVec"> 引き離しベクトル </param>
+void EnemyObjectStateMove::Separation(EnemyObject* _owner, const Vector3& _SeparationVec)
+{
+	mVelocity -= _SeparationVec;
+	mVelocity *= MVecShortenVelue;
+
+	mPosition += mVelocity;
+	_owner->SetPosition(mPosition);
 }
 
 /// <summary>

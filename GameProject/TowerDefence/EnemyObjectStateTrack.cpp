@@ -6,10 +6,11 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 	: MTransitionStateDistance(15000.0f)
+	, MVecShortenVelue(0.1f)
 	, mIsDamage(false)
 	, mMoveSpeed(2.0f)
 	, mPosition(Vector3::Zero)
-	, mVec(Vector3::Zero)
+	, mVelocity(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -54,8 +55,9 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 
 	dirPlayerVec.Normalize();
 	_owner->RotateToNewForward(dirPlayerVec);
-	mVec = mMoveSpeed * dirPlayerVec;
-	mPosition += mVec;
+
+	mVelocity = mMoveSpeed * dirPlayerVec;
+	mPosition += mVelocity;
 	// キャラの位置・スピード・変換行列の再計算の必要をセット
 	_owner->SetPosition(mPosition);
 
@@ -75,13 +77,17 @@ void EnemyObjectStateTrack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mIsDamage = false;
 }
 
-void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _Dir)
+/// <summary>
+/// エネミー同士の引き離し
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_SeparationVec"> 引き離しベクトル </param>
+void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _SeparationVec)
 {
-	Vector3 directionTravel = mVec - _Dir;
-	directionTravel *= 0.1f;
+	mVelocity -= _SeparationVec;
+	mVelocity *= MVecShortenVelue;
 
-	//directionTravel.Normalize();
-	mPosition += directionTravel;
+	mPosition += mVelocity;
 	_owner->SetPosition(mPosition);
 }
 

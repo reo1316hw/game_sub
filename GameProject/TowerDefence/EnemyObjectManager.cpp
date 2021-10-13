@@ -7,20 +7,22 @@
 /// <param name="_SceneTag"> シーンタグ </param>
 EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
 	: GameObject(_ObjectTag, _SceneTag)
-	, MInOutElementsTiming(300)
-	, MMaxNumEnemysExist(100)
-	, mUntilInOutElementsCount(0)
-	, mEnemyObject(nullptr)
+	, MInElementsTiming(300)
+	, mUntilInElementsCount(0)
+	, mEnemyObjectPtr(nullptr)
 {
 	mTag = _ObjectTag;
 
 	// 基準となるエネミーをエネミー配列から検索するクラスを生成
-	mSearchReferenceEnemyPtr = new SearchReferenceEnemy();
+	mSearchAllEnemyPtr = new SearchAllEnemy();
+	// 新しく生成するエネミーを配列に入れるクラスを生成
+	mInsertNewEnemyPtr = new InsertNewEnemy();
 }
 
 EnemyObjectManager::~EnemyObjectManager()
 {
-	delete mSearchReferenceEnemyPtr;
+	delete mSearchAllEnemyPtr;
+	delete mInsertNewEnemyPtr;
 }
 
 /// <summary>
@@ -41,24 +43,16 @@ void EnemyObjectManager::CreateEnemyGenerator(const Vector3& _Pos, const Vector3
 void EnemyObjectManager::UpdateGameObject(float _deltaTime)
 {
 	// 基準となるエネミーを検索
-	mEnemyObjectList = mSearchReferenceEnemyPtr->Search(mEnemyObjectList);
+	mEnemyObjectList = mSearchAllEnemyPtr->Search(mEnemyObjectList);
+	
+	++mUntilInElementsCount;
 
-	// 新たな要素を配列に入れる処理
-	InsertNewElements();
-}
-
-/// <summary>
-/// 新たな要素を配列に入れる処理
-/// </summary>
-void EnemyObjectManager::InsertNewElements()
-{
-	if (mEnemyObjectList.size() < MMaxNumEnemysExist)
+	// 生成するタイミングまでカウントしたらエネミーを生成
+	if (mUntilInElementsCount >= MInElementsTiming)
 	{
-		for (auto itr : mEnemyGeneratorList)
-		{
-			// エネミーを生成
-			mEnemyObject = itr->CreateEnemyObject();
-			mEnemyObjectList.push_back(mEnemyObject);
-		}
+		// 新しく生成するエネミーを配列に入れる処理
+		mEnemyObjectList = mInsertNewEnemyPtr->Insert(mEnemyObjectList, mEnemyGeneratorList);
+
+		mUntilInElementsCount = 0;
 	}
 }

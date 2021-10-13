@@ -104,13 +104,7 @@
     <ClCompile Include="GroundObject.cpp">
       <Filter>GameObject\Map</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjectStateSprintLoop.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerObject.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateRunLoop.cpp">
       <Filter>GameObject\Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="AttackMeshComponent.cpp">
@@ -119,50 +113,8 @@
     <ClCompile Include="RapidJsonHelper.cpp">
       <Filter>RapidJson</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerObjectStateBase.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="PlayerObjectStateIdle.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateSprintStart.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateDashAttack.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateFirstAttack.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateSecondAttack.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerObjectStateThirdAttack.cpp">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyObject.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateBase.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateTrack.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateWait.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateAttack.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateMove.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateDamage.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateDeath.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="PlayerWeaponObject.cpp">
@@ -171,11 +123,66 @@
     <ClCompile Include="EnemyGenerator.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyObjectStateAttack.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateBase.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateDamage.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateDeath.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateMove.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateTrack.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateWait.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
     <ClCompile Include="EnemyObjectManager.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="SearchReferenceEnemy.cpp" />
-    <ClCompile Include="PutOutDeathEnemy.cpp" />
+    <ClCompile Include="PlayerObjectStateBase.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateDashAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateFirstAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateIdle.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateRunLoop.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSecondAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSprintLoop.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSprintStart.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateThirdAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="InsertNewEnemy.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PutOutDeathEnemy.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchAllEnemy.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -286,15 +293,6 @@
     <ClInclude Include="PlayerObject.h">
       <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerObjectStateBase.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateSprintLoop.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateRunLoop.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
     <ClInclude Include="AttackMeshComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -302,46 +300,7 @@
       <Filter>RapidJson</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PlayerObjectStateIdle.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateSprintStart.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateDashAttack.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateFirstAttack.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateSecondAttack.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObjectStateThirdAttack.h">
-      <Filter>GameObject\Map\Player</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyObject.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateBase.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateTrack.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateWait.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateAttack.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateMove.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateDamage.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateDeath.h">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="PlayerWeaponObject.h">
@@ -350,11 +309,66 @@
     <ClInclude Include="EnemyGenerator.h">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyObjectStateAttack.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateBase.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateDamage.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateDeath.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateMove.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateTrack.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateWait.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
     <ClInclude Include="EnemyObjectManager.h">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="SearchReferenceEnemy.h" />
-    <ClInclude Include="PutOutDeathEnemy.h" />
+    <ClInclude Include="PlayerObjectStateBase.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateDashAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateFirstAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateIdle.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateRunLoop.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSecondAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSprintLoop.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSprintStart.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateThirdAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="InsertNewEnemy.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PutOutDeathEnemy.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchAllEnemy.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -404,6 +418,12 @@
     </Filter>
     <Filter Include="GameObject\Map\Enemy">
       <UniqueIdentifier>{490dc89b-5731-4103-9417-f686277e5bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy\State">
+      <UniqueIdentifier>{bc67cf51-727f-4002-8318-598565ec126b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Player\State">
+      <UniqueIdentifier>{5ff3e5ff-a8a1-4aa8-b6e9-6430528538a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

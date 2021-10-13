@@ -2,8 +2,9 @@
 
 // 前方宣言
 class EnemyGenerator;
+class SearchAllEnemy;
+class InsertNewEnemy;
 class EnemyObject;
-class SearchReferenceEnemy;
 
 /// <summary>
 /// エネミーの管理
@@ -40,23 +41,18 @@ public:
 
 private:
 
-    /// <summary>
-    /// 新たな要素を配列に入れる処理
-    /// </summary>
-    void InsertNewElements();
+    // 配列の要素を入れるタイミング
+    const int MInElementsTiming;
 
-    // 配列の要素を出し入れするタイミング
-    const int MInOutElementsTiming;
-    // エネミーが存在できる数の上限
-    const int MMaxNumEnemysExist;
-
-    // 配列の要素を出し入れするまでのカウント
-    int mUntilInOutElementsCount;
+    // 配列の要素を入れるまでのカウント
+    int mUntilInElementsCount;
 
     // 基準となるエネミーをエネミー配列から検索するクラスのポインタ
-    SearchReferenceEnemy* mSearchReferenceEnemyPtr;
+    SearchAllEnemy* mSearchAllEnemyPtr;
+    // 新しく生成するエネミーを配列に入れるクラスのポインタ
+    InsertNewEnemy* mInsertNewEnemyPtr;
     // エネミーのポインタ
-    EnemyObject* mEnemyObject;
+    EnemyObject* mEnemyObjectPtr;
 
     // エネミー生成器の動的配列
     std::vector<EnemyGenerator*> mEnemyGeneratorList;
