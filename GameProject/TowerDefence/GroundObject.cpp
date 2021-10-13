@@ -17,7 +17,7 @@ GroundObject::GroundObject(const Vector3& _pos, const Vector3& _size, const std:
 		//Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
 		mMeshComponentPtr->SetMesh(RENDERER->GetMesh(_gpmeshName));
 
-		// 当たり判定
+		// 矩形の当たり判定を行うコンポーネント
 		mMeshPtr = new Mesh;
 		mMeshPtr = RENDERER->GetMesh(_gpmeshName);
 		mBoxColliderPtr = new BoxCollider(this, _objectTag, GetOnCollisionFunc());

@@ -113,10 +113,6 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//}
 		for (auto itr : mPlayerBoxes)
 		{
-			if (itr == _box)
-			{
-				continue;
-			}
 			//コライダーの親オブジェクトがActiveじゃなければ終了する
 			if (itr->GetOwner()->GetState() != State::Active)
 			{
@@ -149,6 +145,40 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
+		for (auto itr : mKeepDistancePlayerBoxes)
+		{
+			//コライダーの親オブジェクトがActiveじゃなければ終了する
+			if (itr->GetOwner()->GetState() != State::Active)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		//for (auto itr : mKeepDistancePlayerSpheres)
+		//{
+		//	//コライダーの親オブジェクトがActiveじゃなければ終了する
+		//	if (itr->GetOwner()->GetState() != State::Active)
+		//	{
+		//		continue;
+		//	}
+		//	bool hit = Intersect(itr->GetWorldSphere(), _box->GetWorldBox());
+		//	if (hit)
+		//	{
+		//		onCollisionFunc func = mCollisionFunction.at(_box);
+		//		func(*(itr->GetOwner()));
+		//		func = mCollisionFunction.at(itr);
+		//		func(*(_box->GetOwner()));
+		//		_box->Refresh();
+		//	}
+		//}
 	}
 }
 
@@ -206,21 +236,27 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
-	if (_box->GetOwner()->GetTag() == Tag::ePlayer)
-	{
-		mPlayerBoxes.emplace_back(_box);
-		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
-		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
-	}
 	if (_box->GetOwner()->GetTag() == Tag::eEnemy)
 	{
 		mEnemyBoxes.emplace_back(_box);
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::ePlayer)
+	{
+		mPlayerBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 	if (_box->GetOwner()->GetTag() == Tag::eWeapon)
 	{
 		mWeaponBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetOwner()->GetTag() == Tag::eKeepDistancePlayer)
+	{
+		mKeepDistancePlayerBoxes.emplace_back(_box);
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
@@ -262,7 +298,13 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 		std::iter_swap(weaponBox, mWeaponBoxes.end() - 1);
 		mWeaponBoxes.pop_back();
 	}
-
+	auto keepDistancePlayerBox = std::find(mKeepDistancePlayerBoxes.begin(), mKeepDistancePlayerBoxes.end(), _box);
+	if (keepDistancePlayerBox != mKeepDistancePlayerBoxes.end())
+	{
+		std::iter_swap(keepDistancePlayerBox, mKeepDistancePlayerBoxes.end() - 1);
+		mKeepDistancePlayerBoxes.pop_back();
+	}
+	
     mCollisionFunction.erase(_box);
 }
 
@@ -273,8 +315,8 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 /// <param name="_func"> OnCollision関数のポインタ </param>
 void PhysicsWorld::AddSphere(SphereCollider * _sphere, onCollisionFunc _func)
 {
-	//mWeaponSpheres.emplace_back(_sphere);
-    //コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+	//mKeepDistancePlayerSpheres.emplace_back(_sphere);
+    //// コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
     //mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_sphere), _func));
 }
 
@@ -284,11 +326,11 @@ void PhysicsWorld::AddSphere(SphereCollider * _sphere, onCollisionFunc _func)
 /// <param name="_sphere"> 削除するSphereColliderクラスのポインタ </param>
 void PhysicsWorld::RemoveSphere(SphereCollider * _sphere)
 {
-	/*auto iter = std::find(mWeaponSpheres.begin(), mWeaponSpheres.end(), _sphere);
-	if (iter != mWeaponSpheres.end())
+	/*auto iter = std::find(mKeepDistancePlayerSpheres.begin(), mKeepDistancePlayerSpheres.end(), _sphere);
+	if (iter != mKeepDistancePlayerSpheres.end())
 	{
-		std::iter_swap(iter, mWeaponSpheres.end() - 1);
-		mWeaponSpheres.pop_back();
+		std::iter_swap(iter, mKeepDistancePlayerSpheres.end() - 1);
+		mKeepDistancePlayerSpheres.pop_back();
 	}
     mCollisionFunction.erase(_sphere);*/
 }
@@ -318,6 +360,7 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mPlayerBoxes, Color::LightPink);
 	DrawBoxs(mEnemyBoxes, Color::White);
 	DrawBoxs(mWeaponBoxes, Color::LightGreen);
+	DrawBoxs(mKeepDistancePlayerBoxes, Color::Yellow);
 }
 
 /// <summary>

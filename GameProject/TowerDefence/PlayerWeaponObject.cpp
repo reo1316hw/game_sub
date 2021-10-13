@@ -3,12 +3,11 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="_owner"> 親クラスのポインタ </param>
 /// <param name="_skMesh"> 親クラスのスケルトンメッシュのポインタ </param>
 /// <param name="_GpmeshName"> gpmeshのパス </param>
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 /// <param name="_SceneTag"> シーンのタグ</param>
-PlayerWeaponObject::PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
+PlayerWeaponObject::PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
 	: GameObject(_ObjectTag, _SceneTag)
 	, MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
 	, MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))

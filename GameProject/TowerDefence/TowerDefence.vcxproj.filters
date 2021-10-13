@@ -183,6 +183,9 @@
     <ClCompile Include="SearchAllEnemy.cpp">
       <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
+    <ClCompile Include="KeepDistancePlayerObject.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -368,6 +371,9 @@
     </ClInclude>
     <ClInclude Include="SearchAllEnemy.h">
       <Filter>GameObject\Map\Enemy\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="KeepDistancePlayerObject.h">
+      <Filter>GameObject\Map\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

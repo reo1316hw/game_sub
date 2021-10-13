@@ -44,6 +44,7 @@ enum Tag
 	eOther = 0,
 	eCamera,
 	ePlayer,
+	eKeepDistancePlayer,
 	eWeapon,
 	eGround,
 	eEnemyManager,

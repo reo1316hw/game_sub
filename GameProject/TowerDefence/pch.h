@@ -51,6 +51,7 @@
 #include "PlayerObjectStateThirdAttack.h"
 #include "PlayerObjectStateDashAttack.h"
 #include "PlayerWeaponObject.h"
+#include "KeepDistancePlayerObject.h"
 #include "EnemyObjectManager.h"
 #include "SearchAllEnemy.h"
 #include "PutOutDeathEnemy.h"

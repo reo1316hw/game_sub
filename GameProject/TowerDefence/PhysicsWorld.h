@@ -123,6 +123,11 @@ private:
 	std::vector<BoxCollider*> mEnemyBoxes;
 	// 武器の矩形当たり判定
 	std::vector<BoxCollider*> mWeaponBoxes;
+	// プレイヤーの距離を保つための矩形当たり判定
+	std::vector<BoxCollider*> mKeepDistancePlayerBoxes;
+
+	//// プレイヤーの距離を保つための球状当たり判定
+	//std::vector<SphereCollider*> mKeepDistancePlayerSpheres;
 
 	// デバッグ用の当たり判定描画用シェーダー
 	Shader* mLineShader;
