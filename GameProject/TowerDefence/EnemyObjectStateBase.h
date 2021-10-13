@@ -43,8 +43,8 @@ public:
 	/// エネミー同士の引き離し
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
-	/// <param name="_SeparationVec"> 引き離しベクトル </param>
-	virtual void Separation(EnemyObject* _owner, const Vector3& _SeparationVec) {};
+	/// <param name="_SeparationVec"> 対象となるエネミーに向いたベクトル </param>
+	virtual void Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec) {};
 
 	/// <summary>
 	/// ヒットした時の処理

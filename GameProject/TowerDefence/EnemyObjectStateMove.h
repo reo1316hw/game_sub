@@ -38,8 +38,8 @@ public:
 	/// エネミー同士の引き離し
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
-	/// <param name="_SeparationVec"> 引き離しベクトル </param>
-	void Separation(EnemyObject* _owner, const Vector3& _SeparationVec)override;
+	/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
+	void Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)override;
 
 	/// <summary>
 	/// ヒットした時の処理
@@ -63,6 +63,8 @@ private:
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値
 	const float MVecShortenVelue;
+	// 引き離しベクトルの長さ
+	const float MSeparationVecLength;
 
 	// 移動しているか
 	bool mIsMoving;

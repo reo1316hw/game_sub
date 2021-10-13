@@ -175,13 +175,13 @@
       <Filter>GameObject\Map\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="InsertNewEnemy.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
     <ClCompile Include="PutOutDeathEnemy.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
     <ClCompile Include="SearchAllEnemy.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,13 +361,13 @@
       <Filter>GameObject\Map\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="InsertNewEnemy.h">
-      <Filter>GameObject\Map\Enemy</Filter>
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClInclude>
     <ClInclude Include="PutOutDeathEnemy.h">
-      <Filter>GameObject\Map\Enemy</Filter>
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClInclude>
     <ClInclude Include="SearchAllEnemy.h">
-      <Filter>GameObject\Map\Enemy</Filter>
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -424,6 +424,9 @@
     </Filter>
     <Filter Include="GameObject\Map\Player\State">
       <UniqueIdentifier>{5ff3e5ff-a8a1-4aa8-b6e9-6430528538a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy\Component">
+      <UniqueIdentifier>{58d3cfaf-10d5-4a43-af26-de15eb3b3cb4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

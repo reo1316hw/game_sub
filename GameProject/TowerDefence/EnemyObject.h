@@ -68,8 +68,6 @@ private:
 
 	// アニメーションの再生速度
 	const float MPlayRate;
-	// 引き離しベクトルの長さ
-	const float MSeparationVecLength;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>       mAnimTypes;

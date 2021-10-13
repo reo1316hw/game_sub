@@ -5,10 +5,10 @@
 /// </summary>
 EnemyObjectStateDamage::EnemyObjectStateDamage()
     : MDamageSpeed(100.0f)
-	, MVecShortenVelue(1.0f)
+	, MVecShortenVelue(0.1f)
+	, MSeparationVecLength(4.0f)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
-	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 {
 }
@@ -22,7 +22,7 @@ EnemyObjectStateDamage::EnemyObjectStateDamage()
 EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	mPosition = _owner->GetPosition();
+	Vector3 position = _owner->GetPosition();
 	// 前方ベクトル
 	Vector3 forward = _owner->GetForward();
 	// 開始速度
@@ -33,9 +33,9 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
+	position += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
 
-	_owner->SetPosition(mPosition);
+	_owner->SetPosition(position);
 	
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -50,14 +50,19 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 /// エネミー同士の引き離し
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
-/// <param name="_SeparationVec"> 引き離しベクトル </param>
-void EnemyObjectStateDamage::Separation(EnemyObject* _owner, const Vector3& _SeparationVec)
+/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
+void EnemyObjectStateDamage::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
-	mVelocity -= _SeparationVec;
-	mVelocity *= MVecShortenVelue;
+	// 座標
+	Vector3 position = _owner->GetPosition();
+	// 引き離しベクトル
+	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
 
-	mPosition += mVelocity;
-	_owner->SetPosition(mPosition);
+	mVelocity -= separationVec;
+	mVelocity *= MVecShortenVelue;
+	position += mVelocity;
+
+	_owner->SetPosition(position);
 }
 
 /// <summary>

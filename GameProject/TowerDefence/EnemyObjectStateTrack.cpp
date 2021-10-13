@@ -5,11 +5,11 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
-	: MTransitionStateDistance(15000.0f)
+	: MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
+	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
 	, mMoveSpeed(2.0f)
-	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
@@ -24,11 +24,11 @@ EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	mPosition = _owner->GetPosition();
+	Vector3 position = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
-	Vector3 dirPlayerVec = playerPos - mPosition;
+	Vector3 dirPlayerVec = playerPos - position;
 
 	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 	{
@@ -57,9 +57,9 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	_owner->RotateToNewForward(dirPlayerVec);
 
 	mVelocity = mMoveSpeed * dirPlayerVec;
-	mPosition += mVelocity;
+	position += mVelocity;
 	// キャラの位置・スピード・変換行列の再計算の必要をセット
-	_owner->SetPosition(mPosition);
+	_owner->SetPosition(position);
 
 	return EnemyState::eEnemyStateTrack;
 }
@@ -81,14 +81,19 @@ void EnemyObjectStateTrack::Enter(EnemyObject* _owner, const float _DeltaTime)
 /// エネミー同士の引き離し
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
-/// <param name="_SeparationVec"> 引き離しベクトル </param>
-void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _SeparationVec)
+/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
+void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
-	mVelocity -= _SeparationVec;
-	mVelocity *= MVecShortenVelue;
+	// 座標
+	Vector3 position = _owner->GetPosition();
+	// 引き離しベクトル
+	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
 
-	mPosition += mVelocity;
-	_owner->SetPosition(mPosition);
+	mVelocity -= separationVec;
+	mVelocity *= MVecShortenVelue;
+	position += mVelocity;
+
+	_owner->SetPosition(position);
 }
 
 /// <summary>
