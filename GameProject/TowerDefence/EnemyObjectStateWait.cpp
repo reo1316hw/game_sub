@@ -8,7 +8,7 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 	: MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MTransitionTimingNum(120)
-	, MSeparationVecLength(1.0f)
+	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
 	, mPeriodWaitCount(0)
 	, mPosition(Vector3::Zero)
@@ -56,7 +56,7 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 			}
 			else
 			{
-				return EnemyState::eEnemyStateAttack;
+				return EnemyState::eEnemyStateAttackReady;
 			}
 		}
 		else if (dirPlayerVec.LengthSq() >= 15000.0f && dirPlayerVec.LengthSq() < MTransitionStateDistance)

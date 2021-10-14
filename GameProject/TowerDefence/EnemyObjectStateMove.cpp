@@ -74,7 +74,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 			}
 			else
 			{
-				return EnemyState::eEnemyStateAttack;
+				return EnemyState::eEnemyStateAttackReady;
 			}
 		}
 		else if (dirPlayerVec.LengthSq() >= 15000.0f && dirPlayerVec.LengthSq() < MTransitionStateDistance)

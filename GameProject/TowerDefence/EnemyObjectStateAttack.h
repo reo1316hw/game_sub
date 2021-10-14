@@ -67,6 +67,8 @@ private:
 	// アニメーション総時間
 	float mTotalAnimTime;
 
+	// 座標
+	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
 };

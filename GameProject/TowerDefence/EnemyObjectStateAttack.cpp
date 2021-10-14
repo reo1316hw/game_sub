@@ -5,12 +5,13 @@
 /// </summary>
 EnemyObjectStateAttack::EnemyObjectStateAttack()
 	: MAttackSpeed(150.0f)
-	, MVecShortenVelue(0.1f)
 	, MPlayRate(1.5f)
+	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
+	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 {
 }
@@ -24,7 +25,9 @@ EnemyObjectStateAttack::EnemyObjectStateAttack()
 EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
+	// 更新される前の座標
+	Vector3 prePosition = mPosition;
 	// 前方ベクトル
 	Vector3 forward = _owner->GetForward();
 	// 開始速度
@@ -35,9 +38,12 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	position += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
 
-	_owner->SetPosition(position);
+	// 速度を計算
+	mVelocity = prePosition - mPosition;
+
+	_owner->SetPosition(mPosition);
 
 	// アニメーションが終了したら移動状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -90,15 +96,15 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 void EnemyObjectStateAttack::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
 	// 引き離しベクトル
 	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
 
 	mVelocity -= separationVec;
 	mVelocity *= MVecShortenVelue;
-	position += mVelocity;
+	mPosition += mVelocity;
 
-	_owner->SetPosition(position);
+	_owner->SetPosition(mPosition);
 }
 
 /// <summary>
