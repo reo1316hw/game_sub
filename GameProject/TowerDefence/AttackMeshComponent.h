@@ -65,13 +65,13 @@ public:// ゲッターセッター
 	/// gpSkelファイルの任意のボーンを取得
 	/// </summary>
 	/// <returns> gpSkelファイルの任意のボーン </returns>
-	int GetAttackBoneIndex() { return mAttackBoneIndex; };
+	int GetAttackBoneIndex() { return mAttackBoneIndex; }
 
 	/// <summary>
 	/// gpSkelファイルの任意のボーンを設定
 	/// </summary>
 	/// <param name="_attackBoneIndex"> gpSkelファイルの任意のボーン </param>
-	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; };
+	void SetAttackBoneIndex(int _attackBoneIndex) { mAttackBoneIndex = _attackBoneIndex; }
 
 	/// <summary>
 	/// 差分の平行移動行列を設定

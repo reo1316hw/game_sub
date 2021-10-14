@@ -119,7 +119,7 @@ public: //ゲッターセッター
 	/*
 	@param _offset 親オブジェクトの座標と描画位置の差
 	*/
-	void SetOffSet(Vector3 _offset) { mOffset = _offset; };
+	void SetOffSet(Vector3 _offset) { mOffset = _offset; }
 
 	/*
 	@param _flag 反転を行うか

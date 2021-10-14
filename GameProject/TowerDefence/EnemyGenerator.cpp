@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="_Pos"> 座標 </param>
 /// <param name="_Scale"> 大きさ </param>
-/// <param name="_ObjectTag"> タグ </param>
+/// <param name="_ObjectTag"> オブジェクトのタグ </param>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyGenerator::EnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)

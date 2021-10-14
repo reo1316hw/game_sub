@@ -4,15 +4,30 @@
 class Texture;
 class SpriteComponent;
 
+/// <summary>
+/// スプライト
+/// </summary>
 class Sprite : public GameObject
 {
 public:
-	Sprite(const std::string _fileName);
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_TextureName"> テクスチャのパス </param>
+	Sprite(const std::string _TextureName);
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~Sprite() {};
+
 private:
-	//テクスチャを生成
+
+	// テクスチャのポインタ
 	Texture* mSpriteTexture;
-	//SpriteComponentを生成
+
+	// スクリーン上に描画するクラスのポインタ
 	SpriteComponent* mSpriteComponent;
 };
 

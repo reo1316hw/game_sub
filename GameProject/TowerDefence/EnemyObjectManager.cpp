@@ -3,7 +3,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="_ObjectTag"> タグ </param>
+/// <param name="_ObjectTag"> オブジェクトのタグ </param>
 EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
 	, MInElementsTiming(300)
@@ -16,6 +16,9 @@ EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag)
 	mInsertNewEnemyPtr = new InsertNewEnemy();
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 EnemyObjectManager::~EnemyObjectManager()
 {
 	delete mSearchAllEnemyPtr;

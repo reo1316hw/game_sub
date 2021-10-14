@@ -16,7 +16,7 @@ public:
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="_ObjectTag"> タグ </param>
+    /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 	EnemyObjectManager(const Tag& _ObjectTag);
 
     /// <summary>

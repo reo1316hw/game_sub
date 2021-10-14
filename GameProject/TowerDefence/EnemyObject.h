@@ -36,7 +36,7 @@ public:
     /// <param name="_Scale"> 大きさ </param>
     /// <param name="_GpmeshName"> gpmeshのパス </param>
     /// <param name="_GpskelName"> gpskelのパス </param>
-    /// <param name="_ObjectTag"> タグ </param>
+    /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
 		        const Tag& _ObjectTag, PlayerObject* _playerPtr);
@@ -87,12 +87,12 @@ public://ゲッターセッター
 	/// </summary>
 	/// <param name="_State"> エネミーの状態 </param>
 	/// <returns> Animationのポインタ </returns>
-	const Animation* GetAnimPtr(const EnemyState _State) const { return mAnimTypes[(int)_State]; };
+	const Animation* GetAnimPtr(const EnemyState _State) const { return mAnimTypes[(int)_State]; }
 
 	/// <summary>
 	/// SkeletalMeshComponentのポインタを取得
 	/// </summary>
 	/// <returns> SkeletalMeshComponentのポインタ </returns>
-	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; };
+	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; }
 };
 

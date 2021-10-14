@@ -45,5 +45,5 @@ void SphereCollider::Refresh()
 	//ワールド座標での中心位置を更新する
 	mWorldSphere.m_center = mObjectSphere.m_center + mOwner->GetPosition();
 	//ワールド空間での球の大きさを更新する
-	mWorldSphere.m_radius = mObjectSphere.m_radius * mOwner->GetScale();
+	mWorldSphere.m_radius = mObjectSphere.m_radius * mOwner->GetScaleFloat();
 }

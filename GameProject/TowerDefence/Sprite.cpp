@@ -1,10 +1,14 @@
 #include "pch.h"
 
-Sprite::Sprite(const std::string _fileName)
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_TextureName"> テクスチャのパス </param>
+Sprite::Sprite(const std::string _TextureName)
 	:GameObject(Tag::eOther)
 {
 	mSpriteComponent = new SpriteComponent(this);
 
-	mSpriteTexture = RENDERER->GetTexture(_fileName);
+	mSpriteTexture = RENDERER->GetTexture(_TextureName);
 	mSpriteComponent->SetTexture(mSpriteTexture);
 }

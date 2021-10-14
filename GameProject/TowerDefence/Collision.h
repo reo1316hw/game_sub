@@ -128,7 +128,7 @@ struct AABB
 	*/
 	float MinDistanceSquared(const Vector3& _point)const;
 
-	void InitMinMax(const Vector3& _point) { m_min = m_max = _point; };
+	void InitMinMax(const Vector3& _point) { m_min = m_max = _point; }
 
     Vector3 m_min;
     Vector3 m_max;

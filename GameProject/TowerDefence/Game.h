@@ -37,9 +37,9 @@ public:
 	// 最初のシーンを決める関数
 	void SetFirstScene(SceneBase* _firstScene);
 
-	/*bool GetScene() { return isScene; };
+	/*bool GetScene() { return isScene; }
 
-	void SetScene(bool _isScene) { isScene = _isScene; };*/
+	void SetScene(bool _isScene) { isScene = _isScene; }*/
 
 	//シーンを切り替えるか
 	bool mSceneFlag;

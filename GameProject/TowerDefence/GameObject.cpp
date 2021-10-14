@@ -4,9 +4,11 @@ int GameObject::mGameObjectId = 0;
 MainCameraObject* GameObject::mMainCamera = nullptr;
 PauzingEvent GameObject::mPauzingEvent = PauzingEvent::NoneEvent;
 
-/*
-@param	ゲームクラスのポインタ
-*/
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_ObjectTag"> オブジェクトのタグ </param>
+/// <param name="_reUseGameObject"> 再利用するか </param>
 GameObject::GameObject(const Tag& _objectTag, bool _reUseGameObject)
 	: mState(Active)
 	, mWorldTransform()
@@ -18,16 +20,17 @@ GameObject::GameObject(const Tag& _objectTag, bool _reUseGameObject)
 	, mMyObjectId(mGameObjectId)
 	, mTag(_objectTag)
 	, mMoveSpeed(0.0f)
-	, mGravity(0.0f)
 	, mReUseObject(_reUseGameObject)
 	, mRecomputeWorldTransform(true)
-	, mHitFlag(false)
 {
 	mGameObjectId++;
 	//GameObjectManagerにポインタを渡す
 	GAME_OBJECT_MANAGER->AddGameObject(this);
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 GameObject::~GameObject()
 {
 	//GameObjectManagerからポインタを削除する
@@ -38,10 +41,10 @@ GameObject::~GameObject()
 	}
 }
 
-/*
-@brief	フレーム毎の処理
-@param	最後のフレームを完了するのに要した時間
-*/
+/// <summary>
+/// フレーム毎の処理
+/// </summary>
+/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void GameObject::Update(float _deltaTime)
 {
 	//更新停止のイベント中でないか(ポーズ画面など)
@@ -71,10 +74,10 @@ void GameObject::Update(float _deltaTime)
 	}
 }
 
-/*
-@brief	アタッチされてるコンポーネントのアップデート
-@param	最後のフレームを完了するのに要した時間
-*/
+/// <summary>
+/// アタッチされてるコンポーネントのアップデート
+/// </summary>
+/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void GameObject::UpdateComponents(float _deltaTime)
 {
 	if (mState != Dead)
@@ -85,24 +88,11 @@ void GameObject::UpdateComponents(float _deltaTime)
 		}
 	}
 }
-/*
-@brief	ゲームオブジェクトのアップデート
-@param	最後のフレームを完了するのに要した時間
-*/
-void GameObject::UpdateGameObject(float _deltaTime)
-{
-}
-/*
-@fn ゲームオブジェクトが静止中に更新されるアップデート関数
-@brief pauzingUpdateがtrueのときだけ呼ばれる更新関数
-*/
-void GameObject::PausingUpdateGameObject()
-{
-}
 
-/*
-@fn 入力状態を受け取りGameObjectとComponentの入力更新関数を呼び出す
-*/
+/// <summary>
+/// 入力状態を受け取りGameObjectとComponentの入力更新関数を呼び出す
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void GameObject::ProcessInput(const InputState& _keyState)
 {
 	if (mState == Active)
@@ -117,18 +107,10 @@ void GameObject::ProcessInput(const InputState& _keyState)
 	}
 }
 
-/*
-@fn 入力を引数で受け取る更新関数
-@brief 基本的にここで入力情報を変数に保存しUpdateGameObjectで更新を行う
-*/
-void GameObject::GameObjectInput(const InputState & _keyState)
-{
-}
-
-/*
-@brief	コンポーネントを追加する
-@param	追加するコンポーネントのポインタ
-*/
+/// <summary>
+/// コンポーネントを追加する
+/// </summary>
+/// <param name="_component"> 追加するコンポーネントのポインタ </param>
 void GameObject::AddComponent(Component * _component)
 {
 	int order = _component->GetUpdateOder();
@@ -145,10 +127,10 @@ void GameObject::AddComponent(Component * _component)
 	mComponents.insert(itr, _component);
 }
 
-/*
-@brief	コンポーネントを削除する
-@param	削除するコンポーネントのポインタ
-*/
+/// <summary>
+/// コンポーネントを削除する
+/// </summary>
+/// <param name="_component"> 削除するコンポーネントのポインタ </param>
 void GameObject::RemoveComponent(Component * _component)
 {
 	auto itr = std::find(mComponents.begin(), mComponents.end(), _component);
@@ -157,24 +139,24 @@ void GameObject::RemoveComponent(Component * _component)
 		mComponents.erase(itr);
 	}
 }
-/*
-@fn 現在の仕様上行うことができない処理を外部から強引に行うための関数
-@exsample ゲームオブジェクト全体の更新が停止中に対象のゲームオブジェクトを更新する
-*/
-void GameObject::ExceptionUpdate()
-{
-	ComputeWorldTransform();
 
-	UpdateGameObject(0.016f);
-	UpdateComponents(0.016f);
+///// <summary>
+///// 現在の仕様上行うことができない処理を外部から強引に行うための関数
+///// ゲームオブジェクト全体の更新が停止中に対象のゲームオブジェクトを更新する
+///// </summary>
+//void GameObject::ExceptionUpdate()
+//{
+//	ComputeWorldTransform();
+//
+//	UpdateGameObject(0.016f);
+//	UpdateComponents(0.016f);
+//
+//	ComputeWorldTransform();
+//}
 
-	ComputeWorldTransform();
-}
-
-
-/*
-@brief	Transformのワールド変換
-*/
+/// <summary>
+/// Transformのワールド変換
+/// </summary>
 void GameObject::ComputeWorldTransform()
 {
 	//ワールド変換が必要かどうか？
@@ -199,6 +181,12 @@ void GameObject::ComputeWorldTransform()
 	}
 }
 
+/// <summary>
+/// 押し戻し
+/// </summary>
+/// <param name="_MyAABB"> 自身のAABB </param>
+/// <param name="_PairAABB"> 当たった相手のAABB </param>
+/// <param name="_PairTag"> 当たった相手のタグ </param>
 void GameObject::FixCollision(const AABB & _myAABB, const AABB & _pairAABB, const Tag& _pairTag)
 {
 	Vector3 ment = Vector3(0, 0, 0);
@@ -206,13 +194,10 @@ void GameObject::FixCollision(const AABB & _myAABB, const AABB & _pairAABB, cons
 	SetPosition(GetPosition() + (ment));
 }
 
-void GameObject::CreateMainCamera()
-{
-	mMainCamera = new MainCameraObject();
-}
-
-// forwardベクトルの向きに回転する
-// in forward : 向かせたい前方方向ベクトル
+/// <summary>
+/// 前方ベクトルの向きに回転する
+/// </summary>
+/// <param name="_Forward"> 向かせたい前方方向ベクトル </param>
 void GameObject::RotateToNewForward(const Vector3& _forward)
 {
 	// X軸ベクトル(1,0,0)とforwardの間の角度を求める
@@ -236,4 +221,12 @@ void GameObject::RotateToNewForward(const Vector3& _forward)
 		axis.Normalize();
 		SetRotation(Quaternion(axis, angle));
 	}
+}
+
+/// <summary>
+/// 静的なmainCameraを生成する
+/// </summary>
+void GameObject::CreateMainCamera()
+{
+	mMainCamera = new MainCameraObject();
 }

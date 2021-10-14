@@ -202,7 +202,7 @@ public:
 	*/
 	float GetScreenHeight() const { return mScreenHeight; }
 
-	Matrix4 GetViewMatrix() const { return mView; };
+	Matrix4 GetViewMatrix() const { return mView; }
 
 	void SetParticleVertex();
 

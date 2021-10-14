@@ -1,5 +1,8 @@
 #include "pch.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 TitleScene::TitleScene()
 {
 	// ライトを設定(設定しないと何も映らない)
@@ -13,7 +16,8 @@ TitleScene::TitleScene()
 	mTexture->SetLuminace(1.0f);*/
 	//mSprite->SetTexture(mTexture, mEmissiveTexture);
 
-	mSprite = new Sprite("Assets/Texture/Wall.png");
+	// スタート画面用のスプライトを生成
+	mSprite = new Sprite("Assets/Texture/Title.png");
 }
 
 TitleScene::~TitleScene()
@@ -21,12 +25,18 @@ TitleScene::~TitleScene()
 	delete mSprite;
 }
 
+/// <summary>
+/// シーンの更新
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+/// <returns> シーンクラスのポインタ </returns>
 SceneBase* TitleScene::Update(const InputState& _KeyState)
 {
+	// アクションシーンに遷移
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_START) == Released ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
- 		return new Tutorial();
+ 		return new ActionScene();
 	}
 
 	return this;

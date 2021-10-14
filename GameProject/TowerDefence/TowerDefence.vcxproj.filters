@@ -83,9 +83,6 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Tutorial.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="UIComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -96,7 +93,7 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>Sprite</Filter>
+      <Filter>GameObject\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="WallObject.cpp">
       <Filter>GameObject\Map</Filter>
@@ -186,6 +183,9 @@
     <ClCompile Include="EnemyObjectStateAttackReady.cpp">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClCompile>
+    <ClCompile Include="ActionScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -272,9 +272,6 @@
     <ClInclude Include="TitleScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Tutorial.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="UIComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -285,7 +282,7 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>Sprite</Filter>
+      <Filter>GameObject\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="WallObject.h">
       <Filter>GameObject\Map</Filter>
@@ -375,6 +372,9 @@
     <ClInclude Include="EnemyObjectStateAttackReady.h">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClInclude>
+    <ClInclude Include="ActionScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -413,9 +413,6 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{393b5bfb-e08c-411b-b7c1-689fbb3a59e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{8accac4b-4874-47c5-8067-233f81ea8063}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Map">
       <UniqueIdentifier>{3a7470fa-f546-4170-98fb-da0544d9116c}</UniqueIdentifier>
     </Filter>
@@ -433,6 +430,9 @@
     </Filter>
     <Filter Include="GameObject\Map\Enemy\Component">
       <UniqueIdentifier>{58d3cfaf-10d5-4a43-af26-de15eb3b3cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sprite">
+      <UniqueIdentifier>{8accac4b-4874-47c5-8067-233f81ea8063}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
