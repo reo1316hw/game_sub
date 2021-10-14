@@ -40,8 +40,7 @@ public:
 	/// <param name="_GpmeshName"> gpmeshのパス </param>
 	/// <param name="_GpskelName"> gpskelのパス </param>
 	/// <param name="_ObjectTag"> タグ </param>
-	/// <param name="_SceneTag"> シーンタグ </param>
-	PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag);
+	PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag);
 
 	/// <summary>
 	/// デストラクタ

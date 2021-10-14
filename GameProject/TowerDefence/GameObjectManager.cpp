@@ -31,7 +31,6 @@ void GameObjectManager::DeleteInstance()
 */
 void GameObjectManager::UpdateGameObject(float _deltaTime)
 {
-
 	mUpdatingGameObject = true;
 
 	// カメラを更新する
@@ -41,7 +40,7 @@ void GameObjectManager::UpdateGameObject(float _deltaTime)
 	}
 
 	// 1マップ目を更新する
-	for (auto tutorialObject : mTutorialObjects)
+	for (auto tutorialObject : mGameObjects)
 	{
 		tutorialObject->Update(_deltaTime);
 	}
@@ -52,10 +51,7 @@ void GameObjectManager::UpdateGameObject(float _deltaTime)
 	for (auto pending : mPendingGameObjects)
 	{
 		pending->ComputeWorldTransform();
-		if (pending->GetScene() == SceneBase::Scene::tutorial)
-		{
-			mTutorialObjects.emplace_back(pending);
-		}
+		mGameObjects.emplace_back(pending);
 	}
 	mPendingGameObjects.clear();
 }
@@ -72,7 +68,7 @@ void GameObjectManager::ProcessInput(const InputState& _state)
 		cameraObject->ProcessInput(_state);
 	}
 	//1マップ目
-	for (auto tutorialObject : mTutorialObjects)
+	for (auto tutorialObject : mGameObjects)
 	{
 		tutorialObject->ProcessInput(_state);
 	}
@@ -92,18 +88,25 @@ void GameObjectManager::AddGameObject(GameObject* _object)
 	}
 	else
 	{
-		switch (_object->GetTag())
+		/*switch (_object->GetTag())
 		{
 		case eCamera:
 			mCameraObjects.emplace_back(_object);
 			break;
-		}
-
-		switch (_object->GetScene())
-		{
-		case SceneBase::tutorial:
-			mTutorialObjects.emplace_back(_object);
+		case !eCamera:
+			mGameObjects.emplace_back(_object);
 			break;
+		}*/
+
+		Tag tag = _object->GetTag();
+
+		if (tag == Tag::eCamera)
+		{
+			mCameraObjects.emplace_back(_object);
+		}
+		else
+		{
+			mGameObjects.emplace_back(_object);
 		}
 	}
 }
@@ -121,25 +124,11 @@ void GameObjectManager::RemoveGameObject(GameObject * _object)
 		mCameraObjects.pop_back();
 	}
 
-	iter = std::find(mTutorialObjects.begin(), mTutorialObjects.end(), _object);
-	if (iter != mTutorialObjects.end())
+	iter = std::find(mGameObjects.begin(), mGameObjects.end(), _object);
+	if (iter != mGameObjects.end())
 	{
-		std::iter_swap(iter, mTutorialObjects.end() - 1);
-		mTutorialObjects.pop_back();
-	}
-}
-
-void GameObjectManager::RemoveGameObjects(SceneBase::Scene _scene)
-{
-	switch (_scene)
-	{
-	case SceneBase::tutorial:
-
-		while (!mTutorialObjects.empty())
-		{
-			delete mTutorialObjects.back();
-		}
-		break;
+		std::iter_swap(iter, mGameObjects.end() - 1);
+		mGameObjects.pop_back();
 	}
 }
 
@@ -217,8 +206,8 @@ GameObjectManager::~GameObjectManager()
 		delete mCameraObjects.back();
 	}
 
-	while (!mTutorialObjects.empty())
+	while (!mGameObjects.empty())
 	{
-		delete mTutorialObjects.back();
+		delete mGameObjects.back();
 	}
 }

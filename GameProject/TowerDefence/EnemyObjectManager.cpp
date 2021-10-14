@@ -4,15 +4,12 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_ObjectTag"> タグ </param>
-/// <param name="_SceneTag"> シーンタグ </param>
-EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
-	: GameObject(_ObjectTag, _SceneTag)
+EnemyObjectManager::EnemyObjectManager(const Tag& _ObjectTag)
+	: GameObject(_ObjectTag)
 	, MInElementsTiming(300)
 	, mUntilInElementsCount(0)
 	, mEnemyObjectPtr(nullptr)
 {
-	mTag = _ObjectTag;
-
 	// 基準となるエネミーをエネミー配列から検索するクラスを生成
 	mSearchAllEnemyPtr = new SearchAllEnemy();
 	// 新しく生成するエネミーを配列に入れるクラスを生成
@@ -33,7 +30,7 @@ EnemyObjectManager::~EnemyObjectManager()
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 void EnemyObjectManager::CreateEnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, PlayerObject* _playerPtr)
 {
-	mEnemyGeneratorList.push_back(new EnemyGenerator(_Pos, _Scale, Tag::eEnemyGenerator, SceneBase::tutorial, _playerPtr));
+	mEnemyGeneratorList.push_back(new EnemyGenerator(_Pos, _Scale, Tag::eEnemyGenerator, _playerPtr));
 }
 
 /// <summary>

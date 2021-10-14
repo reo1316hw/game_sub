@@ -46,16 +46,16 @@ public:
 	@param	削除するGameObjectクラスのポインタ
 	*/
 	void RemoveGameObject(GameObject* _object);
-	void RemoveGameObjects(SceneBase::Scene _scene);
 
-	/*
-	@brief 使用したすべてのゲームオブジェクトを解放する
-	@detail シーン遷移の際に使用される。GameObject内の再利用フラグが建っているオブジェクトは解放しない
-	*/
-	void RemoveAllUsedGameObject();
 
-	GameObject* FindGameObject(Tag _tag);
-	std::vector<GameObject*> FindGameObjects(Tag _tag);
+	///*
+	//@brief 使用したすべてのゲームオブジェクトを解放する
+	//@detail シーン遷移の際に使用される。GameObject内の再利用フラグが建っているオブジェクトは解放しない
+	//*/
+	//void RemoveAllUsedGameObject();
+
+	//GameObject* FindGameObject(Tag _tag);
+	//std::vector<GameObject*> FindGameObjects(Tag _tag);
 
 private:
 	GameObjectManager();
@@ -66,8 +66,8 @@ private:
 	//ゲームオブジェクトのポインタの可変長コンテナ
 	//カメラを格納するための可変長コンテナ
 	std::vector<GameObject*> mCameraObjects;
-	//チュートリアル時の全てのゲームオブジェクトを格納するための可変長コンテナ
-	std::vector<GameObject*> mTutorialObjects; 
+	//ゲームオブジェクトを格納するための可変長コンテナ
+	std::vector<GameObject*> mGameObjects;
 
 	//Update中に追加されたゲームオブジェクトのポインタを一時的に保存する可変長コンテナ
 	std::vector<GameObject*> mPendingGameObjects;

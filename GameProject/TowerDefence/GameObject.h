@@ -76,7 +76,7 @@ public:
 	/*
 	@param	ゲームクラスのポインタ
 	*/
-	GameObject(const Tag& _objectTag ,SceneBase::Scene _sceneTag, bool _reUseGameObject = false);
+	GameObject(const Tag& _objectTag, bool _reUseGameObject = false);
 	virtual ~GameObject();
 
 	/*
@@ -239,12 +239,6 @@ public:
 	static void CreateMainCamera();
 
 	/*
-	@brief　シーンのタグを取得する
-	@return	sceneTag
-	*/
-	SceneBase::Scene GetScene() const { return mSceneTag; };
-
-	/*
 	@brief　オブジェクトのAABBを取得する
 	@return	mAabb
 	*/
@@ -303,8 +297,6 @@ protected:
 	// 初期位置に戻すか
 	bool mOriginalPosFlag;
 	
-	//シーンのタグ
-	SceneBase::Scene mSceneTag;
 	//アタッチされているコンポーネント
 	std::vector<class Component*>mComponents;
 

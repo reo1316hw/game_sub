@@ -1,3 +1,8 @@
 #include "pch.h"
 
-int SceneBase::mIsScene = 0;
+SceneBase::SceneBase()
+	: mSprite(nullptr)
+	, mMapCreate(nullptr)
+	, mGoalLine(nullptr)
+{
+}

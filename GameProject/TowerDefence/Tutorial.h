@@ -6,8 +6,8 @@ class DebugGrid;
 class Tutorial : public SceneBase
 {
 public:
-	Tutorial(const Scene& _scene);
-	~Tutorial();
+	Tutorial();
+	~Tutorial() {};
 
 	SceneBase* Update(const InputState& _KeyState)override;
 

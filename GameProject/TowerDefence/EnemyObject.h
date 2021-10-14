@@ -37,10 +37,9 @@ public:
     /// <param name="_GpmeshName"> gpmeshのパス </param>
     /// <param name="_GpskelName"> gpskelのパス </param>
     /// <param name="_ObjectTag"> タグ </param>
-    /// <param name="_SceneTag"> シーンタグ </param>
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
-		        const Tag& _ObjectTag, const SceneBase::Scene _SceneTag, PlayerObject* _playerPtr);
+		        const Tag& _ObjectTag, PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ

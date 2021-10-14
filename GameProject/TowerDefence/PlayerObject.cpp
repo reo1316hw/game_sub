@@ -9,9 +9,8 @@
 /// <param name="_GpmeshName"> gpmeshのパス </param>
 /// <param name="_GpskelName"> gpskelのパス </param>
 /// <param name="_ObjectTag"> タグ </param>
-/// <param name="_SceneTag"> シーンタグ </param>
-PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag)
-	: GameObject(_ObjectTag, _SceneTag)
+PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag)
+	: GameObject(_ObjectTag)
 	, MCameraOffset(Vector3(-150.0f, -150.0f, -150.0f))
 	, MTargetOffset(Vector3(0.0f, 0.0f, 40.0f))
 	, MPlayRate(1.0f)
@@ -24,7 +23,6 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, mWeaponPtr(nullptr)
 {
 	// GameObjectメンバ変数の初期化
-	mTag = _ObjectTag;
 	SetScale(_Scale);
 	SetPosition(_Pos);
 
@@ -52,7 +50,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
 	// 武器
-	mWeaponPtr = new PlayerWeaponObject(this, mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon, _SceneTag);
+	mWeaponPtr = new PlayerWeaponObject(this, mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	      // mStatePool[ePlayerStateIdle]

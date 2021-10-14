@@ -1,7 +1,7 @@
 #include "pch.h"
 
 Sprite::Sprite(const std::string _fileName)
-	:GameObject(Tag::eOther, SceneBase::Scene::other)
+	:GameObject(Tag::eOther)
 {
 	mSpriteComponent = new SpriteComponent(this);
 

@@ -3,10 +3,13 @@
 class TitleScene : public SceneBase
 {
 public:
-	TitleScene(const Scene& _scene);
+
+	TitleScene();
+
 	~TitleScene();
 
 	SceneBase* Update(const InputState& _KeyState)override;
+
 private:
 };
 

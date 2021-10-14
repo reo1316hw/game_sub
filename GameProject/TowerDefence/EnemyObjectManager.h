@@ -17,8 +17,7 @@ public:
     /// コンストラクタ
     /// </summary>
     /// <param name="_ObjectTag"> タグ </param>
-    /// <param name="_SceneTag"> シーンタグ </param>
-	EnemyObjectManager(const Tag& _ObjectTag, const SceneBase::Scene _SceneTag);
+	EnemyObjectManager(const Tag& _ObjectTag);
 
     /// <summary>
     /// デストラクタ

@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 MapCreate::MapCreate()
-	:GameObject(Tag::eOther, SceneBase::Scene::other)
+	:GameObject(Tag::eOther)
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
 	, MShiftVec(Vector3(0.0f, 0.0f, 100.0f))
@@ -21,7 +21,6 @@ MapCreate::MapCreate()
 /// </summary>
 MapCreate::~MapCreate()
 {
-	delete mEnemyObjectManagerPtr;
 	mPlayerMapData.clear();
 	mStaticObjectMapData.clear();
 }
@@ -49,7 +48,7 @@ void MapCreate::OpenFile()
 	mSizeY = mStaticObjectMapData.size();
 	
 	// エネミーマネージャー生成
-	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eEnemyManager, SceneBase::tutorial);
+	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
 
 	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
@@ -89,8 +88,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		mPlayerPtr = new PlayerObject(_ObjectPos, MPersonSize
 			                          , "Assets/Model/Player/Player.gpmesh"
 			                          , "Assets/Model/Player/Player.gpskel"
-			                          , Tag::ePlayer
-			                          , SceneBase::tutorial);
+			                          , Tag::ePlayer);
 		break;
 
 	case(MapDataNum::eGroundNum):
@@ -98,7 +96,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		// 床の座標
 		Vector3 groundPos = _ObjectPos - MShiftVec;
 
-		new GroundObject(groundPos, MStaticObjectSize, "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround, SceneBase::tutorial);
+		new GroundObject(groundPos, MStaticObjectSize, "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround);
 		break;
 	}
 	case(MapDataNum::eEnemyGeneratorNum):
@@ -109,7 +107,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 
 	case(MapDataNum::eTranslucentWallNum):
 
-		//new WallObject(_ObjectPos, MStaticObjectSize, "Assets/Model/Wall/VerticalSuperLongWall.gpmesh", Tag::eTranslucentWall, SceneBase::tutorial);
+		//new WallObject(_ObjectPos, MStaticObjectSize, "Assets/Model/Wall/VerticalSuperLongWall.gpmesh", Tag::eTranslucentWall);
 		break;
     }
 }

@@ -7,7 +7,7 @@ PauzingEvent GameObject::mPauzingEvent = PauzingEvent::NoneEvent;
 /*
 @param	ゲームクラスのポインタ
 */
-GameObject::GameObject(const Tag& _objectTag, SceneBase::Scene _sceneTag, bool _reUseGameObject)
+GameObject::GameObject(const Tag& _objectTag, bool _reUseGameObject)
 	: mState(Active)
 	, mWorldTransform()
 	, mPosition(Vector3::Zero)
@@ -17,7 +17,6 @@ GameObject::GameObject(const Tag& _objectTag, SceneBase::Scene _sceneTag, bool _
 	, mRotation(Quaternion::Identity)
 	, mMyObjectId(mGameObjectId)
 	, mTag(_objectTag)
-	, mSceneTag(_sceneTag)
 	, mMoveSpeed(0.0f)
 	, mGravity(0.0f)
 	, mReUseObject(_reUseGameObject)

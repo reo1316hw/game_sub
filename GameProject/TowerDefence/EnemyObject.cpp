@@ -8,17 +8,15 @@
 /// <param name="_GpmeshName"> gpmeshのパス </param>
 /// <param name="_GpskelName"> gpskelのパス </param>
 /// <param name="_ObjectTag"> タグ </param>
-/// <param name="_SceneTag"> シーンタグ </param>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
-	const Tag& _ObjectTag, const SceneBase::Scene _SceneTag, PlayerObject* _playerPtr)
-	: GameObject(_ObjectTag, _SceneTag)
+	const Tag& _ObjectTag, PlayerObject* _playerPtr)
+	: GameObject(_ObjectTag)
 	, MPlayRate(1.0f)
 	, mNowState(EnemyState::eEnemyStateTrack)
 	, mNextState(EnemyState::eEnemyStateTrack)
 {
 	//GameObjectメンバ変数の初期化
-	mTag = _ObjectTag;
 	SetScale(_Scale);
 	SetPosition(_Pos);
 

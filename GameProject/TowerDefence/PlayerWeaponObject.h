@@ -14,8 +14,7 @@ public:
 	/// <param name="_skMesh"> 親クラスのスケルトンメッシュのポインタ </param>
 	/// <param name="_GpmeshName"> gpmeshのパス </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	/// <param name="_SceneTag"> シーンのタグ</param>
-	PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag, const SceneBase::Scene _SceneTag);
+	PlayerWeaponObject(GameObject* _owner, SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag);
 
 	/// <summary>
 	/// デストラクタ

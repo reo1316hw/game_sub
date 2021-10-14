@@ -1,59 +1,22 @@
 #include "pch.h"
 
-/*
-クラス内での宣言順番はpublic>protected>private>public(GetSet)の順
-*/
+/// <summary>
+/// クラス内での宣言順番はpublic>protected>private>public(GetSet)の順
+/// </summary>
 
-/*
- @file 名.h
- @brief 簡単な説明
-	*/
-
-	/*
-	   @fnここに関数の説明を書く
-	   @brief 要約説明
-	   @param 引数名 説明
-	   @param 引数名 説明
-	   @return 戻り値の説明
-	   @sa 参照すべき関数を書けばリンクが貼れる
-	   @detail 詳細な説明
-	 */
-
-/*
-	@param 引数名 説明
-*/
-
-/*
-  @fn
-  @brief
-*/
-
-/*
-  @fn
-*/
-
-/*
-   @fn
-   @brief
-   @return
-*/
-
-/*
-	 @enum Enum
-	 説明
-*/
-
-
-//	@fn	main関数
-//  @param  コマンドライン引数の数
-//  @param  コマンドライン引数
+/// <summary>
+/// main関数
+/// </summary>
+/// <param name="argc"> コマンドライン引数の数 </param>
+/// <param name="argv"> コマンドライン引数 </param>
+/// <returns> 終了するか </returns>
 int main(int argc, char** argv)
 {
 	//ゲームクラスの定義
 	Game game;
 	//ゲームクラスの初期化が成功したか
 	bool success = game.Initialize();
-	game.SetFirstScene(new Tutorial(SceneBase::tutorial));
+	game.SetFirstScene(new TitleScene());
 	if (success)
 	{
 		game.GameLoop();

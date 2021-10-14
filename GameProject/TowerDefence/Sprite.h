@@ -4,8 +4,7 @@
 class Texture;
 class SpriteComponent;
 
-class Sprite :
-	public GameObject
+class Sprite : public GameObject
 {
 public:
 	Sprite(const std::string _fileName);

@@ -2,6 +2,7 @@
 
 // 前方宣言
 class EnemyObjectManager;
+class PlayerObject;
 
 /// <summary>
 /// マップデータのオブジェクトの番号
