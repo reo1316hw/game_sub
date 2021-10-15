@@ -10,13 +10,12 @@ EnemyAttackDecisionObject::EnemyAttackDecisionObject(GameObject* _owner, const T
 	, MCenterOffset(50.0f)
 	, mOwner(_owner)
 {
-	// 最初は更新させない状態にして当たり判定を行わないようにする
-	SetState(Dead);
-
 	// 武器の矩形当たり判定
 	mBox = AABB(Vector3(-10.0f, -30.0f, 50.0f), Vector3(10.0f, 30.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
+	// 最初は当たり判定を行わないようにする
+	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>
@@ -28,22 +27,6 @@ void EnemyAttackDecisionObject::UpdateGameObject(float _deltaTime)
 	SetRotation(mOwner->GetRotation());
 	mPosition = mOwner->GetPosition() + mOwner->GetForward() * MCenterOffset;
 	SetPosition(mPosition);
-}
-
-/// <summary>
-/// 当たり判定を行うようにする
-/// </summary>
-void EnemyAttackDecisionObject::EnableCollision()
-{
-	SetState(Active);
-}
-
-/// <summary>
-/// 当たり判定を行わないようにする
-/// </summary>
-void EnemyAttackDecisionObject::DisableCollision()
-{
-	SetState(Dead);
 }
 
 /// <summary>

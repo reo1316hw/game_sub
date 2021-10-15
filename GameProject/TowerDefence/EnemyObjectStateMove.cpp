@@ -29,8 +29,6 @@ EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObjec
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
 	// 右方ベクトル
 	Vector3 rightVec = _owner->GetRight();
 	rightVec.z = 0.0f;
@@ -48,8 +46,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	// 速度ベクトル
 	mVelocity = mMoveSpeed * rightVec;
 	mPosition += mVelocity;
-	_owner->SetPosition(mPosition);
-    
+
 	++mPeriodMoveCount;
 
 	if (mPeriodMoveCount >= MTransitionTimingNum)
@@ -105,6 +102,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 
 	dirPlayerVec.Normalize();
 	_owner->RotateToNewForward(dirPlayerVec);
+	_owner->SetPosition(mPosition);
 
 	return mEnemyState;
 }
@@ -121,6 +119,9 @@ void EnemyObjectStateMove::Enter(EnemyObject* _owner, const float _DeltaTime)
 
 	mIsDamage = false;
 	mPeriodMoveCount = 0;
+
+	// 座標
+	mPosition = _owner->GetPosition();
 }
 
 /// <summary>

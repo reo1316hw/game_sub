@@ -59,6 +59,6 @@ private:
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
 
-	// プレイヤー武器のポインタ
-	PlayerWeaponObject* mWeaponPtr;
+	// 親の矩形当たり判定を行うクラスのポインタ
+	BoxCollider* mOwnerBoxCollider;
 };

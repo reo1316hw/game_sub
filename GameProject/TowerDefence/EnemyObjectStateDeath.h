@@ -10,7 +10,8 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyObjectStateDeath();
+    /// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemyObjectStateDeath(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -33,4 +34,20 @@ public:
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
 private:
+
+	// 死亡時の速度
+	const float MDeathSpeed;
+
+	// このステートに入ってからの経過時刻
+	float mElapseTime;
+	// アニメーション総時間
+	float mTotalAnimTime;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
+
+	// 座標
+	Vector3 mPosition;
+	// プレイヤーに向いたベクトル
+	Vector3 mDirPlayerVec;
 };

@@ -7,6 +7,7 @@ EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
     : MVecShortenVelue(0.1f)
     , MSeparationVecLength(8.0f)
 	, mIsDamage(false)
+	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 {
 }
@@ -42,6 +43,9 @@ void EnemyObjectStateAttackReady::Enter(EnemyObject* _owner, const float _DeltaT
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttackReady));
 	mIsDamage = false;
+
+	// 座標
+	mPosition = _owner->GetPosition();
 }
 
 /// <summary>
@@ -52,15 +56,15 @@ void EnemyObjectStateAttackReady::Enter(EnemyObject* _owner, const float _DeltaT
 void EnemyObjectStateAttackReady::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
 	// 引き離しベクトル
 	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
 
 	mVelocity -= separationVec;
 	mVelocity *= MVecShortenVelue;
-	position += mVelocity;
+	mPosition += mVelocity;
 
-	_owner->SetPosition(position);
+	_owner->SetPosition(mPosition);
 }
 
 /// <summary>

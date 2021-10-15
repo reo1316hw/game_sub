@@ -39,7 +39,7 @@ ParticleComponent::~ParticleComponent()
 void ParticleComponent::Draw(Shader* _shader)
 {
 	//親オブジェクトが未更新状態でないか
-	if (mOwner->GetState() == State::Dead)
+	if (mOwner->GetState() == State::eDead)
 	{
 		return;
 	}

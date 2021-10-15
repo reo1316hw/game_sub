@@ -26,16 +26,6 @@ public:
 	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
 
-	/// <summary>
-	/// 当たり判定を行うようにする
-	/// </summary>
-	void EnableCollision();
-
-	/// <summary>
-	/// 当たり判定を行わないようにする
-	/// </summary>
-	void DisableCollision();
-
 private:
 
 	/// <summary>

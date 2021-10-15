@@ -52,8 +52,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mStatePools.push_back(new EnemyObjectStateAttackReady);                                         // mStatepool[eEnemyStateAttackReady]
 	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateLeftMove, _playerPtr));	// mStatepool[eEnemyStateLeftMove]
 	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateRightMove, _playerPtr));	// mStatepool[eEnemyStateRightMove]
-	mStatePools.push_back(new EnemyObjectStateDamage);                                              // mStatepool[eEnemyStateDamage];
-	mStatePools.push_back(new EnemyObjectStateDeath);                                               // mStatepool[eEnemyStateDeath];
+	mStatePools.push_back(new EnemyObjectStateDamage(_playerPtr));                                              // mStatepool[eEnemyStateDamage];
+	mStatePools.push_back(new EnemyObjectStateDeath(_playerPtr));                                               // mStatepool[eEnemyStateDeath];
 
 	// ‹éŒ`“–‚½‚è”»’è
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

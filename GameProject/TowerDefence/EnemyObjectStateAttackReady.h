@@ -56,6 +56,8 @@ private:
 	// ダメージを受けたか
 	bool mIsDamage;
 
+	// 座標
+	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
 };

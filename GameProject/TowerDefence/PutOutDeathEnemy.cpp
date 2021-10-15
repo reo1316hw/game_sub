@@ -19,7 +19,7 @@ std::vector<EnemyObject*> PutOutDeathEnemy::PutOut(std::vector<EnemyObject*> _en
 	mEnemyObjectList = _enemyObjectList;
 	mEnemyObjectPtr = _enemyObjectPtr;
 
-	if (mEnemyObjectPtr->GetState() == Dead)
+	if (mEnemyObjectPtr->GetState() == State::eDead)
 	{
 		// ”z—ñ‚Ì—v‘f‚ğíœ
 		RemoveEnemyObjectElements();

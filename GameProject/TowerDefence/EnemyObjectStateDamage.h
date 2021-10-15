@@ -10,7 +10,8 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyObjectStateDamage();
+	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemyObjectStateDamage(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -53,6 +54,13 @@ private:
 	// アニメーション総時間
 	float mTotalAnimTime;
 
+	// 座標
+	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+	// プレイヤーに向いたベクトル
+	Vector3 mDirPlayerVec;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 };

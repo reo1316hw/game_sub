@@ -11,7 +11,7 @@ PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack(PlayerWeaponObject*
 	, mNumFrame(0)
 	, MPlayRate(1.5f)
 	, MValidComboFrame(2)
-	, mWeaponPtr(_weaponPtr)
+	, mOwnerBoxCollider(_weaponPtr->GetBoxCollider())
 {
 }
 
@@ -50,7 +50,7 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
 		// 武器の当たり判定を行うようにする
-		mWeaponPtr->EnableCollision();
+		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
@@ -113,7 +113,7 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 void PlayerObjectStateSecondAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
 	// 武器の当たり判定を行わないようにする
-	mWeaponPtr->DisableCollision();
+	mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

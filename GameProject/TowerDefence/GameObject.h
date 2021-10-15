@@ -23,11 +23,11 @@ struct InputState;
 enum State
 {
 	//アクティブ
-	Active,
+	eActive,
 	//更新が停止している
-	Paused,
+	ePaused,
 	//オブジェクトの更新が終了(外部からのみActiveに変更可能)
-	Dead,
+	eDead
 };
 
 /// <summary>
@@ -45,7 +45,7 @@ enum Tag
 	eEnemyGenerator,
 	eEnemy,
 	eEnemyAttackDecision,
-	eTranslucentWall,
+	eTranslucentWall
 };
 
 /// <summary>
@@ -191,7 +191,7 @@ protected:
 
 	// ゲームオブジェクトのメッシュ
 	MeshComponent* mMeshComponentPtr;
-	// 矩形の当たり判定
+	// 矩形の当たり判定を行うクラスのポインタ
 	BoxCollider* mBoxColliderPtr;
 	// 当たり判定をmeshにするためのインスタンス
 	Mesh* mMeshPtr;
@@ -260,11 +260,6 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <param name="_scale"> オブジェクトの大きさ(float型) </param>
 	void SetScale(float _scale) { mScale.x = _scale; mScale.y = _scale; mScale.z = _scale; mRecomputeWorldTransform = true; }
-
-	/*
-	@brief　オブジェクトのクォータニオンを取得する
-	@return	rotation（Quaternion型）
-	*/
 
 	/// <summary>
 	/// オブジェクトの回転値を取得する
@@ -337,5 +332,11 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> オブジェクトのAABB </returns>
 	AABB GetObjectAABB() const { return mBox; }
+
+	/// <summary>
+	/// 矩形の当たり判定を行うクラスのポインタを取得
+	/// </summary>
+	/// <returns> 矩形の当たり判定を行うクラスのポインタ </returns>
+	BoxCollider* GetBoxCollider() { return mBoxColliderPtr; }
 };
 

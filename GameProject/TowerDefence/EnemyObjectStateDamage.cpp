@@ -3,13 +3,17 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-EnemyObjectStateDamage::EnemyObjectStateDamage()
+/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
     : MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
+	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
+	, mDirPlayerVec(Vector3::Zero)
+	, mPlayerPtr(_playerPtr)
 {
 }
 
@@ -21,10 +25,6 @@ EnemyObjectStateDamage::EnemyObjectStateDamage()
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	// 座標
-	Vector3 position = _owner->GetPosition();
-	// 前方ベクトル
-	Vector3 forward = _owner->GetForward();
 	// 開始速度
 	float startSpeed = -MDamageSpeed * _DeltaTime;
 	// 終了速度
@@ -33,9 +33,9 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	position += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirPlayerVec;
 
-	_owner->SetPosition(position);
+	_owner->SetPosition(mPosition);
 	
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -54,15 +54,15 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 void EnemyObjectStateDamage::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
 	// 引き離しベクトル
 	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
 
 	mVelocity -= separationVec;
 	mVelocity *= MVecShortenVelue;
-	position += mVelocity;
+	mPosition += mVelocity;
 
-	_owner->SetPosition(position);
+	_owner->SetPosition(mPosition);
 }
 
 /// <summary>
@@ -77,6 +77,15 @@ void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration();
-
 	mElapseTime = 0.0f;
+
+	// 座標
+	mPosition = _owner->GetPosition();
+	// プレイヤーの座標
+	Vector3 playerPos = mPlayerPtr->GetPosition();
+	// プレイヤーに向いたベクトル
+	mDirPlayerVec = playerPos - mPosition;
+	mDirPlayerVec.Normalize();
+
+	_owner->RotateToNewForward(mDirPlayerVec);
 }

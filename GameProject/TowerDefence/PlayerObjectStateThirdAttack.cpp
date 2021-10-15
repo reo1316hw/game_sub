@@ -9,7 +9,7 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
 	, mHitUntilCount(0)
-	, mWeaponPtr(_weaponPtr)
+	, mOwnerBoxCollider(_weaponPtr->GetBoxCollider())
 {
 }
 
@@ -42,7 +42,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
 		// 武器の当たり判定を行うようにする
-		mWeaponPtr->EnableCollision();
+		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
@@ -84,7 +84,7 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 void PlayerObjectStateThirdAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
 	// 武器の当たり判定を行わないようにする
-	mWeaponPtr->DisableCollision();
+	mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

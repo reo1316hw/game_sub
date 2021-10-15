@@ -70,6 +70,6 @@ private:
 	// フレーム数
 	size_t mNumFrame;
 
-	// プレイヤー武器のポインタ
-	PlayerWeaponObject* mWeaponPtr;
+	// 親の矩形当たり判定を行うクラスのポインタ
+	BoxCollider* mOwnerBoxCollider;
 };

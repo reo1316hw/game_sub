@@ -20,30 +20,33 @@ AttackMeshComponent::AttackMeshComponent(GameObject* _owner, SkeletalMeshCompone
 /// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
 void AttackMeshComponent::Draw(Shader* shader)
 {
-	if (mMesh)
+	if (mOwner->GetState() != State::eDead)
 	{
-		Matrix4 finalMat, animationMat;
-		mAttackSkeletalMesh->GetMatrixFromBoneIndex(animationMat, mAttackBoneIndex);
-		finalMat = mOffsetRotation * mOffsetPos * animationMat;
+		if (mMesh)
+		{
+			Matrix4 finalMat, animationMat;
+			mAttackSkeletalMesh->GetMatrixFromBoneIndex(animationMat, mAttackBoneIndex);
+			finalMat = mOffsetRotation * mOffsetPos * animationMat;
 
-		// アタッチ位置算出＆更新
-		Vector3 pos(0, 0, 0);
-		mComputeAttachPos = Vector3::Transform(pos, finalMat);
-		mComputeTransMatrix = finalMat;
+			// アタッチ位置算出＆更新
+			Vector3 pos(0, 0, 0);
+			mComputeAttachPos = Vector3::Transform(pos, finalMat);
+			mComputeTransMatrix = finalMat;
 
-		shader->SetMatrixUniform("uWorldTransform", finalMat);
+			shader->SetMatrixUniform("uWorldTransform", finalMat);
 
-		// Set specular power　スペキュラ強度セット
-		shader->SetFloatUniform("uSpecPower", 100);
+			// Set specular power　スペキュラ強度セット
+			shader->SetFloatUniform("uSpecPower", 100);
 
-		SetTextureToShader(shader);
+			SetTextureToShader(shader);
 
-		// Set the mesh's vertex array as active　頂点配列をアクティブに
-		VertexArray* va = mMesh->GetVertexArray();
-		va->SetActive();
+			// Set the mesh's vertex array as active　頂点配列をアクティブに
+			VertexArray* va = mMesh->GetVertexArray();
+			va->SetActive();
 
-		// Draw　描画するー
-		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+			// Draw　描画するー
+			glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+		}
 	}
 }
 

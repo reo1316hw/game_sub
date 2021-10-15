@@ -33,8 +33,11 @@ SphereCollider::~SphereCollider()
 /// </summary>
 void SphereCollider::OnUpdateWorldTransform()
 {
-	Refresh();
-	PHYSICS->HitCheck(this);
+	if (mCollisionState == CollisionState::eEnableCollision)
+	{
+		Refresh();
+		PHYSICS->HitCheck(this);
+	}
 }
 
 /// <summary>

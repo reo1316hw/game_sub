@@ -10,7 +10,7 @@ PauzingEvent GameObject::mPauzingEvent = PauzingEvent::NoneEvent;
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 /// <param name="_reUseGameObject"> 再利用するか </param>
 GameObject::GameObject(const Tag& _objectTag, bool _reUseGameObject)
-	: mState(Active)
+	: mState(eActive)
 	, mWorldTransform()
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -50,7 +50,7 @@ void GameObject::Update(float _deltaTime)
 	//更新停止のイベント中でないか(ポーズ画面など)
 	if (mPauzingEvent == PauzingEvent::NoneEvent)
 	{
-		if (mState == Active)
+		if (mState == eActive)
 		{
 			//Transformのワールド変換
 			ComputeWorldTransform();
@@ -80,7 +80,7 @@ void GameObject::Update(float _deltaTime)
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void GameObject::UpdateComponents(float _deltaTime)
 {
-	if (mState != Dead)
+	if (mState != eDead)
 	{	
 		for (auto itr : mComponents)
 		{
@@ -95,7 +95,7 @@ void GameObject::UpdateComponents(float _deltaTime)
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void GameObject::ProcessInput(const InputState& _keyState)
 {
-	if (mState == Active)
+	if (mState == eActive)
 	{
 		//コンポーネントの入力関数にコントローラーの入力状態を
 		for (auto comp : mComponents)

@@ -3,6 +3,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
+/// <param name="_enemyAttackPtr"> エネミーの攻撃判定オブジェクトのポインタ </param>
 EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr)
 	: MBoxEnableTiming(20)
 	, MAttackSpeed(150.0f)
@@ -10,11 +11,13 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
+	, mHitUntilCount(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
-	, mEnemyAttackPtr(_enemyAttackPtr)
+	, mForwardVec(Vector3::Zero)
+	, mOwnerBoxCollider(_enemyAttackPtr->GetBoxCollider())
 {
 }
 
@@ -26,12 +29,8 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
 	// 更新される前の座標
 	Vector3 prePosition = mPosition;
-	// 前方ベクトル
-	Vector3 forward = _owner->GetForward();
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -40,7 +39,7 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mForwardVec;
 
 	// 速度を計算
 	mVelocity = prePosition - mPosition;
@@ -52,7 +51,7 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
 		// 武器の当たり判定を行うようにする
-		mEnemyAttackPtr->EnableCollision();
+		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
 	// アニメーションが終了したら移動状態へ
@@ -97,6 +96,13 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration() - 0.5f;
 	mElapseTime = 0.0f;
 	mHitUntilCount = 0;
+
+	// 座標
+	mPosition = _owner->GetPosition();
+	// 前方ベクトル
+	mForwardVec = _owner->GetForward();
+
+	_owner->RotateToNewForward(mForwardVec);
 }
 
 /// <summary>
@@ -107,7 +113,7 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 void EnemyObjectStateAttack::Exit(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 武器の当たり判定を行わないようにする
-	mEnemyAttackPtr->DisableCollision();
+	mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

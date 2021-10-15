@@ -12,9 +12,6 @@ PlayerWeaponObject::PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std
 	, MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
 	, mWeaponMesh(nullptr)
 {
-	// 最初は更新させない状態にして当たり判定を行わないようにする
-	SetState(Dead);
-
 	// 武器のメッシュ
 	mWeaponMesh = new AttackMeshComponent(this, _skMesh ,"index_01_r");
 	mWeaponMesh->SetMesh(RENDERER->GetMesh(_GpmeshName));
@@ -25,6 +22,8 @@ PlayerWeaponObject::PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std
 	mBox = AABB(Vector3(-2.0f, -0.0f, -90.0f), Vector3(2.0f, 10.0f, 15.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
+	// 最初は当たり判定を行わないようにする
+	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>
@@ -39,22 +38,6 @@ void PlayerWeaponObject::UpdateGameObject(float _deltaTime)
 		Matrix4 mat = mWeaponMesh->GetAttachTransMatrix();
 		mBoxColliderPtr->SetForceTransForm(mat);
 	}
-}
-
-/// <summary>
-/// 当たり判定を行なうようにする
-/// </summary>
-void PlayerWeaponObject::EnableCollision()
-{
-	SetState(Active);
-}
-
-/// <summary>
-/// 当たり判定を行わないようにする
-/// </summary>
-void PlayerWeaponObject::DisableCollision()
-{
-	SetState(Dead);
 }
 
 /// <summary>

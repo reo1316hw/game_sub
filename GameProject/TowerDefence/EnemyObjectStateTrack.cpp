@@ -10,6 +10,7 @@ EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
 	, mMoveSpeed(2.0f)
+	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
@@ -24,11 +25,11 @@ EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
-	Vector3 dirPlayerVec = playerPos - position;
+	Vector3 dirPlayerVec = playerPos - mPosition;
 
 	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 	{
@@ -57,9 +58,9 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	_owner->RotateToNewForward(dirPlayerVec);
 
 	mVelocity = mMoveSpeed * dirPlayerVec;
-	position += mVelocity;
+	mPosition += mVelocity;
 	// キャラの位置・スピード・変換行列の再計算の必要をセット
-	_owner->SetPosition(position);
+	_owner->SetPosition(mPosition);
 
 	return EnemyState::eEnemyStateTrack;
 }
@@ -85,15 +86,15 @@ void EnemyObjectStateTrack::Enter(EnemyObject* _owner, const float _DeltaTime)
 void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
 	// 座標
-	Vector3 position = _owner->GetPosition();
+	mPosition = _owner->GetPosition();
 	// 引き離しベクトル
 	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
 
 	mVelocity -= separationVec;
 	mVelocity *= MVecShortenVelue;
-	position += mVelocity;
+	mPosition += mVelocity;
 
-	_owner->SetPosition(position);
+	_owner->SetPosition(mPosition);
 }
 
 /// <summary>

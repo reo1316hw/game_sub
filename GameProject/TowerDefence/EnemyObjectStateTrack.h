@@ -62,6 +62,8 @@ private:
 	// ˆÚ“®‘¬“x
 	float mMoveSpeed;
 
+	// À•W
+	Vector3 mPosition;
 	// ‘¬“x
 	Vector3 mVelocity;
 

@@ -57,8 +57,9 @@ void PhysicsWorld::DeleteInstance()
 /// <param name="_box"> BoxColliderクラスのポインタ </param>
 void PhysicsWorld::HitCheck(BoxCollider* _box)
 {
-	//コライダーの親オブジェクトがActiveじゃなければ終了する
-	if (_box->GetOwner()->GetState() != State::Active)
+	// コライダーの親オブジェクトがActiveじゃなければ終了する
+	// コライダーが有効じゃなかったら終了する
+	if (_box->GetOwner()->GetState() != State::eActive || _box->GetCollisionState() != CollisionState::eEnableCollision)
 	{
 		return;
 	}
@@ -71,8 +72,9 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//	{
 		//		continue;
 		//	}
-		//	//コライダーの親オブジェクトがActiveじゃなければ終了する
-		//	if (itr->GetOwner()->GetState() != State::Active)
+		//	// コライダーの親オブジェクトがActiveじゃなければ終了する
+		//	// コライダーが有効じゃなかったら終了する
+		//	if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
 		//	{
 		//		continue;
 		//	}
@@ -88,12 +90,9 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//}
 		for (auto itr : mPlayerBoxes)
 		{
-			if (itr == _box)
-			{
-				continue;
-			}
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
 			{
 				continue;
 			}
@@ -117,8 +116,9 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//	{
 		//		continue;
 		//	}
-		//	//コライダーの親オブジェクトがActiveじゃなければ終了する
-		//	if (itr->GetOwner()->GetState() != State::Active)
+		//	// コライダーの親オブジェクトがActiveじゃなければ終了する
+		//	// コライダーが有効じゃなかったら終了する
+		//	if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
 		//	{
 		//		continue;
 		//	}
@@ -134,12 +134,9 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//}
 		for (auto itr : mPlayerBoxes)
 		{
-			if (itr == _box)
-			{
-				continue;
-			}
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
 			{
 				continue;
 			}
@@ -155,11 +152,13 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		}
 		for (auto itr : mWeaponBoxes)
 		{
-			//コライダーの親オブジェクトがActiveじゃなければ終了する
-			if (itr->GetOwner()->GetState() != State::Active)
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
 			{
 				continue;
 			}
+
 			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
 			if (hit)
 			{
@@ -181,7 +180,7 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 void PhysicsWorld::HitCheck(SphereCollider * _sphere)
 {
 	//コライダーの親オブジェクトがActiveじゃなければ終了する
-	if (_sphere->GetOwner()->GetState() != State::Active)
+	if (_sphere->GetOwner()->GetState() != State::eActive)
 	{
 		return;
 	}

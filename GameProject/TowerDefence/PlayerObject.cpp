@@ -43,8 +43,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateSecondAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSecondAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateThirdAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerThirdAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDashAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDashAttack.gpanim", false);
-	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDamage)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFirstAttack.gpanim", false);
-	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDeath)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSprintStart.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDamage)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDamage.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDeath)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDeath.gpanim", false);
 
 	// Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(PlayerState::ePlayerStateIdle)];

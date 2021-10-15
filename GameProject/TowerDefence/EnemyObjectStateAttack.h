@@ -6,10 +6,11 @@
 class EnemyObjectStateAttack : public EnemyObjectStateBase
 {
 public:
-
+	
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
+	/// <param name="_enemyAttackPtr"> エネミーの攻撃判定オブジェクトのポインタ </param>
 	EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr);
 
 	/// <summary>
@@ -68,8 +69,6 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
-	// エネミーと当たったか
-	bool mIsHitEnemy;
 
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
@@ -83,7 +82,9 @@ private:
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+	// 前方ベクトル
+	Vector3 mForwardVec;
 
-	// エネミーの攻撃判定オブジェクトのポインタ
-	EnemyAttackDecisionObject* mEnemyAttackPtr;
+	// 親の矩形当たり判定を行うクラスのポインタ
+	BoxCollider* mOwnerBoxCollider;
 };
