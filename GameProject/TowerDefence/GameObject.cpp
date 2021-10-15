@@ -197,7 +197,7 @@ void GameObject::FixCollision(const AABB & _myAABB, const AABB & _pairAABB, cons
 /// <summary>
 /// 前方ベクトルの向きに回転する
 /// </summary>
-/// <param name="_Forward"> 向かせたい前方方向ベクトル </param>
+/// <param name="_Forward"> 向かせたい前方ベクトル </param>
 void GameObject::RotateToNewForward(const Vector3& _forward)
 {
 	// X軸ベクトル(1,0,0)とforwardの間の角度を求める

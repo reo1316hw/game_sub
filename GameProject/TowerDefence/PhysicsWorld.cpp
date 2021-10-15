@@ -86,6 +86,27 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//		_box->Refresh();
 		//	}
 		//}
+		for (auto itr : mEnemyAttackDecisionBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			//コライダーの親オブジェクトがActiveじゃなければ終了する
+			if (itr->GetOwner()->GetState() != State::Active)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
 	}
 
 	if (_box->GetOwner()->GetTag() == Tag::eEnemy)
@@ -224,6 +245,12 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::eEnemyAttackDecision)
+	{
+		mEnemyAttackDecisionBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 }
 
 /// <summary>
@@ -261,6 +288,12 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 	{
 		std::iter_swap(weaponBox, mWeaponBoxes.end() - 1);
 		mWeaponBoxes.pop_back();
+	}
+	auto enemyAttackDecisionBox = std::find(mEnemyAttackDecisionBoxes.begin(), mEnemyAttackDecisionBoxes.end(), _box);
+	if (enemyAttackDecisionBox != mEnemyAttackDecisionBoxes.end())
+	{
+		std::iter_swap(enemyAttackDecisionBox, mEnemyAttackDecisionBoxes.end() - 1);
+		mEnemyAttackDecisionBoxes.pop_back();
 	}
 
     mCollisionFunction.erase(_box);
@@ -318,6 +351,7 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mPlayerBoxes, Color::LightPink);
 	DrawBoxs(mEnemyBoxes, Color::White);
 	DrawBoxs(mWeaponBoxes, Color::LightGreen);
+	DrawBoxs(mEnemyAttackDecisionBoxes, Color::Yellow);
 }
 
 /// <summary>

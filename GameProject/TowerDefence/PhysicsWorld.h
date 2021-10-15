@@ -123,6 +123,8 @@ private:
 	std::vector<BoxCollider*> mEnemyBoxes;
 	// 武器の矩形当たり判定
 	std::vector<BoxCollider*> mWeaponBoxes;
+	// エネミーの攻撃用の矩形当たり判定
+	std::vector<BoxCollider*> mEnemyAttackDecisionBoxes;
 
 	// デバッグ用の当たり判定描画用シェーダー
 	Shader* mLineShader;

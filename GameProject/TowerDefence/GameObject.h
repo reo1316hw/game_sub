@@ -155,7 +155,7 @@ public:
 	/// <summary>
 	/// 前方ベクトルの向きに回転する
 	/// </summary>
-	/// <param name="_Forward"> 向かせたい前方方向ベクトル </param>
+	/// <param name="_Forward"> 向かせたい前方ベクトル </param>
 	void RotateToNewForward(const Vector3& _Forward);
 
 	/// <summary>

@@ -7,13 +7,14 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 EnemyAttackDecisionObject::EnemyAttackDecisionObject(GameObject* _owner, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, MCenterOffset(70.0f)
 	, mOwner(_owner)
 {
-	// 最初は更新させない状態にして当たり判定を行わないようにする
-	SetState(Dead);
+	//// 最初は更新させない状態にして当たり判定を行わないようにする
+	//SetState(Dead);
 
 	// 武器の矩形当たり判定
-	mBox = AABB(Vector3(-50.0f, -50.0f, -90.0f), Vector3(50.0f, 50.0f, 15.0f));
+	mBox = AABB(Vector3(-5.0f, -5.0f, 50.0f), Vector3(5.0f, 5.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, Tag::eWeapon, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 }
@@ -23,8 +24,10 @@ EnemyAttackDecisionObject::EnemyAttackDecisionObject(GameObject* _owner, const T
 /// </summary>
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyAttackDecisionObject::UpdateGameObject(float _deltaTime)
-{
-	SetPosition(mOwner->GetPosition() + Vector3(0.0f, 50.0f,0.0f));
+{	
+	mPosition = mOwner->GetPosition() + mOwner->GetForward() * MCenterOffset;
+
+	SetPosition(mPosition);
 }
 
 /// <summary>

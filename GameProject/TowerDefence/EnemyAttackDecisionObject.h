@@ -43,6 +43,9 @@ private:
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 	void OnCollision(const GameObject& _HitObject)override;
 
+	// 中心座標との差
+	const float MCenterOffset;
+
 	// 親クラスのポインタ
 	GameObject* mOwner;
 };
