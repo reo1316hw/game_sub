@@ -23,7 +23,7 @@ PlayerWeaponObject::PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std
 
 	// •Ší‚Ì‹éŒ`“–‚½‚è”»’è
 	mBox = AABB(Vector3(-2.0f, -0.0f, -90.0f), Vector3(2.0f, 10.0f, 15.0f));
-	mBoxColliderPtr = new BoxCollider(this, Tag::eWeapon, GetOnCollisionFunc());
+	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 }
 

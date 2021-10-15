@@ -43,12 +43,12 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	//anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, 1.0f);
 
-	new EnemyAttackDecisionObject(this, Tag::eEnemyAttackDecision);
+	mEnemyAttackPtr = new EnemyAttackDecisionObject(this, Tag::eEnemyAttackDecision);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new EnemyObjectStateTrack(_playerPtr));	                                // mStatePool[eEnemyStateTrack]
 	mStatePools.push_back(new EnemyObjectStateWait(_playerPtr));	                                // mStatepool[eEnemyStateWait]
-	mStatePools.push_back(new EnemyObjectStateAttack);                                              // mStatepool[eEnemyStateAttack]
+	mStatePools.push_back(new EnemyObjectStateAttack(mEnemyAttackPtr));                                              // mStatepool[eEnemyStateAttack]
 	mStatePools.push_back(new EnemyObjectStateAttackReady);                                         // mStatepool[eEnemyStateAttackReady]
 	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateLeftMove, _playerPtr));	// mStatepool[eEnemyStateLeftMove]
 	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateRightMove, _playerPtr));	// mStatepool[eEnemyStateRightMove]
@@ -58,7 +58,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));
 
-	mBoxColliderPtr = new BoxCollider(this, Tag::eEnemy, GetOnCollisionFunc());
+	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 }
 
@@ -106,7 +106,7 @@ void EnemyObject::UpdateGameObject(float _deltaTime)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObject::OnCollision(const GameObject& _HitObject)
 {
-	mStatePools[static_cast<int>(mNowState)]->OnColision(this, _HitObject);
+	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
 
 	Tag tag = _HitObject.GetTag();
 	

@@ -189,6 +189,12 @@
     <ClCompile Include="EnemyAttackDecisionObject.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerObjectStateDamage.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateDeath.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -380,6 +386,12 @@
     </ClInclude>
     <ClInclude Include="EnemyAttackDecisionObject.h">
       <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateDamage.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateDeath.h">
+      <Filter>GameObject\Map\Player\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

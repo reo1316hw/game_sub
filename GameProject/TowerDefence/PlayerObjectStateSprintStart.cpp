@@ -32,6 +32,10 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, const flo
 			return PlayerState::ePlayerStateSprintLoop;
 		}
 	}
+	else if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
 
 	return PlayerState::ePlayerStateSprintStart;
 }
@@ -107,11 +111,27 @@ void PlayerObjectStateSprintStart::Enter(PlayerObject* _owner, const float _Delt
 	// RUN_STARTのアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateSprintStart), MPlayRate);
+	mIsHit = false;
 
 	// アニメーション再生時間取得(アニメーションの総時間矯正)
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateSprintStart)->GetDuration() - 0.3f;
 	mElapseTime = 0.0f;
 	mCharaSpeed = 0.0f;
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObjectStateSprintStart::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::eEnemyAttackDecision)
+	{
+		mIsHit = true;
+	}
 }
 
 /// <summary>

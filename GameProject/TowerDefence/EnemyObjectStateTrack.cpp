@@ -101,7 +101,7 @@ void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _DirT
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyObjectStateTrack::OnColision(EnemyObject* _owner, const GameObject& _HitObject)
+void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();
 

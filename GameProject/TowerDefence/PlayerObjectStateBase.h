@@ -49,6 +49,13 @@ public:
     /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	virtual void Exit(PlayerObject* _owner, const float _DeltaTime) {};
 
+	/// <summary>
+    /// ヒットした時の処理
+    /// </summary>
+    /// <param name="_owner"> プレイヤー(親)のポインタ </param>
+    /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	virtual void OnCollision(PlayerObject* _owner, const GameObject& _HitObject) {};
+
 protected:
 
 	// 次のコンボにつなげるか
@@ -61,6 +68,8 @@ protected:
 	bool mIsSprint;
 	// 攻撃するか
 	bool mIsAttack;
+	// 当たったか
+	bool mIsHit;
 
 	// gpSkelファイルの何番目のボーンか
 	int	mAttackBoneIndex;

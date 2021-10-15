@@ -50,6 +50,8 @@
 #include "PlayerObjectStateSecondAttack.h"
 #include "PlayerObjectStateThirdAttack.h"
 #include "PlayerObjectStateDashAttack.h"
+#include "PlayerObjectStateDamage.h"
+#include "PlayerObjectStateDeath.h"
 #include "PlayerWeaponObject.h"
 #include "EnemyObjectManager.h"
 #include "SearchAllEnemy.h"

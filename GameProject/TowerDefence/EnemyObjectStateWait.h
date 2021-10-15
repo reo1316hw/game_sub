@@ -45,7 +45,7 @@ public:
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnColision(EnemyObject* _owner, const GameObject& _HitObject)override;
+	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;
 
 private:
 

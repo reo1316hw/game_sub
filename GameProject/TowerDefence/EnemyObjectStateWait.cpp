@@ -129,7 +129,7 @@ void EnemyObjectStateWait::Separation(EnemyObject* _owner, const Vector3& _DirTa
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyObjectStateWait::OnColision(EnemyObject* _owner, const GameObject& _HitObject)
+void EnemyObjectStateWait::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();
 

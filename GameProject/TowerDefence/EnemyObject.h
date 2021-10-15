@@ -3,6 +3,7 @@
 // 前方宣言
 class SkeletalMeshComponent;
 class EnemyObjectStateBase;
+class EnemyAttackDecisionObject;
 class BoxCollider;
 
 /// <summary>
@@ -79,6 +80,8 @@ private:
 	EnemyState mNextState;
 	//ゲームオブジェクトのスケルトンメッシュ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
+	// エネミーの攻撃判定オブジェクトのポインタ
+	EnemyAttackDecisionObject* mEnemyAttackPtr;
 
 public://ゲッターセッター
 

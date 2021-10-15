@@ -6,6 +6,7 @@
 EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
     : MVecShortenVelue(0.1f)
     , MSeparationVecLength(8.0f)
+	, mIsDamage(false)
 	, mVelocity(Vector3::Zero)
 {
 }
@@ -23,6 +24,10 @@ EnemyState EnemyObjectStateAttackReady::Update(EnemyObject* _owner, const float 
 	{
 		return EnemyState::eEnemyStateAttack;
 	}
+	else if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 
 	return EnemyState::eEnemyStateAttackReady;
 }
@@ -36,6 +41,7 @@ void EnemyObjectStateAttackReady::Enter(EnemyObject* _owner, const float _DeltaT
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttackReady));
+	mIsDamage = false;
 }
 
 /// <summary>
@@ -55,4 +61,19 @@ void EnemyObjectStateAttackReady::Separation(EnemyObject* _owner, const Vector3&
 	position += mVelocity;
 
 	_owner->SetPosition(position);
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::eWeapon)
+	{
+		mIsDamage = true;
+	}
 }

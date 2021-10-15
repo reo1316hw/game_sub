@@ -3,8 +3,9 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-EnemyObjectStateAttack::EnemyObjectStateAttack()
-	: MAttackSpeed(150.0f)
+EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr)
+	: MBoxEnableTiming(20)
+	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
@@ -13,6 +14,7 @@ EnemyObjectStateAttack::EnemyObjectStateAttack()
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
+	, mEnemyAttackPtr(_enemyAttackPtr)
 {
 }
 
@@ -44,6 +46,14 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	mVelocity = prePosition - mPosition;
 
 	_owner->SetPosition(mPosition);
+
+	++mHitUntilCount;
+
+	if (mHitUntilCount == MBoxEnableTiming)
+	{
+		// 武器の当たり判定を行うようにする
+		mEnemyAttackPtr->EnableCollision();
+	}
 
 	// アニメーションが終了したら移動状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -86,6 +96,18 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration() - 0.5f;
 	mElapseTime = 0.0f;
+	mHitUntilCount = 0;
+}
+
+/// <summary>
+/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void EnemyObjectStateAttack::Exit(EnemyObject* _owner, const float _DeltaTime)
+{
+	// 武器の当たり判定を行わないようにする
+	mEnemyAttackPtr->DisableCollision();
 }
 
 /// <summary>
@@ -112,7 +134,7 @@ void EnemyObjectStateAttack::Separation(EnemyObject* _owner, const Vector3& _Dir
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyObjectStateAttack::OnColision(EnemyObject* _owner, const GameObject& _HitObject)
+void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	Tag tag = _HitObject.GetTag();
 

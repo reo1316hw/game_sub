@@ -26,10 +26,13 @@ PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, const float _Del
     {
         return PlayerState::ePlayerStateRunLoop;
     }
-
-    if (mIsAttack)
+    else if (mIsAttack)
     {
         return PlayerState::ePlayerStateFirstAttack;
+    }
+    else if (mIsHit)
+    {
+        return PlayerState::ePlayerStateDamage;
     }
 
     return PlayerState::ePlayerStateIdle;
@@ -80,4 +83,20 @@ void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
     // アイドル状態のアニメーション再生
     SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
     meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateIdle));
+    mIsHit = false;
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObjectStateIdle::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
+{
+    Tag tag = _HitObject.GetTag();
+
+    if (tag == Tag::eEnemyAttackDecision)
+    {
+        mIsHit = true;
+    }
 }

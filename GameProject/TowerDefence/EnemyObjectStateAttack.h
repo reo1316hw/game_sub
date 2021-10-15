@@ -10,7 +10,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyObjectStateAttack();
+	EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -33,6 +33,13 @@ public:
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
+	/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
+	/// </summary>
+	/// <param name="_owner"> エネミー(親)のポインタ </param>
+	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	void Exit(EnemyObject* _owner, const float _DeltaTime)override;
+
+	/// <summary>
 	/// エネミー同士の引き離し
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
@@ -44,10 +51,12 @@ public:
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnColision(EnemyObject* _owner, const GameObject& _HitObject)override;
+	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;
 
 private:
 
+	// 当たり判定を有効にするタイミング
+	const int MBoxEnableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -62,6 +71,9 @@ private:
 	// エネミーと当たったか
 	bool mIsHitEnemy;
 
+	// 当たり判定するまでのカウント
+	int mHitUntilCount;
+
 	// このステートに入ってからの経過時刻
 	float mElapseTime;
 	// アニメーション総時間
@@ -71,4 +83,7 @@ private:
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+
+	// エネミーの攻撃判定オブジェクトのポインタ
+	EnemyAttackDecisionObject* mEnemyAttackPtr;
 };

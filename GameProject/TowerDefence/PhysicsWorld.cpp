@@ -63,7 +63,7 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		return;
 	}
 
-	if (_box->GetOwner()->GetTag() == Tag::ePlayer)
+	if (_box->GetOwner()->GetTag() == Tag::eEnemyAttackDecision)
 	{
 		//for (auto itr : mWallBoxes)
 		//{
@@ -86,7 +86,7 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		//		_box->Refresh();
 		//	}
 		//}
-		for (auto itr : mEnemyAttackDecisionBoxes)
+		for (auto itr : mPlayerBoxes)
 		{
 			if (itr == _box)
 			{

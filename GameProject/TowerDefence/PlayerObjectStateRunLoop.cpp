@@ -25,16 +25,18 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _
 	{
 		return PlayerState::ePlayerStateIdle;
 	}
-
-	if (mIsSprint)
+	else if (mIsSprint)
 	{
 		return PlayerState::ePlayerStateSprintStart;
 	}
-
 	// 攻撃ボタンが押されたか？
-	if (mIsAttack)
+	else if (mIsAttack)
 	{
 		return PlayerState::ePlayerStateFirstAttack;
+	}
+	else if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
 	}
 
 	return PlayerState::ePlayerStateRunLoop;
@@ -133,6 +135,22 @@ void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, const float _DeltaTim
 {
     SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateRunLoop));
+	mIsHit = false;
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObjectStateRunLoop::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::eEnemyAttackDecision)
+	{
+		mIsHit = true;
+	}
 }
 
 /// <summary>

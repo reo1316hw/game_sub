@@ -3,6 +3,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
+/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
 	: MBoxEnableTiming(30)
 	, MAttackSpeed(150.0f)
@@ -49,6 +50,10 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	{
 		return PlayerState::ePlayerStateIdle;
 	}
+	else if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
 
 	return PlayerState::ePlayerStateThirdAttack;
 }
@@ -63,6 +68,7 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	// ATTACK3のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack), MPlayRate);
+	mIsHit = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
@@ -79,4 +85,19 @@ void PlayerObjectStateThirdAttack::Exit(PlayerObject* _owner, const float _Delta
 {
 	// 武器の当たり判定を行わないようにする
 	mWeaponPtr->DisableCollision();
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObjectStateThirdAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::eEnemyAttackDecision)
+	{
+		mIsHit = true;
+	}
 }

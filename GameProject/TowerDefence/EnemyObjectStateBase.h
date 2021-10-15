@@ -51,7 +51,7 @@ public:
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	virtual void OnColision(EnemyObject* _owner, const GameObject& _HitObject) {};
+	virtual void OnCollision(EnemyObject* _owner, const GameObject& _HitObject) {};
 
 private:
 };

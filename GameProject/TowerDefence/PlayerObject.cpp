@@ -43,6 +43,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateSecondAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSecondAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateThirdAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerThirdAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDashAttack)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerDashAttack.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDamage)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerFirstAttack.gpanim", false);
+	mAnimTypes[static_cast<int>(PlayerState::ePlayerStateDeath)] = RENDERER->GetAnimation("Assets/Model/Player/PlayerSprintStart.gpanim", false);
 
 	// Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(PlayerState::ePlayerStateIdle)];
@@ -61,11 +63,13 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mStatePools.push_back(new PlayerObjectStateSecondAttack(mWeaponPtr)); // mStatepool[ePlayerStateSecondAttack];
 	mStatePools.push_back(new PlayerObjectStateThirdAttack(mWeaponPtr));  // mStatepool[ePlayerStateThirdAttack];
 	mStatePools.push_back(new PlayerObjectStateDashAttack(mWeaponPtr));   // mStatepool[ePlayerStateDashAttack];
+	mStatePools.push_back(new PlayerObjectStateDamage);	  // mStatepool[ePlayerStateDamage]
+	mStatePools.push_back(new PlayerObjectStateDeath(mWeaponPtr));	  // mStatepool[ePlayerStateDeath]
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));
 
-	mBoxColliderPtr = new BoxCollider(this, Tag::ePlayer, GetOnCollisionFunc());
+	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// 回転処理
@@ -136,6 +140,8 @@ void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObject::OnCollision(const GameObject& _HitObject)
 {
+	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
+
 	////押し戻し処理
 	//float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;
 	//float dx2 = _HitObject.GetObjectAABB().m_max.x - mBox.m_min.x;

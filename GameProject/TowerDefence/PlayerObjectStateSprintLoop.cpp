@@ -31,9 +31,13 @@ PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, const floa
 		{
 			return PlayerState::ePlayerStateIdle;
 		}
-		if (mIsAttack)
+		else if (mIsAttack)
 		{
 			return PlayerState::ePlayerStateDashAttack;
+		}
+		else if (mIsHit)
+		{
+			return PlayerState::ePlayerStateDamage;
 		}
 	}
 
@@ -134,6 +138,22 @@ void PlayerObjectStateSprintLoop::Enter(PlayerObject* _owner, const float _Delta
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateSprintLoop));
+	mIsHit = false;
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObjectStateSprintLoop::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::eEnemyAttackDecision)
+	{
+		mIsHit = true;
+	}
 }
 
 /// <summary>

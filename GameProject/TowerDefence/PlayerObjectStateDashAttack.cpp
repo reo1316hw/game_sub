@@ -3,6 +3,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
+/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(PlayerWeaponObject* _weaponPtr)
 	: MBoxEnableTiming(20)
 	, MAttackSpeed(300.0f)
@@ -62,6 +63,10 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 
 		return PlayerState::ePlayerStateIdle;
 	}
+	else if(mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
 
 	return PlayerState::ePlayerStateDashAttack;
 }
@@ -92,6 +97,7 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack), MPlayRate);
 	mIsNextCombo = false;
+	mIsHit = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetDuration() - 0.4f;
@@ -109,4 +115,19 @@ void PlayerObjectStateDashAttack::Exit(PlayerObject* _owner, const float _DeltaT
 {
 	// 武器の当たり判定を行わないようにする
 	mWeaponPtr->DisableCollision();
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> プレイヤー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObjectStateDashAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
+{
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::eEnemyAttackDecision)
+	{
+		mIsHit = true;
+	}
 }

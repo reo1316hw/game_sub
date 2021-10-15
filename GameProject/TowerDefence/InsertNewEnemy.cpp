@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 InsertNewEnemy::InsertNewEnemy()
-	: MMaxNumEnemysExist(100)
+	: MMaxNumEnemysExist(1)
 {
 }
 

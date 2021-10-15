@@ -21,6 +21,8 @@ enum class PlayerState
 	ePlayerStateSecondAttack,	// 2段階目の通常攻撃
 	ePlayerStateThirdAttack,	// 3段階目の通常攻撃
 	ePlayerStateDashAttack,     // ダッシュ攻撃
+	ePlayerStateDamage,         // ダメージを受けた
+	ePlayerStateDeath,         // ダメージを受けた
 
 	ePlayerStateNum,            // 総アニメーション数
 };
