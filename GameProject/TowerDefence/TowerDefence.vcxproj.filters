@@ -186,6 +186,9 @@
     <ClCompile Include="ActionScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyAttackDecisionObject.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="ActionScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttackDecisionObject.h">
+      <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

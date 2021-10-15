@@ -48,8 +48,8 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
-		// 矩形当たり判定生成
-		mWeaponPtr->AddAttackHitBox();
+		// 武器の当たり判定を行うようにする
+		mWeaponPtr->EnableCollision();
 	}
 
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
@@ -107,6 +107,6 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateDashAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
-	// 矩形当たり判定消去
-	mWeaponPtr->RemoveAttackHitBox();
+	// 武器の当たり判定を行わないようにする
+	mWeaponPtr->DisableCollision();
 }

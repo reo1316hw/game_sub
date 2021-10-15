@@ -44,6 +44,7 @@ enum Tag
 	eEnemyManager,
 	eEnemyGenerator,
 	eEnemy,
+	eEnemyAttackDecision,
 	eTranslucentWall,
 };
 
@@ -231,9 +232,9 @@ public:// ゲッターセッター
 	virtual void SetPosition(const Vector3& _Pos) { mPosition = _Pos; mRecomputeWorldTransform = true; }
 
 	/// <summary>
-	/// ワールド行列を取得
+	/// ワールド行列変換を行うかのフラグを取得
 	/// </summary>
-	/// <returns> ワールド行列 </returns>
+	/// <returns> ワールド行列変換を行うか </returns>
 	bool GetRecomputeWorldTransform() { return mRecomputeWorldTransform; }
 
 	/// <summary>

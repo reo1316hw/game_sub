@@ -56,6 +56,7 @@
 #include "PutOutDeathEnemy.h"
 #include "InsertNewEnemy.h"
 #include "EnemyObject.h"
+#include "EnemyAttackDecisionObject.h"
 #include "EnemyGenerator.h"
 #include "EnemyObjectStateBase.h"
 #include "EnemyObjectStateTrack.h"

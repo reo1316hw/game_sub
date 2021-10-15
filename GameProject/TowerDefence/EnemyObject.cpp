@@ -43,6 +43,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	//anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, 1.0f);
 
+	new EnemyAttackDecisionObject(this, Tag::eEnemyAttackDecision);
+
 	// アクターステートプールの初期化
 	mStatePools.push_back(new EnemyObjectStateTrack(_playerPtr));	                                // mStatePool[eEnemyStateTrack]
 	mStatePools.push_back(new EnemyObjectStateWait(_playerPtr));	                                // mStatepool[eEnemyStateWait]

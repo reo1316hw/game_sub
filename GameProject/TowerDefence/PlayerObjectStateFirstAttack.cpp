@@ -48,14 +48,13 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
-		// 矩形当たり判定生成
-		mWeaponPtr->AddAttackHitBox();
+		// 武器の当たり判定を行うようにする
+		mWeaponPtr->EnableCollision();
 	}
 
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		//_owner->RemoveAttackHitBox();
 		if (mIsNextCombo)
 		{
 			return PlayerState::ePlayerStateSecondAttack;
@@ -108,6 +107,6 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateFirstAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
-	// 矩形当たり判定消去
-	mWeaponPtr->RemoveAttackHitBox();
+	// 武器の当たり判定を行わないようにする
+	mWeaponPtr->DisableCollision();
 }

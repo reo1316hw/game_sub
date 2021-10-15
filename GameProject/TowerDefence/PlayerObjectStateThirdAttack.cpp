@@ -40,8 +40,8 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
-		// 矩形当たり判定生成
-		mWeaponPtr->AddAttackHitBox();
+		// 武器の当たり判定を行うようにする
+		mWeaponPtr->EnableCollision();
 	}
 
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
@@ -77,6 +77,6 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateThirdAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
-	// 矩形当たり判定消去
-	mWeaponPtr->RemoveAttackHitBox();
+	// 武器の当たり判定を行わないようにする
+	mWeaponPtr->DisableCollision();
 }
