@@ -13,12 +13,15 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
 	, MPlayRate(1.0f)
+	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
 	, mNextState(EnemyState::eEnemyStateTrack)
 {
 	//GameObjectメンバ変数の初期化
 	SetScale(_Scale);
 	SetPosition(_Pos);
+	SetState(State::eDead);
+	mInitPosition = mPosition;
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);

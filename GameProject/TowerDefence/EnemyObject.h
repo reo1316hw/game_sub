@@ -74,10 +74,15 @@ private:
 	std::vector<const Animation*>       mAnimTypes;
 	// ステートクラスプール
 	std::vector<EnemyObjectStateBase*> mStatePools;
+
+	// 初期座標
+	Vector3 mInitPosition;
+
 	// 現在のステート
 	EnemyState mNowState;
 	// 次のステート
 	EnemyState mNextState;
+
 	//ゲームオブジェクトのスケルトンメッシュ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
 	// エネミーの攻撃判定オブジェクトのポインタ
@@ -97,5 +102,11 @@ public://ゲッターセッター
 	/// </summary>
 	/// <returns> SkeletalMeshComponentのポインタ </returns>
 	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; }
+
+	/// <summary>
+	/// 初期座標を取得
+	/// </summary>
+	/// <returns> 初期座標 </returns>
+	Vector3 GetInitPosition() { return mInitPosition; }
 };
 

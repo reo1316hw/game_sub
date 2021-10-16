@@ -3,7 +3,7 @@
 /// <summary>
 /// エネミーの生成器
 /// </summary>
-class EnemyGenerator : GameObject
+class EnemyGenerator : public GameObject
 {
 public:
 

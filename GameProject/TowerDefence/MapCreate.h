@@ -1,8 +1,9 @@
 #pragma once
 
 // 前方宣言
-class EnemyObjectManager;
 class PlayerObject;
+class EnemyObjectManager;
+class CreateEnemys;
 
 /// <summary>
 /// マップデータのオブジェクトの番号
@@ -78,4 +79,6 @@ private:
 	PlayerObject* mPlayerPtr;
 	// エネミーマネージャーのポインタ
 	EnemyObjectManager* mEnemyObjectManagerPtr;
+	// エネミーたちを生成するクラスのポインタ
+	CreateEnemys* mCreateEnemysPtr;
 };

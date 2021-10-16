@@ -10,6 +10,7 @@ EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
 	, mDeathSpeed(200.0f)
 	, mPlayerPtr(_playerPtr)
 	, mPosition(Vector3::Zero)
+	, mInitPosition(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
 {
 }
@@ -39,6 +40,8 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		_owner->SetState(State::eDead);
+		_owner->SetPosition(mInitPosition);
+		return EnemyState::eEnemyStateTrack;
 	}
 
 	return EnemyState::eEnemyStateDeath;
@@ -56,11 +59,15 @@ void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 
 	// 座標
 	mPosition = _owner->GetPosition();
+	// 初期座標
+	mInitPosition = _owner->GetInitPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
+
+	mDeathSpeed = 200.0f;
 
 	_owner->RotateToNewForward(mDirPlayerVec);
 }

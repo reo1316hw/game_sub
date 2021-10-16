@@ -48,6 +48,8 @@ private:
 
 	// 座標
 	Vector3 mPosition;
+	// 初期座標
+	Vector3 mInitPosition;
 	// プレイヤーに向いたベクトル
 	Vector3 mDirPlayerVec;
 };

@@ -49,13 +49,15 @@ void MapCreate::OpenFile()
 	
 	// エネミーマネージャー生成
 	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
+	mCreateEnemysPtr = mEnemyObjectManagerPtr->GetCreateEnemysPtr();
 
 	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
 	// 静的オブジェクトのマップデータにアクセスする
 	AccessMapData(mStaticObjectMapData);
 
-	//mEnemyObjectManagerPtr->CreateEnemyGenerator(Vector3::Zero, MPersonSize, mPlayerPtr);
+	// エネミーを生成
+	mCreateEnemysPtr->CreateEnemyObject("Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, mPlayerPtr);
 
 }
 
@@ -105,7 +107,8 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	case(MapDataNum::eEnemyGeneratorNum):
 	
 		// エネミーの生成器を生成
-		mEnemyObjectManagerPtr->CreateEnemyGenerator(_ObjectPos, MPersonSize, mPlayerPtr);
+		mCreateEnemysPtr->CreateEnemyGenerator(_ObjectPos, MPersonSize, mPlayerPtr);
+		
 		break;
 
 	case(MapDataNum::eTranslucentWallNum):

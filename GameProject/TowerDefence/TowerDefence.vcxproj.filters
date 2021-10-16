@@ -171,15 +171,6 @@
     <ClCompile Include="PlayerObjectStateThirdAttack.cpp">
       <Filter>GameObject\Map\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="InsertNewEnemy.cpp">
-      <Filter>GameObject\Map\Enemy\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="PutOutDeathEnemy.cpp">
-      <Filter>GameObject\Map\Enemy\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="SearchAllEnemy.cpp">
-      <Filter>GameObject\Map\Enemy\Component</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyObjectStateAttackReady.cpp">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClCompile>
@@ -194,6 +185,12 @@
     </ClCompile>
     <ClCompile Include="PlayerObjectStateDeath.cpp">
       <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateEnemys.cpp">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyControler.cpp">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -369,15 +366,6 @@
     <ClInclude Include="PlayerObjectStateThirdAttack.h">
       <Filter>GameObject\Map\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="InsertNewEnemy.h">
-      <Filter>GameObject\Map\Enemy\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="PutOutDeathEnemy.h">
-      <Filter>GameObject\Map\Enemy\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="SearchAllEnemy.h">
-      <Filter>GameObject\Map\Enemy\Component</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyObjectStateAttackReady.h">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClInclude>
@@ -392,6 +380,12 @@
     </ClInclude>
     <ClInclude Include="PlayerObjectStateDeath.h">
       <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateEnemys.h">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyControler.h">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
