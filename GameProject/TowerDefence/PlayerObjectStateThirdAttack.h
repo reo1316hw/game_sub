@@ -59,6 +59,11 @@ private:
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
 
+	// 座標
+	Vector3 mPosition;
+	// 前方ベクトル
+	Vector3 mForwardVec;
+
 	// 親の矩形当たり判定を行うクラスのポインタ
 	BoxCollider* mOwnerBoxCollider;
 };

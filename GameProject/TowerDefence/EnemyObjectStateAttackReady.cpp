@@ -20,6 +20,8 @@ EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateAttackReady::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	_owner->SetPosition(mPosition);
+
 	// アニメーションが終了したら攻撃状態へ遷移
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -74,8 +76,10 @@ void EnemyObjectStateAttackReady::Separation(EnemyObject* _owner, const Vector3&
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	// 座標
 	mPosition = _owner->GetPosition();
 
+	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eWeapon)

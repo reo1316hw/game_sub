@@ -61,4 +61,11 @@ private:
 	const float MDirThreshold;
 	//移動するための左スティックのしきい値
 	const float MLeftAxisThreshold;
+
+	// 座標
+	Vector3 mPosition;
+	// 前方ベクトル
+	Vector3 mForwardVec;
+	// カメラからみた前進方向を取得
+	Vector3 mCameraPos;
 };

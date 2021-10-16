@@ -9,6 +9,9 @@ PlayerObjectStateSprintStart::PlayerObjectStateSprintStart()
 	, MPlayRate(1.2f)
 	, MDirThreshold(0.5f)
 	, MLeftAxisThreshold(0.3f)
+	, mPosition(Vector3::Zero)
+	, mForwardVec(Vector3::Zero)
+	, mCameraPos(Vector3::Zero)
 {
 }
 
@@ -117,6 +120,9 @@ void PlayerObjectStateSprintStart::Enter(PlayerObject* _owner, const float _Delt
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateSprintStart)->GetDuration() - 0.3f;
 	mElapseTime = 0.0f;
 	mCharaSpeed = 0.0f;
+
+	// 座標
+	mPosition = _owner->GetPosition();
 }
 
 /// <summary>
@@ -126,6 +132,7 @@ void PlayerObjectStateSprintStart::Enter(PlayerObject* _owner, const float _Delt
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateSprintStart::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
+	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eEnemyAttackDecision)
@@ -141,11 +148,10 @@ void PlayerObjectStateSprintStart::OnCollision(PlayerObject* _owner, const GameO
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
-	// カメラからみた前進方向を取得
-	Vector3 targetPos = _owner->GetTargetPos();
-	Vector3 cameraPos = _owner->GetCameraPos();
+	// カメラの座標
+	mCameraPos = _owner->GetCameraPos();
 
-	mForwardVec = targetPos - cameraPos;
+	mForwardVec = mPosition - mCameraPos;
 	// 高さ方向を無視
 	mForwardVec.z = 0.0f;
 
@@ -172,10 +178,8 @@ void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, const float _D
 		mCharaSpeed = MMaxSpeed;
 	}
 
-	// 座標
-	Vector3 position = _owner->GetPosition();
-	position += mCharaSpeed * mCharaForwardVec;
+	mPosition += mCharaSpeed * mCharaForwardVec;
 
 	// キャラの位置・スピード・変換行列の再計算の必要をセット
-	_owner->SetPosition(position);
+	_owner->SetPosition(mPosition);
 }

@@ -93,6 +93,7 @@ void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateIdle::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
+    // オブジェクトのタグ
     Tag tag = _HitObject.GetTag();
 
     if (tag == Tag::eEnemyAttackDecision)

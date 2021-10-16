@@ -71,6 +71,11 @@ private:
 	// フレーム数
 	size_t mNumFrame;
 
+	// 座標
+	Vector3 mPosition;
+	// 前方ベクトル
+	Vector3 mForwardVec;
+
 	// 親の矩形当たり判定を行うクラスのポインタ
 	BoxCollider* mOwnerBoxCollider;
 };

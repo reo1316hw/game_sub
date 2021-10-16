@@ -6,9 +6,8 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
 	: MPlayRate(1.5f)
-	, MDeathSpeed(150.0f)
-	, mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
+	, MDecelerationSpeed(1.8f)
+	, mDeathSpeed(200.0f)
 	, mPlayerPtr(_playerPtr)
 	, mPosition(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
@@ -23,15 +22,16 @@ EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	// 開始速度
-	float startSpeed = -MDeathSpeed * _DeltaTime;
-	// 終了速度
-	float endSpeed = MDeathSpeed * _DeltaTime;
+	// 速度
+	Vector3 velocity = mDeathSpeed * mDirPlayerVec;
+	mDeathSpeed -= MDecelerationSpeed;
 
-	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
-	mElapseTime += _DeltaTime;
-	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirPlayerVec;
+	if (mDeathSpeed <= 0.0f)
+	{
+		mDeathSpeed = 0.0f;
+	}
+
+	mPosition -= velocity * _DeltaTime;
 
 	_owner->SetPosition(mPosition);
 
@@ -53,9 +53,6 @@ void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDeath), MPlayRate);
-	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration() - 4.5f;
-	mElapseTime = 0.0f;
 
 	// 座標
 	mPosition = _owner->GetPosition();

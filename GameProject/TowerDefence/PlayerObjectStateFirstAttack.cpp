@@ -11,6 +11,8 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(PlayerWeaponObject* _
     , mNumFrame(0)
     , MPlayRate(1.5f)
 	, MValidComboFrame(5)
+	, mPosition(Vector3::Zero)
+	, mForwardVec(Vector3::Zero)
 	, mOwnerBoxCollider(_weaponPtr->GetBoxCollider())
 {
 }
@@ -23,10 +25,6 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(PlayerWeaponObject* _
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	// 座標
-	Vector3 pos = _owner->GetPosition();
-	// 前方ベクトル
-	Vector3 forward = _owner->GetForward();
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -35,9 +33,9 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	pos += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forward;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mForwardVec;
 
-	_owner->SetPosition(pos);
+	_owner->SetPosition(mPosition);
 
 	// フレーム数を減らしていく
 	if (mNumFrame > 0)
@@ -104,6 +102,11 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 	mNumFrame = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetNumFrames();
 	mElapseTime = 0.0f;
 	mHitUntilCount = 0;
+
+	// 座標
+	mPosition = _owner->GetPosition();
+	// 前方ベクトル
+	mForwardVec = _owner->GetForward();
 }
 
 /// <summary>
@@ -124,6 +127,7 @@ void PlayerObjectStateFirstAttack::Exit(PlayerObject* _owner, const float _Delta
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateFirstAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
+	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eEnemyAttackDecision)

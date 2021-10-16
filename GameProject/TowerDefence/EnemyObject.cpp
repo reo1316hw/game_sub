@@ -106,6 +106,7 @@ void EnemyObject::UpdateGameObject(float _deltaTime)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObject::OnCollision(const GameObject& _HitObject)
 {
+	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == ePlayer)

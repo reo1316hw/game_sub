@@ -104,8 +104,10 @@ void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _DirT
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	// 座標
 	mPosition = _owner->GetPosition();
 
+	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eWeapon)
