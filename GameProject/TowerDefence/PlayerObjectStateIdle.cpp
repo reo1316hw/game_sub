@@ -69,7 +69,7 @@ void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _KeySt
                 _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
     //SpaceÉLÅ[Ç™ì¸óÕÇ≥ÇÍÇΩÇ©
-    mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_A) ||
+    mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_Y) ||
                 _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 }
 

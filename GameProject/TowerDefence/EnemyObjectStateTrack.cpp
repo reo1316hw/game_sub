@@ -24,8 +24,6 @@ EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
@@ -76,6 +74,8 @@ void EnemyObjectStateTrack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateTrack));
 
 	mIsDamage = false;
+	// 座標
+	mPosition = _owner->GetPosition();
 }
 
 /// <summary>
@@ -104,6 +104,8 @@ void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _DirT
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	mPosition = _owner->GetPosition();
+
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eWeapon)

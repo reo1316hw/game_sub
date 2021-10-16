@@ -11,7 +11,7 @@ EnemyAttackDecisionObject::EnemyAttackDecisionObject(GameObject* _owner, const T
 	, mOwner(_owner)
 {
 	// •Ší‚Ì‹éŒ`“–‚½‚è”»’è
-	mBox = AABB(Vector3(-10.0f, -30.0f, 50.0f), Vector3(10.0f, 30.0f, 50.0f));
+	mBox = AABB(Vector3(-10.0f, -20.0f, 50.0f), Vector3(10.0f, 20.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 	// Å‰‚Í“–‚½‚è”»’è‚ðs‚í‚È‚¢‚æ‚¤‚É‚·‚é

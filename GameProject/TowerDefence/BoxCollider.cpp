@@ -78,11 +78,11 @@ void BoxCollider::SetForceTransForm(Matrix4 transform)
 	mWorldBox.m_min = (mObjectBox.m_min * mOwner->GetScale());
 	mWorldBox.m_max = (mObjectBox.m_max * mOwner->GetScale());
 
-	//// 回転
-	//if (mShouldRotate)
-	//{
-	//	mWorldBox.Rotate(Quaternion::MatrixToQuaternion(transform));
-	//}
+	// 回転
+	if (mShouldRotate)
+	{
+		mWorldBox.Rotate(Quaternion::MatrixToQuaternion(transform));
+	}
 
 	mWorldBox.m_min = Vector3::Transform(mWorldBox.m_min, transform);
 	mWorldBox.m_max = Vector3::Transform(mWorldBox.m_max, transform);

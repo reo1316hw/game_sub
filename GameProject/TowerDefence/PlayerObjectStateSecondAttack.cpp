@@ -78,7 +78,7 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 void PlayerObjectStateSecondAttack::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_A) == Released ||
+	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
 		mNumFrame <= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
 		mIsNextCombo = true;

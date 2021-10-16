@@ -74,6 +74,8 @@ void EnemyObjectStateAttackReady::Separation(EnemyObject* _owner, const Vector3&
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	mPosition = _owner->GetPosition();
+
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eWeapon)

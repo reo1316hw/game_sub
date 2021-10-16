@@ -54,6 +54,9 @@ void MapCreate::OpenFile()
 	AccessMapData(mPlayerMapData);
 	// 静的オブジェクトのマップデータにアクセスする
 	AccessMapData(mStaticObjectMapData);
+
+	//mEnemyObjectManagerPtr->CreateEnemyGenerator(Vector3::Zero, MPersonSize, mPlayerPtr);
+
 }
 
 /// <summary>

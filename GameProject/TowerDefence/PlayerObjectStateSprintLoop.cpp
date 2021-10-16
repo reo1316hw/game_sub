@@ -75,7 +75,7 @@ void PlayerObjectStateSprintLoop::Input(PlayerObject* _owner, const InputState& 
 		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 	 
 	//Spaceキーが入力されたか
-	mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_A) ||
+	mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_Y) ||
 		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 
 	//値が更新され続けるのを防ぐために初期化

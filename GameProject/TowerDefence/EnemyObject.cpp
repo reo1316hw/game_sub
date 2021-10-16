@@ -13,7 +13,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
 	, MPlayRate(1.0f)
-	, mNowState(EnemyState::eEnemyStateTrack)
+	, mNowState(EnemyState::eEnemyStateWait)
 	, mNextState(EnemyState::eEnemyStateTrack)
 {
 	//GameObjectメンバ変数の初期化
@@ -106,10 +106,8 @@ void EnemyObject::UpdateGameObject(float _deltaTime)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObject::OnCollision(const GameObject& _HitObject)
 {
-	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
-
 	Tag tag = _HitObject.GetTag();
-	
+
 	if (tag == ePlayer)
 	{
 		//押し戻し処理
@@ -140,4 +138,6 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 
 		SetPosition(mPosition);
 	}
+
+	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
 }

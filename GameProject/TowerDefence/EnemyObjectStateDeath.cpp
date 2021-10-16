@@ -5,7 +5,8 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
-	: MDeathSpeed(150.0f)
+	: MPlayRate(1.5f)
+	, MDeathSpeed(150.0f)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPlayerPtr(_playerPtr)
@@ -51,7 +52,7 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDeath));
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDeath), MPlayRate);
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration() - 4.5f;
 	mElapseTime = 0.0f;

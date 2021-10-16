@@ -25,8 +25,6 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトルsd
@@ -131,6 +129,8 @@ void EnemyObjectStateWait::Separation(EnemyObject* _owner, const Vector3& _DirTa
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateWait::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	mPosition = _owner->GetPosition();
+
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eWeapon)

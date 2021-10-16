@@ -150,6 +150,8 @@ void EnemyObjectStateMove::Separation(EnemyObject* _owner, const Vector3& _DirTa
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateMove::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	mPosition = _owner->GetPosition();
+
 	Tag tag = _HitObject.GetTag();
 
 	if (tag == Tag::eWeapon)
