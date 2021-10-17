@@ -18,7 +18,7 @@ PlayerState PlayerObjectStateDamage::Update(PlayerObject* _owner, const float _D
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return PlayerState::ePlayerStateDeath;
+		return PlayerState::ePlayerStateIdle;
 	}
 
 	return PlayerState::ePlayerStateDamage;

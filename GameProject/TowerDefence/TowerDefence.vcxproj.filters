@@ -192,6 +192,12 @@
     <ClCompile Include="EnemyControler.cpp">
       <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
+    <ClCompile Include="SkyBoxObject.cpp">
+      <Filter>SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMapComponent.cpp">
+      <Filter>SkyBox\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -387,6 +393,12 @@
     <ClInclude Include="EnemyControler.h">
       <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBoxObject.h">
+      <Filter>SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMapComponent.h">
+      <Filter>SkyBox\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -446,6 +458,12 @@
     <Filter Include="GameObject\Sprite">
       <UniqueIdentifier>{8accac4b-4874-47c5-8067-233f81ea8063}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SkyBox">
+      <UniqueIdentifier>{faa83da2-3466-4001-8b88-61442f5111d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkyBox\Component">
+      <UniqueIdentifier>{bbdb06be-64fa-49b9-87a8-327b054c0b2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicMesh.frag">
@@ -494,6 +512,12 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="Shaders\LineWorld.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\gBuffer_SkyBox.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\gBuffer_SkyBox.vert">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

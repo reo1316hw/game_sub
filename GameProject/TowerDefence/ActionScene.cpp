@@ -15,6 +15,9 @@ ActionScene::ActionScene()
 	// マップを生成するためのクラスを生成
     mMapCreate = new MapCreate();
 	mMapCreate->OpenFile();
+
+	// スカイボックス生成
+	new SkyBoxObject(Tag::eOther, false);
 }
 
 /// <summary>

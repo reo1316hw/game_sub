@@ -27,6 +27,12 @@ public:
 	void CreateForRendering(int _width, int _height, unsigned int _format);
 
 	/*
+	@brief キューブマップの読み込み
+	@param ロードするファイルのパス
+	*/
+	bool LoadCubeMap(const std::string & _TextureName);
+
+	/*
 	@brief	テクスチャをアクティブにする
 	*/
 	void SetActive();
@@ -56,7 +62,9 @@ public:
 	//float GetLuminace() const { return luminance; }
 
 private:
+
 	unsigned int mTextureID;
+
 	float mLuminance;
 	//テクスチャの横幅
 	int mWidth;

@@ -11,6 +11,8 @@ public:
 		PosNormSkinTex  // 位置&法線& "スキン用の影響ボーン＆重み情報" & テクスチャUV 
 	};
 
+	VertexArray();
+
 	/*
 	@param	頂点バッファの配列のポインタ
 	@param	頂点数
@@ -22,6 +24,9 @@ public:
 	VertexArray(const void* _verts, unsigned int _numVerts, Layout _layout,  // 頂点配列コンストラクタ 
 		const unsigned int* _indices, unsigned int _numIndices);
 	~VertexArray();
+
+	// スカイボックス用頂点配列オブジェクトの作成
+	void CreateCubeVerts();
 
 	/*
 	@brief	頂点配列をアクティブにする（描画に使用できるようにする）

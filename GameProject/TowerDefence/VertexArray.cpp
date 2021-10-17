@@ -1,5 +1,9 @@
 ﻿#include "pch.h"
 
+VertexArray::VertexArray()
+{
+}
+
 /*
 @param	頂点バッファの配列のポインタ
 @param	頂点数
@@ -119,6 +123,73 @@ VertexArray::VertexArray(const void * _verts, unsigned int _numVerts, Layout _la
 	}
 }
 
+void VertexArray::CreateCubeVerts()
+{
+	float cubeVertices[] =
+	{
+
+	 -1.0f, 1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, 1.0f, -1.0f,
+	-1.0f, 1.0f, -1.0f,
+
+	 -1.0f, -1.0f, 1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, 1.0f, -1.0f,
+	-1.0f, 1.0f, -1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f, -1.0f, 1.0f,
+
+	 1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+
+	 -1.0f, -1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, -1.0f, 1.0f,
+	-1.0f, -1.0f, 1.0f,
+
+	 -1.0f, 1.0f, -1.0f,
+	1.0f, 1.0f, -1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f, -1.0f,
+
+	 -1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f, 1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f, 1.0f,
+	1.0f, -1.0f, 1.0f
+	};
+
+	unsigned int indices[] =
+	{
+	0, 1, 2, 0, 2, 3, // 前面
+	4, 5, 6, 4, 6, 7, // 背面
+	8, 9, 10, 8, 10, 11, // 上面
+	12, 13, 14, 12, 14, 15, // 底面
+	16, 17, 18, 16, 18, 19, // 右側面
+	20, 21, 22, 20, 22, 23 // 左側面
+	};
+
+	glGenVertexArrays(1, &mVertexArray);
+	glGenBuffers(1, &mIndexBuffer);
+	glBindVertexArray(mVertexArray);
+	glBindBuffer(GL_ARRAY_BUFFER, mIndexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, 36 * 8 * sizeof(float), cubeVertices, GL_STATIC_DRAW);
+	// アトリビュートへのセット(頂点座標のみ)
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+}
 
 VertexArray::~VertexArray()
 {

@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -93,6 +94,9 @@
 #include "ParticleComponent.h"
 #include "SpriteComponent.h"
 #include "UIComponent.h"
+
+#include "CubeMapComponent.h"
+#include "SkyBoxObject.h"
 
 #include "SceneBase.h"
 #include "TitleScene.h"

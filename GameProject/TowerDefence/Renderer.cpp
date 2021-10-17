@@ -8,6 +8,15 @@ void Renderer::SetParticleVertex()
 	mParticleVertex->SetActive();
 }
 
+/*
+@brief キューブマップ(スカイボックス用)頂点配列定義
+*/
+void Renderer::CreateCubeVerts()
+{
+	mCubeVerts = new VertexArray();
+	mCubeVerts->CreateCubeVerts();
+}
+
 Renderer::Renderer()
 	: mSpriteShader(nullptr)
 	, mSpriteVerts(nullptr)
@@ -16,6 +25,7 @@ Renderer::Renderer()
 	, mMeshShader(nullptr)
 	, mInvisibleMeshShader(nullptr)
 	, mBasicShader(nullptr)
+	, mSkyBoxShader(nullptr)
 	, mParticleVertex(nullptr)
 	, mView(Matrix4::Identity)
 	, mProjection(Matrix4::Identity)
@@ -139,6 +149,7 @@ bool Renderer::Initialize(float _ScreenWidth, float _screenHeight, bool _fullScr
 
 	CreateParticleVerts();
 
+	CreateCubeVerts();
 	// UIの初期座標に加算される座標
 	mAddPosition = Vector2::Zero;
 
@@ -204,7 +215,6 @@ void Renderer::UnloadData()
 */
 void Renderer::Draw()
 {
-
 	mHDRRenderer->HdrRecordBegin();
 	{
 		//アルファブレンディングを有効にする
@@ -231,6 +241,25 @@ void Renderer::Draw()
 
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
+
+		// スカイボックス描画
+		if (mActiveSkyBox != nullptr)
+		{
+			mSkyBoxShader->SetActive();
+			// ゲームの空間に合わせるためのオフセット行列をセット
+			Matrix4 offset = Matrix4::CreateRotationX(Math::ToRadians(90.0f));
+			mSkyBoxShader->SetMatrixUniform("u_offset", offset);
+
+			// Uniformに逆行列をセット
+			Matrix4 InvView = mView;
+			InvView.Invert();
+			InvView.Transpose();
+			mSkyBoxShader->SetMatrixUniform("u_invView", InvView);
+			mSkyBoxShader->SetMatrixUniform("u_projection", mProjection);
+			mSkyBoxShader->SetIntUniform("u_skybox", 0);
+
+			mActiveSkyBox->Draw(mSkyBoxShader);
+		}
 
 		// メッシュコンポーネントの描画
 		// 基本的なメッシュシェーダーをアクティブにする
@@ -657,6 +686,13 @@ bool Renderer::LoadShaders()
 	}
 	mSkinnedShader->SetActive();
 	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
+
+	// 標準のメッシュシェーダーの作成
+	mSkyBoxShader = new Shader();
+	if (!mSkyBoxShader->Load("Shaders/gBuffer_SkyBox.vert", "Shaders/gBuffer_SkyBox.frag"))
+	{
+		return false;
+	}
 
 	// メッシュ
 	mMeshShader->SetActive();

@@ -27,6 +27,7 @@ enum class TextureStage
 	ShadowMap,
 };
 
+// 前方宣言
 class SpriteComponent;
 class Texture;
 class Mesh;
@@ -39,6 +40,7 @@ class ParticleComponent;
 class UIComponent;
 class HeartUI;
 class HDRRenderer;
+class CubeMapComponent;
 class PlayerObject;
 
 /*
@@ -212,6 +214,16 @@ public:
 
 	unsigned int GetUndefineTexID() { return mUndefineTexID; }
 
+	// スカイボックスをアクティブにする
+	void SetActiveSkyBox(CubeMapComponent* _activeSkyBox) { mActiveSkyBox = _activeSkyBox; }
+
+	VertexArray* GetCubeMapVerts() { return mCubeVerts; }
+
+	/*
+    @brief キューブマップ(スカイボックス用)頂点配列定義
+    */
+	void CreateCubeVerts();
+
 	/*void DrawTexture(Texture* texture, const Vector2& offset, float scale = 1.0f, float alpha = 1.0f);
 	void DrawTexture(class Texture* texture, int index, int xDyvNum, int yDivNum, const Vector2& offset, float scale = 1.0f, float alpha = 1.0f);*/
 
@@ -283,12 +295,15 @@ private:
 	//メッシュ
 	Shader* mMeshShader;
 	//スキンメッシュ
-	class Shader*  mSkinnedShader;  
+	Shader*  mSkinnedShader;  
 	//インビジブルメッシュ
 	Shader* mInvisibleMeshShader;
 	Shader* mBasicShader;
 	//パーティクル
 	Shader* mParticleShader;
+
+	// スカイボックス
+	Shader* mSkyBoxShader;
 	// パーティクル用頂点定義
 	VertexArray* mParticleVertex;   
 	// プレイヤー
@@ -296,6 +311,11 @@ private:
 
 	// HDR レンダラー
 	HDRRenderer* mHDRRenderer;
+	// キューブマップ
+	CubeMapComponent* mActiveSkyBox; // 有効な(描画する)スカイボックス
+	// キューブ頂点配列
+	VertexArray* mCubeVerts;
+
 
 	//ビュー行列
 	Matrix4 mView;
