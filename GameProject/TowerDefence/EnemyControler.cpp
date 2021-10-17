@@ -3,10 +3,10 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="_enemyObjectManagerPtr"> エネミーマネージャーのポインタ </param>
+/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-EnemyControler::EnemyControler(EnemyObjectManager* _enemyObjectManagerPtr, CreateEnemys* _createEnemysPtr)
-	: Component(_enemyObjectManagerPtr)
+EnemyControler::EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPtr)
+	: Component(_owner)
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)
 	, MDistanceThreshold(5000.0f)
@@ -32,11 +32,8 @@ void EnemyControler::Update(float _deltaTime)
 	for (auto referenceEnemyItr : enemyObjectList)
 	{
 		// 一定時間が経ったら非アクティブなエネミーをアクティブにする
-		if (ActiveEnemy(referenceEnemyItr))
-		{
-			continue;
-		}
-
+		ActiveEnemy(referenceEnemyItr);
+	
 		if (referenceEnemyItr->GetState() != State::eActive)
 		{
 			continue;
@@ -53,28 +50,23 @@ void EnemyControler::Update(float _deltaTime)
 /// 一定時間が経ったら非アクティブなエネミーをアクティブにする
 /// </summary>
 /// <param name="_enemyObjectPtr"> エネミーのポインタ </param>
-/// <returns> 検索を続けるか </returns>
-bool EnemyControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
+void EnemyControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
 {
 	if (mUntilInElementsCount >= MInElementsTiming)
 	{
-		if (_enemyObjectPtr->GetState() == State::eActive)
+		if (_enemyObjectPtr->GetState() != State::eActive)
 		{
-			return true;
+			_enemyObjectPtr->SetState(State::eActive);
+			++mActiveCount;
 		}
 
-		_enemyObjectPtr->SetState(State::eActive);
-
-		++mActiveCount;
-
+		// 同時にアクティブにできる数を制限
 		if (mActiveCount >= MMaxActiveInOnce)
 		{
 			mActiveCount = 0;
 			mUntilInElementsCount = 0;
 		}
 	}
-
-	return false;
 }
 
 /// <summary>
@@ -113,8 +105,14 @@ void EnemyControler::InvadeWithinRange(EnemyObject* _referenceEnemyItr, EnemyObj
 	// エネミー同士の距離
 	Vector3 distance = targetEnemyPos - mReferenceEnemyPos;
 
-	if (distance.LengthSq() <= MDistanceThreshold && distance.LengthSq() > 0.0f)
+	if (distance.LengthSq() <= MDistanceThreshold)
 	{
+		// エネミー同士が重なって、距離が0だったら強制的に距離を作る
+		if (distance.LengthSq() <= 0.0f)
+		{
+			distance = Vector3(1.0f, 1.0f, 0.0f);
+		}
+
 		distance.Normalize();
 		// エネミー同士の距離の引き離しを行う
 		_referenceEnemyItr->Separation(distance);

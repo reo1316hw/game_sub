@@ -3,9 +3,9 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="_enemyObjectManagerPtr"> エネミーマネージャーのポインタ </param>
-CreateEnemys::CreateEnemys(EnemyObjectManager* _enemyObjectManagerPtr)
-	: Component(_enemyObjectManagerPtr)
+/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+CreateEnemys::CreateEnemys(GameObject* _owner)
+	: Component(_owner)
 	, MNumGeneratableInOneArea(13)
 {
 }

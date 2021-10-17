@@ -14,9 +14,9 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="_enemyObjectManagerPtr"> エネミーマネージャーのポインタ </param>
+	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-	EnemyControler(EnemyObjectManager* _enemyObjectManagerPtr, CreateEnemys* _createEnemysPtr);
+	EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPtr);
 	
 	/// <summary>
     /// デストラクタ
@@ -35,8 +35,7 @@ private:
 	/// 一定時間が経ったら非アクティブなエネミーをアクティブにする
 	/// </summary>
 	/// <param name="_enemyObjectPtr"> エネミーのポインタ </param>
-	/// <returns> 検索を続けるか </returns>
-	bool ActiveEnemy(EnemyObject* _enemyObjectPtr);
+	void ActiveEnemy(EnemyObject* _enemyObjectPtr);
 
 	/// <summary>
 	/// 対象となるエネミーを検索

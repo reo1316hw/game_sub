@@ -14,8 +14,8 @@ public:
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="_enemyObjectManagerPtr"> エネミーマネージャーのポインタ </param>
-    CreateEnemys(EnemyObjectManager* _enemyObjectManagerPtr);
+    /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+    CreateEnemys(GameObject* _owner);
 
     /// <summary>
     /// デストラクタ
