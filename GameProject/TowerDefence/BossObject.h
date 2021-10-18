@@ -10,15 +10,14 @@ class BoxCollider;
 /// </summary>
 enum class BossState
 {
-	eBossStateWait = 0,        // 待機
-	eBossStateTrack,           // 追跡
-	eBossStateFrontAttack,     // 前方攻撃
-	eBossStateAreaAttack,     // 範囲攻撃
-	//eBossStateAttackReady,     // 攻撃準備
-	//eBossStateLeftMove,        // 左移動
-	//eBossStateRightMove,       // 右移動
-	//eBossStateDamage,          // ダメージを受けた
-	//eBossStateDeath,           // 死亡
+	eBossStateWait = 0,             // 待機
+	eBossStateTrack,                // 追跡
+	eBossStateFrontAttack,          // 前方攻撃
+	eBossStateAreaAttack,           // 範囲攻撃
+	eBossStateOverheadAttack,    	// プレイヤーの頭上に攻撃
+	eBossStateTeleportation,    	// 瞬間移動
+	//eBossStateDamage,             // ダメージを受けた
+	//eBossStateDeath,              // 死亡
 
 	eBossStateNum,             // 総アニメーション数
 };
@@ -71,7 +70,7 @@ private:
 	const float MPlayRate;
 
 	// アニメーション可変長コンテナ
-	std::vector<const Animation*>       mAnimTypes;
+	std::vector<const Animation*>      mAnimTypes;
 	// ステートクラスプール
 	std::vector<BossObjectStateBase*> mStatePools;
 

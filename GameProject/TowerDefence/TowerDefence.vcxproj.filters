@@ -216,6 +216,12 @@
     <ClCompile Include="BossObjectStateAreaAttack.cpp">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClCompile>
+    <ClCompile Include="BossObjectStateOverheadAttack.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateTeleportation.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -433,6 +439,12 @@
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="BossObjectStateAreaAttack.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateOverheadAttack.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateTeleportation.h">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
   </ItemGroup>

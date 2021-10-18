@@ -36,8 +36,8 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mAnimTypes[static_cast<int>(BossState::eBossStateTrack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossTrack.gpanim", true);
 	mAnimTypes[static_cast<int>(BossState::eBossStateFrontAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossFrontAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(BossState::eBossStateAreaAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossAreaAttack.gpanim", false);
-	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateLeftMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyLeftMove.gpanim", true);
-	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateRightMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyRightMove.gpanim", true);
+	mAnimTypes[static_cast<int>(BossState::eBossStateOverheadAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossOverheadAttack.gpanim", false);
+	mAnimTypes[static_cast<int>(BossState::eBossStateTeleportation)] = RENDERER->GetAnimation("Assets/Model/Boss/BossWait.gpanim", true);
 	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDamage.gpanim", false);
 	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDeath.gpanim", false);
 
@@ -47,14 +47,14 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, 1.0f);
 
 	// アクターステートプールの初期化
-	mStatePools.push_back(new BossObjectStateWait(_playerPtr));	                                // mStatePool[eBossStateWait]
-	mStatePools.push_back(new BossObjectStateTrack(_playerPtr));	                            // mStatepool[eBossStateTrack]
-	mStatePools.push_back(new BossObjectStateFrontAttack(_playerPtr));                          // mStatepool[eBossStateFrontAttack]
-	mStatePools.push_back(new BossObjectStateAreaAttack(_playerPtr));                           // mStatepool[eBossStateAreaAttack]
-	//mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateLeftMove, _playerPtr));	// mStatepool[eEnemyStateLeftMove]
-	//mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateRightMove, _playerPtr));	// mStatepool[eEnemyStateRightMove]
-	//mStatePools.push_back(new EnemyObjectStateDamage(_playerPtr));                                              // mStatepool[eEnemyStateDamage];
-	//mStatePools.push_back(new EnemyObjectStateDeath(_playerPtr));                                               // mStatepool[eEnemyStateDeath];
+	mStatePools.push_back(new BossObjectStateWait(_playerPtr));	          // mStatePool[eBossStateWait]
+	mStatePools.push_back(new BossObjectStateTrack(_playerPtr));	      // mStatepool[eBossStateTrack]
+	mStatePools.push_back(new BossObjectStateFrontAttack(_playerPtr));    // mStatepool[eBossStateFrontAttack]
+	mStatePools.push_back(new BossObjectStateAreaAttack(_playerPtr));     // mStatepool[eBossStateAreaAttack]
+	mStatePools.push_back(new BossObjectStateOverheadAttack(_playerPtr)); // mStatepool[eBossObjectStateOverheadAttack]
+	mStatePools.push_back(new BossObjectStateTeleportation(_playerPtr));  // mStatepool[eBossStateTeleportation]
+	//mStatePools.push_back(new EnemyObjectStateDamage(_playerPtr));      // mStatepool[eEnemyStateDamage];
+	//mStatePools.push_back(new EnemyObjectStateDeath(_playerPtr));       // mStatepool[eEnemyStateDeath];
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

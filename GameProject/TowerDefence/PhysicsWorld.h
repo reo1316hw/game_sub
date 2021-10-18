@@ -119,12 +119,14 @@ private:
 	std::vector<BoxCollider*> mWallBoxes;
 	// プレイヤーの矩形当たり判定
 	std::vector<BoxCollider*> mPlayerBoxes;
-	// エネミーの矩形当たり判定
-	std::vector<BoxCollider*> mEnemyBoxes;
 	// 武器の矩形当たり判定
 	std::vector<BoxCollider*> mWeaponBoxes;
+	// エネミーの矩形当たり判定
+	std::vector<BoxCollider*> mEnemyBoxes;
 	// エネミーの攻撃用の矩形当たり判定
 	std::vector<BoxCollider*> mEnemyAttackDecisionBoxes;
+	// ボスの矩形当たり判定
+	std::vector<BoxCollider*> mBossBoxes;
 
 	// デバッグ用の当たり判定描画用シェーダー
 	Shader* mLineShader;

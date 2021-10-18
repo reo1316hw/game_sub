@@ -55,16 +55,16 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mWeaponPtr = new PlayerWeaponObject(mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon);
 
 	// アクターステートプールの初期化
-	mStatePools.push_back(new PlayerObjectStateIdle());	      // mStatePool[ePlayerStateIdle]
-	mStatePools.push_back(new PlayerObjectStateRunLoop);	  // mStatepool[ePlayerStateRunLoop]
-	mStatePools.push_back(new PlayerObjectStateSprintStart);  // mStatepool[ePlayerStateSprintStart]
-	mStatePools.push_back(new PlayerObjectStateSprintLoop);	  // mStatepool[ePlayerStateSprintLoop]
+	mStatePools.push_back(new PlayerObjectStateIdle());	                  // mStatePool[ePlayerStateIdle]
+	mStatePools.push_back(new PlayerObjectStateRunLoop);	              // mStatepool[ePlayerStateRunLoop]
+	mStatePools.push_back(new PlayerObjectStateSprintStart);              // mStatepool[ePlayerStateSprintStart]
+	mStatePools.push_back(new PlayerObjectStateSprintLoop);	              // mStatepool[ePlayerStateSprintLoop]
 	mStatePools.push_back(new PlayerObjectStateFirstAttack(mWeaponPtr));  // mStatepool[ePlayerStateFirstAttack];
 	mStatePools.push_back(new PlayerObjectStateSecondAttack(mWeaponPtr)); // mStatepool[ePlayerStateSecondAttack];
 	mStatePools.push_back(new PlayerObjectStateThirdAttack(mWeaponPtr));  // mStatepool[ePlayerStateThirdAttack];
 	mStatePools.push_back(new PlayerObjectStateDashAttack(mWeaponPtr));   // mStatepool[ePlayerStateDashAttack];
-	mStatePools.push_back(new PlayerObjectStateDamage);	  // mStatepool[ePlayerStateDamage]
-	mStatePools.push_back(new PlayerObjectStateDeath(mWeaponPtr));	  // mStatepool[ePlayerStateDeath]
+	mStatePools.push_back(new PlayerObjectStateDamage);	                  // mStatepool[ePlayerStateDamage]
+	mStatePools.push_back(new PlayerObjectStateDeath(mWeaponPtr));	      // mStatepool[ePlayerStateDeath]
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));

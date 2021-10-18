@@ -5,10 +5,12 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateTrack::BossObjectStateTrack(PlayerObject* _playerPtr)
-	: MTransitionStateDistance(30000.0f)
+	: MTimingTransitionOverheadAttack(240)
+	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
+	, UntilTransitionOverheadAttackCount(0)
 	, mMoveSpeed(5.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -29,22 +31,43 @@ BossState BossObjectStateTrack::Update(BossObject* _owner, const float _DeltaTim
 	// プレイヤーに向いたベクトル
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
+	// ランダム値
+	int randNum = rand() % 100;
+
+	++UntilTransitionOverheadAttackCount;
+
 	if (dirPlayerVec.LengthSq() < MTransitionStateDistance)
 	{
-		// ランダム値
-		int randNum = rand() % 100;
-
-		if (randNum < 25)
+		if (randNum < 20)
 		{
 			return BossState::eBossStateWait;
 		}
-		else if (randNum >= 25 && randNum < 50)
+		else if (randNum >= 20 && randNum < 40)
 		{
 			return BossState::eBossStateAreaAttack;
 		}
-		else
+		else if (randNum >= 40 && randNum < 60)
 		{
 			return BossState::eBossStateFrontAttack;
+		}
+		else if (randNum >= 60 && randNum < 80)
+		{
+			return BossState::eBossStateOverheadAttack;
+		}
+		else
+		{
+			return BossState::eBossStateTeleportation;
+		}
+	}
+	else if(UntilTransitionOverheadAttackCount >= MTimingTransitionOverheadAttack)
+	{
+		if (randNum < 30)
+		{
+			return BossState::eBossStateOverheadAttack;
+		}
+		else if (randNum >= 30 && randNum < 60)
+		{
+			return BossState::eBossStateTeleportation;
 		}
 	}
 	//else if (mIsDamage)
@@ -74,6 +97,7 @@ void BossObjectStateTrack::Enter(BossObject* _owner, const float _DeltaTime)
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateTrack));
 
 	mIsDamage = false;
+	UntilTransitionOverheadAttackCount = 0;
 
 	// 座標
 	mPosition = _owner->GetPosition();

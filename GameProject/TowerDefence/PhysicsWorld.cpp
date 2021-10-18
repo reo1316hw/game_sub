@@ -170,6 +170,28 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 			}
 		}
 	}
+
+	if (_box->GetOwner()->GetTag() == Tag::eBoss)
+	{
+		for (auto itr : mPlayerBoxes)
+		{
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+	}
 }
 
 /// <summary>
@@ -232,21 +254,27 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
-	if (_box->GetOwner()->GetTag() == Tag::eEnemy)
-	{
-		mEnemyBoxes.emplace_back(_box);
-		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
-		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
-	}
 	if (_box->GetOwner()->GetTag() == Tag::eWeapon)
 	{
 		mWeaponBoxes.emplace_back(_box);
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::eEnemy)
+	{
+		mEnemyBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 	if (_box->GetOwner()->GetTag() == Tag::eEnemyAttackDecision)
 	{
 		mEnemyAttackDecisionBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetOwner()->GetTag() == Tag::eBoss)
+	{
+		mBossBoxes.emplace_back(_box);
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
@@ -294,7 +322,13 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 		std::iter_swap(enemyAttackDecisionBox, mEnemyAttackDecisionBoxes.end() - 1);
 		mEnemyAttackDecisionBoxes.pop_back();
 	}
-
+	auto bossBox = std::find(mBossBoxes.begin(), mBossBoxes.end(), _box);
+	if (bossBox != mBossBoxes.end())
+	{
+		std::iter_swap(bossBox, mBossBoxes.end() - 1);
+		mBossBoxes.pop_back();
+	}
+	
     mCollisionFunction.erase(_box);
 }
 
@@ -348,9 +382,10 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mGroundBoxes, Color::Red);
 	DrawBoxs(mWallBoxes, Color::Blue);
 	DrawBoxs(mPlayerBoxes, Color::LightPink);
-	DrawBoxs(mEnemyBoxes, Color::White);
 	DrawBoxs(mWeaponBoxes, Color::LightGreen);
+	DrawBoxs(mEnemyBoxes, Color::White);
 	DrawBoxs(mEnemyAttackDecisionBoxes, Color::Yellow);
+	DrawBoxs(mBossBoxes, Color::LightYellow);
 }
 
 /// <summary>

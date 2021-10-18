@@ -25,6 +25,8 @@ BossObjectStateFrontAttack::BossObjectStateFrontAttack(PlayerObject* _playerPtr)
 /// <returns> ボスの状態 </returns>
 BossState BossObjectStateFrontAttack::Update(BossObject* _owner, const float _DeltaTime)
 {
+	_owner->SetPosition(mPosition);
+
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトルsd
@@ -37,7 +39,17 @@ BossState BossObjectStateFrontAttack::Update(BossObject* _owner, const float _De
 	{
 		if (dirPlayerVec.LengthSq() < MTransitionStateDistance)
 		{
-			return BossState::eBossStateWait;
+			// ランダム値
+			int randNum = rand() % 100;
+
+			if (randNum < 50)
+			{
+				return BossState::eBossStateWait;
+			}
+			else
+			{
+				return BossState::eBossStateTeleportation;
+			}
 		}
 
 		return BossState::eBossStateTrack;
@@ -95,6 +107,9 @@ void BossObjectStateFrontAttack::Separation(BossObject* _owner, const Vector3& _
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void BossObjectStateFrontAttack::OnCollision(BossObject* _owner, const GameObject& _HitObject)
 {
+	// 座標
+	mPosition = _owner->GetPosition();
+
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 

@@ -49,6 +49,8 @@ public:
 
 private:
 
+	// 頭上攻撃に遷移するタイミング
+	const int MTimingTransitionOverheadAttack;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値
@@ -58,6 +60,9 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+
+	// 頭上攻撃に遷移するまでのカウント
+	int UntilTransitionOverheadAttackCount;
 
 	// 移動速度
 	float mMoveSpeed;

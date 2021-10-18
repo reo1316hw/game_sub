@@ -38,28 +38,36 @@ BossState BossObjectStateWait::Update(BossObject* _owner, const float _DeltaTime
 		int randNum = rand() % 100;
 
 		if (dirPlayerVec.LengthSq() < MTransitionStateDistance)
-		{	
+		{
 			if (randNum < 25)
-			{
-				return BossState::eBossStateWait;
-			}
-			else if (randNum >= 25 && randNum < 50)
 			{
 				return BossState::eBossStateAreaAttack;
 			}
-			else
+			else if (randNum >= 25 && randNum < 50)
 			{
 				return BossState::eBossStateFrontAttack;
 			}
+			else if (randNum >= 50 && randNum < 75)
+			{
+				return BossState::eBossStateOverheadAttack;
+			}
+			else
+			{
+				return BossState::eBossStateTeleportation;
+			}
 		}
 
-		if (randNum < 50)
+		if (randNum < 30)
 		{
-			return BossState::eBossStateTrack;
+			return BossState::eBossStateFrontAttack;
+		}
+		else if (randNum >= 30 && randNum < 60)
+		{
+			return BossState::eBossStateOverheadAttack;
 		}
 		else
 		{
-			return BossState::eBossStateFrontAttack;
+			return BossState::eBossStateTeleportation;
 		}
 	}
 
