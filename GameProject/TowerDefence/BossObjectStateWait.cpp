@@ -25,12 +25,43 @@ BossObjectStateWait::BossObjectStateWait(PlayerObject* _playerPtr)
 /// <returns> ボスの状態 </returns>
 BossState BossObjectStateWait::Update(BossObject* _owner, const float _DeltaTime)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトルsd
 	Vector3 dirPlayerVec = playerPos - mPosition;
+
+	++mPeriodWaitCount;
+
+	if (mPeriodWaitCount >= MTransitionTimingNum)
+	{
+		// ランダム値
+		int randNum = rand() % 100;
+
+		if (dirPlayerVec.LengthSq() < MTransitionStateDistance)
+		{	
+			if (randNum < 25)
+			{
+				return BossState::eBossStateWait;
+			}
+			else if (randNum >= 25 && randNum < 50)
+			{
+				return BossState::eBossStateAreaAttack;
+			}
+			else
+			{
+				return BossState::eBossStateFrontAttack;
+			}
+		}
+
+		if (randNum < 50)
+		{
+			return BossState::eBossStateTrack;
+		}
+		else
+		{
+			return BossState::eBossStateFrontAttack;
+		}
+	}
 
 	dirPlayerVec.Normalize();
 	_owner->RotateToNewForward(dirPlayerVec);
@@ -50,6 +81,9 @@ void BossObjectStateWait::Enter(BossObject* _owner, const float _DeltaTime)
 
 	mIsDamage = false;
 	mPeriodWaitCount = 0;
+
+	// 座標
+	mPosition = _owner->GetPosition();
 }
 
 /// <summary>

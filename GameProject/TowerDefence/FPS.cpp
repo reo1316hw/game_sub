@@ -23,9 +23,9 @@ void FPS::Update()
 {
 	Wait();
 	mDeltaTime = (SDL_GetTicks() - mBeforetickCount) / 1000.0f;
-	if (mDeltaTime >= 0.10f)
+	if (mDeltaTime >= 0.1f)
 	{
-		mDeltaTime = 0.10f;
+		mDeltaTime = 0.1f;
 	}
 	mBeforetickCount = SDL_GetTicks();
 	//1ƒtƒŒ[ƒ€–Ú‚Ì‚ğ•Û‘¶
@@ -39,6 +39,8 @@ void FPS::Update()
 		int nowTickTime = SDL_GetTicks();
 		mFps = 1000 / ((nowTickTime - mFrameStartTickTime) / mSetFps);
 		mFpsCount = 0;
+
+		printf("%d\n", mFps);
 	}
 	else
 	{

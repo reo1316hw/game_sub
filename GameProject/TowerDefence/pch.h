@@ -73,6 +73,9 @@
 #include "BossObject.h"
 #include "BossObjectStateBase.h"
 #include "BossObjectStateWait.h"
+#include "BossObjectStateTrack.h"
+#include "BossObjectStateFrontAttack.h"
+#include "BossObjectStateAreaAttack.h"
 
 #include "GroundObject.h"
 #include "WallObject.h"

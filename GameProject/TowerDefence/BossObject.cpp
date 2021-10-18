@@ -33,13 +33,13 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	// アニメーションの取得 & アニメーション配列にセット
 	mAnimTypes.resize(static_cast<int>(EnemyState::eEnemyStateNum));
 	mAnimTypes[static_cast<int>(BossState::eBossStateWait)] = RENDERER->GetAnimation("Assets/Model/Boss/BossWait.gpanim", true);
-	/*mAnimTypes[static_cast<int>(EnemyState::eEnemyStateTrack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyWait.gpanim", true);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateAttack)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyAttack.gpanim", false);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateAttackReady)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyAttackReady.gpanim", false);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateLeftMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyLeftMove.gpanim", true);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateRightMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyRightMove.gpanim", true);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDamage.gpanim", false);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDeath.gpanim", false);*/
+	mAnimTypes[static_cast<int>(BossState::eBossStateTrack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossTrack.gpanim", true);
+	mAnimTypes[static_cast<int>(BossState::eBossStateFrontAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossFrontAttack.gpanim", false);
+	mAnimTypes[static_cast<int>(BossState::eBossStateAreaAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossAreaAttack.gpanim", false);
+	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateLeftMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyLeftMove.gpanim", true);
+	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateRightMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyRightMove.gpanim", true);
+	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDamage.gpanim", false);
+	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDeath.gpanim", false);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(BossState::eBossStateWait)];
@@ -48,9 +48,9 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new BossObjectStateWait(_playerPtr));	                                // mStatePool[eBossStateWait]
-	//mStatePools.push_back(new EnemyObjectStateTrack(_playerPtr));	                                // mStatepool[eEnemyStateTrack]
-	//mStatePools.push_back(new EnemyObjectStateAttack(mEnemyAttackPtr));                                              // mStatepool[eEnemyStateAttack]
-	//mStatePools.push_back(new EnemyObjectStateAttackReady);                                         // mStatepool[eEnemyStateAttackReady]
+	mStatePools.push_back(new BossObjectStateTrack(_playerPtr));	                            // mStatepool[eBossStateTrack]
+	mStatePools.push_back(new BossObjectStateFrontAttack(_playerPtr));                          // mStatepool[eBossStateFrontAttack]
+	mStatePools.push_back(new BossObjectStateAreaAttack(_playerPtr));                           // mStatepool[eBossStateAreaAttack]
 	//mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateLeftMove, _playerPtr));	// mStatepool[eEnemyStateLeftMove]
 	//mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateRightMove, _playerPtr));	// mStatepool[eEnemyStateRightMove]
 	//mStatePools.push_back(new EnemyObjectStateDamage(_playerPtr));                                              // mStatepool[eEnemyStateDamage];

@@ -11,8 +11,9 @@ class BoxCollider;
 enum class BossState
 {
 	eBossStateWait = 0,        // ‘Ò‹@
-	//eBossStateTrack,           // ’ÇÕ
-	//eBossStateAttack,          // UŒ‚
+	eBossStateTrack,           // ’ÇÕ
+	eBossStateFrontAttack,     // ‘O•ûUŒ‚
+	eBossStateAreaAttack,     // ”ÍˆÍUŒ‚
 	//eBossStateAttackReady,     // UŒ‚€”õ
 	//eBossStateLeftMove,        // ¶ˆÚ“®
 	//eBossStateRightMove,       // ‰EˆÚ“®

@@ -48,7 +48,6 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 			else if(randNum >= 25 && randNum < 50)
 			{
 				return EnemyState::eEnemyStateLeftMove;
-
 			}
 			else if (randNum >= 50 && randNum < 75)
 			{
