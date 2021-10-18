@@ -56,9 +56,11 @@ void MapCreate::OpenFile()
 	// 静的オブジェクトのマップデータにアクセスする
 	AccessMapData(mStaticObjectMapData);
 
-	// エネミーを生成
+	// エネミーたちを生成
 	mCreateEnemysPtr->CreateEnemyObject("Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, mPlayerPtr);
 
+	// エネミーボスを生成
+	new BossObject(Vector3::Zero, MPersonSize, "Assets/Model/Boss/Boss.gpmesh", "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
 }
 
 /// <summary>

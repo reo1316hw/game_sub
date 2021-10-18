@@ -198,6 +198,15 @@
     <ClCompile Include="CubeMapComponent.cpp">
       <Filter>SkyBox\Component</Filter>
     </ClCompile>
+    <ClCompile Include="BossObject.cpp">
+      <Filter>GameObject\Map\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateBase.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateWait.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -399,6 +408,15 @@
     <ClInclude Include="CubeMapComponent.h">
       <Filter>SkyBox\Component</Filter>
     </ClInclude>
+    <ClInclude Include="BossObject.h">
+      <Filter>GameObject\Map\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateBase.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateWait.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -463,6 +481,12 @@
     </Filter>
     <Filter Include="SkyBox\Component">
       <UniqueIdentifier>{bbdb06be-64fa-49b9-87a8-327b054c0b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Boss">
+      <UniqueIdentifier>{b03ab5e4-0c1e-4ff3-bbed-723d352d2a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Boss\State">
+      <UniqueIdentifier>{7111f781-3c00-4c24-830c-97c7b9165dfe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

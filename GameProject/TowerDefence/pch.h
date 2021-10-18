@@ -54,6 +54,7 @@
 #include "PlayerObjectStateDamage.h"
 #include "PlayerObjectStateDeath.h"
 #include "PlayerWeaponObject.h"
+
 #include "EnemyObjectManager.h"
 #include "EnemyControler.h"
 #include "CreateEnemys.h"
@@ -68,6 +69,11 @@
 #include "EnemyObjectStateMove.h"
 #include "EnemyObjectStateDamage.h"
 #include "EnemyObjectStateDeath.h"
+
+#include "BossObject.h"
+#include "BossObjectStateBase.h"
+#include "BossObjectStateWait.h"
+
 #include "GroundObject.h"
 #include "WallObject.h"
 #include "MainCameraObject.h"

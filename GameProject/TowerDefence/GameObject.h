@@ -45,6 +45,7 @@ enum Tag
 	eEnemyGenerator,
 	eEnemy,
 	eEnemyAttackDecision,
+	eBoss,
 	eTranslucentWall
 };
 
