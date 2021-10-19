@@ -164,6 +164,12 @@ public:
 	/// </summary>
 	static void CreateMainCamera();
 
+	/// <summary>
+	/// オブジェクトの引き離し
+	/// </summary>
+	/// <param name="_DirTargetEnemyVec"> 対象となるオブジェクトに向いたベクトル </param>
+	virtual void Separation(const Vector3& _DirTargetEnemyVec) {};
+
 protected:
 
 	std::function<void(GameObject&)> GetOnCollisionFunc() { return std::bind(&GameObject::OnCollision, this, std::placeholders::_1); }

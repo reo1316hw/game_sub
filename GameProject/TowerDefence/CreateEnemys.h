@@ -3,6 +3,7 @@
 // 前方宣言
 class EnemyGenerator;
 class EnemyObject;
+class BossObject;
 
 /// <summary>
 /// エネミーの生成
@@ -33,11 +34,25 @@ public:
     /// <summary>
     /// エネミーを生成
     /// </summary>
+    /// <param name="_Scale"> 大きさ </param>
     /// <param name="_GpmeshName"> gpmeshのパス </param>
     /// <param name="_GpskelName"> gpskelのパス </param>
     /// <param name="_ObjectTag"> オブジェクトのタグ </param>
     /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-    void CreateEnemyObject(const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr);
+    void CreateEnemyObject(const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName,
+                           const Tag& _ObjectTag, PlayerObject* _playerPtr);
+
+    /// <summary>
+    /// ボスを生成
+    /// </summary>
+    /// <param name="_Pos"> 座標 </param>
+    /// <param name="_Scale"> 大きさ </param>
+    /// <param name="_GpmeshName"> gpmeshのパス </param>
+    /// <param name="_GpskelName"> gpskelのパス </param>
+    /// <param name="_ObjectTag"> オブジェクトのタグ </param>
+    /// <param name="_playerPtr"> プレイヤーのポインタ </param>
+    void CreateBossObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName,
+                           const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr);
 
 private:
 
@@ -48,6 +63,8 @@ private:
     std::vector<EnemyGenerator*> mEnemyGeneratorList;
     // エネミーの動的配列
     std::vector<EnemyObject*> mEnemyObjectList;
+    // ボスのポインタ
+    BossObject* mBossObjectPtr;
 
 public:// ゲッターセッター
 
@@ -56,4 +73,10 @@ public:// ゲッターセッター
     /// </summary>
     /// <returns> エネミーの動的配列 </returns>
     std::vector<EnemyObject*> GetEnemyObjectList() { return mEnemyObjectList; }
+
+    /// <summary>
+    /// ボスのポインタを取得
+    /// </summary>
+    /// <returns> ボスのポインタ </returns>
+    BossObject* GetBossObjectPtr() { return mBossObjectPtr; }
 };

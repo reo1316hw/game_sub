@@ -50,7 +50,7 @@ public:
 	/// エネミー同士の引き離し
 	/// </summary>
 	/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
-	void Separation(const Vector3& _DirTargetEnemyVec);
+	void Separation(const Vector3& _DirTargetEnemyVec)override;
 
 	/// <summary>
 	/// オブジェクトの更新処理

@@ -56,6 +56,8 @@ private:
 	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
 	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);
 	
+	// ボスを生成する座標
+	const Vector3 MCreateBossPosition;
 	// 静的オブジェクトの大きさ
 	const Vector3 MStaticObjectSize;
 	// プレイヤーの大きさ

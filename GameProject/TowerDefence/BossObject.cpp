@@ -64,7 +64,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 }
 
 /// <summary>
-/// エネミー同士の引き離し
+/// ボスとエネミーの引き離し
 /// </summary>
 /// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
 void BossObject::Separation(const Vector3& _DirTargetEnemyVec)

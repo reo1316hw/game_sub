@@ -49,7 +49,7 @@ private:
 	/// </summary>
 	/// <param name="_referenceEnemyItr"> 基準となるエネミー </param>
 	/// <param name="_targetEnemyItr"> 対象となるエネミー </param>
-	void InvadeWithinRange(EnemyObject* _referenceEnemyItr, EnemyObject* _targetEnemyItr);
+	void InvadeWithinRange(GameObject* _referenceEnemyItr, GameObject* _targetEnemyItr);
 
 	// 配列の要素を入れるタイミング
 	const int MInElementsTiming;

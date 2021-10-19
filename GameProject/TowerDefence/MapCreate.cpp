@@ -5,6 +5,7 @@
 /// </summary>
 MapCreate::MapCreate()
 	:GameObject(Tag::eOther)
+	, MCreateBossPosition(Vector3(2000.0f,2000.0f,0.0f))
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
 	, MShiftVec(Vector3(0.0f, 0.0f, 100.0f))
@@ -56,11 +57,13 @@ void MapCreate::OpenFile()
 	// 静的オブジェクトのマップデータにアクセスする
 	AccessMapData(mStaticObjectMapData);
 
-	// エネミーたちを生成
-	mCreateEnemysPtr->CreateEnemyObject("Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, mPlayerPtr);
+	// エネミーを生成
+	mCreateEnemysPtr->CreateEnemyObject(MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel",
+		                                Tag::eEnemy, mPlayerPtr);
 
 	// エネミーボスを生成
-	new BossObject(Vector3::Zero, MPersonSize, "Assets/Model/Boss/Boss.gpmesh", "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
+	mCreateEnemysPtr->CreateBossObject(MCreateBossPosition, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
+		                               "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
 }
 
 /// <summary>
@@ -92,10 +95,8 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	{
 	case(MapDataNum::ePlayerNum):
 
-		mPlayerPtr = new PlayerObject(_ObjectPos, MPersonSize
-			                          , "Assets/Model/Player/Player.gpmesh"
-			                          , "Assets/Model/Player/Player.gpskel"
-			                          , Tag::ePlayer);
+		mPlayerPtr = new PlayerObject(_ObjectPos, MPersonSize, "Assets/Model/Player/Player.gpmesh",
+			                          "Assets/Model/Player/Player.gpskel", Tag::ePlayer);
 		break;
 
 	case(MapDataNum::eGroundNum):
@@ -103,13 +104,14 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		// 床の座標
 		Vector3 groundPos = _ObjectPos - MShiftVec;
 
-		new GroundObject(groundPos, MStaticObjectSize, "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround);
+		new GroundObject(groundPos, MStaticObjectSize,
+			             "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround);
 		break;
 	}
 	case(MapDataNum::eEnemyGeneratorNum):
 	
 		// エネミーの生成器を生成
-		mCreateEnemysPtr->CreateEnemyGenerator(_ObjectPos, MPersonSize, mPlayerPtr);
+		mCreateEnemysPtr->CreateEnemyGenerator(_ObjectPos, MStaticObjectSize, mPlayerPtr);
 		
 		break;
 
