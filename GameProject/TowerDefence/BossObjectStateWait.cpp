@@ -70,6 +70,10 @@ BossState BossObjectStateWait::Update(BossObject* _owner, const float _DeltaTime
 			return BossState::eBossStateTeleportation;
 		}
 	}
+	else if (mIsDamage)
+	{
+		return BossState::eBossStateDamage;
+	}
 
 	dirPlayerVec.Normalize();
 	_owner->RotateToNewForward(dirPlayerVec);

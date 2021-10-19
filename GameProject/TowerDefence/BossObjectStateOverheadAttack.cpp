@@ -50,6 +50,10 @@ BossState BossObjectStateOverheadAttack::Update(BossObject* _owner, const float 
 
 		return BossState::eBossStateTrack;
 	}
+	else if (mIsDamage)
+	{
+		return BossState::eBossStateDamage;
+	}
 
 	return BossState::eBossStateOverheadAttack;
 }

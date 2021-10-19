@@ -191,6 +191,25 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
+		for (auto itr : mWeaponBoxes)
+		{
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
 	}
 }
 

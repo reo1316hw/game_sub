@@ -50,6 +50,10 @@ BossState BossObjectStateAreaAttack::Update(BossObject* _owner, const float _Del
 
 		return BossState::eBossStateTrack;
 	}
+	else if(mIsDamage)
+	{
+		return BossState::eBossStateDamage;
+	}
 
 	return BossState::eBossStateAreaAttack;
 }

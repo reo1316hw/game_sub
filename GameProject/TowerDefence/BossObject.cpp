@@ -38,8 +38,8 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mAnimTypes[static_cast<int>(BossState::eBossStateAreaAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossAreaAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(BossState::eBossStateOverheadAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossOverheadAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(BossState::eBossStateTeleportation)] = RENDERER->GetAnimation("Assets/Model/Boss/BossWait.gpanim", true);
-	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDamage.gpanim", false);
-	//mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDeath.gpanim", false);
+	mAnimTypes[static_cast<int>(BossState::eBossStateDamage)] = RENDERER->GetAnimation("Assets/Model/Boss/BossDamage.gpanim", false);
+	mAnimTypes[static_cast<int>(BossState::eBossStateDeath)] = RENDERER->GetAnimation("Assets/Model/Boss/BossDeath.gpanim", false);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(BossState::eBossStateWait)];
@@ -53,8 +53,8 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mStatePools.push_back(new BossObjectStateAreaAttack(_playerPtr));     // mStatepool[eBossStateAreaAttack]
 	mStatePools.push_back(new BossObjectStateOverheadAttack(_playerPtr)); // mStatepool[eBossObjectStateOverheadAttack]
 	mStatePools.push_back(new BossObjectStateTeleportation(_playerPtr));  // mStatepool[eBossStateTeleportation]
-	//mStatePools.push_back(new EnemyObjectStateDamage(_playerPtr));      // mStatepool[eEnemyStateDamage];
-	//mStatePools.push_back(new EnemyObjectStateDeath(_playerPtr));       // mStatepool[eEnemyStateDeath];
+	mStatePools.push_back(new BossObjectStateDamage(_playerPtr));         // mStatepool[eBossStateDamage];
+	mStatePools.push_back(new BossObjectStateDeath(_playerPtr));          // mStatepool[eBossStateDeath];
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

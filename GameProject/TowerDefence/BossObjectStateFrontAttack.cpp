@@ -54,6 +54,10 @@ BossState BossObjectStateFrontAttack::Update(BossObject* _owner, const float _De
 
 		return BossState::eBossStateTrack;
 	}
+	else if (mIsDamage)
+	{
+		return BossState::eBossStateDamage;
+	}
 
 	if (mFacingFixUntilTime < MTimingFixFacing)
 	{

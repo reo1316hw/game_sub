@@ -222,6 +222,12 @@
     <ClCompile Include="BossObjectStateTeleportation.cpp">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClCompile>
+    <ClCompile Include="BossObjectStateDamage.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateDeath.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -445,6 +451,12 @@
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="BossObjectStateTeleportation.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateDamage.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateDeath.h">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
   </ItemGroup>

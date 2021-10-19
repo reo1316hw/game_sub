@@ -16,10 +16,10 @@ enum class BossState
 	eBossStateAreaAttack,           // 範囲攻撃
 	eBossStateOverheadAttack,    	// プレイヤーの頭上に攻撃
 	eBossStateTeleportation,    	// 瞬間移動
-	//eBossStateDamage,             // ダメージを受けた
-	//eBossStateDeath,              // 死亡
+	eBossStateDamage,               // ダメージを受けた
+	eBossStateDeath,                // 死亡
 
-	eBossStateNum,             // 総アニメーション数
+	eBossStateNum,                  // 総アニメーション数
 };
 
 /// <summary>

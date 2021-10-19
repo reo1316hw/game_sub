@@ -78,6 +78,8 @@
 #include "BossObjectStateAreaAttack.h"
 #include "BossObjectStateOverheadAttack.h"
 #include "BossObjectStateTeleportation.h"
+#include "BossObjectStateDamage.h"
+#include "BossObjectStateDeath.h"
 
 #include "GroundObject.h"
 #include "WallObject.h"

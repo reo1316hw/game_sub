@@ -88,16 +88,6 @@ void GameObjectManager::AddGameObject(GameObject* _object)
 	}
 	else
 	{
-		/*switch (_object->GetTag())
-		{
-		case eCamera:
-			mCameraObjects.emplace_back(_object);
-			break;
-		case !eCamera:
-			mGameObjects.emplace_back(_object);
-			break;
-		}*/
-
 		Tag tag = _object->GetTag();
 
 		if (tag == Tag::eCamera)
