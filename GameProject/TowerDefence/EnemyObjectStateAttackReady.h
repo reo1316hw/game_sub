@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// 攻撃準備状態
+/// エネミーの攻撃準備状態
 /// </summary>
 class EnemyObjectStateAttackReady : public EnemyObjectStateBase
 {

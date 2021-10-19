@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// 待機状態
+/// エネミーの待機状態
 /// </summary>
 class EnemyObjectStateWait : public EnemyObjectStateBase
 {
@@ -51,9 +51,12 @@ private:
 
 	// 遷移するタイミング
 	const int MTransitionTimingNum;
-
-	// 状態を変えるための距離
-	const float MTransitionStateDistance;
+	// 状態遷移確率
+	const int MStateTransitionProbability;
+	// 状態を変えるための距離(近距離)
+	const float MTransitionStateShortDistance;
+	// 状態を変えるための距離(中距離)
+	const float MTransitionStateMediumDistance;
 	// ベクトルを短くする値
 	const float MVecShortenVelue;
 	// 引き離しベクトルの長さ

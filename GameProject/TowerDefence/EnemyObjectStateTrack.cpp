@@ -8,6 +8,7 @@ EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 	: MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, MStateTransitionProbability(100)
 	, mIsDamage(false)
 	, mMoveSpeed(2.0f)
 	, mPosition(Vector3::Zero)
@@ -32,7 +33,7 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 	{
 		// ƒ‰ƒ“ƒ_ƒ€’l
-		int randNum = rand() % 90;
+		int randNum = rand() % MStateTransitionProbability;
 		
 		if (randNum < 30)
 		{

@@ -32,17 +32,17 @@ void CreateEnemys::CreateEnemyGenerator(const Vector3& _Pos, const Vector3& _Sca
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 void CreateEnemys::CreateEnemyObject( const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr)
 {
-	//for (int i = 0; i < MNumGeneratableInOneArea; i++)
-	//{
-	//	for (auto enemyGeneratorItr : mEnemyGeneratorList)
-	//	{
-	//		// 座標
-	//		Vector3 position = enemyGeneratorItr->GetPosition();
-	//		// 大きさ
-	//		Vector3 scale = enemyGeneratorItr->GetScale();
+	for (int i = 0; i < MNumGeneratableInOneArea; i++)
+	{
+		for (auto enemyGeneratorItr : mEnemyGeneratorList)
+		{
+			// 座標
+			Vector3 position = enemyGeneratorItr->GetPosition();
+			// 大きさ
+			Vector3 scale = enemyGeneratorItr->GetScale();
 
-	//		mEnemyObjectList.push_back(new EnemyObject(position, scale, "Assets/Model/Enemy/Enemy.gpmesh"
-	//			                       , "Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, _playerPtr));
-	//	}
-	//}
+			mEnemyObjectList.push_back(new EnemyObject(position, scale, "Assets/Model/Enemy/Enemy.gpmesh"
+				                       , "Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, _playerPtr));
+		}
+	}
 }

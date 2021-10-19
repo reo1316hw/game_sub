@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// ダメージ受けた状態
+/// エネミーがダメージ受けた状態
 /// </summary>
 class EnemyObjectStateDamage : public EnemyObjectStateBase
 {

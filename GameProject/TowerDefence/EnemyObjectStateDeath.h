@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// 死亡状態
+/// エネミーの死亡状態
 /// </summary>
 class EnemyObjectStateDeath : public EnemyObjectStateBase
 {

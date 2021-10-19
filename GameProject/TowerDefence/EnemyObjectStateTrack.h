@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// 追跡状態
+/// エネミーの追跡状態
 /// </summary>
 class EnemyObjectStateTrack : public EnemyObjectStateBase
 {
@@ -49,6 +49,8 @@ public:
 
 private:
 
+	// 状態遷移確率
+	const int MStateTransitionProbability;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値

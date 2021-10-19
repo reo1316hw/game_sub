@@ -6,6 +6,7 @@
 /// <param name="_enemyAttackPtr"> エネミーの攻撃判定オブジェクトのポインタ </param>
 EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr)
 	: MBoxEnableTiming(20)
+	, MStateTransitionProbability(100)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
 	, MVecShortenVelue(0.1f)
@@ -58,7 +59,7 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		// ランダム値
-		int randNum = rand() % 90;
+		int randNum = rand() % MStateTransitionProbability;
 		
 		if (randNum < 30)
 		{

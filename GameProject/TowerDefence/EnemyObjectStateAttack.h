@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// 攻撃状態
+/// エネミーの攻撃状態
 /// </summary>
 class EnemyObjectStateAttack : public EnemyObjectStateBase
 {
@@ -58,6 +58,8 @@ private:
 
 	// 当たり判定を有効にするタイミング
 	const int MBoxEnableTiming;
+	// 状態遷移確率
+	const int MStateTransitionProbability;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度

@@ -7,7 +7,9 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
-	, MTransitionStateDistance(30000.0f)
+	, MStateTransitionProbability(100)
+	, MTransitionStateShortDistance(15000.0f)
+	, MTransitionStateMediumDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(12.0f)
 	, mIsMoving(false)
@@ -51,11 +53,11 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 
 	if (mPeriodMoveCount >= MTransitionTimingNum)
 	{
-		if (dirPlayerVec.LengthSq() < 15000.0f)
-		{
-			// ランダム値
-			int randNum = rand() % 100;
+		// ランダム値
+		int randNum = rand() % MStateTransitionProbability;
 
+		if (dirPlayerVec.LengthSq() < MTransitionStateShortDistance)
+		{
 			if (randNum < 25)
 			{
 				return EnemyState::eEnemyStateWait;
@@ -73,11 +75,9 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 				return EnemyState::eEnemyStateAttackReady;
 			}
 		}
-		else if (dirPlayerVec.LengthSq() >= 15000.0f && dirPlayerVec.LengthSq() < MTransitionStateDistance)
+		else if (dirPlayerVec.LengthSq() >= MTransitionStateShortDistance && 
+			     dirPlayerVec.LengthSq() < MTransitionStateMediumDistance)
 		{
-		    // ランダム値
-			int randNum = rand() % 90;
-
 			if (randNum < 30)
 			{
 				return EnemyState::eEnemyStateWait;
