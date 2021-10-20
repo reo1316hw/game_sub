@@ -48,6 +48,8 @@ public:
 
 private:
 
+	// プレイヤーの1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// ベクトルを短くする値
 	const float MVecShortenVelue;
 	// 引き離しベクトルの長さ
@@ -55,6 +57,9 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+
+	// ダメージ値
+	int mDamageValue;
 
 	// 座標
 	Vector3 mPosition;

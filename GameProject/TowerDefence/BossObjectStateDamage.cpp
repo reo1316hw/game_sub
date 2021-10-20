@@ -8,6 +8,7 @@ BossObjectStateDamage::BossObjectStateDamage(PlayerObject* _playerPtr)
 	: MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, mHitPoint(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
@@ -37,10 +38,15 @@ BossState BossObjectStateDamage::Update(BossObject* _owner, const float _DeltaTi
 
 	_owner->SetPosition(mPosition);
 
+	if (mHitPoint <= 0)
+	{
+		return BossState::eBossStateDeath;
+	}
+
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return BossState::eBossStateDeath;
+		return BossState::eBossStateWait;
 	}
 
 	return BossState::eBossStateDamage;
@@ -87,5 +93,11 @@ void BossObjectStateDamage::Enter(BossObject* _owner, const float _DeltaTime)
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
 
+	// ダメージ値
+	int damageValue = _owner->GetDamageValue();
+	// 体力
+	mHitPoint = _owner->GetHitPoint() - damageValue;
+
 	_owner->RotateToNewForward(mDirPlayerVec);
+	_owner->SetHitPoint(mHitPoint);
 }

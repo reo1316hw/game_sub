@@ -27,6 +27,11 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, const flo
 
 	mElapseTime += _DeltaTime;
 
+	if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
+
 	// アニメーションが終了したらcStopTime硬直後、RUN状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -34,10 +39,6 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, const flo
 		{
 			return PlayerState::ePlayerStateSprintLoop;
 		}
-	}
-	else if (mIsHit)
-	{
-		return PlayerState::ePlayerStateDamage;
 	}
 
 	return PlayerState::ePlayerStateSprintStart;

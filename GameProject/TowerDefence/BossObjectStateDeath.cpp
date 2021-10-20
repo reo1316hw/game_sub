@@ -47,7 +47,7 @@ BossState BossObjectStateDeath::Update(BossObject* _owner, const float _DeltaTim
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return BossState::eBossStateWait;
+		_owner->SetState(State::eDead);
 	}
 
 	return BossState::eBossStateDeath;

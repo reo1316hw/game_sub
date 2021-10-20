@@ -51,6 +51,8 @@ private:
 
 	// 状態遷移確率
 	const int MStateTransitionProbability;
+	// プレイヤーの1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値
@@ -60,6 +62,9 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+
+	// ダメージ値
+	int mDamageValue;
 
 	// 移動速度
 	float mMoveSpeed;

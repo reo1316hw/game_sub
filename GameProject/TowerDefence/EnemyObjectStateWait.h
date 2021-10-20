@@ -53,6 +53,8 @@ private:
 	const int MTransitionTimingNum;
 	// 状態遷移確率
 	const int MStateTransitionProbability;
+	// プレイヤーの1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// 状態を変えるための距離(近距離)
 	const float MTransitionStateShortDistance;
 	// 状態を変えるための距離(中距離)
@@ -65,6 +67,8 @@ private:
 	// ダメージを受けたか
 	bool mIsDamage;
 
+	// ダメージ値
+	int mDamageValue;
 	// 待機する時間のカウント変数
 	int mPeriodWaitCount;
 

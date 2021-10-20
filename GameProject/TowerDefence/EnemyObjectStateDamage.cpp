@@ -8,6 +8,7 @@ EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
     : MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, mHitPoint(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
@@ -37,10 +38,15 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 
 	_owner->SetPosition(mPosition);
 	
+	if (mHitPoint <= 0)
+	{
+		return EnemyState::eEnemyStateDeath;
+	}
+	
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return EnemyState::eEnemyStateDeath;
+		return EnemyState::eEnemyStateWait;
 	}
 
 	return EnemyState::eEnemyStateDamage;
@@ -87,5 +93,11 @@ void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
 
+	// ダメージ値
+	int damageValue = _owner->GetDamageValue();
+	// 体力
+	mHitPoint = _owner->GetHitPoint() - damageValue;
+
 	_owner->RotateToNewForward(mDirPlayerVec);
+	_owner->SetHitPoint(mHitPoint);
 }

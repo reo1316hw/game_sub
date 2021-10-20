@@ -8,14 +8,16 @@
 EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObject* _playerPtr)
 	: MTransitionTimingNum(120)
 	, MStateTransitionProbability(100)
+	, MDamageValuePlayerFirstAttack(25)
 	, MTransitionStateShortDistance(15000.0f)
 	, MTransitionStateMediumDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(12.0f)
 	, mIsMoving(false)
 	, mIsDamage(false)
-	, mMoveSpeed(1.0f)
+	, mDamageValue(0)
 	, mPeriodMoveCount(0)
+	, mMoveSpeed(1.0f)
 	, mEnemyState(_State)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -50,6 +52,11 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 	mPosition += mVelocity;
 
 	++mPeriodMoveCount;
+
+	if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 
 	if (mPeriodMoveCount >= MTransitionTimingNum)
 	{
@@ -93,10 +100,6 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 		}
 
 		return EnemyState::eEnemyStateTrack;
-	}
-	else if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateDamage;
 	}
 
 	dirPlayerVec.Normalize();
@@ -157,6 +160,9 @@ void EnemyObjectStateMove::OnCollision(EnemyObject* _owner, const GameObject& _H
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

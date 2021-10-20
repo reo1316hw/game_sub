@@ -5,11 +5,13 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateWait::BossObjectStateWait(PlayerObject* _playerPtr)
-	: MTransitionStateDistance(30000.0f)
+	: MDamageValuePlayerFirstAttack(25)
+	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MTransitionTimingNum(120)
 	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
+	, mDamageValue(0)
 	, mPeriodWaitCount(0)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -31,6 +33,11 @@ BossState BossObjectStateWait::Update(BossObject* _owner, const float _DeltaTime
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
 	++mPeriodWaitCount;
+
+	if (mIsDamage)
+	{
+		return BossState::eBossStateDamage;
+	}
 
 	if (mPeriodWaitCount >= MTransitionTimingNum)
 	{
@@ -69,10 +76,6 @@ BossState BossObjectStateWait::Update(BossObject* _owner, const float _DeltaTime
 		{
 			return BossState::eBossStateTeleportation;
 		}
-	}
-	else if (mIsDamage)
-	{
-		return BossState::eBossStateDamage;
 	}
 
 	dirPlayerVec.Normalize();
@@ -129,6 +132,9 @@ void BossObjectStateWait::OnCollision(BossObject* _owner, const GameObject& _Hit
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

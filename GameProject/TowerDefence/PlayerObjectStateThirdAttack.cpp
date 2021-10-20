@@ -43,14 +43,15 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
+	if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
+
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		return PlayerState::ePlayerStateIdle;
-	}
-	else if (mIsHit)
-	{
-		return PlayerState::ePlayerStateDamage;
 	}
 
 	return PlayerState::ePlayerStateThirdAttack;

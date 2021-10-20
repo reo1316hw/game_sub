@@ -51,6 +51,11 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
+	if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
+
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -60,10 +65,6 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 		}
 
 		return PlayerState::ePlayerStateIdle;
-	}
-	else if(mIsHit)
-	{
-		return PlayerState::ePlayerStateDamage;
 	}
 
 	return PlayerState::ePlayerStateDashAttack;

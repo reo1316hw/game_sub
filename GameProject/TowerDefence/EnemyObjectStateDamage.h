@@ -49,6 +49,9 @@ private:
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
 
+	// 体力
+	int mHitPoint;
+
 	// このステートに入ってからの経過時刻
 	float mElapseTime;
 	// アニメーション総時間

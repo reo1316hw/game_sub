@@ -49,6 +49,8 @@ public:
 
 private:
 
+	// 1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値
@@ -58,6 +60,9 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+
+	// ダメージ値
+	int mDamageValue;
 
 	// 座標
 	Vector3 mPosition;

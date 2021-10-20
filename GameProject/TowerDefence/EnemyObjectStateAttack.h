@@ -60,6 +60,8 @@ private:
 	const int MBoxEnableTiming;
 	// 状態遷移確率
 	const int MStateTransitionProbability;
+	// プレイヤーの1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -74,6 +76,8 @@ private:
 
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
+	// ダメージ値
+	int mDamageValue;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;

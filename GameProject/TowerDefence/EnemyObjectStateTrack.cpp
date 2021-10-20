@@ -5,11 +5,13 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
-	: MTransitionStateDistance(30000.0f)
+	: MStateTransitionProbability(100)
+	, MDamageValuePlayerFirstAttack(25)
+	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
-	, MStateTransitionProbability(100)
 	, mIsDamage(false)
+	, mDamageValue(0)
 	, mMoveSpeed(2.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -30,6 +32,11 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	// プレイヤーに向いたベクトル
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
+	if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
+
 	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 	{
 		// ランダム値
@@ -47,10 +54,6 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 		{
 			return EnemyState::eEnemyStateRightMove;
 		}
-	}
-	else if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateDamage;
 	}
 
 	dirPlayerVec.Normalize();
@@ -113,6 +116,9 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

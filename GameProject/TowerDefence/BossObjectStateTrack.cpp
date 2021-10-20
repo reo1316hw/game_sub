@@ -6,10 +6,12 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateTrack::BossObjectStateTrack(PlayerObject* _playerPtr)
 	: MTimingTransitionOverheadAttack(240)
+	, MDamageValuePlayerFirstAttack(25)
 	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
+	, mDamageValue(0)
 	, UntilTransitionOverheadAttackCount(0)
 	, mMoveSpeed(5.0f)
 	, mPosition(Vector3::Zero)
@@ -36,6 +38,11 @@ BossState BossObjectStateTrack::Update(BossObject* _owner, const float _DeltaTim
 
 	++UntilTransitionOverheadAttackCount;
 
+	if (mIsDamage)
+	{
+		return BossState::eBossStateDamage;
+	}
+
 	if (dirPlayerVec.LengthSq() < MTransitionStateDistance)
 	{
 		if (randNum < 20)
@@ -61,18 +68,14 @@ BossState BossObjectStateTrack::Update(BossObject* _owner, const float _DeltaTim
 	}
 	else if(UntilTransitionOverheadAttackCount >= MTimingTransitionOverheadAttack)
 	{
-		if (randNum < 30)
+		if (randNum < 50)
 		{
 			return BossState::eBossStateOverheadAttack;
 		}
-		else if (randNum >= 30 && randNum < 60)
+		else
 		{
 			return BossState::eBossStateTeleportation;
 		}
-	}
-	else if (mIsDamage)
-	{
-		return BossState::eBossStateDamage;
 	}
 
 	dirPlayerVec.Normalize();
@@ -137,6 +140,9 @@ void BossObjectStateTrack::OnCollision(BossObject* _owner, const GameObject& _Hi
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

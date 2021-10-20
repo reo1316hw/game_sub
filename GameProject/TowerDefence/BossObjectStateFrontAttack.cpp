@@ -6,10 +6,12 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateFrontAttack::BossObjectStateFrontAttack(PlayerObject* _playerPtr)
 	: MTimingFixFacing(30)
+	, MDamageValuePlayerFirstAttack(25)
 	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
+	, mDamageValue(0)
 	, mFacingFixUntilTime(0)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -34,6 +36,11 @@ BossState BossObjectStateFrontAttack::Update(BossObject* _owner, const float _De
 
 	++mFacingFixUntilTime;
 
+	if (mIsDamage)
+	{
+		return BossState::eBossStateDamage;
+	}
+
 	// アニメーションが終了したら移動状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -53,10 +60,6 @@ BossState BossObjectStateFrontAttack::Update(BossObject* _owner, const float _De
 		}
 
 		return BossState::eBossStateTrack;
-	}
-	else if (mIsDamage)
-	{
-		return BossState::eBossStateDamage;
 	}
 
 	if (mFacingFixUntilTime < MTimingFixFacing)
@@ -119,6 +122,9 @@ void BossObjectStateFrontAttack::OnCollision(BossObject* _owner, const GameObjec
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

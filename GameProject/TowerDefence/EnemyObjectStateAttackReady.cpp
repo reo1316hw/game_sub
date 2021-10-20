@@ -7,6 +7,8 @@ EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
     : MVecShortenVelue(0.1f)
     , MSeparationVecLength(8.0f)
 	, mIsDamage(false)
+	, mDamageValue(0)
+	, MDamageValuePlayerFirstAttack(25)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 {
@@ -21,15 +23,16 @@ EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
 EnemyState EnemyObjectStateAttackReady::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	_owner->SetPosition(mPosition);
+	
+	if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 
 	// アニメーションが終了したら攻撃状態へ遷移
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		return EnemyState::eEnemyStateAttack;
-	}
-	else if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateDamage;
 	}
 
 	return EnemyState::eEnemyStateAttackReady;
@@ -84,6 +87,9 @@ void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObj
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

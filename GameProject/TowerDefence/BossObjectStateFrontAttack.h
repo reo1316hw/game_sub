@@ -51,6 +51,8 @@ private:
 
 	// 向きを確定するタイミング
 	const int MTimingFixFacing;
+	// 1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値
@@ -61,6 +63,8 @@ private:
 	// ダメージを受けたか
 	bool mIsDamage;
 
+	// ダメージ値
+	int mDamageValue;
 	// 向きを確定するまでの時間
 	int mFacingFixUntilTime;
 

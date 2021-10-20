@@ -51,6 +51,8 @@ private:
 
 	// 頭上攻撃に遷移するタイミング
 	const int MTimingTransitionOverheadAttack;
+	// 1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値
@@ -61,6 +63,8 @@ private:
 	// ダメージを受けたか
 	bool mIsDamage;
 
+	// ダメージ値
+	int mDamageValue;
 	// 頭上攻撃に遷移するまでのカウント
 	int UntilTransitionOverheadAttackCount;
 

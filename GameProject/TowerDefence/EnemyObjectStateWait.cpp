@@ -5,13 +5,15 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
-	: MTransitionStateShortDistance(15000.0f)
+	: MTransitionTimingNum(120)
+	, MStateTransitionProbability(100)
+	, MDamageValuePlayerFirstAttack(25)
+	, MTransitionStateShortDistance(15000.0f)
 	, MTransitionStateMediumDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
-	, MTransitionTimingNum(120)
-	, MStateTransitionProbability(100)
 	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
+	, mDamageValue(0)
 	, mPeriodWaitCount(0)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -35,6 +37,11 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
 	++mPeriodWaitCount;
+
+	if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
 
 	if (mPeriodWaitCount >= MTransitionTimingNum)
 	{
@@ -78,10 +85,6 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 		}
 
 		return EnemyState::eEnemyStateTrack;
-	}
-	else if(mIsDamage)
-	{
-		return EnemyState::eEnemyStateDamage;
 	}
 
 	dirPlayerVec.Normalize();
@@ -135,6 +138,9 @@ void EnemyObjectStateWait::OnCollision(EnemyObject* _owner, const GameObject& _H
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

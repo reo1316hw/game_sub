@@ -197,6 +197,8 @@ protected:
 	int mMyObjectId;
 	// 体力
 	int mHitPoint;
+	// ダメージ値
+	int mDamageValue;
 
 	// ゲームオブジェクトのメッシュ
 	MeshComponent* mMeshComponentPtr;
@@ -238,7 +240,7 @@ public:// ゲッターセッター
 	/// オブジェクトの座標を設定
 	/// </summary>
 	/// <param name="_Pos"> オブジェクトの座標 </param>
-	virtual void SetPosition(const Vector3& _Pos) { mPosition = _Pos; mRecomputeWorldTransform = true; }
+	void SetPosition(const Vector3& _Pos) { mPosition = _Pos; mRecomputeWorldTransform = true; }
 
 	/// <summary>
 	/// ワールド行列変換を行うかのフラグを取得
@@ -280,7 +282,7 @@ public:// ゲッターセッター
 	/// オブジェクトの回転値を設定する
 	/// </summary>
 	/// <param name="_Rotation"> オブジェクトの回転値 </param>
-	virtual void SetRotation(const Quaternion& _Rotation) { mRotation = _Rotation;  mRecomputeWorldTransform = true; }
+	void SetRotation(const Quaternion& _Rotation) { mRotation = _Rotation;  mRecomputeWorldTransform = true; }
 
 	/// <summary>
 	/// オブジェクトの状態を取得する
@@ -292,7 +294,7 @@ public:// ゲッターセッター
 	/// オブジェクトの状態を設定する
 	/// </summary>
 	/// <param name="_state"> オブジェクトの状態 </param>
-	virtual void SetState(State _state) { mState = _state; }
+	void SetState(State _state) { mState = _state; }
 
 	/// <summary>
 	/// オブジェクトのワールド行列を取得する
@@ -339,8 +341,20 @@ public:// ゲッターセッター
 	/// <summary>
 	/// オブジェクトの体力を設定する
 	/// </summary>
-	/// <param name="_hitPoint"> オブジェクトの体力 </param>
-	void SetScale(int _hitPoint) { mHitPoint = _hitPoint; }
+	/// <param name="_HitPoint"> オブジェクトの体力 </param>
+	void SetHitPoint(const int _HitPoint) { mHitPoint = _HitPoint; }
+
+	/// <summary>
+	/// オブジェクトのダメージ値を取得する
+	/// </summary>
+	/// <returns> オブジェクトのダメージ値 </returns>
+	int GetDamageValue() { return mDamageValue; }
+
+	/// <summary>
+	/// オブジェクトのダメージ値を設定する
+	/// </summary>
+	/// <param name="_DamageValue"> オブジェクトのダメージ値 </param>
+	void SetDamageValue(const int _DamageValue) { mDamageValue = _DamageValue; }
 
 	/// <summary>
 	/// 解放されるオブジェクトを取得する

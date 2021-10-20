@@ -5,10 +5,12 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateAreaAttack::BossObjectStateAreaAttack(PlayerObject* _playerPtr)
-	: MTransitionStateDistance(30000.0f)
+	: MDamageValuePlayerFirstAttack(25)
+	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
+	, mDamageValue(0)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
@@ -30,6 +32,11 @@ BossState BossObjectStateAreaAttack::Update(BossObject* _owner, const float _Del
 	// プレイヤーに向いたベクトルsd
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
+	if (mIsDamage)
+	{
+	    return BossState::eBossStateDamage;
+	}
+
 	// アニメーションが終了したら移動状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -49,10 +56,6 @@ BossState BossObjectStateAreaAttack::Update(BossObject* _owner, const float _Del
 		}
 
 		return BossState::eBossStateTrack;
-	}
-	else if(mIsDamage)
-	{
-		return BossState::eBossStateDamage;
 	}
 
 	return BossState::eBossStateAreaAttack;
@@ -108,6 +111,9 @@ void BossObjectStateAreaAttack::OnCollision(BossObject* _owner, const GameObject
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

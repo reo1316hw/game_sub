@@ -7,11 +7,13 @@
 EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr)
 	: MBoxEnableTiming(20)
 	, MStateTransitionProbability(100)
+	, MDamageValuePlayerFirstAttack(25)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
+	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
@@ -49,10 +51,15 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 
 	++mHitUntilCount;
 
-	if (mHitUntilCount == MBoxEnableTiming)
+	if (mHitUntilCount >= MBoxEnableTiming)
 	{
 		// 武器の当たり判定を行うようにする
 		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+	}
+
+	if (mIsDamage)
+	{
+		return EnemyState::eEnemyStateDamage;
 	}
 
 	// アニメーションが終了したら移動状態へ
@@ -73,10 +80,6 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 		{
 			return EnemyState::eEnemyStateRightMove;
 		}
-	}
-	else if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateDamage;
 	}
 
 	return EnemyState::eEnemyStateAttack;
@@ -148,6 +151,9 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 
 	if (tag == Tag::eWeapon)
 	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

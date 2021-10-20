@@ -15,6 +15,11 @@ PlayerObjectStateIdle::PlayerObjectStateIdle()
 /// <returns> ÉvÉåÉCÉÑÅ[ÇÃèÛë‘ </returns>
 PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, const float _DeltaTime)
 {
+    if (mIsHit)
+    {
+        return PlayerState::ePlayerStateDamage;
+    }
+
     if (mIsSprint)
     {
         if (mIsRun)
@@ -29,10 +34,6 @@ PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, const float _Del
     else if (mIsAttack)
     {
         return PlayerState::ePlayerStateFirstAttack;
-    }
-    else if (mIsHit)
-    {
-        return PlayerState::ePlayerStateDamage;
     }
 
     return PlayerState::ePlayerStateIdle;

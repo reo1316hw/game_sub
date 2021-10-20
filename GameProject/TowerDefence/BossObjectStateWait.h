@@ -51,7 +51,8 @@ private:
 
 	// 遷移するタイミング
 	const int MTransitionTimingNum;
-
+	// 1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値
@@ -62,6 +63,8 @@ private:
 	// ダメージを受けたか
 	bool mIsDamage;
 
+	// ダメージ値
+	int mDamageValue;
 	// 待機する時間のカウント変数
 	int mPeriodWaitCount;
 
