@@ -83,9 +83,6 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="UIComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="HDRRenderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
@@ -314,9 +311,6 @@
     <ClInclude Include="TitleScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="UIComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="HDRRenderer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -529,6 +523,9 @@
     </Filter>
     <Filter Include="GameObject\Map\Boss\State">
       <UniqueIdentifier>{7111f781-3c00-4c24-830c-97c7b9165dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy\UI">
+      <UniqueIdentifier>{78a5b99b-4cc6-4a6d-be8f-91dcfdb84702}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

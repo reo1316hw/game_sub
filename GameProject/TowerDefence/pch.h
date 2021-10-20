@@ -106,7 +106,6 @@
 #include "SkeletalMeshComponent.h"
 #include "ParticleComponent.h"
 #include "SpriteComponent.h"
-#include "UIComponent.h"
 
 #include "CubeMapComponent.h"
 #include "SkyBoxObject.h"

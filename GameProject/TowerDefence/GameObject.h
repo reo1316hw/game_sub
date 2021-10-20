@@ -195,6 +195,8 @@ protected:
 	static int mGameObjectId;
 	// このゲームオブジェクトのID
 	int mMyObjectId;
+	// 体力
+	int mHitPoint;
 
 	// ゲームオブジェクトのメッシュ
 	MeshComponent* mMeshComponentPtr;
@@ -327,6 +329,18 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> オブジェクトのid </returns>
 	int GetObjectId() { return mMyObjectId; }
+
+	/// <summary>
+	/// オブジェクトの体力を取得する
+	/// </summary>
+	/// <returns> オブジェクトの体力 </returns>
+	int GetHitPoint() { return mHitPoint; }
+
+	/// <summary>
+	/// オブジェクトの体力を設定する
+	/// </summary>
+	/// <param name="_hitPoint"> オブジェクトの体力 </param>
+	void SetScale(int _hitPoint) { mHitPoint = _hitPoint; }
 
 	/// <summary>
 	/// 解放されるオブジェクトを取得する

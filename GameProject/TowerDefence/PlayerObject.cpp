@@ -25,6 +25,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// GameObjectメンバ変数の初期化
 	SetScale(_Scale);
 	SetPosition(_Pos);
+	mHitPoint = 100;
 
 	// 生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);

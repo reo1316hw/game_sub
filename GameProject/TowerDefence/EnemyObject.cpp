@@ -22,6 +22,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	SetPosition(_Pos);
 	SetState(State::eDead);
 	mInitPosition = mPosition;
+	mHitPoint = 50;
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);
