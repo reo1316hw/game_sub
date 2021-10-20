@@ -40,23 +40,12 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Exit(BossObject* _owner, const float _DeltaTime)override;
 
-	/// <summary>
-	/// ボス同士の引き離し
-	/// </summary>
-	/// <param name="_owner"> ボス(親)のポインタ </param>
-	/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
-	void Separation(BossObject* _owner, const Vector3& _DirTargetEnemyVec)override;
-
 private:
 
 	// テレポート終わるタイミング
 	const int MTimingTeleportationEnding;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
-	// ベクトルを短くする値
-	const float MVecShortenVelue;
-	// 引き離しベクトルの長さ
-	const float MSeparationVecLength;
 
 	// ダメージを受けたか
 	bool mIsDamage;
@@ -66,8 +55,6 @@ private:
 
 	// 座標
 	Vector3 mPosition;
-	// 速度
-	Vector3 mVelocity;
 	// テレポートする向き
 	Vector3 mTeleportationVec;
 

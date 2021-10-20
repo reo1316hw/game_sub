@@ -12,7 +12,6 @@ EnemyControler::EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPt
 	, MDistanceThreshold(5000.0f)
 	, mUntilInElementsCount(0)
 	, mActiveCount(0)
-	, mReferenceEnemyPos(Vector3::Zero)
 	, mCreateEnemysPtr(_createEnemysPtr)
 {
 }
@@ -41,8 +40,6 @@ void EnemyControler::Update(float _deltaTime)
 			continue;
 		}
 		
-		// 基準となるエネミーの座標
-		mReferenceEnemyPos = referenceEnemyItr->GetPosition();
 		// 対象となるエネミーを検索
 		SearchTargetEnemy(enemyObjectList, referenceEnemyItr);
 
@@ -53,6 +50,8 @@ void EnemyControler::Update(float _deltaTime)
 
 		// 対象となるボスが基準となるエネミーの範囲内に侵入してきたか求める
 		InvadeWithinRange(referenceEnemyItr, bossObjectPtr);
+		// 対象となるエネミーが基準となるボスの範囲内に侵入してきたか求める
+		InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
 	}
 }
 
@@ -110,10 +109,12 @@ void EnemyControler::SearchTargetEnemy(std::vector<EnemyObject*> _enemyObjectLis
 /// <param name="_targetEnemyItr"> 対象となるオブジェクト </param>
 void EnemyControler::InvadeWithinRange(GameObject* _referenceEnemyItr, GameObject* _targetEnemyItr)
 {
+	// 基準となるオブジェクトの座標
+	Vector3 referenceEnemyPos = _referenceEnemyItr->GetPosition();
 	// 対象となるオブジェクトの座標
 	Vector3 targetEnemyPos = _targetEnemyItr->GetPosition();
 	// オブジェクト同士の距離
-	Vector3 distance = targetEnemyPos - mReferenceEnemyPos;
+	Vector3 distance = targetEnemyPos - referenceEnemyPos;
 
 	if (distance.LengthSq() <= MDistanceThreshold)
 	{

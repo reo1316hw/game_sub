@@ -7,7 +7,7 @@
 BossObjectStateAreaAttack::BossObjectStateAreaAttack(PlayerObject* _playerPtr)
 	: MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
-	, MSeparationVecLength(8.0f)
+	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)

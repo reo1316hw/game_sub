@@ -7,13 +7,10 @@
 BossObjectStateTeleportation::BossObjectStateTeleportation(PlayerObject* _playerPtr)
 	: MTimingTeleportationEnding(120)
 	, MTransitionStateDistance(30000.0f)
-	, MVecShortenVelue(0.1f)
-	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
 	, mUntilTeleportationEndingCount(0)
 	, mTeleportationVec(Vector3::Zero)
 	, mPosition(Vector3::Zero)
-	, mVelocity(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -110,23 +107,4 @@ void BossObjectStateTeleportation::Exit(BossObject* _owner, const float _DeltaTi
 {
 	// 不透明にする
 	_owner->GetSkeletalMeshComponentPtr()->SetVisible(true);
-}
-
-/// <summary>
-/// ボスとエネミーの引き離し
-/// </summary>
-/// <param name="_owner"> ボス(親)のポインタ </param>
-/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
-void BossObjectStateTeleportation::Separation(BossObject* _owner, const Vector3& _DirTargetEnemyVec)
-{
-	// 座標
-	mPosition = _owner->GetPosition();
-	// 引き離しベクトル
-	Vector3 separationVec = MSeparationVecLength * _DirTargetEnemyVec;
-
-	mVelocity -= separationVec;
-	mVelocity *= MVecShortenVelue;
-	mPosition += mVelocity;
-
-	_owner->SetPosition(mPosition);
 }

@@ -64,9 +64,6 @@ private:
 	// アクティブになったオブジェクトの数
 	int mActiveCount;
 
-	// 基準となるエネミーの座標
-	Vector3 mReferenceEnemyPos;
-
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
 };
