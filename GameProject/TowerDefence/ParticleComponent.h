@@ -45,8 +45,6 @@ private:
 	float mScale;
 	//透明度
 	float mAlpha; 
-	//テクスチャID
-	int mTextureID; 
 	//ブレンドタイプ
 	PARTICLE_ENUM mBlendType;
 	//描画を行うか
@@ -60,16 +58,19 @@ private:
 	//反転を行うか
 	bool mReverce;
 
+	//クラスのポインタ
+	Texture* mTexture;
+
 public: //ゲッターセッター
 
 	/*
 	@return テクスチャID
 	*/
-	int GetTextureID() { return mTextureID; }
+	Texture* GetTexture() { return mTexture; }
 	/*
 	@param _texId テクスチャID
 	*/
-	void SetTextureID(int _texId) { mTextureID = _texId; }
+	void SetTexture(Texture* _texture) { mTexture = _texture; }
 	/*
 	@return ブレンドタイプ
 	*/

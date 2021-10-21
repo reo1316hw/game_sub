@@ -88,6 +88,7 @@
 
 #include "HitPointGaugeController.h"
 #include "PlayerHitPointGauge.h"
+#include "EnemyHitPointGauge.h"
 
 #include "InputSystem.h"
 

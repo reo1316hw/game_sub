@@ -231,6 +231,9 @@
     <ClCompile Include="HitPointGaugeController.cpp">
       <Filter>UI\Player\Component</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyHitPointGauge.cpp">
+      <Filter>UI\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -464,6 +467,9 @@
     </ClInclude>
     <ClInclude Include="HitPointGaugeController.h">
       <Filter>UI\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyHitPointGauge.h">
+      <Filter>UI\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

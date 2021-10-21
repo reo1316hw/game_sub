@@ -20,7 +20,6 @@ ParticleComponent::ParticleComponent(GameObject* _owner, const Vector3& _offset,
 	, mColor(Vector3(1, 1, 1))
 	, mReverce(false)
 	, mTextureID(0)
-
 {
 	//レンダラーにポインターを送る
 	RENDERER->AddParticle(this);
@@ -44,12 +43,14 @@ void ParticleComponent::Draw(Shader* _shader)
 		return;
 	}
 	Matrix4 mat, matScale;
-	Vector3 reverceVec = Vector3(1, 1, 1);
+	Vector3 reverceVec = Vector3(1.0f, 1.0f, 1.0f);
+
 	//サイズを反転させる
 	if (mReverce)
 	{
-		reverceVec.x *= -1;
+		reverceVec.x *= -1.0f;
 	}
+
 	matScale = Matrix4::CreateScale(mScale*reverceVec* mOwner->GetScale());
 	mat = Matrix4::CreateTranslation(mOffset + mOwner->GetPosition());
 
@@ -58,7 +59,7 @@ void ParticleComponent::Draw(Shader* _shader)
 	_shader->SetVectorUniform("uColor", mColor);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	glBindTexture(GL_TEXTURE_2D, mTexture->GetTextureID());
 	_shader->SetIntUniform("uParticleTexture", 0);
 
 	RENDERER->SetParticleVertex();
