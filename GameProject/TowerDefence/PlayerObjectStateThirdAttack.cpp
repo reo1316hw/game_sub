@@ -6,8 +6,10 @@
 /// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
 	: MBoxEnableTiming(30)
+	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
+	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
@@ -103,6 +105,9 @@ void PlayerObjectStateThirdAttack::OnCollision(PlayerObject* _owner, const GameO
 
 	if (tag == Tag::eEnemyAttackDecision)
 	{
+		mDamageValue = MDamageValueEnemyAttack;
 		mIsHit = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

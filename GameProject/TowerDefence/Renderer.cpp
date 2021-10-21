@@ -217,28 +217,6 @@ void Renderer::Draw()
 {
 	mHDRRenderer->HdrRecordBegin();
 	{
-		//アルファブレンディングを有効にする
-		glEnable(GL_BLEND);
-		//デプスバッファ法を無効にする
-		glDisable(GL_DEPTH_TEST);
-
-		// RGB成分とα成分のブレンディング方法を別々に設定
-		glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-		// RGB成分とアルファ成分に別々の混合係数を設定
-		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-
-		// スプライトシェーダーをアクティブにする/スプライト頂点配列を有効にする
-		mSpriteShader->SetActive();
-		mSpriteVerts->SetActive();
-		// すべてのスプライトの描画
-		for (auto sprite : mSprites)
-		{
-			if (sprite->GetVisible())
-			{
-				sprite->Draw(mSpriteShader);
-			}
-		}
-
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
 
@@ -311,28 +289,28 @@ void Renderer::Draw()
 
 	DrawParticle();
 
+	// UIの描画
+	//アルファブレンディングを有効にする
+	glEnable(GL_BLEND);
+	//デプスバッファ法を無効にする
+	glDisable(GL_DEPTH_TEST);
 
-	//// UIの描画
-	//// アルファブレンディングを有効にする
-	//glEnable(GL_BLEND);
-	//// デプスバッファ法を無効にする
-	//glDisable(GL_DEPTH_TEST);
-	//// RGB成分とα成分のブレンディング方法を別々に設定
-	//glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-	//// RGB成分とアルファ成分に別々の混合係数を設定
-	//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+	// RGB成分とα成分のブレンディング方法を別々に設定
+	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+	// RGB成分とアルファ成分に別々の混合係数を設定
+	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
-	//// UIシェーダーをアクティブにする/スプライト頂点配列を有効にする
-	//mUiShader->SetActive();
-	//mUiVerts->SetActive();
-	//// すべてのUIの描画
-	//for (auto ui : mUis)
-	//{
-	//	if (ui->GetVisible())
-	//	{
-	//		ui->Draw(mUiShader, ui->GetOwner()->GetPosition());
-	//	}
-	//}
+	// スプライトシェーダーをアクティブにする/スプライト頂点配列を有効にする
+	mSpriteShader->SetActive();
+	mSpriteVerts->SetActive();
+	// すべてのスプライトの描画
+	for (auto sprite : mSprites)
+	{
+		if (sprite->GetVisible())
+		{
+			sprite->Draw(mSpriteShader);
+		}
+	}
 
 		// バッファを交換
 	SDL_GL_SwapWindow(mWindow);

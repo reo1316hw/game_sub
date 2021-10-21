@@ -49,6 +49,8 @@ public:
 
 private:
 
+	// エネミーの攻撃のダメージ値
+	const int MDamageValueEnemyAttack;
 	// 当たり判定を有効にするタイミング
 	const int MBoxEnableTiming;
 	// 攻撃時の速度
@@ -56,6 +58,8 @@ private:
 	// アニメーションの再生速度
 	const float MPlayRate;
 
+	// ダメージ値
+	int mDamageValue;
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
 

@@ -6,6 +6,7 @@
 MapCreate::MapCreate()
 	:GameObject(Tag::eOther)
 	, MCreateBossPosition(Vector3(2000.0f,2000.0f,0.0f))
+	, MCreateHitPointGaugePosition(Vector3(-600.0f, -400.0f, 0.0f))
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
 	, MShiftVec(Vector3(0.0f, 0.0f, 100.0f))
@@ -64,6 +65,9 @@ void MapCreate::OpenFile()
 	// エネミーボスを生成
 	mCreateEnemysPtr->CreateBossObject(MCreateBossPosition, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
 		                               "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
+
+	// プレイヤーのhpゲージを生成
+	new PlayerHitPointGauge(MCreateHitPointGaugePosition, "Assets/Texture/hp.png", Tag::eOther, mPlayerPtr);
 }
 
 /// <summary>

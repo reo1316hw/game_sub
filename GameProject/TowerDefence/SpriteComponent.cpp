@@ -2,11 +2,25 @@
 
 SpriteComponent::SpriteComponent(GameObject * _owner, int _drawOrder)
     : Component(_owner)
-    , mTexture(nullptr)
     , mDrawOrder(_drawOrder)
     , mTextureWidth(0)
     , mTextureHeight(0)
 	, mVisible(true)
+	, mHitPointGaugeControllerPtr(nullptr)
+    , mTexture(nullptr)
+{
+	//レンダラーにポインターを送る
+	RENDERER->AddSprite(this);
+}
+
+SpriteComponent::SpriteComponent(GameObject* _owner, HitPointGaugeController* _hitPointGaugeController, int _drawOrder)
+	: Component(_owner)
+	, mDrawOrder(_drawOrder)
+	, mTextureWidth(0)
+	, mTextureHeight(0)
+	, mVisible(true)
+	, mHitPointGaugeControllerPtr(_hitPointGaugeController)
+	, mTexture(nullptr)
 {
 	//レンダラーにポインターを送る
 	RENDERER->AddSprite(this);
@@ -27,6 +41,12 @@ void SpriteComponent::Draw(Shader * _shader)
 	//画像情報が空でないか、親オブジェクトが未更新状態でないか
 	if (mTexture&&mOwner->GetState()!=State::eDead)
 	{
+		// hpゲージを制御するコンポーネントクラスがあったらテクスチャの横幅を更新する
+		if (mHitPointGaugeControllerPtr != nullptr)
+		{
+			mTextureWidth = mHitPointGaugeControllerPtr->GetTextureWidthAfterChange();
+		}
+
 		Matrix4 scaleMatrix = Matrix4::CreateScale(
 			static_cast<float>(mTextureWidth),
 			static_cast<float>(mTextureHeight),

@@ -19,10 +19,8 @@ PlayerState PlayerObjectStateDeath::Update(PlayerObject* _owner, const float _De
 	// アニメーションが終了したら更新を止める
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		/*mWeaponPtr->SetState(State::eDead);
-		_owner->SetState(State::eDead);*/
-
-		return PlayerState::ePlayerStateIdle;
+		mWeaponPtr->SetState(State::eDead);
+		_owner->SetState(State::eDead);
 	}
 
 	return PlayerState::ePlayerStateDeath;

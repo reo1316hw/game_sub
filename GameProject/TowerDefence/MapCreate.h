@@ -58,6 +58,8 @@ private:
 	
 	// ボスを生成する座標
 	const Vector3 MCreateBossPosition;
+	// プレイヤーのhpゲージを生成する座標
+	const Vector3 MCreateHitPointGaugePosition;
 	// 静的オブジェクトの大きさ
 	const Vector3 MStaticObjectSize;
 	// プレイヤーの大きさ

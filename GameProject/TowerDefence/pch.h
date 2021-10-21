@@ -86,6 +86,9 @@
 #include "MainCameraObject.h"
 #include "Sprite.h"
 
+#include "HitPointGaugeController.h"
+#include "PlayerHitPointGauge.h"
+
 #include "InputSystem.h"
 
 #include "Component.h"

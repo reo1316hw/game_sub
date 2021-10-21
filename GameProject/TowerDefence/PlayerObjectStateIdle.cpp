@@ -4,6 +4,8 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateIdle::PlayerObjectStateIdle()
+    : MDamageValueEnemyAttack(25)
+    , mDamageValue(0)
 {
 }
 
@@ -99,6 +101,9 @@ void PlayerObjectStateIdle::OnCollision(PlayerObject* _owner, const GameObject& 
 
     if (tag == Tag::eEnemyAttackDecision)
     {
+        mDamageValue = MDamageValueEnemyAttack;
         mIsHit = true;
     }
+
+    _owner->SetDamageValue(mDamageValue);
 }

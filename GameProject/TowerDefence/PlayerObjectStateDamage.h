@@ -30,4 +30,7 @@ public:
 	void Enter(PlayerObject* _owner, const float _DeltaTime)override;
 
 private:
+
+	// ‘Ì—Í
+	int mHitPoint;
 };

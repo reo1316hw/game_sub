@@ -6,7 +6,9 @@
 /// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
 PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack(PlayerWeaponObject* _weaponPtr)
 	: MBoxEnableTiming(20)
+	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(100.0f)
+	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mNumFrame(0)
 	, MPlayRate(1.5f)
@@ -132,6 +134,9 @@ void PlayerObjectStateSecondAttack::OnCollision(PlayerObject* _owner, const Game
 
 	if (tag == Tag::eEnemyAttackDecision)
 	{
+		mDamageValue = MDamageValueEnemyAttack;
 		mIsHit = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

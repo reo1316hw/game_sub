@@ -4,9 +4,11 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
-	: MMoveSpeed(300.0f)
+	: MDamageValueEnemyAttack(25)
+	, MMoveSpeed(300.0f)
 	, MDirThreshold(0.5f)
 	, MLeftAxisThreshold(0.3f)
+	, mDamageValue(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mCameraPos(Vector3::Zero)
@@ -157,8 +159,11 @@ void PlayerObjectStateRunLoop::OnCollision(PlayerObject* _owner, const GameObjec
 
 	if (tag == Tag::eEnemyAttackDecision)
 	{
+		mDamageValue = MDamageValueEnemyAttack;
 		mIsHit = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }
 
 /// <summary>

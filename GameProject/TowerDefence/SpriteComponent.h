@@ -12,7 +12,9 @@ class Texture;
 class SpriteComponent : public Component
 {
 public:
-    SpriteComponent(GameObject* _owner, int _drawOrder = 100);
+
+	SpriteComponent(GameObject* _owner, int _drawOrder = 100);
+    SpriteComponent(GameObject* _owner, HitPointGaugeController* _hitPointGaugeController, int _drawOrder = 100);
     ~SpriteComponent();
 
 	/*
@@ -21,24 +23,29 @@ public:
 	*/
     virtual void Draw(Shader* _shader);
 protected:
-	//クラスのポインタ
-    Texture* mTexture;
-	// emisiiveテクスチャのポインタ
-	Texture* mEmissiveTexture;
-	//描画される順番（数値が少ないほど早く更新される）
-    int mDrawOrder;
-	//テクスチャの横幅
-    int mTextureWidth;
-	//テクスチャの縦幅
-    int mTextureHeight;
-	//emissive
-	//テクスチャの横幅
-	int mEmissiveTextureWidth;
-	//テクスチャの縦幅
-	int mEmissiveTextureHeight;
-
-	//描画を行うか
+	
+	// 描画を行うか
 	bool mVisible;
+
+	// 描画される順番（数値が少ないほど早く更新される）
+    int mDrawOrder;
+	// テクスチャの横幅
+    int mTextureWidth;
+	// テクスチャの縦幅
+    int mTextureHeight;
+	//// emissive
+	//// テクスチャの横幅
+	//int mEmissiveTextureWidth;
+	//// テクスチャの縦幅
+	//int mEmissiveTextureHeight;
+
+	// hpゲージを制御するコンポーネントクラスのポインタ
+	HitPointGaugeController* mHitPointGaugeControllerPtr;
+	// クラスのポインタ
+	Texture* mTexture;
+	//// emisiiveテクスチャのポインタ
+	//Texture* mEmissiveTexture;
+
 public://ゲッターセッター
 	/*
 	@fn テクスチャをセットし縦横の長さを計算する
@@ -51,6 +58,11 @@ public://ゲッターセッター
 	@return テクスチャの横幅
 	*/
 	int GetTexWidth() const { return mTextureWidth; }
+
+	/*
+	@return テクスチャの横幅
+	*/
+	void SetTexWidth(const int _TextureWidth) { mTextureWidth = _TextureWidth; }
 
 	/*
 	@return テクスチャの縦幅

@@ -33,7 +33,7 @@ public:
 
 protected:
 
-	//アタッチしているゲームオブジェクトのポインタ
+	// アタッチしているゲームオブジェクトのポインタ
 	GameObject* mOwner;			
 	// コンポーネントの更新順番（数値が小さいほど早く更新される）
 	int mUpdateOrder;

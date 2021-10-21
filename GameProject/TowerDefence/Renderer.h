@@ -37,8 +37,6 @@ class InvisibleMeshComponent;
 class Shader;
 class VertexArray;
 class ParticleComponent;
-class UIComponent;
-class HeartUI;
 class HDRRenderer;
 class CubeMapComponent;
 class PlayerObject;
@@ -99,18 +97,6 @@ public:
 	@param	_spriteComponent　削除するSpriteComponentクラスのポインタ
 	*/
 	void RemoveSprite(SpriteComponent* _spriteComponent);
-
-	/*
-	@brief  UIの追加
-	@param	_ui　追加するUIクラスのポインタ
-	*/
-	void AddUI(UIComponent* _ui);
-
-	/*
-	@brief UIの削除
-	@param	_ui　削除するUIクラスのポインタ
-	*/
-	void RemoveUI(UIComponent* _ui);
 
 	/*
 	@brief  パーティクルの追加
@@ -278,8 +264,6 @@ private:
 	std::vector<InvisibleMeshComponent*> mInvisibleMeshComponents;
 	//スプライトコンポーネントのポインタの可変長コンテナ
 	std::vector<SpriteComponent*> mSprites;
-	//UIのポインタの可変長コンテナ
-	std::vector<UIComponent*> mUis;
 	//パーティクルのポインタ
 	std::vector<ParticleComponent*> mParticles;
 	//ファイル名でテクスチャを取得するための連想配列
@@ -337,8 +321,6 @@ private:
 	SDL_GLContext mContext;
 	// UIの初期座標に加算される座標
 	Vector2 mAddPosition;
-
-	HeartUI* mHeartUI;
 
 	// 未設定テクスチャの場合に割り当てられる黒色テクスチャ
 	unsigned int mUndefineTexID;

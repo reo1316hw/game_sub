@@ -55,12 +55,17 @@ private:
     /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void MoveCalc(PlayerObject* _owner, const float _DeltaTime);
 
+	// エネミーの攻撃のダメージ値
+	const int MDamageValueEnemyAttack;
 	// 移動速度
 	const float MMoveSpeed;
 	// 向きのしきい値
 	const float MDirThreshold;
 	//移動するための左スティックのしきい値
 	const float MLeftAxisThreshold;
+
+	// ダメージ値
+	int mDamageValue;
 
 	// 座標
 	Vector3 mPosition;

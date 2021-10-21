@@ -6,7 +6,9 @@
 /// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(PlayerWeaponObject* _weaponPtr)
 	: MBoxEnableTiming(20)
+	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(300.0f)
+	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mNumFrame(0)
 	, MPlayRate(1.5f)
@@ -133,6 +135,9 @@ void PlayerObjectStateDashAttack::OnCollision(PlayerObject* _owner, const GameOb
 
 	if (tag == Tag::eEnemyAttackDecision)
 	{
+		mDamageValue = MDamageValueEnemyAttack;
 		mIsHit = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }

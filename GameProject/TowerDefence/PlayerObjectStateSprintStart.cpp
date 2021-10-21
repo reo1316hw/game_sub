@@ -4,11 +4,13 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateSprintStart::PlayerObjectStateSprintStart()
-	: MMoveSpeed(100.0f)
+	: MDamageValueEnemyAttack(25)
+	, MMoveSpeed(100.0f)
 	, MMaxSpeed(12.0f)
 	, MPlayRate(1.2f)
 	, MDirThreshold(0.5f)
 	, MLeftAxisThreshold(0.3f)
+	, mDamageValue(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mCameraPos(Vector3::Zero)
@@ -138,8 +140,11 @@ void PlayerObjectStateSprintStart::OnCollision(PlayerObject* _owner, const GameO
 
 	if (tag == Tag::eEnemyAttackDecision)
 	{
+		mDamageValue = MDamageValueEnemyAttack;
 		mIsHit = true;
 	}
+
+	_owner->SetDamageValue(mDamageValue);
 }
 
 /// <summary>

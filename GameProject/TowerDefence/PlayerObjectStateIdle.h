@@ -47,4 +47,10 @@ public:
 	void OnCollision(PlayerObject* _owner, const GameObject& _HitObject)override;
 
 private:
+
+	// エネミーの攻撃のダメージ値
+	const int MDamageValueEnemyAttack;
+
+	// ダメージ値
+	int mDamageValue;
 };

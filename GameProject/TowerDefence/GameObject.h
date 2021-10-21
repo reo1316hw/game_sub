@@ -374,4 +374,3 @@ public:// ゲッターセッター
 	/// <returns> 矩形の当たり判定を行うクラスのポインタ </returns>
 	BoxCollider* GetBoxCollider() { return mBoxColliderPtr; }
 };
-
