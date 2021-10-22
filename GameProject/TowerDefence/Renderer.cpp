@@ -718,7 +718,7 @@ void Renderer::DrawParticle()
 
 	// テクスチャID初期状態取得
 	int nowTexture, prevTexture;
-	nowTexture = prevTexture = (*itr)->GetTextureID();
+	nowTexture = prevTexture = (*itr)->GetTexture()->GetTextureID();
 
 	// ビュープロジェクション行列
 	Matrix4 viewProjectionMat;
@@ -752,7 +752,7 @@ void Renderer::DrawParticle()
 				ChangeBlendMode(blendType);
 			}
 			// テクスチャ変更が必要なら変更する
-			nowTexture = particle->GetTextureID();
+			nowTexture = particle->GetTexture()->GetTextureID();
 			if (nowTexture != prevTexture)
 			{
 				ChangeTexture(nowTexture);

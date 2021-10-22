@@ -19,7 +19,7 @@ ParticleComponent::ParticleComponent(GameObject* _owner, const Vector3& _offset,
 	, mDrawOrder(_updateOrder)
 	, mColor(Vector3(1, 1, 1))
 	, mReverce(false)
-	, mTextureID(0)
+	, mTexture(nullptr)
 {
 	//レンダラーにポインターを送る
 	RENDERER->AddParticle(this);

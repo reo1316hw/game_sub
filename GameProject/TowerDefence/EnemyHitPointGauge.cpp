@@ -23,6 +23,6 @@ EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Pos, const std::string& _
 	mHitPointGaugeControllerPtr = new HitPointGaugeController(_playerPtr, texture);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mParticlePtr = new ParticleComponent(this, mHitPointGaugeControllerPtr);
+	mParticlePtr = new ParticleComponent(this/*, mHitPointGaugeControllerPtr*/);
 	mParticlePtr->SetTexture(texture);
 }
