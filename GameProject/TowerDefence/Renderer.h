@@ -289,7 +289,7 @@ private:
 	// スカイボックス
 	Shader* mSkyBoxShader;
 	// パーティクル用頂点定義
-	VertexArray* mParticleVertex;   
+	VertexArray* mParticleVertex;
 	// プレイヤー
 	PlayerObject* mPlayer;
 

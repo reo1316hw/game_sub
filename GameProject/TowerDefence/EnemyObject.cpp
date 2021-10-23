@@ -13,6 +13,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
 	, MPlayRate(1.0f)
+	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
 	, mNextState(EnemyState::eEnemyStateTrack)
@@ -66,7 +67,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	new EnemyHitPointGauge(_Pos + Vector3(0.0f,0.0f,100.0f), "Assets/Texture/hp.png", Tag::eOther, this);
+	new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
 }
 
 /// <summary>

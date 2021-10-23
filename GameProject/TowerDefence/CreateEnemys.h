@@ -51,7 +51,8 @@ public:
     /// <param name="_GpskelName"> gpskelのパス </param>
     /// <param name="_ObjectTag"> オブジェクトのタグ </param>
     /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-    void CreateBossObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName,
+    /// <returns> ボスのポインタ </returns>
+    BossObject* CreateBossObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName,
                            const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr);
 
 private:

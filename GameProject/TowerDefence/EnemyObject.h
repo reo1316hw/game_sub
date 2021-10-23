@@ -70,6 +70,9 @@ private:
 	// アニメーションの再生速度
 	const float MPlayRate;
 
+	// hpゲージの大きさ
+	const Vector3 MHpGaugeScale;
+
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>       mAnimTypes;
 	// ステートクラスプール

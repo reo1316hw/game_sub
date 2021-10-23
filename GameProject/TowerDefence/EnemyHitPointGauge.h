@@ -13,18 +13,23 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="_Pos"> UIの生成場所(スクリーン座標) </param>
+	/// <param name="_Scale"> 画像の拡大サイズ </param>
 	/// <param name="_TextureName"> テクスチャのパス </param>
 	/// <param name="_ObjectTag"> アタッチしたゲームオブジェクトのタグ </param>
-	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
-	/// <param name="_Scale"> 画像の拡大サイズ </param>
-	EnemyHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
-		               EnemyObject* _EnemyPtr, const float& _Scale = 10.0f);
+	/// <param name="_enemyPtr"> プレイヤーのポインタ </param>
+	EnemyHitPointGauge(const Vector3& _Scale, const std::string& _TextureName, 
+		               const Tag& _ObjectTag, EnemyObject* _enemyPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~EnemyHitPointGauge() {};
+
+	/// <summary>
+	/// ゲームオブジェクトのアップデート
+	/// </summary>
+	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	void UpdateGameObject(float _deltaTime)override;
 
 private:
 
@@ -32,4 +37,6 @@ private:
 	HitPointGaugeController* mHitPointGaugeControllerPtr;
 	// スクリーン上に描画するコンポーネントクラスのポインタ
 	ParticleComponent* mParticlePtr;
+	// エネミーのポインタ
+	EnemyObject* mEnemyPtr;
 };

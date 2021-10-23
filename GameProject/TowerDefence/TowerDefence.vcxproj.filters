@@ -229,10 +229,13 @@
       <Filter>UI\Player</Filter>
     </ClCompile>
     <ClCompile Include="HitPointGaugeController.cpp">
-      <Filter>UI\Player\Component</Filter>
+      <Filter>UI\Component</Filter>
     </ClCompile>
     <ClCompile Include="EnemyHitPointGauge.cpp">
       <Filter>UI\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BossHitPointGauge.cpp">
+      <Filter>UI\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -466,10 +469,13 @@
       <Filter>UI\Player</Filter>
     </ClInclude>
     <ClInclude Include="HitPointGaugeController.h">
-      <Filter>UI\Player\Component</Filter>
+      <Filter>UI\Component</Filter>
     </ClInclude>
     <ClInclude Include="EnemyHitPointGauge.h">
       <Filter>UI\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHitPointGauge.h">
+      <Filter>UI\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -554,7 +560,7 @@
     <Filter Include="UI\Boss">
       <UniqueIdentifier>{d2e3ed64-ac44-4ed4-bfad-31ba4c466b5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\Player\Component">
+    <Filter Include="UI\Component">
       <UniqueIdentifier>{7916fa6b-5ef5-4f2a-94a1-de37efdb19f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

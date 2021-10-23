@@ -54,9 +54,12 @@ void CreateEnemys::CreateEnemyObject(const Vector3& _Scale, const char* _GpmeshN
 /// <param name="_GpskelName"> gpskelのパス </param>
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-void CreateEnemys::CreateBossObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr)
+/// <returns> ボスのポインタ </returns>
+BossObject* CreateEnemys::CreateBossObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr)
 {
 	// エネミーボスを生成
 	mBossObjectPtr = new BossObject(_Pos, _Scale, "Assets/Model/Boss/Boss.gpmesh",
 		                            "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, _playerPtr);
+
+	return mBossObjectPtr;
 }

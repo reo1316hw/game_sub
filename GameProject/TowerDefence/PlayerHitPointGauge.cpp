@@ -9,7 +9,7 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 /// <param name="_Scale"> 画像の拡大サイズ </param>
 PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
-	                                     PlayerObject* _playerPtr, const float& _Scale)
+	PlayerObject* _playerPtr, const float& _Scale)
 	: GameObject(_ObjectTag)
 	, mHitPointGaugeControllerPtr(nullptr)
 	, mSpritePtr(nullptr)

@@ -2,6 +2,7 @@
 
 // 前方宣言
 class PlayerObject;
+class BossObject;
 class EnemyObjectManager;
 class CreateEnemys;
 
@@ -58,8 +59,10 @@ private:
 	
 	// ボスを生成する座標
 	const Vector3 MCreateBossPosition;
-	// プレイヤーのhpゲージを生成する座標
-	const Vector3 MCreateHitPointGaugePosition;
+	// プレイヤーのhpゲージの座標
+	const Vector3 MPlayerHitPointGaugePosition;
+	// ボスのhpゲージの座標
+	const Vector3 MBossHitPointGaugePosition;
 	// 静的オブジェクトの大きさ
 	const Vector3 MStaticObjectSize;
 	// プレイヤーの大きさ
@@ -81,6 +84,8 @@ private:
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
+	// ボスのポインタ
+	BossObject* mBossPtr;
 	// エネミーマネージャーのポインタ
 	EnemyObjectManager* mEnemyObjectManagerPtr;
 	// エネミーたちを生成するクラスのポインタ

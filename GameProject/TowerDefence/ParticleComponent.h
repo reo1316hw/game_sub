@@ -20,8 +20,8 @@ public:
 	 @param _offset 親オブジェクトクラスと画像を描画する位置の差
 	 @param _scale 画像の描画サイズ
 	*/
-	ParticleComponent(GameObject* _owner, Texture* _texture, float _scale = 1.0f, int _updateOrder = 100);
-	ParticleComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeControllerconst, float _scale = 1.0f, int _updateOrder = 100);
+	ParticleComponent(GameObject* _owner, Texture* _texture, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f), const int& _UpdateOrder = 100);
+	ParticleComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeControllerconst, const Vector3& _Scale = Vector3(1.0f,1.0f,1.0f), const int& _updateOrder = 100);
 	~ParticleComponent();
 
 	virtual void Update(float _deltaTime) override {};
@@ -52,20 +52,18 @@ private:
 	//テクスチャの縦幅
 	int mTextureHeight;
 
-	//サイズ
-	float mScale;
 	//透明度
 	float mAlpha;
 
+	//サイズ
+	Vector3 mScale;
 	//画像に乗算する色
 	Vector3 mColor;
 	//ブレンドタイプ
 	PARTICLE_ENUM mBlendType;
 
 	// ビルボード行列
-	static Matrix4 mStaticBillboardMat;
-	// カメラのワールド座標
-	static Vector3 mStaticCameraWorldPos;
+	static Matrix4 mBillboardMat;
 
 	// hpゲージを制御するコンポーネントクラスのポインタ
 	HitPointGaugeController* mHitPointGaugeControllerPtr;
@@ -93,7 +91,7 @@ public: //ゲッターセッター
 	/*
 	@param _mat ビルボード行列
 	*/
-	void SetBillboardMat(const Matrix4& _mat) {	mStaticBillboardMat = _mat; }
+	void SetBillboardMat(const Matrix4& _mat) {	mBillboardMat = _mat; }
 	
 	/*
 	@brief　描画をするかどうかを取得する
