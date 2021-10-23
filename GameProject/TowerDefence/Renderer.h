@@ -251,7 +251,7 @@ private:
 	*/
 	void SetLightUniforms(Shader* _shader, const Matrix4& _view);
 
-	void ChangeBlendMode(ParticleComponent::PARTICLE_BLEND_ENUM _blendType);
+	void ChangeBlendMode(ParticleComponent::ParticleBlendType _blendType);
 	void ChangeTexture(int _changeTextureID);
 
 	Vector3 CalcCameraPos();

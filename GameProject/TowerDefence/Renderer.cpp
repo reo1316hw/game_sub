@@ -712,7 +712,7 @@ void Renderer::DrawParticle()
 		return;
 	}
 	// ブレンドモード初期状態取得
-	ParticleComponent::PARTICLE_BLEND_ENUM blendType, prevType;
+	ParticleComponent::ParticleBlendType blendType, prevType;
 	auto itr = mParticles.begin();
 	blendType = prevType = (*itr)->GetBlendType();
 
@@ -727,9 +727,6 @@ void Renderer::DrawParticle()
 	// シェーダーON
 	mParticleShader->SetActive();
 	mParticleShader->SetMatrixUniform("uViewProj", viewProjectionMat);
-
-	// 全てのパーティクルのビルボード行列をセット
-	(*itr)->SetBillboardMat((*itr)->GetBillboardMatrix());
 
 	glEnable(GL_BLEND);
 	glDepthMask(GL_FALSE);
@@ -855,17 +852,17 @@ void Renderer::SetLightUniforms(Shader* _shader, const Matrix4& _view)
 		mDirLight.m_specColor);
 }
 
-void Renderer::ChangeBlendMode(ParticleComponent::PARTICLE_BLEND_ENUM blendType)
+void Renderer::ChangeBlendMode(ParticleComponent::ParticleBlendType blendType)
 {
 	switch (blendType)
 	{
-	case ParticleComponent::PARTICLE_BLEND_ENUM_ADD:
+	case ParticleComponent::eParticleBlendAdd:
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);  //加算合成
 		break;
-	case ParticleComponent::PARTICLE_BLEND_ENUM_ALPHA:
+	case ParticleComponent::eParticleBlendAlpha:
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // アルファブレンド
 		break;
-	case ParticleComponent::PARTICLE_BLEND_ENUM_MULT:
+	case ParticleComponent::eParticleBlendMult:
 		glBlendFunc(GL_ZERO, GL_SRC_COLOR); //乗算合成
 		break;
 	default:

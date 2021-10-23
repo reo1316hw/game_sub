@@ -5,23 +5,41 @@ class GameObject;
 class Shader;
 class Texture;
 
-/*
-@file SpriteComponent.h
-@brief 画像データクラスを管理し、スクリーン上に描画するクラス
-*/
+/// <summary>
+/// 画像データクラスを管理し、スクリーン上に描画するクラス
+/// </summary>
 class SpriteComponent : public Component
 {
 public:
 
-	SpriteComponent(GameObject* _owner, Texture* _texture, int _drawOrder = 100);
-    SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, int _drawOrder = 100);
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+	/// <param name="_texture"> テクスチャのポインタ </param>
+	/// <param name="_DrawOrder"> 描画の順番 </param>
+	SpriteComponent(GameObject* _owner, Texture* _texture, const int& _DrawOrder = 100);
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+	/// <param name="_texture"> テクスチャのポインタ </param>
+	/// <param name="_hitPointGaugeController"> hpゲージを制御するクラスのポインタ </param>
+	/// <param name="_DrawOrder"> 描画の順番 </param>
+    SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, const int& _DrawOrder = 100);
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
     ~SpriteComponent();
 
-	/*
-	@brief	描画処理
-	@param _shader 使用するシェーダークラスのポインタ
-	*/
+    /// <summary>
+    /// 描画処理
+    /// </summary>
+    /// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
     virtual void Draw(Shader* _shader);
+
 protected:
 	
 	// 描画を行うか
@@ -39,23 +57,24 @@ protected:
 	// クラスのポインタ
 	Texture* mTexture;
 
-public://ゲッターセッター
+public:// ゲッターセッター
 
-	/*
-	@return 描画順
-	*/
+	/// <summary>
+	/// 描画順を取得
+	/// </summary>
+	/// <returns> 描画順 </returns>
 	int GetDrawOrder() { return mDrawOrder; }
 
-	/*
-	@brief　描画をするかどうかを設定
-	@param	true : 描画する , false : 描画しない
-	*/
-	void SetVisible(bool _visible) { mVisible = _visible; }
-
-	/*
-	@brief　描画をするかどうかを取得する
-	@return	true : 描画する , false : 描画しない
-	*/
+	/// <summary>
+	/// 描画をするかどうかのフラグを取得する
+	/// </summary>
+	/// <returns> true : 描画する , false : 描画しない </returns>
 	bool GetVisible() const { return mVisible; }
+
+	/// <summary>
+	/// 描画をするかどうかのフラグを設定
+	/// </summary>
+	/// <param name="_visible"> 描画をするかどうかのフラグ </param>
+	void SetVisible(bool _visible) { mVisible = _visible; }
 };
 

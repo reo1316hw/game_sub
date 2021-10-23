@@ -16,7 +16,7 @@ PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string&
 {
 	SetPosition(_Pos);
 
-	//　テクスチャの取得
+	// テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス

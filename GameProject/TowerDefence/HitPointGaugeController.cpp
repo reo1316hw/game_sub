@@ -15,9 +15,9 @@ HitPointGaugeController::HitPointGaugeController(GameObject* _owner, Texture* _t
 }
 
 /// <summary>
-/// 変更後のテクスチャの横幅を取得する
+/// フレーム毎の処理
 /// </summary>
-/// <returns> 変更後のテクスチャの横幅 </returns>
+/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void HitPointGaugeController::Update(float _deltaTime)
 {
 	// 1フレーム前のhp

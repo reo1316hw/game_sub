@@ -1,8 +1,14 @@
 #include "pch.h"
 
-SpriteComponent::SpriteComponent(GameObject * _owner, Texture* _texture, int _drawOrder)
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+/// <param name="_texture"> テクスチャのポインタ </param>
+/// <param name="_DrawOrder"> 描画の順番 </param>
+SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, const int& _DrawOrder)
     : Component(_owner)
-    , mDrawOrder(_drawOrder)
+    , mDrawOrder(_DrawOrder)
     , mTextureWidth(0)
     , mTextureHeight(0)
 	, mVisible(true)
@@ -16,9 +22,16 @@ SpriteComponent::SpriteComponent(GameObject * _owner, Texture* _texture, int _dr
 	RENDERER->AddSprite(this);
 }
 
-SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, int _drawOrder)
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+/// <param name="_texture"> テクスチャのポインタ </param>
+/// <param name="_hitPointGaugeController"> hpゲージを制御するクラスのポインタ </param>
+/// <param name="_DrawOrder"> 描画の順番 </param>
+SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, const int& _DrawOrder)
 	: Component(_owner)
-	, mDrawOrder(_drawOrder)
+	, mDrawOrder(_DrawOrder)
 	, mTextureWidth(0)
 	, mTextureHeight(0)
 	, mVisible(true)
@@ -32,16 +45,19 @@ SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, HitPoint
 	RENDERER->AddSprite(this);
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 SpriteComponent::~SpriteComponent()
 {
 	//レンダラーからポインタを削除する
 	RENDERER->RemoveSprite(this);
 }
 
-/*
-@brief	描画処理
-@param _shader 使用するシェーダークラスのポインタ
-*/
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
 void SpriteComponent::Draw(Shader * _shader)
 {
 	//画像情報が空でないか、親オブジェクトが未更新状態でないか

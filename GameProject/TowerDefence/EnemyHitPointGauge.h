@@ -33,6 +33,9 @@ public:
 
 private:
 
+	// エネミーからの距離ベクトル
+	const Vector3 MOffset;
+
 	// hpゲージを制御するコンポーネントクラスのポインタ
 	HitPointGaugeController* mHitPointGaugeControllerPtr;
 	// スクリーン上に描画するコンポーネントクラスのポインタ

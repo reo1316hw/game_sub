@@ -1,20 +1,20 @@
 #include "pch.h"
 
-Matrix4 ParticleComponent::mBillboardMat;
-
-/*
- @param _offset 親オブジェクトクラスと画像を描画する位置の差
- @param _scale 画像の描画サイズ
-*/
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+/// <param name="_texture"> テクスチャのポインタ </param>
+/// <param name="_Scale"> 画像の描画サイズ </param>
+/// <param name="_UpdateOrder"> コンポーネントの更新順番（数値が小さいほど早く更新される）</param>
 ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, const Vector3& _Scale, const int& _UpdateOrder)
 	: Component(_owner, _UpdateOrder)
 	, mScale(_Scale)
 	, mAlpha(1.0f)
-	, mBlendType(PARTICLE_BLEND_ENUM::PARTICLE_BLEND_ENUM_ALPHA)
+	, mBlendType(ParticleType::eParticleBlendAlpha)
 	, mVisible(true)
 	, mDrawOrder(_UpdateOrder)
 	, mColor(Vector3(1, 1, 1))
-	, mReverce(false)
 	, mTextureWidth(0)
 	, mTextureHeight(0)
 	, mHitPointGaugeControllerPtr(nullptr)
@@ -27,19 +27,22 @@ ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, cons
 	RENDERER->AddParticle(this);
 }
 
-/*
- @param _offset 親オブジェクトクラスと画像を描画する位置の差
- @param _scale 画像の描画サイズ
-*/
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+/// <param name="_texture"> テクスチャのポインタ </param>
+/// <param name="_hitPointGaugeControllerconst"> hpゲージを制御するクラスのポインタ </param>
+/// <param name="_Scale"> 画像の描画サイズ </param>
+/// <param name="_UpdateOrder"> コンポーネントの更新順番（数値が小さいほど早く更新される）</param>
 ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, const Vector3& _Scale, const int& _UpdateOrder)
 	: Component(_owner, _UpdateOrder)
 	, mScale(_Scale)
 	, mAlpha(1.0f)
-	, mBlendType(PARTICLE_BLEND_ENUM::PARTICLE_BLEND_ENUM_ALPHA)
+	, mBlendType(ParticleType::eParticleBlendAlpha)
 	, mVisible(true)
 	, mDrawOrder(_UpdateOrder)
 	, mColor(Color::White)
-	, mReverce(false)
 	, mTextureWidth(0)
 	, mTextureHeight(0)
 	, mHitPointGaugeControllerPtr(_hitPointGaugeController)
@@ -52,16 +55,19 @@ ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, HitP
 	RENDERER->AddParticle(this);
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 ParticleComponent::~ParticleComponent()
 {
 	//レンダラーからポインタを削除する
 	RENDERER->RemoveParticle(this);
 }
 
-/*
-@brief　描画処理
-@param	_shader 使用するシェーダークラスのポインタ
-*/
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
 void ParticleComponent::Draw(Shader* _shader)
 {
 	// 画像情報が空でないか、親オブジェクトが未更新状態でないか
@@ -76,13 +82,19 @@ void ParticleComponent::Draw(Shader* _shader)
 		mTextureWidth = mHitPointGaugeControllerPtr->GetTextureWidthAfterChange();
 	}
 
+	// 拡大縮小行列
 	Matrix4 matScale = Matrix4::CreateScale(
 		static_cast<float>(mTextureWidth) * mScale.x,
 		static_cast<float>(mTextureHeight) * mScale.y,
 		1.0f * mScale.z);
 
+	// 平行移動行列
 	Matrix4 mat = Matrix4::CreateTranslation(mOwner->GetPosition());
 
+	// ビルボード行列作成
+	mBillboardMat = CreateBillboardMatrix();
+
+	// ワールド座標
 	Matrix4 world =  matScale * mBillboardMat * mat;
 
 	_shader->SetMatrixUniform("uWorldTransform", world);
@@ -97,7 +109,11 @@ void ParticleComponent::Draw(Shader* _shader)
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
-Matrix4 ParticleComponent::GetBillboardMatrix()
+/// <summary>
+/// ビルボード行列作成
+/// </summary>
+/// <returns></returns>
+Matrix4 ParticleComponent::CreateBillboardMatrix()
 {
 	Matrix4 ret;
 	ret = RENDERER->GetViewMatrix();
@@ -105,26 +121,8 @@ Matrix4 ParticleComponent::GetBillboardMatrix()
 	ret.Transpose();
 	ret.mat[2][2] *= -1.0f;
 
-	Matrix4 rot = Matrix4::CreateRotationX(-0.5f * 3.14159f);
+	Matrix4 rot = Matrix4::CreateRotationX(-0.5f * Math::Pi);
 	ret = rot * ret;
 
 	return Matrix4(ret);
 }
-
-//// カメラ距離でのソート用
-//bool ParticleComponent::operator<(const ParticleComponent& _rhs) const
-//{
-//	float lenThis, lenRhs;
-//	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
-//	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
-//	return lenThis < lenRhs;
-//}
-//
-//// カメラ距離でのソート用
-//bool ParticleComponent::operator>(const ParticleComponent& _rhs) const
-//{
-//	float lenThis, lenRhs;
-//	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
-//	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
-//	return lenThis > lenRhs;
-//}

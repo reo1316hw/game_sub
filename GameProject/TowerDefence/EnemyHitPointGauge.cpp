@@ -10,11 +10,11 @@
 EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Scale, const std::string& _TextureName,
 	const Tag& _ObjectTag, EnemyObject* _enemyPtr)
 	: GameObject(_ObjectTag)
+	, MOffset(Vector3(-25.0f, 0.0f, 100.0f))
 	, mHitPointGaugeControllerPtr(nullptr)
 	, mParticlePtr(nullptr)
 	, mEnemyPtr(_enemyPtr)
 {
-
 	//　テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
@@ -31,5 +31,6 @@ EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Scale, const std::string&
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyHitPointGauge::UpdateGameObject(float _deltaTime)
 {
-	SetPosition(mEnemyPtr->GetPosition() + Vector3(-25.0f, 0.0f, 100.0f));
+	mPosition = mEnemyPtr->GetPosition() + MOffset;
+	SetPosition(mPosition);
 }
