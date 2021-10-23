@@ -9,9 +9,8 @@ Vector3 ParticleComponent::mStaticCameraWorldPos;
  @param _offset 親オブジェクトクラスと画像を描画する位置の差
  @param _scale 画像の描画サイズ
 */
-ParticleComponent::ParticleComponent(GameObject* _owner, const Vector3& _offset, float _scale, int _updateOrder)
+ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, float _scale, int _updateOrder)
 	: Component(_owner, _updateOrder)
-	, mOffset(_offset)
 	, mScale(_scale)
 	, mAlpha(1.0f)
 	, mBlendType(PARTICLE_BLEND_ENUM::PARTICLE_BLEND_ENUM_ALPHA)
@@ -19,8 +18,39 @@ ParticleComponent::ParticleComponent(GameObject* _owner, const Vector3& _offset,
 	, mDrawOrder(_updateOrder)
 	, mColor(Vector3(1, 1, 1))
 	, mReverce(false)
-	, mTexture(nullptr)
+	, mTextureWidth(0)
+	, mTextureHeight(0)
+	, mHitPointGaugeControllerPtr(nullptr)
+	, mTexture(_texture)
 {
+	mTextureWidth = mTexture->GetWidth();
+	mTextureHeight = mTexture->GetHeight();
+
+	//レンダラーにポインターを送る
+	RENDERER->AddParticle(this);
+}
+
+/*
+ @param _offset 親オブジェクトクラスと画像を描画する位置の差
+ @param _scale 画像の描画サイズ
+*/
+ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, float _scale, int _updateOrder)
+	: Component(_owner, _updateOrder)
+	, mScale(_scale)
+	, mAlpha(1.0f)
+	, mBlendType(PARTICLE_BLEND_ENUM::PARTICLE_BLEND_ENUM_ALPHA)
+	, mVisible(true)
+	, mDrawOrder(_updateOrder)
+	, mColor(Color::White)
+	, mReverce(false)
+	, mTextureWidth(0)
+	, mTextureHeight(0)
+	, mHitPointGaugeControllerPtr(_hitPointGaugeController)
+	, mTexture(_texture)
+{
+	mTextureWidth = mTexture->GetWidth();
+	mTextureHeight = mTexture->GetHeight();
+
 	//レンダラーにポインターを送る
 	RENDERER->AddParticle(this);
 }
@@ -37,24 +67,28 @@ ParticleComponent::~ParticleComponent()
 */
 void ParticleComponent::Draw(Shader* _shader)
 {
-	//親オブジェクトが未更新状態でないか
-	if (mOwner->GetState() == State::eDead)
+	// 画像情報が空でないか、親オブジェクトが未更新状態でないか
+	if (mTexture && mOwner->GetState() == State::eDead)
 	{
 		return;
 	}
-	Matrix4 mat, matScale;
-	Vector3 reverceVec = Vector3(1.0f, 1.0f, 1.0f);
 
-	//サイズを反転させる
-	if (mReverce)
+	// hpゲージを制御するコンポーネントクラスがあったらテクスチャの横幅を更新する
+	if (mHitPointGaugeControllerPtr != nullptr)
 	{
-		reverceVec.x *= -1.0f;
+		mTextureWidth = mHitPointGaugeControllerPtr->GetTextureWidthAfterChange();
 	}
 
-	matScale = Matrix4::CreateScale(mScale*reverceVec* mOwner->GetScale());
-	mat = Matrix4::CreateTranslation(mOffset + mOwner->GetPosition());
+	Matrix4 matScale = Matrix4::CreateScale(
+		static_cast<float>(mTextureWidth),
+		static_cast<float>(mTextureHeight),
+		1.0f);
 
-	_shader->SetMatrixUniform("uWorldTransform", matScale * mStaticBillboardMat * mat);
+	Matrix4 mat = Matrix4::CreateTranslation(mOwner->GetPosition());
+
+	Matrix4 world = matScale * mat;
+
+	_shader->SetMatrixUniform("uWorldTransform", world * mStaticBillboardMat);
 	_shader->SetFloatUniform("uAlpha", mAlpha);
 	_shader->SetVectorUniform("uColor", mColor);
 
@@ -66,26 +100,7 @@ void ParticleComponent::Draw(Shader* _shader)
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
-// カメラ距離でのソート用
-bool ParticleComponent::operator<(const ParticleComponent& _rhs) const
-{
-	float lenThis, lenRhs;
-	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
-	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
-	return lenThis < lenRhs;
-}
-
-// カメラ距離でのソート用
-bool ParticleComponent::operator>(const ParticleComponent& _rhs) const
-{
-	float lenThis, lenRhs;
-	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
-	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
-	return lenThis > lenRhs;
-}
-
-
-Matrix4 GetBillboardMatrix()
+Matrix4 ParticleComponent::GetBillboardMatrix()
 {
 	Matrix4 ret;
 	ret = RENDERER->GetViewMatrix();
@@ -96,3 +111,21 @@ Matrix4 GetBillboardMatrix()
 
 	return Matrix4(ret);
 }
+
+//// カメラ距離でのソート用
+//bool ParticleComponent::operator<(const ParticleComponent& _rhs) const
+//{
+//	float lenThis, lenRhs;
+//	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
+//	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
+//	return lenThis < lenRhs;
+//}
+//
+//// カメラ距離でのソート用
+//bool ParticleComponent::operator>(const ParticleComponent& _rhs) const
+//{
+//	float lenThis, lenRhs;
+//	lenThis = (mStaticCameraWorldPos - mOffset).LengthSq();
+//	lenRhs = (mStaticCameraWorldPos - _rhs.mOffset).LengthSq();
+//	return lenThis > lenRhs;
+//}

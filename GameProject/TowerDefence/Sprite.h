@@ -24,9 +24,6 @@ public:
 
 private:
 
-	// テクスチャのポインタ
-	Texture* mSpriteTexture;
-
 	// スクリーン上に描画するクラスのポインタ
 	SpriteComponent* mSpriteComponent;
 };

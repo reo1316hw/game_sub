@@ -23,6 +23,5 @@ PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string&
 	mHitPointGaugeControllerPtr = new HitPointGaugeController(_playerPtr, texture);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mSpritePtr = new SpriteComponent(this, mHitPointGaugeControllerPtr);
-	mSpritePtr->SetTexture(texture);
+	mSpritePtr = new SpriteComponent(this, texture, mHitPointGaugeControllerPtr);
 }

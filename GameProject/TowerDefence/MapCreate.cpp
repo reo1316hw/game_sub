@@ -6,7 +6,7 @@
 MapCreate::MapCreate()
 	:GameObject(Tag::eOther)
 	, MCreateBossPosition(Vector3(2000.0f,2000.0f,0.0f))
-	, MCreateHitPointGaugePosition(Vector3(-600.0f, -400.0f, 0.0f))
+	, MCreateHitPointGaugePosition(Vector3(-800.0f, -400.0f, 0.0f))
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
 	, MShiftVec(Vector3(0.0f, 0.0f, 100.0f))

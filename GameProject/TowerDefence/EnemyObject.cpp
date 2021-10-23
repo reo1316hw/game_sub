@@ -64,6 +64,9 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
+
+	// エネミーのhpゲージを生成
+	new EnemyHitPointGauge(_Pos + Vector3(0.0f,0.0f,100.0f), "Assets/Texture/hp.png", Tag::eOther, this);
 }
 
 /// <summary>
