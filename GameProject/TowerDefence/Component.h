@@ -3,51 +3,61 @@
 // 前方宣言
 class GameObject;
 
+/// <summary>
+/// コンポーネントの基底クラス
+/// </summary>
 class Component
 {
 public:
 
-	/*
-	@param	アタッチするゲームオブジェクトのポインタ
-	@param	コンポーネントの更新順番（数値が小さいほど早く更新される）
-	*/
-	Component(GameObject* _owner,int _updateOrder = 100);
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
+	/// <param name="_UpdateOrder"> コンポーネントの更新順番（数値が小さいほど早く更新される） </param>
+	Component(GameObject* _owner, const int _UpdateOrder = 100);
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	virtual ~Component();
 
-	/*
-	@brief	フレーム毎の処理
-	@param	最後のフレームを完了するのに要した時間
-	*/
-	virtual void Update(float _deltaTime);
+	/// <summary>
+	/// フレーム毎の処理
+	/// </summary>
+	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 < /param>
+	virtual void Update(float _deltaTime) {};
 
-	/*
-	@brief	入力処理
-	@param	InputState構造体
-	*/
+	/// <summary>
+	/// 入力処理
+	/// </summary>
+	/// <param name="_state"> InputState構造体 </param>
 	virtual void ProcessInput(const struct InputState& _state) {}
 
-	/*
-	@brief	Transformのワールド変換
-	*/
+	/// <summary>
+	/// Transformのワールド変換
+	/// </summary>
 	virtual void OnUpdateWorldTransform() {}
 
 protected:
 
-	// アタッチしているゲームオブジェクトのポインタ
-	GameObject* mOwner;			
 	// コンポーネントの更新順番（数値が小さいほど早く更新される）
 	int mUpdateOrder;
 
-public: //ゲッターセッター
+	// アタッチしているゲームオブジェクトのポインタ
+	GameObject* mOwner;			
+	
+public://ゲッターセッター
 
-	/*
-	@return 更新順番
-	*/
+	/// <summary>
+	/// 更新順番を取得
+	/// </summary>
+	/// <returns> 更新順番 </returns>
 	int GetUpdateOder() { return mUpdateOrder; }
 
-	/*
-	@return アタッチしているゲームオブジェクトへのポインタ
-	*/
+	/// <summary>
+	/// アタッチしているゲームオブジェクトへのポインタを取得
+	/// </summary>
+	/// <returns> アタッチしているゲームオブジェクトへのポインタ </returns>
 	GameObject* GetOwner() { return mOwner; }
 };
-

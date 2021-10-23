@@ -1,9 +1,9 @@
 #include "pch.h"
 
-/*
-@fn コンストラクタ
-@param _owner 親クラスのポインタ
-*/
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="_owner"> 親クラスのポインタ </param>
 CubeMapComponent::CubeMapComponent(GameObject* _owner)
 	: Component(_owner)
 	, mTexture(nullptr)
@@ -12,29 +12,28 @@ CubeMapComponent::CubeMapComponent(GameObject* _owner)
 {
 }
 
-/*
-@fn デストラクタ
-@brief  Componentの削除を行う
-*/
+/// <summary>
+/// デストラクタ
+/// </summary>
 CubeMapComponent::~CubeMapComponent()
 {
 	delete mTexture;
 }
 
-/*
-@brief　texture生成処理
-@param	_TextureName 使用するtextureのファイルパス
-*/
+/// <summary>
+/// texture生成処理
+/// </summary>
+/// <param name="_TextureName"> 使用するtextureのファイルパス </param>
 void CubeMapComponent::CreateTexture(const std::string& _TextureName)
 {
 	mTexture = new Texture();
 	mTexture->LoadCubeMap(_TextureName);
 }
 
-/*
-@brief　描画処理
-@param	in_shader 使用するシェーダークラスのポインタ
-*/
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
 void CubeMapComponent::Draw(Shader*_shader)
 {
 	// 透明にしていなければ

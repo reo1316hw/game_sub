@@ -15,7 +15,7 @@ EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Scale, const std::string&
 	, mParticlePtr(nullptr)
 	, mEnemyPtr(_enemyPtr)
 {
-	//　テクスチャの取得
+	// テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス

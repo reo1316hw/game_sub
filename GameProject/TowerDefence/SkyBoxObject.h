@@ -3,43 +3,36 @@
 // 前方宣言
 class CubeMapComponent;
 
-/*
-@file SkyBoxObject.h
-@brief SkyBoxObject管理クラス
-*/
+/// <summary>
+/// スカイボックス
+/// </summary>
 class SkyBoxObject : public GameObject
 {
 public:
 
-	/*
-	@fn コンストラクタ
-	@param	再利用するかフラグ
-	@param	オブジェクト判別用tag
-	*/
-	SkyBoxObject(const Tag _objectTag, bool _reUseGameObject);
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
+	/// <param name="_ReUseGameObject"> 再利用するかのフラグ </param>
+	SkyBoxObject(const Tag& _ObjectTag, const bool& _ReUseGameObject);
 
-	/*
-	@fn デストラクタ
-	@brief  objectの削除を行う
-	*/
-	~SkyBoxObject();
-
-	/*
-	@fn アップデート関数
-	@brief	更新処理を行う
-	@param	_deltaTime 前のフレームでかかった時間
-	*/
-	void UpdateGameObject(float _deltaTime)override;
-
-	/*
-	@fn キューブマップComponentのgetter
-	@return	cubeMapComp 使用しているキューブマップComponentを返す
-	*/
-	CubeMapComponent* GetCubeMapComp() { return cubeMapComp; }
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~SkyBoxObject() {};
 
 private:
 
 	// キューブマップComponentクラスのポインタ
 	CubeMapComponent* cubeMapComp;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// キューブマップコンポーネントクラスのポインタを取得
+	/// </summary>
+	/// <returns> キューブマップコンポーネントクラスのポインタ </returns>
+	CubeMapComponent* GetCubeMapComp() { return cubeMapComp; }
 };
 
