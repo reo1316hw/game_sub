@@ -42,6 +42,8 @@ public:
 
 private:
 
+	// ヒットストップが終わるタイミング
+	const int MHitStopEndTiming;
 	// ダメージ時の速度
 	const float MDamageSpeed;
 	// ベクトルを短くする値
@@ -49,13 +51,20 @@ private:
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
 
+	// ヒットストップするか
+	bool mIsHitStop;
+
 	// 体力
 	int mHitPoint;
+	// ヒットストップするフレーム数
+	int mHitStopCount;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;
 	// アニメーション総時間
 	float mTotalAnimTime;
+	// アニメーションの再生速度
+	float mPlayRate;
 
 	// 座標
 	Vector3 mPosition;

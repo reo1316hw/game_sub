@@ -47,26 +47,26 @@ void SkeletalMeshComponent::Draw(Shader* _shader)
 
 void SkeletalMeshComponent::Update(float _deltaTime)
 {
-		if (mAnimation && mSkeleton)
-		{
-			mAnimTime += _deltaTime * mAnimPlayRate;
+	if (mAnimation && mSkeleton)
+	{
+		mAnimTime += _deltaTime * mAnimPlayRate;
 
-			// アニメーションがループアニメーションなら巻き戻し処理
-			if (mAnimation->IsLoopAnimation())
+		// アニメーションがループアニメーションなら巻き戻し処理
+		if (mAnimation->IsLoopAnimation())
+		{
+			while (mAnimTime > mAnimation->GetDuration())
 			{
-				while (mAnimTime > mAnimation->GetDuration())
-				{
-					mAnimTime -= mAnimation->GetDuration();
-				}
+				mAnimTime -= mAnimation->GetDuration();
 			}
-			// ループしないアニメで再生時間超えたら最終時間までとする
-			else if (mAnimTime > mAnimation->GetDuration())
-			{
-				mAnimTime = mAnimation->GetDuration();
-			}
-			// 行列パレットの再計算
-			ComputeMatrixPalette();
 		}
+		// ループしないアニメで再生時間超えたら最終時間までとする
+		else if (mAnimTime > mAnimation->GetDuration())
+		{
+			mAnimTime = mAnimation->GetDuration();
+		}
+		// 行列パレットの再計算
+		ComputeMatrixPalette();
+	}
 	
 }
 

@@ -5,12 +5,16 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
-    : MDamageSpeed(100.0f)
+    : MHitStopEndTiming(10)
+	, MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, mIsHitStop(false)
 	, mHitPoint(0)
+	, mHitStopCount(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
+	, mPlayRate(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
@@ -78,8 +82,16 @@ void EnemyObjectStateDamage::Separation(EnemyObject* _owner, const Vector3& _Dir
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
+	mPlayRate = 1.0f;
+
+	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
+	{
+		mIsHitStop = true;
+		mPlayRate = 0.0f;
+	}
+
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDamage));
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDamage), mPlayRate);
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration();

@@ -64,11 +64,11 @@ void MapCreate::OpenFile()
 		                                Tag::eEnemy, mPlayerPtr);
 
 	// エネミーボスを生成
-	mBossPtr = mCreateEnemysPtr->CreateBossObject(MCreateBossPosition, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
+	/*mBossPtr = mCreateEnemysPtr->CreateBossObject(MCreateBossPosition, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
 		                               "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
-	
+	*/
 	// UIを生成する
-	CreateUI();
+	//CreateUI();
 }
 
 /// <summary>

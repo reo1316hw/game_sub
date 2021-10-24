@@ -45,15 +45,15 @@ void EnemyControler::Update(float _deltaTime)
 		// 対象となるエネミーを検索
 		SearchTargetEnemy(enemyObjectList, referenceEnemyItr);
 
-		if (bossObjectPtr->GetState() != State::eActive)
-		{
-			continue;
-		}
+		//if (bossObjectPtr->GetState() != State::eActive)
+		//{
+		//	continue;
+		//}
 
-		// 対象となるボスが基準となるエネミーの範囲内に侵入してきたか求める
-		InvadeWithinRange(referenceEnemyItr, bossObjectPtr);
-		// 対象となるエネミーが基準となるボスの範囲内に侵入してきたか求める
-		InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
+		//// 対象となるボスが基準となるエネミーの範囲内に侵入してきたか求める
+		//InvadeWithinRange(referenceEnemyItr, bossObjectPtr);
+		//// 対象となるエネミーが基準となるボスの範囲内に侵入してきたか求める
+		//InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
 	}
 }
 

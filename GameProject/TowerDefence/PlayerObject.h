@@ -135,5 +135,11 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> カメラのポジション </returns>
 	Vector3 GetCameraPos() { return mCameraPos; }
+
+	/// <summary>
+	/// 現在のステートを取得
+	/// </summary>
+	/// <returns> 現在のステート </returns>
+	PlayerState GetPlayerState() { return mNowState; }
 };
 
