@@ -15,6 +15,8 @@ EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Scale, const std::string&
 	, mParticlePtr(nullptr)
 	, mEnemyPtr(_enemyPtr)
 {
+	SetState(eDead);
+
 	// テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 

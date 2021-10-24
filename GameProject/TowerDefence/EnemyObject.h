@@ -4,6 +4,8 @@
 class SkeletalMeshComponent;
 class EnemyObjectStateBase;
 class EnemyAttackDecisionObject;
+class EnemyHitPointGauge;
+class EnemyHitPointFrame;
 class BoxCollider;
 
 /// <summary>
@@ -90,6 +92,10 @@ private:
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
 	// エネミーの攻撃判定オブジェクトのポインタ
 	EnemyAttackDecisionObject* mEnemyAttackPtr;
+	// エネミーのhpゲージのポインタ
+	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
+	// エネミーのhpの枠のポインタ
+	EnemyHitPointFrame* mEnemyHitPointFramePtr;
 
 public://ゲッターセッター
 
@@ -111,5 +117,18 @@ public://ゲッターセッター
 	/// </summary>
 	/// <returns> 初期座標 </returns>
 	Vector3 GetInitPosition() { return mInitPosition; }
+
+	/// <summary>
+	/// エネミーのhpゲージのポインタ
+	/// </summary>
+	/// <returns> エネミーのhpゲージ </returns>
+	EnemyHitPointGauge* GetEnemyHitPointGaugePtr() {return mEnemyHitPointGaugePtr; }
+
+	/// <summary>
+	/// エネミーのhpの枠のポインタ
+	/// </summary>
+	/// <returns> エネミーのhpの枠 </returns>
+	EnemyHitPointFrame* GetEnemyHitPointFramePtr() { return mEnemyHitPointFramePtr; }
+
 };
 

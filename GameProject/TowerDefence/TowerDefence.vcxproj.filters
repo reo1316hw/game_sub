@@ -237,6 +237,15 @@
     <ClCompile Include="BossHitPointGauge.cpp">
       <Filter>UI\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHitPointFrame.cpp">
+      <Filter>UI\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyHitPointFrame.cpp">
+      <Filter>UI\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BossHitPointFrame.cpp">
+      <Filter>UI\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -475,6 +484,15 @@
       <Filter>UI\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="BossHitPointGauge.h">
+      <Filter>UI\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHitPointFrame.h">
+      <Filter>UI\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyHitPointFrame.h">
+      <Filter>UI\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHitPointFrame.h">
       <Filter>UI\Boss</Filter>
     </ClInclude>
   </ItemGroup>

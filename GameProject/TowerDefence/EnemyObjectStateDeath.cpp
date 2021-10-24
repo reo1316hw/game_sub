@@ -39,8 +39,16 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 	// アニメーションが終了したら更新を止める
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
+		// hpゲージ
+		mEnemyHitPointGaugePtr = _owner->GetEnemyHitPointGaugePtr();
+		// hpの枠
+		mEnemyHitPointFramePtr = _owner->GetEnemyHitPointFramePtr();
+
+		mEnemyHitPointGaugePtr->SetState(State::eDead);
+		mEnemyHitPointFramePtr->SetState(State::eDead);
 		_owner->SetState(State::eDead);
 		_owner->SetPosition(mInitPosition);
+
 		return EnemyState::eEnemyStateTrack;
 	}
 

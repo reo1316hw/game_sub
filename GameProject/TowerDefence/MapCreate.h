@@ -39,6 +39,8 @@ public:
 	/// </summary>
 	void OpenFile();
 
+private:
+
 	/// <summary>
 	/// マップデータにアクセスする
 	/// </summary>
@@ -52,7 +54,10 @@ public:
 	/// <param name="_ObjectPos"> オブジェクトの座標 </param>
 	void CreateGameObject(const unsigned int _Name, const Vector3 _ObjectPos);
 
-private:
+	/// <summary>
+	/// UIを生成する
+	/// </summary>
+	void CreateUI();
 
 	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
 	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);

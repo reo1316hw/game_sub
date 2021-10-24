@@ -17,6 +17,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
 	, mNextState(EnemyState::eEnemyStateTrack)
+	, mEnemyHitPointGaugePtr(nullptr)
+	, mEnemyHitPointFramePtr(nullptr)
 {
 	//GameObjectメンバ変数の初期化
 	SetScale(_Scale);
@@ -67,7 +69,9 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
+	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
+	// エネミーのhpの枠を生成
+	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
 }
 
 /// <summary>

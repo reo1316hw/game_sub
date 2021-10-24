@@ -1,5 +1,9 @@
 #pragma once
 
+// 前方宣言
+class EnemyHitPointGauge;
+class EnemyHitPointFrame;
+
 /// <summary>
 /// エネミーの死亡状態
 /// </summary>
@@ -43,13 +47,17 @@ private:
 		// 死亡時の速度
 	float mDeathSpeed;
 
-	// プレイヤーのポインタ
-	PlayerObject* mPlayerPtr;
-
 	// 座標
 	Vector3 mPosition;
 	// 初期座標
 	Vector3 mInitPosition;
 	// プレイヤーに向いたベクトル
 	Vector3 mDirPlayerVec;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
+	// エネミーのhpゲージのポインタ
+	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
+	// エネミーのhpの枠のポインタ
+	EnemyHitPointFrame* mEnemyHitPointFramePtr;
 };

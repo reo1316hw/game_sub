@@ -3,6 +3,8 @@
 
 // 前方宣言
 class EnemyObject;
+class EnemyHitPointGauge;
+class EnemyHitPointFrame;
 
 /// <summary>
 /// エネミーを制御する
@@ -66,5 +68,9 @@ private:
 
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
+	// エネミーのhpゲージのポインタ
+	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
+	// エネミーのhpの枠のポインタ
+	EnemyHitPointFrame* mEnemyHitPointFramePtr;
 };
 

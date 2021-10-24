@@ -13,6 +13,8 @@ EnemyControler::EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPt
 	, mUntilInElementsCount(0)
 	, mActiveCount(0)
 	, mCreateEnemysPtr(_createEnemysPtr)
+	, mEnemyHitPointGaugePtr(nullptr)
+	, mEnemyHitPointFramePtr(nullptr)
 {
 }
 
@@ -65,7 +67,15 @@ void EnemyControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
 	{
 		if (_enemyObjectPtr->GetState() != State::eActive)
 		{
+			// hpƒQ[ƒW
+			mEnemyHitPointGaugePtr = _enemyObjectPtr->GetEnemyHitPointGaugePtr();
+			// hp‚Ì˜g
+			mEnemyHitPointFramePtr = _enemyObjectPtr->GetEnemyHitPointFramePtr();
+
+			mEnemyHitPointGaugePtr->SetState(State::eActive);
+			mEnemyHitPointFramePtr->SetState(State::eActive);
 			_enemyObjectPtr->SetState(State::eActive);
+
 			++mActiveCount;
 		}
 
