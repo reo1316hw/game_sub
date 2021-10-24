@@ -5,9 +5,12 @@
 #include <string>
 #include "Math.h"
 #include "ParticleComponent.h"
+
 #define RENDERER Renderer::GetInstance()
 
-//平行光源用の構造体
+/// <summary>
+/// 平行光源用の構造体
+/// </summary>
 struct DirectionalLight
 {
 	// 光の方向
@@ -18,6 +21,9 @@ struct DirectionalLight
 	Vector3 m_specColor;
 };
 
+/// <summary>
+/// テクスチャステージ
+/// </summary>
 enum class TextureStage
 {
 	DiffuseMap,
@@ -41,249 +47,214 @@ class HDRRenderer;
 class CubeMapComponent;
 class PlayerObject;
 
-/*
-@file Renderer.h
-@brief 描画の進行を行うクラス
-*/
+/// <summary>
+/// 描画の進行を行うクラス
+/// </summary>
 class Renderer
 {
 public:
-	/*
-	@brief  インスタンスを取得する
-	@return Rendererクラスのインスタンス
-	*/
-	static Renderer* GetInstance() { return mRenderer; }
 
-	/*
-	@brief  インスタンスを作成する
-	*/
+	/// <summary>
+	/// インスタンスを作成する
+	/// </summary>
 	static void CreateInstance();
 
-	/*
-	@brief  インスタンスを削除する
-	*/
+	/// <summary>
+	/// インスタンスを削除する
+	/// </summary>
 	static void DeleteInstance();
 
 	/*
 	@brief  初期化処理
 	@return true : 成功 , false : 失敗
 	*/
-	bool Initialize(float _screenWidth, float _screenHeight, bool _fullScreen);
-	/*
-	@brief  終了処理
-	*/
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	/// <param name="_ScreenWidth"> スクリーンの幅 </param>
+	/// <param name="_ScreenHeight"> スクリーンの高さ </param>
+	/// <param name="_IsFullScreen"> フルスクリーンにするかのフラグ </param>
+	/// <returns> true : 成功 , false : 失敗 </returns>
+	bool Initialize(const float& _ScreenWidth, const float& _ScreenHeight, const bool& _IsFullScreen);
+	
+	/// <summary>
+	/// 終了処理
+	/// </summary>
 	void Shutdown();
 
-	/*
-	@brief  ロードしたデータの解放
-	*/
+	/// <summary>
+	/// ロードしたデータの解放
+	/// </summary>
 	void UnloadData();
 
-	/*
-	@brief  描画処理
-	*/
+	/// <summary>
+	/// 描画処理
+	/// </summary>
 	void Draw();
 
-	/*void DrawTexture(class Texture* texture, const Vector2& offset = Vector2::Zero, float scale = 1.0f, float alpha = 1.0f);*/
-	   
-	/*
-	@brief  スプライトの追加
-	@param	_spriteComponent　追加するSpriteComponentクラスのポインタ
-	*/
+	/// <summary>
+	/// スプライトの追加
+	/// </summary>
+	/// <param name="_spriteComponent"> 追加するSpriteComponentクラスのポインタ </param>
 	void AddSprite(SpriteComponent* _spriteComponent);
 
-	/*
-	@brief スプライトの削除
-	@param	_spriteComponent　削除するSpriteComponentクラスのポインタ
-	*/
+	/// <summary>
+	/// スプライトの削除
+	/// </summary>
+	/// <param name="_spriteComponent"> 削除するSpriteComponentクラスのポインタ </param>
 	void RemoveSprite(SpriteComponent* _spriteComponent);
 
-	/*
-	@brief  パーティクルの追加
-	@param	_particleComponent　追加するParticleObjectクラスのポインタ
-	*/
+	/// <summary>
+	/// パーティクルの追加
+	/// </summary>
+	/// <param name="_particleComponent"> 追加するParticleObjectクラスのポインタ </param>
 	void AddParticle(ParticleComponent* _particleComponent);
 
-	/*
-	@brief  スプライトの削除
-	@param	削除するParticleObjectクラスのポインタ
-	*/
+	/// <summary>
+	/// パーティクルの削除
+	/// </summary>
+	/// <param name="_particleComponent"> 削除するParticleObjectクラスのポインタ </param>
 	void RemoveParticle(ParticleComponent* _particleComponent);
-	
-	/*
-	@brief  メッシュコンポーネントの追加
-	@param	_meshComponent　追加するMeshComponentクラスのポインタ
-	*/
+
+	/// <summary>
+	/// メッシュコンポーネントの追加
+	/// </summary>
+	/// <param name="_meshComponent"> 追加するMeshComponentクラスのポインタ </param>
 	void AddMeshComponent(MeshComponent* _meshComponent);
 
-	/*
-	@brief  メッシュコンポーネントの削除
-	@param	_meshComponent　削除するMeshComponentクラスのポインタ
-	*/
+	/// <summary>
+	/// メッシュコンポーネントの削除
+	/// </summary>
+	/// <param name="_meshComponent"> 削除するMeshComponentクラスのポインタ </param>
 	void RemoveMeshComponent(MeshComponent* _meshComponent);
 
-	/*
-	@brief  メッシュコンポーネントの追加
-	@param	_meshComponent　追加するMeshComponentクラスのポインタ
-	*/
-	void AddInvisibleMeshComponent(InvisibleMeshComponent* _invisibleMeshComponent);
-
-	/*
-	@brief  メッシュコンポーネントの削除
-	@param	_meshComponent　削除するMeshComponentクラスのポインタ
-	*/
-	void RemoveInvisibleMeshComponent(InvisibleMeshComponent* _invisibleMeshComponent);
-
-
-	/*
-	@brief  テクスチャの取得
-	@param	_fileName　取得したいテクスチャのファイル名
-	@return Textureクラスのポインタ
-	*/
-	Texture* GetTexture(const std::string& _fileName);
-	   
-	/*
-	@param _fileName モデルへのアドレス
-	@return スケルトンモデルの取得
-	*/
-	const class Skeleton* GetSkeleton(const char* _fileName);                       
-	/*
-	@param _fileName アニメーションへのアドレス
-	@return スケルトンアニメーションの取得
-	*/
-	const class Animation* GetAnimation(const char* _fileName, bool _loop);                     // スケルタルアニメーションの取得
-
-	/*
-	@brief  メッシュの取得
-	@param	_fileName 取得したいメッシュのファイル名
-	@return Meshクラスのポインタ
-	*/
-	Mesh* GetMesh(const std::string& _fileName);
-
-	/*
-	@brief	ビュー行列を設定する
-	@param	_view ビュー行列
-	*/
-	void SetViewMatrix(const Matrix4& _view) { mView = _view; }
-
-	/*
-	@brief	環境光を設定する
-	@param	_ambient Vector3（環境光を表す）
-	*/
-	void SetAmbientLight(const Vector3& _ambient) { mAmbientLight = _ambient; }
-
-	/*
-	@brief	平行光源の構造体を取得する
-	@return	DirectionalLight（平行光源の構造体）
-	*/
-	DirectionalLight& GetDirectionalLight() { return mDirLight; }
-
-	/*
-	@brief	スクリーンの横幅を取得する
-	@return	スクリーンの横幅
-	*/
-	float GetScreenWidth() const { return mScreenWidth; }
-
-	/*
-	@brief	スクリーンの縦幅を取得する
-	@return	スクリーンの縦幅
-	*/
-	float GetScreenHeight() const { return mScreenHeight; }
-
-	Matrix4 GetViewMatrix() const { return mView; }
-
-	void SetParticleVertex();
-
-	Matrix4 GetProjectionMatrix() { return mProjection; }
-
-	SDL_Renderer* GetSDLRenderer() { return mSdlRenderer; }
-
-	unsigned int GetUndefineTexID() { return mUndefineTexID; }
-
-	// スカイボックスをアクティブにする
-	void SetActiveSkyBox(CubeMapComponent* _activeSkyBox) { mActiveSkyBox = _activeSkyBox; }
-
-	VertexArray* GetCubeMapVerts() { return mCubeVerts; }
-
-	/*
-    @brief キューブマップ(スカイボックス用)頂点配列定義
-    */
-	void CreateCubeVerts();
-
-	/*void DrawTexture(Texture* texture, const Vector2& offset, float scale = 1.0f, float alpha = 1.0f);
-	void DrawTexture(class Texture* texture, int index, int xDyvNum, int yDivNum, const Vector2& offset, float scale = 1.0f, float alpha = 1.0f);*/
-
 private:
-	//コンストラクタ、デストラクタの隠蔽
+
+	/// <summary>
+	/// コンストラクタ
+	/// 隠蔽
+	/// </summary>
 	Renderer();
+
+	/// <summary>
+	/// デストラクタ
+	/// 隠蔽
+	/// </summary>
 	~Renderer();
 
-	// スケルトンデータ
-	std::unordered_map<std::string, class Skeleton*> mSkeletons;
-	// アニメーションデータ
-	std::unordered_map<std::string, class Animation*> mAnims;    
-	// スケルトンメッシュの描画に使われる
-	std::vector<class SkeletalMeshComponent*>       mSkeletalMeshes;   
-
-	//自分のインスタンス
-	static Renderer* mRenderer;
-	SDL_Renderer* mSdlRenderer;
-
-	/*
-	@brief  シェーダーの読み込み
-	@return true : 成功 , false : 失敗
-	*/
+	/// <summary>
+	/// シェーダーの読み込み
+	/// </summary>
+	/// <returns> true : 成功 , false : 失敗 </returns>
 	bool LoadShaders();
-	/*
-	@brief  Sprite用の頂点バッファとインデックスバッファの作成
-	*/
+
+	/// <summary>
+	/// スプライト用の頂点バッファとインデックスバッファの作成
+	/// </summary>
 	void CreateSpriteVerts();
+
+	/// <summary>
+	/// パーティクル用の頂点バッファとインデックスバッファの作成
+	/// </summary>
 	void CreateParticleVerts();
 
+	/// <summary>
+	/// キューブマップ(スカイボックス用)頂点配列定義
+	/// </summary>
+	void CreateCubeVerts();
+
+	/// <summary>
+	/// 全てのパーティクルを描画準備
+	/// </summary>
 	void DrawParticle();
 
-	void Draw3DScene(unsigned int _framebuffer, const Matrix4& _view, const Matrix4& _proj,
-		float _viewPortScale = 1.0f, bool _lit = true);
+	/// <summary>
+	/// 光源情報をシェーダーの変数にセットする
+	/// </summary>
+	/// <param name="_shader"> セットするShaderクラスのポインタ </param>
+	/// <param name="_View"> ビュー行列 </param>
+	void SetLightUniforms(Shader* _shader, const Matrix4& _View);
 
-	/*
-	@brief  光源情報をシェーダーの変数にセットする
-	@param  _shader セットするShaderクラスのポインタ
-	*/
-	void SetLightUniforms(Shader* _shader, const Matrix4& _view);
-
+	/// <summary>
+	/// ブレンドモードを変更する
+	/// </summary>
+	/// <param name="_blendType"> ブレンドモード </param>
 	void ChangeBlendMode(ParticleComponent::ParticleBlendType _blendType);
-	void ChangeTexture(int _changeTextureID);
 
+	/// <summary>
+	/// テクスチャを変更
+	/// </summary>
+	/// <param name="_ChangeTextureID"> テクスチャID </param>
+	void ChangeTexture(const int& _ChangeTextureID);
+
+	/// <summary>
+	/// ワールド座標でのカメラ位置算出
+	/// </summary>
+	/// <returns> カメラ位置(ワールド座標) </returns>
 	Vector3 CalcCameraPos();
 
+	// スケルトンデータ
+	std::unordered_map<std::string, Skeleton*> mSkeletons;
+	// アニメーションデータ
+	std::unordered_map<std::string, Animation*> mAnims;
 	//ファイル名でメッシュを取得するための連想配列
 	std::unordered_map<std::string, Mesh*> mMeshes;
+	//ファイル名でテクスチャを取得するための連想配列
+	std::unordered_map<std::string, Texture*>mTextures;
+
 	//メッシュコンポーネントのポインタの可変長コンテナ
 	std::vector<MeshComponent*> mMeshComponents;
-	//インビジブルメッシュコンポーネントのポインタの可変長コンテナ
-	std::vector<InvisibleMeshComponent*> mInvisibleMeshComponents;
+	// スケルトンメッシュの描画に使われる
+	std::vector<SkeletalMeshComponent*> mSkeletalMeshes;
 	//スプライトコンポーネントのポインタの可変長コンテナ
 	std::vector<SpriteComponent*> mSprites;
 	//パーティクルのポインタ
 	std::vector<ParticleComponent*> mParticles;
-	//ファイル名でテクスチャを取得するための連想配列
-	std::unordered_map<std::string, Texture*>mTextures;
 
-	//クラスのポインタ
-	//スプライト
+	// 未設定テクスチャの場合に割り当てられる黒色テクスチャ
+	unsigned int mUndefineTexID;
+
+	// スクリーンの横幅
+	float mScreenWidth;
+	// スクリーンの縦幅
+	float mScreenHeight;
+
+	// UIの初期座標に加算される座標
+	Vector2 mAddPosition;
+
+	// 環境光
+	Vector3 mAmbientLight;
+
+	// ビュー行列
+	Matrix4 mView;
+	// 射影行列
+	Matrix4 mProjection;
+	// ビルボード行列
+	Matrix4 mBillboardMat;
+	
+	
+	// 平行光源
+	DirectionalLight mDirLight;
+	// ウィンドウ
+	SDL_Window* mWindow;
+	// コンテキスト
+	SDL_GLContext mContext;
+
+	// 自分のインスタンス
+	static Renderer* mRenderer;
+
+	// レンダラーの状態を含む構造体のポインタ
+	SDL_Renderer* mSdlRenderer;
+	// スプライト
 	Shader* mSpriteShader;
 	VertexArray* mSpriteVerts;
-	//UI
-	Shader* mUiShader;
-	VertexArray* mUiVerts;
-	//メッシュ
+	// メッシュ
 	Shader* mMeshShader;
-	//スキンメッシュ
+	// スキンメッシュ
 	Shader*  mSkinnedShader;  
-	//インビジブルメッシュ
-	Shader* mInvisibleMeshShader;
 	Shader* mBasicShader;
-	//パーティクル
+	// パーティクル
 	Shader* mParticleShader;
 
 	// スカイボックス
@@ -300,28 +271,111 @@ private:
 	// キューブ頂点配列
 	VertexArray* mCubeVerts;
 
+public:// ゲッターセッター
 
-	//ビュー行列
-	Matrix4 mView;
-	//射影行列
-	Matrix4 mProjection;
-	//ビルボード行列
-	Matrix4 mBillboardMat;
-	//スクリーンの横幅
-	float mScreenWidth;
-	//スクリーンの縦幅
-	float mScreenHeight;
-	//環境光
-	Vector3 mAmbientLight;
-	//平行光源
-	DirectionalLight mDirLight;
-	//ウィンドウ
-	SDL_Window* mWindow;
-	//コンテキスト
-	SDL_GLContext mContext;
-	// UIの初期座標に加算される座標
-	Vector2 mAddPosition;
+	/// <summary>
+	/// インスタンスを取得する
+	/// </summary>
+	/// <returns> Rendererクラスのインスタンス </returns>
+	static Renderer* GetInstance() { return mRenderer; }
 
-	// 未設定テクスチャの場合に割り当てられる黒色テクスチャ
-	unsigned int mUndefineTexID;
+	/// <summary>
+	/// テクスチャを取得
+	/// </summary>
+	/// <param name="_FileName"> 取得したいテクスチャのファイル名 </param>
+	/// <returns> テクスチャクラスのポインタ </returns>
+	Texture* GetTexture(const std::string& _FileName);
+
+	/// <summary>
+	/// スケルトンモデルを取得
+	/// </summary>
+	/// <param name="_FileName"> 取得したいスケルトンモデルのファイル名 </param>
+	/// <returns> スケルトンクラスのポインタ </returns>
+	const Skeleton* GetSkeleton(const char* _FileName);
+
+	/// <summary>
+	/// スケルトンアニメーションを取得
+	/// </summary>
+	/// <param name="_FileName"> 取得したいスケルトンアニメーションのファイル名 </param>
+	/// <param name="_Loop"> アニメーションをループさせるか </param>
+	/// <returns> アニメーションクラスのポインタ </returns>
+	const Animation* GetAnimation(const char* _FileName, const bool& _Loop);
+
+	/// <summary>
+	/// メッシュを取得
+	/// </summary>
+	/// <param name="_FileName"> 取得したいメッシュのファイル名 </param>
+	/// <returns> メッシュクラスのポインタ </returns>
+	Mesh* GetMesh(const std::string& _FileName);
+
+	/// <summary>
+	/// 環境光を設定する
+	/// </summary>
+	/// <param name="_Ambient"> 環境光 </param>
+	void SetAmbientLight(const Vector3& _Ambient) { mAmbientLight = _Ambient; }
+
+	/// <summary>
+	/// 平行光源の構造体を取得する
+	/// </summary>
+	/// <returns> 平行光源の構造体 </returns>
+	DirectionalLight& GetDirectionalLight() { return mDirLight; }
+
+	/// <summary>
+	/// スクリーンの幅を取得する
+	/// </summary>
+	/// <returns> スクリーンの幅 </returns>
+	float GetScreenWidth() const { return mScreenWidth; }
+
+	/// <summary>
+	/// スクリーンの高さを取得する
+	/// </summary>
+	/// <returns> スクリーンの高さ </returns>
+	float GetScreenHeight() const { return mScreenHeight; }
+
+	/// <summary>
+	/// ビュー行列を取得する
+	/// </summary>
+	/// <returns> ビュー行列 </returns>
+	Matrix4 GetViewMatrix() const { return mView; }
+
+	/// <summary>
+	/// ビュー行列を設定する
+	/// </summary>
+	/// <param name="_View"> ビュー行列 </param>
+	void SetViewMatrix(const Matrix4& _View) { mView = _View; }
+
+	/// <summary>
+	/// パーティクルの頂点配列を設定
+	/// </summary>
+	void SetParticleVertex();
+
+	/// <summary>
+	/// プロジェクション行列を取得する
+	/// </summary>
+	/// <returns> プロジェクション行列 </returns>
+	Matrix4 GetProjectionMatrix() { return mProjection; }
+
+	/// <summary>
+	/// レンダラーの状態を含む構造体を取得
+	/// </summary>
+	/// <returns> レンダラーの状態を含む構造体のポインタ </returns>
+	SDL_Renderer* GetSDLRenderer() { return mSdlRenderer; }
+
+	/// <summary>
+	/// 未設定テクスチャの場合に割り当てられる黒色テクスチャを取得する
+	/// </summary>
+	/// <returns> 未設定テクスチャの場合に割り当てられる黒色テクスチャ </returns>
+	unsigned int GetUndefineTexID() { return mUndefineTexID; }
+
+	/// <summary>
+	/// スカイボックスをアクティブにする
+	/// </summary>
+	/// <param name="_activeSkyBox"> キューブマップのポインタ </param>
+	void SetActiveSkyBox(CubeMapComponent* _activeSkyBox) { mActiveSkyBox = _activeSkyBox; }
+
+	/// <summary>
+	/// キューブマップの頂点配列を取得する
+	/// </summary>
+	/// <returns> キューブマップの頂点配列 </returns>
+	VertexArray* GetCubeMapVerts() { return mCubeVerts; }
 };

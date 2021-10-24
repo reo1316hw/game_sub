@@ -3,49 +3,40 @@
 Renderer* Renderer::mRenderer = nullptr;
 static bool saveFlag = false;
 
-void Renderer::SetParticleVertex()
-{
-	mParticleVertex->SetActive();
-}
-
-/*
-@brief キューブマップ(スカイボックス用)頂点配列定義
-*/
-void Renderer::CreateCubeVerts()
-{
-	mCubeVerts = new VertexArray();
-	mCubeVerts->CreateCubeVerts();
-}
-
+/// <summary>
+/// コンストラクタ
+/// 隠蔽
+/// </summary>
 Renderer::Renderer()
-	: mSpriteShader(nullptr)
+	: mScreenWidth(0)
+	, mScreenHeight(0)
+	, mUndefineTexID(0)
+	, mAmbientLight(Vector3::Zero)
+	, mView(Matrix4::Identity)
+	, mProjection(Matrix4::Identity)
+	, mHDRRenderer(nullptr)
 	, mSpriteVerts(nullptr)
-	, mUiShader(nullptr)
-	, mUiVerts(nullptr)
+	, mSpriteShader(nullptr)
 	, mMeshShader(nullptr)
-	, mInvisibleMeshShader(nullptr)
+	, mSkinnedShader(nullptr)
 	, mBasicShader(nullptr)
 	, mSkyBoxShader(nullptr)
 	, mParticleVertex(nullptr)
-	, mView(Matrix4::Identity)
-	, mProjection(Matrix4::Identity)
-	, mScreenWidth(0)
-	, mScreenHeight(0)
-	, mAmbientLight(Vector3::Zero)
-	, mSkinnedShader(nullptr)
-	, mUndefineTexID(0)
-	, mHDRRenderer(nullptr)
 {
 }
 
+/// <summary>
+/// デストラクタ
+/// 隠蔽
+/// </summary>
 Renderer::~Renderer()
 {
 	delete mHDRRenderer;
 }
 
-/*
-@brief  インスタンスを作成する
-*/
+/// <summary>
+/// インスタンスを作成する
+/// </summary>
 void Renderer::CreateInstance()
 {
 	if (mRenderer == nullptr)
@@ -54,9 +45,9 @@ void Renderer::CreateInstance()
 	}
 }
 
-/*
-@brief  インスタンスを削除する
-*/
+/// <summary>
+/// インスタンスを削除する
+/// </summary>
 void Renderer::DeleteInstance()
 {
 	if (mRenderer != nullptr)
@@ -66,14 +57,17 @@ void Renderer::DeleteInstance()
 	}
 }
 
-/*
-@brief  初期化処理
-@return true : 成功 , false : 失敗
-*/
-bool Renderer::Initialize(float _ScreenWidth, float _screenHeight, bool _fullScreen)
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="_ScreenWidth"> スクリーンの幅 </param>
+/// <param name="_ScreenHeight"> スクリーンの高さ </param>
+/// <param name="_IsFullScreen"> フルスクリーンにするかのフラグ </param>
+/// <returns> true : 成功 , false : 失敗 </returns>
+bool Renderer::Initialize(const float& _ScreenWidth, const float& _ScreenHeight, const bool& _IsFullScreen)
 {
 	mScreenWidth = _ScreenWidth;
-	mScreenHeight = _screenHeight;
+	mScreenHeight = _ScreenHeight;
 
 	// OpenGLの各属性を設定する
 	// コアOpenGLプロファイルを使う
@@ -96,7 +90,7 @@ bool Renderer::Initialize(float _ScreenWidth, float _screenHeight, bool _fullScr
 	mWindow = SDL_CreateWindow("OpenGL Game", 1, 1,
 		static_cast<int>(mScreenWidth), static_cast<int>(mScreenHeight), SDL_WINDOW_OPENGL);
 
-	if (_fullScreen)
+	if (_IsFullScreen)
 	{
 		SDL_SetWindowFullscreen(mWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
@@ -140,9 +134,9 @@ bool Renderer::Initialize(float _ScreenWidth, float _screenHeight, bool _fullScr
 	// HDRレンダラー初期化
 	mHDRRenderer = new HDRRenderer(mScreenWidth, mScreenHeight, 4);
 
-	////// カリング
-	//glFrontFace(GL_CCW);
-	//glEnable(GL_FRONT_FACE);
+	//// カリング
+	glFrontFace(GL_CCW);
+	glEnable(GL_FRONT_FACE);
 
 	//スプライト用の頂点配列を作成
 	CreateSpriteVerts();
@@ -156,30 +150,25 @@ bool Renderer::Initialize(float _ScreenWidth, float _screenHeight, bool _fullScr
 	return true;
 }
 
-/*
-@brief  終了処理
-*/
+/// <summary>
+/// 終了処理
+/// </summary>
 void Renderer::Shutdown()
 {
 	delete mSpriteVerts;
 	mSpriteShader->Unload();
 	delete mSpriteShader;
-	delete mUiVerts;
-	mUiShader->Unload();
-	delete mUiShader;
 	mMeshShader->Unload();
 	delete mMeshShader;
-	mInvisibleMeshShader->Unload();
-	delete mInvisibleMeshShader;
 	mBasicShader->Unload();
 	delete mBasicShader;
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
 
-/*
-@brief  ロードしたデータの解放
-*/
+/// <summary>
+/// ロードしたデータの解放
+/// </summary>
 void Renderer::UnloadData()
 {
 	// すべてのテクスチャのデータを解放
@@ -210,9 +199,9 @@ void Renderer::UnloadData()
 	mMeshes.clear();
 }
 
-/*
-@brief  描画処理
-*/
+/// <summary>
+/// 描画処理
+/// </summary>
 void Renderer::Draw()
 {
 	mHDRRenderer->HdrRecordBegin();
@@ -316,392 +305,9 @@ void Renderer::Draw()
 	SDL_GL_SwapWindow(mWindow);
 }
 
-/*
-@brief  スプライトの追加
-@param	_spriteComponent　追加するSpriteComponentクラスのポインタ
-*/
-void Renderer::AddSprite(SpriteComponent* _spriteComponent)
-{
-	// 今あるスプライトから挿入する場所の検索
-	// (DrawOrderが小さい順番に描画するため)
-	int myDrawOrder = _spriteComponent->GetDrawOrder();
-	auto iter = mSprites.begin();
-	for (;
-		iter != mSprites.end();
-		++iter)
-	{
-		if (myDrawOrder < (*iter)->GetDrawOrder())
-		{
-			break;
-		}
-	}
-
-	// 検索した場所のiterの場所に挿入
-	mSprites.insert(iter, _spriteComponent);
-}
-
-/*
-@brief スプライトの削除
-@param	_spriteComponent　削除するSpriteComponentクラスのポインタ
-*/
-void Renderer::RemoveSprite(SpriteComponent* _spriteComponent)
-{
-	auto iter = std::find(mSprites.begin(), mSprites.end(), _spriteComponent);
-	mSprites.erase(iter);
-}
-
-/*
-@brief  パーティクルの追加
-@param	_particleComponent　追加するParticleObjectクラスのポインタ
-*/
-void Renderer::AddParticle(ParticleComponent * _particleComponent)
-{
-	int myDrawOrder = _particleComponent->GetDrawOrder();
-	auto iter = mParticles.begin();
-	for (;
-		iter != mParticles.end();
-		++iter)
-	{
-		if (myDrawOrder < (*iter)->GetDrawOrder())
-		{
-			break;
-		}
-	}
-	mParticles.insert(iter, _particleComponent);
-}
-
-/*
-@brief  スプライトの削除
-@param	削除するParticleObjectクラスのポインタ
-*/
-void Renderer::RemoveParticle(ParticleComponent * _particleComponent)
-{
-	auto iter = std::find(mParticles.begin(), mParticles.end(), _particleComponent);
-	mParticles.erase(iter);
-}
-
-/*
-@brief  メッシュコンポーネントの追加
-@param	_meshComponent　追加するMeshComponentクラスのポインタ
-*/
-void Renderer::AddMeshComponent(MeshComponent* _meshComponent)
-{
-	if (_meshComponent->GetIsSkeltal())
-	{
-		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(_meshComponent);
-		mSkeletalMeshes.emplace_back(sk);
-	}
-	else
-	{
-		mMeshComponents.emplace_back(_meshComponent);
-	}
-}
-
-/*
-@brief  メッシュコンポーネントの削除
-@param	_meshComponent　削除するMeshComponentクラスのポインタ
-*/
-void Renderer::RemoveMeshComponent(MeshComponent* _meshComponent)
-{
-	if (_meshComponent->GetIsSkeltal())
-	{
-		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(_meshComponent);
-		auto iter = std::find(mSkeletalMeshes.begin(), mSkeletalMeshes.end(), sk);
-		mSkeletalMeshes.erase(iter);
-	}
-	else
-	{
-		auto iter = std::find(mMeshComponents.begin(), mMeshComponents.end(), _meshComponent);
-		mMeshComponents.erase(iter);
-	}
-}
-
-/*
-@brief  インビジブルメッシュコンポーネントの追加
-@param	_invisibleMeshComponent　追加するInvisibleMeshComponentクラスのポインタ
-*/
-void Renderer::AddInvisibleMeshComponent(InvisibleMeshComponent* _invisibleMeshComponent)
-{
-	/*if (_invisibleMeshComponent->GetIsSkeltal())
-	{
-		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(_invisibleMeshComponent);
-		mSkeletalMeshes.emplace_back(sk);
-	}
-	else
-	{
-		invisibleMeshComponent.emplace_back(_meshComponent);
-	}*/
-
-	mInvisibleMeshComponents.emplace_back(_invisibleMeshComponent);
-}
-
-/*
-@brief  インビジブルメッシュコンポーネントの削除
-@param	_invisibleMeshComponent　削除するInvisibleMeshComponentクラスのポインタ
-*/
-void Renderer::RemoveInvisibleMeshComponent(InvisibleMeshComponent* _invisibleMeshComponent)
-{
-	/*if (_meshComponent->GetIsSkeltal())
-	{
-		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(_meshComponent);
-		auto iter = std::find(mSkeletalMeshes.begin(), mSkeletalMeshes.end(), sk);
-		mSkeletalMeshes.erase(iter);
-	}
-	else
-	{
-		auto iter = std::find(mMeshComponents.begin(), mMeshComponents.end(), _meshComponent);
-		mMeshComponents.erase(iter);
-	}*/
-	
-	auto iter = std::find(mInvisibleMeshComponents.begin(), mInvisibleMeshComponents.end(), _invisibleMeshComponent);
-	mInvisibleMeshComponents.erase(iter);
-}
-
-/*
-@param _fileName モデルへのアドレス
-@return スケルトンモデルの取得
-*/
-const Skeleton * Renderer::GetSkeleton(const char * _fileName)
-{
-	std::string file(_fileName);
-	auto iter = mSkeletons.find(file);
-	if (iter != mSkeletons.end())
-	{
-		return iter->second;
-	}
-	else
-	{
-		Skeleton* sk = new Skeleton();
-		if (sk->Load(file))
-		{
-			mSkeletons.emplace(file, sk);
-		}
-		else
-		{
-			delete sk;
-			sk = nullptr;
-		}
-		return sk;
-	}
-}
-
-/*
-@param _fileName アニメーションへのアドレス
-@return スケルトンアニメーションの取得
-*/
-const Animation * Renderer::GetAnimation(const char * _fileName, bool _loop)
-{
-	auto iter = mAnims.find(_fileName);
-	if (iter != mAnims.end())
-	{
-		return iter->second;
-	}
-	else
-	{
-		Animation* anim = new Animation();
-		if (anim->Load(_fileName, _loop))
-		{
-			mAnims.emplace(_fileName, anim);
-		}
-		else
-		{
-			delete anim;
-			anim = nullptr;
-		}
-		return anim;
-	}
-}
-
-/*
-@brief  テクスチャの取得
-@param	_fileName　取得したいテクスチャのファイル名
-@return Textureクラスのポインタ
-*/
-Texture* Renderer::GetTexture(const std::string& _fileName)
-{
-	Texture* texture = nullptr;
-	//すでに作成されてないか調べる
-	auto itr = mTextures.find(_fileName);
-	if (itr != mTextures.end())
-	{
-		texture = itr->second;
-	}
-	//作成済みでない場合、新しくテクスチャを作成
-	else
-	{
-		texture = new Texture();
-		if (texture->Load(_fileName))
-		{
-			mTextures.emplace(_fileName, texture);
-		}
-		else
-		{
-			delete texture;
-			texture = nullptr;
-		}
-	}
-
-	return texture;
-}
-
-/*
-@brief  メッシュの取得
-@param	_fileName 取得したいメッシュのファイル名
-@return Meshクラスのポインタ
-*/
-Mesh* Renderer::GetMesh(const std::string& _fileName)
-{
-	Mesh* m = nullptr;
-	//すでに作成されてないか調べる
-	auto iter = mMeshes.find(_fileName);
-	if (iter != mMeshes.end())
-	{
-		m = iter->second;
-	}
-	//作成済みでない場合、新しくメッシュを作成
-	else
-	{
-		m = new Mesh();
-		if (m->Load(_fileName, this))
-		{
-			mMeshes.emplace(_fileName, m);
-		}
-		else
-		{
-			delete m;
-			m = nullptr;
-		}
-	}
-	return m;
-}
-
-/*
-@brief  シェーダーの読み込み
-@return true : 成功 , false : 失敗
-*/
-bool Renderer::LoadShaders()
-{
-	// スプライトシェーダーの作成
-	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
-	{
-		return false;
-	}
-
-	mSpriteShader->SetActive();
-	// ビュー行列の設定
-	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
-	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
-
-	// UIシェーダーの作成
-	mUiShader = new Shader();
-	if (!mUiShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
-	{
-		return false;
-	}
-
-	mUiShader->SetActive();
-	// ビュー行列の設定
-	Matrix4 viewUiProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
-	mUiShader->SetMatrixUniform("uViewProj", viewUiProj);
-
-	// 標準のメッシュシェーダーの作成
-	mMeshShader = new Shader();
-	if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
-	{
-		return false;
-	}
-
-	// インビジブルメッシュシェーダーの作成
-	mInvisibleMeshShader = new Shader();
-	if (!mInvisibleMeshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
-	{
-		return false;
-	}
-
-	mBasicShader = new Shader();
-	if (!mBasicShader->Load("Shaders/BasicMesh.vert", "Shaders/BasicMesh.frag"))
-	{
-		return false;
-	}
-
-	mParticleShader = new Shader();
-	if (!mParticleShader->Load("Shaders/Phong.vert", "Shaders/Particle.frag"))
-	{
-		printf("シェーダー読み込み失敗\n");
-	}
-
-	mSkinnedShader = new Shader();
-	if (!mSkinnedShader->Load("Shaders/Skinned.vert", "Shaders/Phong.frag"))
-	{
-		return false;
-	}
-	mSkinnedShader->SetActive();
-	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
-
-	// 標準のメッシュシェーダーの作成
-	mSkyBoxShader = new Shader();
-	if (!mSkyBoxShader->Load("Shaders/gBuffer_SkyBox.vert", "Shaders/gBuffer_SkyBox.frag"))
-	{
-		return false;
-	}
-
-	// メッシュ
-	mMeshShader->SetActive();
-
-	// インビジブルメッシュ
-	mInvisibleMeshShader->SetActive();
-
-	// ビュー行列の設定
-	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f),
-		mScreenWidth, mScreenHeight, 10.0f, 10000.0f);
-
-	mInvisibleMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
-
-	mBasicShader->SetActive();
-	mBasicShader->SetMatrixUniform("uViewProj", mView * mProjection);
-	return true;
-}
-
-/*
-@brief  Sprite用の頂点バッファとインデックスバッファの作成
-*/
-void Renderer::CreateSpriteVerts()
-{
-	float vertices[] = {
-		-0.5f, 0.5f, 0.f, 0.f, 0.f, 0.0f, 0.f, 0.f, // 左上
-		0.5f, 0.5f, 0.f, 0.f, 0.f, 0.0f, 1.f, 0.f, // 右上
-		0.5f,-0.5f, 0.f, 0.f, 0.f, 0.0f, 1.f, 1.f, // 右下
-		-0.5f,-0.5f, 0.f, 0.f, 0.f, 0.0f, 0.f, 1.f  // 左下
-	};
-
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
-	mUiVerts = new VertexArray(vertices, 4, indices, 6);
-}
-
-// パーティクル頂点作成
-void Renderer::CreateParticleVerts()
-{
-	float vertices[] = {
-		-0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 0.f, 0.f, // top left
-		 0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 1.f, 0.f, // top right
-		 0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 1.f, 1.f, // bottom right
-		-0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 0.f, 1.f  // bottom left
-	};
-
-	unsigned int indices[] = {
-		0, 2, 1,
-		2, 0, 3
-	};
-	mParticleVertex = new VertexArray(vertices, 4, VertexArray::PosNormTex, indices, 6);
-}
-
+/// <summary>
+/// 全てのパーティクルを描画準備
+/// </summary>
 void Renderer::DrawParticle()
 {
 
@@ -765,80 +371,357 @@ void Renderer::DrawParticle()
 	glDepthMask(GL_TRUE);
 }
 
-void Renderer::Draw3DScene(unsigned int _framebuffer, const Matrix4 & _view, const Matrix4 & _proj, float _viewPortScale, bool _lit)
+/// <summary>
+/// スプライトの追加
+/// </summary>
+/// <param name="_spriteComponent"> 追加するSpriteComponentクラスのポインタ </param>
+void Renderer::AddSprite(SpriteComponent* _spriteComponent)
 {
-	// Set the current frame buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
-
-	// Set viewport size based on scale
-	glViewport(0, 0,
-		static_cast<int>(mScreenWidth * _viewPortScale),
-		static_cast<int>(mScreenHeight * _viewPortScale)
-	);
-
-	// Clear color buffer/depth buffer
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glDepthMask(GL_TRUE);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Draw mesh components
-	// Enable depth buffering/disable alpha blend
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
-	// Set the mesh shader active
-	mMeshShader->SetActive();
-	// Update mView-mProjection matrix
-	mMeshShader->SetMatrixUniform("uViewProj", _view * _proj);
-	// Update lighting uniforms
-	if (_lit)
+	// 今あるスプライトから挿入する場所の検索
+	// (DrawOrderが小さい順番に描画するため)
+	int myDrawOrder = _spriteComponent->GetDrawOrder();
+	auto iter = mSprites.begin();
+	for (;
+		iter != mSprites.end();
+		++iter)
 	{
-		SetLightUniforms(mMeshShader, _view);
-	}
-	for (auto mc : mMeshComponents)
-	{
-		if (mc->GetVisible())
+		if (myDrawOrder < (*iter)->GetDrawOrder())
 		{
-			mc->Draw(mMeshShader);
+			break;
 		}
 	}
 
+	// 検索した場所のiterの場所に挿入
+	mSprites.insert(iter, _spriteComponent);
 }
 
-//void Renderer::DrawTexture(class Texture* texture,int index, int xDyvNum , int yDivNum, const Vector2& offset, float scale, float alpha)
-//{
-//	// テクスチャの幅・高さでスケーリング
-//	Matrix4 scaleMat = Matrix4::CreateScale(
-//		static_cast<float>(texture->GetWidth()) * scale,
-//		static_cast<float>(texture->GetHeight()) * scale,
-//		1.0f);
-//	// スクリーン位置の平行移動
-//	Matrix4 transMat = Matrix4::CreateTranslation(
-//		Vector3(offset.x - (mScreenWidth * 0.5f),
-//			(mScreenHeight * 0.5f) - offset.y, 0.0f));
-//	// ワールド変換
-//	Matrix4 world = scaleMat * transMat;
-//	mSpriteShader->SetMatrixUniform("uWorldTransform", world);
-//	mSpriteShader->SetFloatUniform("alpha", alpha);
-//	// テクスチャセット
-//	texture->SetActive();
-//	// 四角形描画
-//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-//
-//}
+/// <summary>
+/// スプライトの削除
+/// </summary>
+/// <param name="_spriteComponent"> 削除するSpriteComponentクラスのポインタ </param>
+void Renderer::RemoveSprite(SpriteComponent* _spriteComponent)
+{
+	auto iter = std::find(mSprites.begin(), mSprites.end(), _spriteComponent);
+	mSprites.erase(iter);
+}
 
-//void Renderer::DrawTexture(Texture* texture, const Vector2& offset, float scale, float alpha)
-//{
-//	DrawTexture(texture, 0, 1, 1, offset, scale, alpha);
-//}
+/// <summary>
+/// パーティクルの追加
+/// </summary>
+/// <param name="_particleComponent"> 追加するParticleObjectクラスのポインタ </param>
+void Renderer::AddParticle(ParticleComponent * _particleComponent)
+{
+	int myDrawOrder = _particleComponent->GetDrawOrder();
+	auto iter = mParticles.begin();
+	for (;
+		iter != mParticles.end();
+		++iter)
+	{
+		if (myDrawOrder < (*iter)->GetDrawOrder())
+		{
+			break;
+		}
+	}
+	mParticles.insert(iter, _particleComponent);
+}
 
-/*
-@brief  光源情報をシェーダーの変数にセットする
-@param _shader セットするShaderクラスのポインタ
-*/
-void Renderer::SetLightUniforms(Shader* _shader, const Matrix4& _view)
+/// <summary>
+/// パーティクルの削除
+/// </summary>
+/// <param name="_particleComponent"> 削除するParticleObjectクラスのポインタ </param>
+void Renderer::RemoveParticle(ParticleComponent * _particleComponent)
+{
+	auto iter = std::find(mParticles.begin(), mParticles.end(), _particleComponent);
+	mParticles.erase(iter);
+}
+
+/// <summary>
+/// メッシュコンポーネントの追加
+/// </summary>
+/// <param name="_meshComponent"> 追加するMeshComponentクラスのポインタ </param>
+void Renderer::AddMeshComponent(MeshComponent* _meshComponent)
+{
+	if (_meshComponent->GetIsSkeltal())
+	{
+		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(_meshComponent);
+		mSkeletalMeshes.emplace_back(sk);
+	}
+	else
+	{
+		mMeshComponents.emplace_back(_meshComponent);
+	}
+}
+
+/// <summary>
+/// メッシュコンポーネントの削除
+/// </summary>
+/// <param name="_meshComponent"> 削除するMeshComponentクラスのポインタ </param>
+void Renderer::RemoveMeshComponent(MeshComponent* _meshComponent)
+{
+	if (_meshComponent->GetIsSkeltal())
+	{
+		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(_meshComponent);
+		auto iter = std::find(mSkeletalMeshes.begin(), mSkeletalMeshes.end(), sk);
+		mSkeletalMeshes.erase(iter);
+	}
+	else
+	{
+		auto iter = std::find(mMeshComponents.begin(), mMeshComponents.end(), _meshComponent);
+		mMeshComponents.erase(iter);
+	}
+}
+
+/// <summary>
+/// スケルトンモデルを取得
+/// </summary>
+/// <param name="_FileName"> 取得したいスケルトンモデルのファイル名 </param>
+/// <returns> スケルトンクラスのポインタ </returns>
+const Skeleton * Renderer::GetSkeleton(const char* _FileName)
+{
+	std::string file(_FileName);
+	auto iter = mSkeletons.find(file);
+	if (iter != mSkeletons.end())
+	{
+		return iter->second;
+	}
+	else
+	{
+		Skeleton* sk = new Skeleton();
+		if (sk->Load(file))
+		{
+			mSkeletons.emplace(file, sk);
+		}
+		else
+		{
+			delete sk;
+			sk = nullptr;
+		}
+		return sk;
+	}
+}
+
+/// <summary>
+/// スケルトンアニメーションを取得
+/// </summary>
+/// <param name="_FileName"> 取得したいスケルトンアニメーションのファイル名 </param>
+/// <param name="_Loop"> アニメーションをループさせるか </param>
+/// <returns> アニメーションクラスのポインタ </returns>
+const Animation * Renderer::GetAnimation(const char* _FileName, const bool& _Loop)
+{
+	auto iter = mAnims.find(_FileName);
+	if (iter != mAnims.end())
+	{
+		return iter->second;
+	}
+	else
+	{
+		Animation* anim = new Animation();
+		if (anim->Load(_FileName, _Loop))
+		{
+			mAnims.emplace(_FileName, anim);
+		}
+		else
+		{
+			delete anim;
+			anim = nullptr;
+		}
+		return anim;
+	}
+}
+
+/// <summary>
+/// テクスチャを取得
+/// </summary>
+/// <param name="_FileName"> 取得したいテクスチャのファイル名 </param>
+/// <returns> テクスチャクラスのポインタ </returns>
+Texture* Renderer::GetTexture(const std::string& _FileName)
+{
+	Texture* texture = nullptr;
+	//すでに作成されてないか調べる
+	auto itr = mTextures.find(_FileName);
+	if (itr != mTextures.end())
+	{
+		texture = itr->second;
+	}
+	//作成済みでない場合、新しくテクスチャを作成
+	else
+	{
+		texture = new Texture();
+		if (texture->Load(_FileName))
+		{
+			mTextures.emplace(_FileName, texture);
+		}
+		else
+		{
+			delete texture;
+			texture = nullptr;
+		}
+	}
+
+	return texture;
+}
+
+/// <summary>
+/// メッシュを取得
+/// </summary>
+/// <param name="_FileName"> 取得したいメッシュのファイル名 </param>
+/// <returns> メッシュクラスのポインタ </returns>
+Mesh* Renderer::GetMesh(const std::string& _FileName)
+{
+	Mesh* m = nullptr;
+	//すでに作成されてないか調べる
+	auto iter = mMeshes.find(_FileName);
+	if (iter != mMeshes.end())
+	{
+		m = iter->second;
+	}
+	//作成済みでない場合、新しくメッシュを作成
+	else
+	{
+		m = new Mesh();
+		if (m->Load(_FileName, this))
+		{
+			mMeshes.emplace(_FileName, m);
+		}
+		else
+		{
+			delete m;
+			m = nullptr;
+		}
+	}
+	return m;
+}
+
+/// <summary>
+/// シェーダーの読み込み
+/// </summary>
+/// <returns> true : 成功 , false : 失敗 </returns>
+bool Renderer::LoadShaders()
+{
+	// スプライトシェーダーの作成
+	mSpriteShader = new Shader();
+	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
+	{
+		return false;
+	}
+
+	mSpriteShader->SetActive();
+	// ビュー行列の設定
+	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
+	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
+
+	// 標準のメッシュシェーダーの作成
+	mMeshShader = new Shader();
+	if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
+	{
+		return false;
+	}
+
+	mBasicShader = new Shader();
+	if (!mBasicShader->Load("Shaders/BasicMesh.vert", "Shaders/BasicMesh.frag"))
+	{
+		return false;
+	}
+
+	mParticleShader = new Shader();
+	if (!mParticleShader->Load("Shaders/Phong.vert", "Shaders/Particle.frag"))
+	{
+		printf("シェーダー読み込み失敗\n");
+	}
+
+	mSkinnedShader = new Shader();
+	if (!mSkinnedShader->Load("Shaders/Skinned.vert", "Shaders/Phong.frag"))
+	{
+		return false;
+	}
+	mSkinnedShader->SetActive();
+	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
+
+	// 標準のメッシュシェーダーの作成
+	mSkyBoxShader = new Shader();
+	if (!mSkyBoxShader->Load("Shaders/gBuffer_SkyBox.vert", "Shaders/gBuffer_SkyBox.frag"))
+	{
+		return false;
+	}
+
+	// メッシュ
+	mMeshShader->SetActive();
+
+	// ビュー行列の設定
+	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
+	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f),
+		mScreenWidth, mScreenHeight, 10.0f, 10000.0f);
+
+	mBasicShader->SetActive();
+	mBasicShader->SetMatrixUniform("uViewProj", mView * mProjection);
+	return true;
+}
+
+/// <summary>
+/// スプライト用の頂点バッファとインデックスバッファの作成
+/// </summary>
+void Renderer::CreateSpriteVerts()
+{
+	float vertices[] = {
+		-0.5f, 0.5f, 0.f, 0.f, 0.f, 0.0f, 0.f, 0.f, // 左上
+		0.5f, 0.5f, 0.f, 0.f, 0.f, 0.0f, 1.f, 0.f, // 右上
+		0.5f,-0.5f, 0.f, 0.f, 0.f, 0.0f, 1.f, 1.f, // 右下
+		-0.5f,-0.5f, 0.f, 0.f, 0.f, 0.0f, 0.f, 1.f  // 左下
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
+}
+
+/// <summary>
+/// パーティクル用の頂点バッファとインデックスバッファの作成
+/// </summary>
+void Renderer::CreateParticleVerts()
+{
+	float vertices[] = {
+		-0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 0.f, 0.f, // top left
+		 0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 1.f, 0.f, // top right
+		 0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 1.f, 1.f, // bottom right
+		-0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 0.f, 1.f  // bottom left
+	};
+
+	unsigned int indices[] = {
+		0, 2, 1,
+		2, 0, 3
+	};
+	mParticleVertex = new VertexArray(vertices, 4, VertexArray::PosNormTex, indices, 6);
+}
+
+/// <summary>
+/// キューブマップ(スカイボックス用)頂点配列定義
+/// </summary>
+void Renderer::CreateCubeVerts()
+{
+	mCubeVerts = new VertexArray();
+	mCubeVerts->CreateCubeVerts();
+}
+
+/// <summary>
+/// パーティクルの頂点配列を設定
+/// </summary>
+void Renderer::SetParticleVertex()
+{
+	mParticleVertex->SetActive();
+}
+
+/// <summary>
+/// 光源情報をシェーダーの変数にセットする
+/// </summary>
+/// <param name="_shader"> セットするShaderクラスのポインタ </param>
+/// <param name="_View"> ビュー行列 </param>
+void Renderer::SetLightUniforms(Shader* _shader, const Matrix4& _View)
 {
 	// ビュー行列を逆行列にする
-	Matrix4 invView = _view;
+	Matrix4 invView = _View;
 	invView.Invert();
 	_shader->SetVectorUniform("uCameraPos", invView.GetTranslation());
 	// 環境光の設定
@@ -852,6 +735,10 @@ void Renderer::SetLightUniforms(Shader* _shader, const Matrix4& _view)
 		mDirLight.m_specColor);
 }
 
+/// <summary>
+/// ブレンドモードを変更する
+/// </summary>
+/// <param name="_blendType"> ブレンドモード </param>
 void Renderer::ChangeBlendMode(ParticleComponent::ParticleBlendType blendType)
 {
 	switch (blendType)
@@ -870,11 +757,19 @@ void Renderer::ChangeBlendMode(ParticleComponent::ParticleBlendType blendType)
 	}
 }
 
-void Renderer::ChangeTexture(int _changeTextureID)
+/// <summary>
+/// テクスチャを変更
+/// </summary>
+/// <param name="_ChangeTextureID"> テクスチャID </param>
+void Renderer::ChangeTexture(const int& _ChangeTextureID)
 {
-	glBindTexture(GL_TEXTURE_2D, _changeTextureID);
+	glBindTexture(GL_TEXTURE_2D, _ChangeTextureID);
 }
 
+/// <summary>
+/// ワールド座標でのカメラ位置算出
+/// </summary>
+/// <returns> カメラ位置(ワールド座標) </returns>
 Vector3 Renderer::CalcCameraPos()
 {
 	// ビュー行列よりワールドでのカメラ位置算出
