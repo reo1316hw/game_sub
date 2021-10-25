@@ -52,7 +52,7 @@ public:
 	//@brief 使用したすべてのゲームオブジェクトを解放する
 	//@detail シーン遷移の際に使用される。GameObject内の再利用フラグが建っているオブジェクトは解放しない
 	//*/
-	//void RemoveAllUsedGameObject();
+	void RemoveAllUsedGameObject();
 
 	//GameObject* FindGameObject(Tag _tag);
 	//std::vector<GameObject*> FindGameObjects(Tag _tag);

@@ -126,34 +126,22 @@ void GameObjectManager::RemoveGameObject(GameObject * _object)
 @brief 使用したすべてのゲームオブジェクトを解放する
 @detail シーン遷移の際に使用される。GameObject内の再利用フラグが建っているオブジェクトは解放しない
 */
-//void GameObjectManager::RemoveAllUsedGameObject()
-//{
-//	std::vector<GameObject*> reUseObjects;
-//
-//	while (!gameObjects.empty())
-//	{
-//		GameObject* obj = gameObjects.back();
-//		if (obj->GetReUseGameObject())
-//		{
-//			reUseObjects.push_back(obj);
-//			gameObjects.pop_back();
-//			continue;
-//		}
-//		delete obj;
-//	}
-//
-//	while (!cameraObjects.empty())
-//	{
-//		GameObject* obj = cameraObjects.back();
-//		if (obj->GetReUseGameObject())
-//		{
-//			reUseObjects.push_back(obj);
-//			cameraObjects.pop_back();
-//			continue;
-//		}
-//		delete obj;
-//	}
-//}
+void GameObjectManager::RemoveAllUsedGameObject()
+{
+	std::vector<GameObject*> reUseObjects;
+
+	while (!mGameObjects.empty())
+	{
+		GameObject* obj = mGameObjects.back();
+		if (obj->GetReUseGameObject())
+		{
+			reUseObjects.push_back(obj);
+			mGameObjects.pop_back();
+			continue;
+		}
+		delete obj;
+	}
+}
 
 //GameObject * GameObjectManager::FindGameObject(Tag _tag)
 //{

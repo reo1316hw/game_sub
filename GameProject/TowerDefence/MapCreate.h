@@ -95,4 +95,18 @@ private:
 	EnemyObjectManager* mEnemyObjectManagerPtr;
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// プレイヤーのポインタを取得
+	/// </summary>
+	/// <returns> プレイヤーのポインタ </returns>
+	PlayerObject* GetPlayerPtr() { return mPlayerPtr; }
+
+	/// <summary>
+	/// ボスのポインタを取得
+	/// </summary>
+	/// <returns> ボスのポインタ </returns>
+	BossObject* GetBossPtr() { return mBossPtr; }
 };

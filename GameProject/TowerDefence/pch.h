@@ -121,6 +121,8 @@
 #include "SceneBase.h"
 #include "TitleScene.h"
 #include "ActionScene.h"
+#include "GameClearScene.h"
+#include "GameOverScene.h"
 
 #include "FPS.h"
 #include "Math.h"

@@ -15,7 +15,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~ActionScene() {};
+	~ActionScene();
 
 	/// <summary>
 	/// シーンの更新
@@ -25,5 +25,10 @@ public:
 	SceneBase* Update(const InputState& _KeyState)override;
 
 private:
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
+	// ボスのポインタ
+	BossObject* mBossPtr;
 };
 
