@@ -39,12 +39,20 @@ public:
 
 private:
 
+	// ヒットストップが終わるタイミング
+	const int MHitStopEndTiming;
 	// アニメーションの再生速度
 	const float MPlayRate;
 	// 減速値
 	const float MDecelerationSpeed;
 	
-		// 死亡時の速度
+	// ヒットストップするか
+	bool mIsHitStop;
+
+	// ヒットストップするフレーム数
+	int mHitStopCount;
+
+	// 死亡時の速度
 	float mDeathSpeed;
 
 	// 座標

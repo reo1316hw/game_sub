@@ -50,6 +50,8 @@ private:
 	const float MVecShortenVelue;
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
+	// アニメーションの再生速度
+	const float MPlayRate;
 
 	// ヒットストップするか
 	bool mIsHitStop;
@@ -63,8 +65,6 @@ private:
 	float mElapseTime;
 	// アニメーション総時間
 	float mTotalAnimTime;
-	// アニメーションの再生速度
-	float mPlayRate;
 
 	// 座標
 	Vector3 mPosition;

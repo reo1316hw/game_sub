@@ -6,11 +6,17 @@
 /// <param name="_skMesh"> 親クラスのスケルトンメッシュのポインタ </param>
 /// <param name="_GpmeshName"> gpmeshのパス </param>
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
-PlayerWeaponObject::PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag)
+/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+PlayerWeaponObject::PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
+	, MEnableIsHitTiming(120)
 	, MSwordRot(Vector3(-Math::PiOver2 * 0.5f, Math::Pi * 0.9f, 0.0f))
 	, MSwordPos(Vector3(-70.0f, -5.0f, 135.0f))
+	, mIsHitDisableCount(0)
+	, mIsHit(false)
+	, mDisableIsHit(false)
 	, mWeaponMesh(nullptr)
+	, mPlayerPtr(_playerPtr)
 {
 	// 武器のメッシュ
 	mWeaponMesh = new AttackMeshComponent(this, _skMesh ,"index_01_r");
@@ -38,6 +44,19 @@ void PlayerWeaponObject::UpdateGameObject(float _deltaTime)
 		Matrix4 mat = mWeaponMesh->GetAttachTransMatrix();
 		mBoxColliderPtr->SetForceTransForm(mat);
 	}
+
+	// ヒットストップ時にオブジェクトと常に当たってしまうので、ヒットフラグを一定時間無効にする
+	if (mDisableIsHit)
+	{
+		mIsHit = false;
+		++mIsHitDisableCount;
+
+		if (mIsHitDisableCount >= MEnableIsHitTiming)
+		{
+			mIsHitDisableCount = 0;
+			mDisableIsHit = false;
+		}
+	}
 }
 
 /// <summary>
@@ -46,4 +65,12 @@ void PlayerWeaponObject::UpdateGameObject(float _deltaTime)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerWeaponObject::OnCollision(const GameObject& _HitObject)
 {
+	// オブジェクトのタグ
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == Tag::eEnemy && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
+	{
+  		mIsHit = true;
+	    mDisableIsHit = true;
+	}
 }

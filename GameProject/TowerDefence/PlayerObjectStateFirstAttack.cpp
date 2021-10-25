@@ -94,7 +94,7 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
-	// ATTACK1のアニメーション再生
+	// 1段階目の通常攻撃状態のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateFirstAttack), MPlayRate);
 	mIsNextCombo = false;

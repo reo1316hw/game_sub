@@ -53,15 +53,22 @@ private:
 	const int MDamageValueEnemyAttack;
 	// 当たり判定を有効にするタイミング
 	const int MBoxEnableTiming;
+	// ヒットストップが終わるタイミング
+	const int MHitStopEndTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
 
+	// ヒットストップするか
+	bool mIsHitStop;
+
 	// ダメージ値
 	int mDamageValue;
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
+	// ヒットストップするフレーム数
+	int mHitStopCount;
 
 	// 座標
 	Vector3 mPosition;
@@ -70,4 +77,8 @@ private:
 
 	// 親の矩形当たり判定を行うクラスのポインタ
 	BoxCollider* mOwnerBoxCollider;
+	// プレイヤーの武器のポインタ
+	PlayerWeaponObject* mWeaponPtr;
+	// スケルトンクラスのポインタ
+	SkeletalMeshComponent* skeletalMeshCompPtr;
 };

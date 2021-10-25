@@ -83,7 +83,7 @@ void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _KeySt
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
-    // アイドル状態のアニメーション再生
+    // 待機状態のアニメーション再生
     SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
     meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateIdle));
     mIsHit = false;

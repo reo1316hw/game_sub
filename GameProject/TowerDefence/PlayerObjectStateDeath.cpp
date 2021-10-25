@@ -33,7 +33,7 @@ PlayerState PlayerObjectStateDeath::Update(PlayerObject* _owner, const float _De
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateDeath::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
-	// ATTACK1のアニメーション再生
+	// 死亡状態のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDeath));
 }

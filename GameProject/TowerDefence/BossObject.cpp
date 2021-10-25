@@ -45,7 +45,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(BossState::eBossStateWait)];
 	//anim変数を速度1.0fで再生
-	mSkeltalMeshComponentPtr->PlayAnimation(anim, 1.0f);
+	mSkeltalMeshComponentPtr->PlayAnimation(anim);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new BossObjectStateWait(_playerPtr));	          // mStatePool[eBossStateWait]

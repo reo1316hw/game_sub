@@ -142,6 +142,7 @@ void PlayerObjectStateSprintLoop::Input(PlayerObject* _owner, const InputState& 
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateSprintLoop::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
+	// 全力疾走状態のアニメーション再生
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateSprintLoop));
 	mIsHit = false;

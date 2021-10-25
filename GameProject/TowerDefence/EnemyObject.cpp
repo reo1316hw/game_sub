@@ -48,7 +48,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(EnemyState::eEnemyStateTrack)];
 	//anim変数を速度1.0fで再生
-	mSkeltalMeshComponentPtr->PlayAnimation(anim, 1.0f);
+	mSkeltalMeshComponentPtr->PlayAnimation(anim);
 
 	mEnemyAttackPtr = new EnemyAttackDecisionObject(this, Tag::eEnemyAttackDecision);
 

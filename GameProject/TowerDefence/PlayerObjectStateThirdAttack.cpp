@@ -7,13 +7,18 @@
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
 	: MBoxEnableTiming(30)
 	, MDamageValueEnemyAttack(25)
+	, MHitStopEndTiming(10)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
+	, mIsHitStop(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
+	, mHitStopCount(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mOwnerBoxCollider(_weaponPtr->GetBoxCollider())
+	, mWeaponPtr(_weaponPtr)
+	, skeletalMeshCompPtr(nullptr)
 {
 }
 
@@ -25,6 +30,32 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
+	if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
+
+	// 攻撃時に武器が当たったらヒットストップを行う
+	if (mWeaponPtr->IsHitCheck())
+	{
+		mIsHitStop = true;
+		skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);
+	}
+
+	// ヒットストップ時に移動処理を無効化
+	if (mIsHitStop)
+	{
+		++mHitStopCount;
+
+		if (mHitStopCount <= MHitStopEndTiming)
+		{
+			return PlayerState::ePlayerStateThirdAttack;
+		}
+
+		mIsHitStop = false;
+		mHitStopCount = 0;
+	}
+
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -45,11 +76,6 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
-	if (mIsHit)
-	{
-		return PlayerState::ePlayerStateDamage;
-	}
-
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -66,15 +92,19 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
-	// ATTACK3のアニメーション再生
-	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
-	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack), MPlayRate);
+	// 3段階目の通常攻撃状態のアニメーション再生
+	skeletalMeshCompPtr = _owner->GetSkeletalMeshComponentPtr();
+	skeletalMeshCompPtr->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack), MPlayRate);
 	mIsHit = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
 	mElapseTime = 0.0f;
 	mHitUntilCount = 0;
+
+	// ヒットストップ関係初期化
+	mIsHitStop = false;
+	mHitStopCount = 0;
 
 	// 座標
 	mPosition = _owner->GetPosition();

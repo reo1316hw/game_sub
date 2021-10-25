@@ -2,8 +2,12 @@
 
 SkeletalMeshComponent::SkeletalMeshComponent(GameObject* _owner)
 	:MeshComponent(_owner, true)
-	, mSkeleton(nullptr)
+	, MHitStopEndTiming(10)
+	, mIsHitStop(false)
+	, mHitStopCount(0)
+	, mHitStopRate(0.0f)
 	, mColor(Vector3(0,0,0))
+	, mSkeleton(nullptr)
 {
 }
 
@@ -47,34 +51,55 @@ void SkeletalMeshComponent::Draw(Shader* _shader)
 
 void SkeletalMeshComponent::Update(float _deltaTime)
 {
-	if (mAnimation && mSkeleton)
+	if (!mAnimation && !mSkeleton)
 	{
-		mAnimTime += _deltaTime * mAnimPlayRate;
-
-		// アニメーションがループアニメーションなら巻き戻し処理
-		if (mAnimation->IsLoopAnimation())
-		{
-			while (mAnimTime > mAnimation->GetDuration())
-			{
-				mAnimTime -= mAnimation->GetDuration();
-			}
-		}
-		// ループしないアニメで再生時間超えたら最終時間までとする
-		else if (mAnimTime > mAnimation->GetDuration())
-		{
-			mAnimTime = mAnimation->GetDuration();
-		}
-		// 行列パレットの再計算
-		ComputeMatrixPalette();
+		return;
 	}
-	
+
+	mHitStopRate = 1.0f;
+
+	if (mIsHitStop)
+	{
+		mHitStopRate = 0.0f;
+		++mHitStopCount;
+
+		if (mHitStopCount >= MHitStopEndTiming)
+		{
+			mHitStopCount = 0;
+			mIsHitStop = false;
+		}
+	}
+
+	mAnimTime += _deltaTime * mAnimPlayRate * mHitStopRate;
+
+	// アニメーションがループアニメーションなら巻き戻し処理
+	if (mAnimation->IsLoopAnimation())
+	{
+		while (mAnimTime > mAnimation->GetDuration())
+		{
+			mAnimTime -= mAnimation->GetDuration();
+		}
+	}
+	// ループしないアニメで再生時間超えたら最終時間までとする
+	else if (mAnimTime > mAnimation->GetDuration())
+	{
+		mAnimTime = mAnimation->GetDuration();
+	}
+	// 行列パレットの再計算
+	ComputeMatrixPalette();
 }
 
-float SkeletalMeshComponent::PlayAnimation(const Animation* _anim, float _playRate) 
+/// <summary>
+/// アニメーションの再生
+/// </summary>
+/// <param name="_AnimPtr"> アニメーションデータクラスのポインタ </param>
+/// <param name="_PlayRate"> アニメーションの再生速度 </param>
+/// <returns> アニメーションの残り時間 </returns>
+float SkeletalMeshComponent::PlayAnimation(const Animation* _AnimPtr, const float& _PlayRate)
 {
-	mAnimation = _anim;
+	mAnimation = _AnimPtr;
 	mAnimTime = 0.0f;
-	mAnimPlayRate = _playRate;
+	mAnimPlayRate = _PlayRate;
 
 	if (!mAnimation)
 	{

@@ -9,12 +9,12 @@ EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
 	, MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, MPlayRate(1.0f)
 	, mIsHitStop(false)
 	, mHitPoint(0)
 	, mHitStopCount(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
-	, mPlayRate(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
@@ -30,6 +30,18 @@ EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	if (mHitPoint <= 0)
+	{
+		return EnemyState::eEnemyStateDeath;
+	}
+
+	++mHitStopCount;
+
+	if (mHitStopCount <= MHitStopEndTiming)
+	{
+		return EnemyState::eEnemyStateDamage;
+	}
+
 	// 開始速度
 	float startSpeed = -MDamageSpeed * _DeltaTime;
 	// 終了速度
@@ -41,11 +53,6 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirPlayerVec;
 
 	_owner->SetPosition(mPosition);
-	
-	if (mHitPoint <= 0)
-	{
-		return EnemyState::eEnemyStateDeath;
-	}
 	
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -82,20 +89,23 @@ void EnemyObjectStateDamage::Separation(EnemyObject* _owner, const Vector3& _Dir
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
-	mPlayRate = 1.0f;
+	mIsHitStop = false;
 
 	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
 	{
 		mIsHitStop = true;
-		mPlayRate = 0.0f;
 	}
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDamage), mPlayRate);
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDamage), MPlayRate);
+	meshcomp->SetIsHitStop(mIsHitStop);
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration();
 	mElapseTime = 0.0f;
+
+	// ヒットストップするフレーム数を初期化
+	mHitStopCount = 0;
 
 	// 座標
 	mPosition = _owner->GetPosition();

@@ -5,8 +5,11 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
-	: MPlayRate(1.5f)
+	: MHitStopEndTiming(10)
+	, MPlayRate(1.5f)
 	, MDecelerationSpeed(1.8f)
+	, mIsHitStop(false)
+	, mHitStopCount(0)
 	, mDeathSpeed(200.0f)
 	, mPlayerPtr(_playerPtr)
 	, mPosition(Vector3::Zero)
@@ -23,6 +26,13 @@ EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	++mHitStopCount;
+
+	if (mHitStopCount <= MHitStopEndTiming)
+	{
+		return EnemyState::eEnemyStateDeath;
+	}
+
 	// 速度
 	Vector3 velocity = mDeathSpeed * mDirPlayerVec;
 	mDeathSpeed -= MDecelerationSpeed;
@@ -62,8 +72,16 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
+	mIsHitStop = false;
+
+	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
+	{
+		mIsHitStop = true;
+	}
+
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDeath), MPlayRate);
+	meshcomp->SetIsHitStop(mIsHitStop);
 
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -74,6 +92,9 @@ void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 	// プレイヤーに向いたベクトル
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
+
+	// ヒットストップするフレーム数を初期化
+	mHitStopCount = 0;
 
 	mDeathSpeed = 200.0f;
 

@@ -93,7 +93,7 @@ void PlayerObjectStateSecondAttack::Input(PlayerObject* _owner, const InputState
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
-	// ATTACK1のアニメーション再生
+	// 2段階目の通常攻撃状態のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateSecondAttack), MPlayRate);
 	mIsNextCombo = false;

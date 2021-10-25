@@ -37,7 +37,7 @@ PlayerState PlayerObjectStateDamage::Update(PlayerObject* _owner, const float _D
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateDamage::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
-	// ATTACK1のアニメーション再生
+	// ダメージ状態のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDamage));
 
