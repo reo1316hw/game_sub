@@ -12,6 +12,7 @@
 BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
+	, MMaxHp(500)
 	, MPlayRate(1.0f)
 	, mInitPosition(Vector3::Zero)
 	, mNowState(BossState::eBossStateWait)
@@ -22,7 +23,8 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	SetPosition(_Pos);
 	//SetState(State::eDead);
 	mInitPosition = mPosition;
-	mHitPoint = 500;
+	mMaxHp = MMaxHp;
+	mHitPoint = mMaxHp;
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);

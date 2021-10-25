@@ -197,6 +197,8 @@ protected:
 	int mMyObjectId;
 	// 体力
 	int mHitPoint;
+	// 最大hp
+	int mMaxHp;
 	// ダメージ値
 	int mDamageValue;
 
@@ -331,6 +333,12 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> オブジェクトのid </returns>
 	int GetObjectId() { return mMyObjectId; }
+
+	/// <summary>
+	/// オブジェクトの最大体力を取得する
+	/// </summary>
+	/// <returns> オブジェクトの最大体力 </returns>
+	int GetMaxHp() { return mMaxHp; }
 
 	/// <summary>
 	/// オブジェクトの体力を取得する

@@ -11,6 +11,7 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, MMaxHp(100)
 	, MCameraOffset(Vector3(-150.0f, -150.0f, -150.0f))
 	, MTargetOffset(Vector3(0.0f, 0.0f, 40.0f))
 	, MPlayRate(1.0f)
@@ -25,7 +26,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// GameObjectメンバ変数の初期化
 	SetScale(_Scale);
 	SetPosition(_Pos);
-	mHitPoint = 100;
+	mMaxHp = MMaxHp;
+	mHitPoint = mMaxHp;
 
 	// 生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);

@@ -56,6 +56,7 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 
 		mEnemyHitPointGaugePtr->SetState(State::eDead);
 		mEnemyHitPointFramePtr->SetState(State::eDead);
+		_owner->SetHitPoint(_owner->GetMaxHp());
 		_owner->SetState(State::eDead);
 		_owner->SetPosition(mInitPosition);
 

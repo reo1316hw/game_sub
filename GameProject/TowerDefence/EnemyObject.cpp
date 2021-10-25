@@ -12,6 +12,7 @@
 EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
+	, MMaxHp(50)
 	, MPlayRate(1.0f)
 	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))
 	, mInitPosition(Vector3::Zero)
@@ -25,7 +26,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	SetPosition(_Pos);
 	SetState(State::eDead);
 	mInitPosition = mPosition;
-	mHitPoint = 50;
+	mMaxHp = MMaxHp;
+	mHitPoint = mMaxHp;
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);

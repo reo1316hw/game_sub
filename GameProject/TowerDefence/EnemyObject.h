@@ -69,6 +69,8 @@ private:
     /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 	void OnCollision(const GameObject& _HitObject)override;
 
+	// 最大体力
+	const int MMaxHp;
 	// アニメーションの再生速度
 	const float MPlayRate;
 
