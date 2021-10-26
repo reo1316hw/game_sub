@@ -15,7 +15,8 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_TextureName"> テクスチャのパス </param>
-	Sprite(const std::string _TextureName);
+    /// <param name="_ReUseGameObject"> 再利用するか </param>
+	Sprite(const std::string _TextureName, const bool& _ReUseGameObject = false);
 
 	/// <summary>
 	/// デストラクタ

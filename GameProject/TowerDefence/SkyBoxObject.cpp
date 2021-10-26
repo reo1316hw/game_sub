@@ -10,8 +10,6 @@ SkyBoxObject::SkyBoxObject(const Tag& _ObjectTag, const bool& _ReUseGameObject)
 {
 	// キューブマップコンポーネントを生成
 	cubeMapComp = new CubeMapComponent(this);
-	// レンダラーにActiveなキューブマップとしてポインタを渡す
-	RENDERER->SetActiveSkyBox(cubeMapComp);
 	// texture生成
 	cubeMapComp->CreateTexture("Assets/Texture/SkyBox/");
 }

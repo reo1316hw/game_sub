@@ -40,7 +40,7 @@ ActionScene::~ActionScene()
 SceneBase* ActionScene::Update(const InputState& _KeyState)
 {
 	// ボスのhpが0になったらゲームクリアシーンへ遷移
-	if (mBossPtr->GetHitPoint() <= 0)
+	if (mBossPtr->GetHitPoint() <= 0 || _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_O) == Released)
 	{
 		return new GameClearScene();
 	}

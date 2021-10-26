@@ -129,6 +129,11 @@ public:
 	/// <param name="_meshComponent"> 削除するMeshComponentクラスのポインタ </param>
 	void RemoveMeshComponent(MeshComponent* _meshComponent);
 
+	/// <summary>
+	/// キューブコンポーネントの削除
+	/// </summary>
+	void RemoveCubeComponent() { mActiveSkyBox = nullptr; };
+
 private:
 
 	/// <summary>

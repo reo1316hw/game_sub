@@ -10,6 +10,8 @@ CubeMapComponent::CubeMapComponent(GameObject* _owner)
 	, mLuminance(1.0f)
 	, mIsVisible(true)
 {
+	// レンダラーにActiveなキューブマップとしてポインタを渡す
+	RENDERER->SetActiveSkyBox(this);
 }
 
 /// <summary>
@@ -17,6 +19,7 @@ CubeMapComponent::CubeMapComponent(GameObject* _owner)
 /// </summary>
 CubeMapComponent::~CubeMapComponent()
 {
+	RENDERER->RemoveCubeComponent();
 	delete mTexture;
 }
 
@@ -36,24 +39,27 @@ void CubeMapComponent::CreateTexture(const std::string& _TextureName)
 /// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
 void CubeMapComponent::Draw(Shader*_shader)
 {
-	// 透明にしていなければ
-	if (mIsVisible)
+	// 透明にしていたら処理を抜ける
+	if (!mTexture || !mIsVisible)
 	{
-		// 深度設定
-		glDepthFunc(GL_LEQUAL);
-		// 輝度情報をシェーダに渡す
-		_shader->SetFloatUniform("u_skyLuminance", mLuminance);
-		// テクスチャバインド
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mTexture->GetTextureID());
-		// キューブマップ用頂点配列のアクティブ化
-		RENDERER->GetCubeMapVerts()->SetActive();
-		// 描画
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		// 念のためバインド解除
-		glBindVertexArray(0);
-
-		glDepthFunc(GL_LESS);
+		return;
 	}
+	
+	// 深度設定
+	glDepthFunc(GL_LEQUAL);
+	// 輝度情報をシェーダに渡す
+	_shader->SetFloatUniform("u_skyLuminance", mLuminance);
+	// テクスチャバインド
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mTexture->GetTextureID());
+	// キューブマップ用頂点配列のアクティブ化
+	RENDERER->GetCubeMapVerts()->SetActive();
+	// 描画
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	// 念のためバインド解除
+	glBindVertexArray(0);
+
+	glDepthFunc(GL_LESS);
+	
 }
