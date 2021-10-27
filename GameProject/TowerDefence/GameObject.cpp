@@ -1,7 +1,6 @@
 #include "pch.h"
 
 int GameObject::mGameObjectId = 0;
-MainCameraObject* GameObject::mMainCamera = nullptr;
 PauzingEvent GameObject::mPauzingEvent = PauzingEvent::NoneEvent;
 
 /// <summary>
@@ -142,20 +141,6 @@ void GameObject::RemoveComponent(Component * _component)
 	}
 }
 
-///// <summary>
-///// 現在の仕様上行うことができない処理を外部から強引に行うための関数
-///// ゲームオブジェクト全体の更新が停止中に対象のゲームオブジェクトを更新する
-///// </summary>
-//void GameObject::ExceptionUpdate()
-//{
-//	ComputeWorldTransform();
-//
-//	UpdateGameObject(0.016f);
-//	UpdateComponents(0.016f);
-//
-//	ComputeWorldTransform();
-//}
-
 /// <summary>
 /// Transformのワールド変換
 /// </summary>
@@ -223,12 +208,4 @@ void GameObject::RotateToNewForward(const Vector3& _forward)
 		axis.Normalize();
 		SetRotation(Quaternion(axis, angle));
 	}
-}
-
-/// <summary>
-/// 静的なmainCameraを生成する
-/// </summary>
-void GameObject::CreateMainCamera()
-{
-	mMainCamera = new MainCameraObject();
 }

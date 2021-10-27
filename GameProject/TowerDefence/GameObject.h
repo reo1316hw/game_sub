@@ -134,12 +134,6 @@ public:
 	/// <param name="_component"> 削除するコンポーネントのポインタ </param>
 	void RemoveComponent(Component* _component);
 
-	///// <summary>
-	///// 現在の仕様上行うことができない処理を外部から強引に行うための関数
-	///// ゲームオブジェクト全体の更新が停止中に対象のゲームオブジェクトを更新する
-	///// </summary>
-	//void ExceptionUpdate();
-
 	/// <summary>
 	/// Transformのワールド変換
 	/// </summary>
@@ -160,11 +154,6 @@ public:
 	void RotateToNewForward(const Vector3& _Forward);
 
 	/// <summary>
-	/// 静的なmainCameraを生成する
-	/// </summary>
-	static void CreateMainCamera();
-
-	/// <summary>
 	/// オブジェクトの引き離し
 	/// </summary>
 	/// <param name="_DirTargetEnemyVec"> 対象となるオブジェクトに向いたベクトル </param>
@@ -175,9 +164,6 @@ protected:
 	std::function<void(GameObject&)> GetOnCollisionFunc() { return std::bind(&GameObject::OnCollision, this, std::placeholders::_1); }
 	virtual void OnCollision(const GameObject& _hitObject) {};
 
-	// メインカメラ　
-	// 生成はGameObjectManager生成時に行われる
-	static class MainCameraObject* mMainCamera;
 	// ゲームオブジェクトの更新を止めるイベント状態
 	static PauzingEvent mPauzingEvent;
 	// 衝突時のリアクション関数(ColliderComponentにこの関数のアドレスを渡す) Enter...衝突した Stay...衝突している

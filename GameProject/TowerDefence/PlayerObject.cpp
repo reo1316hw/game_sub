@@ -12,16 +12,16 @@
 PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
 	, MMaxHp(100)
-	, MCameraOffset(Vector3(-150.0f, -150.0f, -150.0f))
-	, MTargetOffset(Vector3(0.0f, 0.0f, 40.0f))
 	, MPlayRate(1.0f)
 	, MAngle(270.0f)
-	, mTargetPos(Vector3::Zero)
-	, mCameraPos(Vector3::Zero)
 	, mNowState(PlayerState::ePlayerStateIdle)
 	, mNextState(PlayerState::ePlayerStateIdle)
 	, mSkeltalMeshComponentPtr(nullptr)
 	, mWeaponPtr(nullptr)
+	, mMainCameraPtr(nullptr)
+	, mRunLoopPtr(nullptr)
+	, mSprintStartPtr(nullptr)
+	, mSprintLoopPtr(nullptr)
 {
 	// GameObjectメンバ変数の初期化
 	SetScale(_Scale);
@@ -59,9 +59,9 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	                  // mStatePool[ePlayerStateIdle]
-	mStatePools.push_back(new PlayerObjectStateRunLoop);	              // mStatepool[ePlayerStateRunLoop]
-	mStatePools.push_back(new PlayerObjectStateSprintStart);              // mStatepool[ePlayerStateSprintStart]
-	mStatePools.push_back(new PlayerObjectStateSprintLoop);	              // mStatepool[ePlayerStateSprintLoop]
+	mStatePools.push_back(mRunLoopPtr = new PlayerObjectStateRunLoop);	              // mStatepool[ePlayerStateRunLoop]
+	mStatePools.push_back(mSprintStartPtr = new PlayerObjectStateSprintStart);              // mStatepool[ePlayerStateSprintStart]
+	mStatePools.push_back(mSprintLoopPtr = new PlayerObjectStateSprintLoop);	              // mStatepool[ePlayerStateSprintLoop]
 	mStatePools.push_back(new PlayerObjectStateFirstAttack(mWeaponPtr));  // mStatepool[ePlayerStateFirstAttack];
 	mStatePools.push_back(new PlayerObjectStateSecondAttack(mWeaponPtr)); // mStatepool[ePlayerStateSecondAttack];
 	mStatePools.push_back(new PlayerObjectStateThirdAttack(mWeaponPtr));  // mStatepool[ePlayerStateThirdAttack];
@@ -85,11 +85,6 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObject::UpdateGameObject(float _deltaTime)
 {
-	mTargetPos = mPosition + MTargetOffset;
-	mCameraPos = mMainCamera->GetPosition();
-	// 見たい座標の設定
-	mMainCamera->SetViewObject(MCameraOffset, mTargetPos);
-
 	// ステート外部からステート変更があったか？
 	if (mNowState != mNextState)
 	{
@@ -172,4 +167,15 @@ void PlayerObject::OnCollision(const GameObject& _HitObject)
 	////}
 
 	//SetPosition(mPosition);
+}
+
+/// <summary>
+/// カメラのポインタを設定
+/// </summary>
+/// <param name="_mainCameraPtr"> カメラのポインタ </param>
+void PlayerObject::SetMainCameraPtr(MainCameraObject* _mainCameraPtr)
+{
+	mRunLoopPtr->SetMainCameraPtr(_mainCameraPtr);
+	mSprintStartPtr->SetMainCameraPtr(_mainCameraPtr);
+	mSprintLoopPtr->SetMainCameraPtr(_mainCameraPtr);
 }

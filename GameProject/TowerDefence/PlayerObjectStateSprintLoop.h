@@ -71,6 +71,15 @@ private:
 	Vector3 mPosition;
 	// 前方ベクトル
 	Vector3 mForwardVec;
-	// カメラからみた前進方向を取得
-	Vector3 mCameraPos;
+
+	// カメラのポインタ
+	MainCameraObject* mMainCameraPtr;
+
+public:// ゲッターセッター
+
+    /// <summary>
+    /// カメラのポインタを設定
+    /// </summary>
+    /// <param name="_mainCameraPtr"> カメラのポインタ </param>
+	void SetMainCameraPtr(MainCameraObject* _mainCameraPtr) { mMainCameraPtr = _mainCameraPtr; }
 };

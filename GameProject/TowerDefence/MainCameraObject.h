@@ -10,7 +10,10 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	MainCameraObject();
+    /// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	/// <param name="_bossPtr"> ボスのポインタ </param>
+    /// <param name="_ReUseGameObject"> 再利用するかのフラグ </param>
+	MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPtr, const bool& _ReUseGameObject);
 
 	/// <summary>
 	/// デストラクタ
@@ -36,31 +39,28 @@ private:
 	const float MMinLookDownAngle;
 	// 最大仰角
 	const float MMaxLookDownAngle;
-	//移動するための右スティックのしきい値
+	// 動するための右スティックのしきい値
 	const float MRightAxisThreshold;
 	// 回転追加値
 	const float MAddRotate;
-
-	//追従先のオブジェクトを所持しているか
-	bool mHasTarget;
+	// カメラ座標との差
+	const Vector3 MCameraOffset;
+	// 見たい座標との差
+	const Vector3 MTargetOffset;
       
 	// カメラ周囲回転方向回転角
 	float mRotateZAngle;
 	// カメラ見降ろし方向回転角
 	float mRotateYAngle;
 
-	//親オブジェクトとの差
-	Vector3 mOwnerOffset;
-	//追従先のオブジェクト座標
+	// 追従先のオブジェクト座標
 	Vector3 mTargetPos;
-	
-public://セッターゲッター
+	// 初期座標
+	Vector3 mInitPosition;
 
-	/// <summary>
-	/// 見たい座標を設定
-	/// </summary>
-	/// <param name="_Offset"> 見たい座標との差 </param>
-	/// <param name="_TargetPos"> 見る座標 </param>
-	void SetViewObject(const Vector3& _Offset, const Vector3& _TargetPos);
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
+	// ボスのポインタ
+	BossObject* mBossPtr;
 };
 

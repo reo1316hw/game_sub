@@ -30,5 +30,7 @@ private:
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ
 	BossObject* mBossPtr;
+	// カメラのポインタ
+	MainCameraObject* mMainCameraPtr;
 };
 

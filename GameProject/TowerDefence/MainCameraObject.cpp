@@ -3,19 +3,26 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-MainCameraObject::MainCameraObject() 
-	: GameObject(Tag::eCamera,true)
+/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+/// <param name="_bossPtr"> ボスのポインタ </param>
+/// <param name="_ReUseGameObject"> 再利用するかのフラグ </param>
+MainCameraObject::MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPtr, const bool& _ReUseGameObject)
+	: GameObject(Tag::eCamera, _ReUseGameObject)
 	, MMinLookDownAngle(Math::ToRadians(0.0f))
 	, MMaxLookDownAngle(Math::ToRadians(80.0f))
 	, MRightAxisThreshold(0.3f)
 	, MAddRotate(0.04f)
-	, mHasTarget(false)
+	, MCameraOffset(Vector3(-150.0f, -150.0f, -150.0f))
+	, MTargetOffset(Vector3(0.0f, 0.0f, 40.0f))
 	, mRotateZAngle(Math::Pi)
-	, mRotateYAngle(0.0f)
-	, mOwnerOffset(Vector3::Zero)
+	, mRotateYAngle(0.5f)
 	, mTargetPos(Vector3::Zero)
+	, mInitPosition(Vector3::Zero)
+	, mPlayerPtr(_playerPtr)
+	, mBossPtr(_bossPtr)
 {
-	SetPosition(Vector3(0,0,0));
+	mTargetPos = mPlayerPtr->GetPosition() + MTargetOffset;
+	SetPosition(mTargetPos);
 }
 
 /// <summary>
@@ -24,6 +31,17 @@ MainCameraObject::MainCameraObject()
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void MainCameraObject::UpdateGameObject(float _deltaTime)
 {
+	// プレイヤーかボスのhpが0以下だったら初期座標に戻す
+	if (mPlayerPtr->GetHitPoint() <= 0 || mBossPtr->GetHitPoint() <= 0)
+	{
+		mPosition = mInitPosition;
+		SetPosition(mPosition);
+
+		return;
+	}
+
+	mTargetPos = mPlayerPtr->GetPosition() + MTargetOffset;
+
 	// 見降ろし角度の角度制限
 	if (mRotateYAngle < MMinLookDownAngle)
 	{
@@ -38,9 +56,9 @@ void MainCameraObject::UpdateGameObject(float _deltaTime)
 	Vector3 rotatePos;
 
 	// ヨー回転・ピッチ回転
-	rotatePos.x = mOwnerOffset.x * cosf(mRotateYAngle) * sinf(mRotateZAngle);
-	rotatePos.y = mOwnerOffset.y * cosf(mRotateYAngle) * cosf(mRotateZAngle);
-	rotatePos.z = mOwnerOffset.z * sinf(-mRotateYAngle);
+	rotatePos.x = MCameraOffset.x * cosf(mRotateYAngle) * sinf(mRotateZAngle);
+	rotatePos.y = MCameraOffset.y * cosf(mRotateYAngle) * cosf(mRotateZAngle);
+	rotatePos.z = MCameraOffset.z * sinf(-mRotateYAngle);
 
 	mPosition = rotatePos + mTargetPos;
 
@@ -101,16 +119,4 @@ void MainCameraObject::GameObjectInput(const InputState& _KeyState)
 	{
 		mRotateZAngle -= MAddRotate;
 	}
-}
-
-/// <summary>
-/// 見たい座標を設定
-/// </summary>
-/// <param name="_Offset"> 見たい座標との差 </param>
-/// <param name="_TargetPos"> 見る座標 </param>
-void MainCameraObject::SetViewObject(const Vector3 & _Offset, const Vector3 & _TargetPos)
-{
-	mHasTarget = true;
-	mOwnerOffset = _Offset;
-	mTargetPos = _TargetPos;
 }

@@ -6,6 +6,7 @@
 ActionScene::ActionScene()
 	: mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
+	, mMainCameraPtr(nullptr)
 {
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.8f, 0.8f, 0.8f));
@@ -19,6 +20,12 @@ ActionScene::ActionScene()
 	mMapCreate->OpenFile();
 	mPlayerPtr = mMapCreate->GetPlayerPtr();
 	mBossPtr = mMapCreate->GetBossPtr();
+
+	// カメラ生成
+	mMainCameraPtr = new MainCameraObject(mPlayerPtr, mBossPtr, true);
+
+	// プレイヤークラスでカメラのポインタを設定
+	mPlayerPtr->SetMainCameraPtr(mMainCameraPtr);
 
 	// スカイボックス生成
 	new SkyBoxObject(Tag::eOther, false);

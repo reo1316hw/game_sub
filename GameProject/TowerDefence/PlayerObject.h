@@ -7,6 +7,10 @@ class PlayerObjectStateBase;
 class AttackMeshComponent;
 class SphereCollider;
 class PlayerWeaponObject;
+class MainCameraObject;
+class PlayerObjectStateRunLoop;
+class PlayerObjectStateSprintStart;
+class PlayerObjectStateSprintLoop;
 
 /// <summary>
 /// プレイヤーの状態
@@ -79,10 +83,6 @@ private:
 
 	// 最大体力
 	const int MMaxHp;
-	// カメラ座標との差
-	const Vector3 MCameraOffset;
-	// 見たい座標との差
-	const Vector3 MTargetOffset;
 	// 剣の初期回転値
 	const Vector3 MSwordRot;
 	// 剣の初期座標
@@ -97,11 +97,6 @@ private:
 	// ステートクラスプール
 	std::vector<PlayerObjectStateBase*> mStatePools;
 
-	// 見る対象のポジション
-	Vector3 mTargetPos;
-	// カメラのポジション
-	Vector3 mCameraPos;
-
 	// 現在のステート
 	PlayerState mNowState;
 	// 次のステート
@@ -110,6 +105,14 @@ private:
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
 	// プレイヤー武器のポインタ
 	PlayerWeaponObject* mWeaponPtr;
+	// カメラのポインタ
+	MainCameraObject* mMainCameraPtr;
+	// 走り状態のクラスのポインタ
+	PlayerObjectStateRunLoop* mRunLoopPtr;
+	// 全力疾走始め状態のクラスのポインタ
+	PlayerObjectStateSprintStart* mSprintStartPtr;
+	// 全力疾走状態のクラスのポインタ
+	PlayerObjectStateSprintLoop* mSprintLoopPtr;
 
 public:// ゲッターセッター
 
@@ -127,21 +130,15 @@ public:// ゲッターセッター
 	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; }
 
 	/// <summary>
-	/// 見る対象のポジションを取得
-	/// </summary>
-	/// <returns> 見る対象のポジション </returns>
-	Vector3 GetTargetPos() { return mTargetPos; }
-
-	/// <summary>
-	/// カメラのポジションを取得
-	/// </summary>
-	/// <returns> カメラのポジション </returns>
-	Vector3 GetCameraPos() { return mCameraPos; }
-
-	/// <summary>
 	/// 現在のステートを取得
 	/// </summary>
 	/// <returns> 現在のステート </returns>
 	PlayerState GetPlayerState() { return mNowState; }
+
+	/// <summary>
+	/// カメラのポインタを設定
+	/// </summary>
+	/// <param name="_mainCameraPtr"> カメラのポインタ </param>
+	void SetMainCameraPtr(MainCameraObject* _mainCameraPtr);
 };
 

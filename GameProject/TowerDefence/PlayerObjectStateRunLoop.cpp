@@ -11,7 +11,7 @@ PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 	, mDamageValue(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
-	, mCameraPos(Vector3::Zero)
+	, mMainCameraPtr(nullptr)
 {	
 }
 
@@ -174,16 +174,19 @@ void PlayerObjectStateRunLoop::OnCollision(PlayerObject* _owner, const GameObjec
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
-	// カメラの座標
-	mCameraPos = _owner->GetCameraPos();
+	if (mMainCameraPtr != nullptr)
+	{
+		// カメラの座標
+		Vector3 cameraPos = mMainCameraPtr->GetPosition();
 
-	mForwardVec = mPosition - mCameraPos;
-	// 高さ方向を無視
-	mForwardVec.z = 0.0f;
+		mForwardVec = mPosition - cameraPos;
+		// 高さ方向を無視
+		mForwardVec.z = 0.0f;
 
-	// カメラ前方ベクトルと右方向ベクトル算出
-	mForwardVec = Vector3::Normalize(mForwardVec);
-	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+		// カメラ前方ベクトルと右方向ベクトル算出
+		mForwardVec = Vector3::Normalize(mForwardVec);
+		mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+	}
 
 	// 入力キーの総和
 	if (mDirVec.LengthSq() > MDirThreshold)

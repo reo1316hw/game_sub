@@ -10,7 +10,6 @@ void GameObjectManager::CreateInstance()
 	if (mManager == nullptr)
 	{
 		mManager = new GameObjectManager();
-		GameObject::CreateMainCamera();
 	}
 }
 
@@ -40,9 +39,9 @@ void GameObjectManager::UpdateGameObject(float _deltaTime)
 	}
 
 	// 1マップ目を更新する
-	for (auto tutorialObject : mGameObjects)
+	for (auto gameObject : mGameObjects)
 	{
-		tutorialObject->Update(_deltaTime);
+		gameObject->Update(_deltaTime);
 	}
 
 	mUpdatingGameObject = false;
@@ -68,9 +67,9 @@ void GameObjectManager::ProcessInput(const InputState& _state)
 		cameraObject->ProcessInput(_state);
 	}
 	//1マップ目
-	for (auto tutorialObject : mGameObjects)
+	for (auto gameObject : mGameObjects)
 	{
-		tutorialObject->ProcessInput(_state);
+		gameObject->ProcessInput(_state);
 	}
 
 	mUpdatingGameObject = false;
