@@ -11,7 +11,6 @@ EffectComponent::EffectComponent(GameObject* owner, bool moveOn, bool rotateOn, 
 
 EffectComponent::~EffectComponent()
 {
-
 	RENDERER->GetEffekseerManager()->StopEffect(mHandle);
 }
 

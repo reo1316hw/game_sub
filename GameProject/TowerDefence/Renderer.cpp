@@ -19,7 +19,6 @@ Renderer::Renderer()
 	, mSpriteShader(nullptr)
 	, mMeshShader(nullptr)
 	, mSkinnedShader(nullptr)
-	, mBasicShader(nullptr)
 	, mSkyBoxShader(nullptr)
 	, mParticleVertex(nullptr)
 {
@@ -134,7 +133,7 @@ bool Renderer::Initialize(const float& _ScreenWidth, const float& _ScreenHeight,
 	// HDRレンダラー初期化
 	mHDRRenderer = new HDRRenderer(mScreenWidth, mScreenHeight, 4);
 
-	//// カリング
+	// カリング
 	glFrontFace(GL_CCW);
 	glEnable(GL_FRONT_FACE);
 
@@ -176,8 +175,6 @@ void Renderer::Shutdown()
 	delete mSpriteShader;
 	mMeshShader->Unload();
 	delete mMeshShader;
-	mBasicShader->Unload();
-	delete mBasicShader;
 
 	// Effekseer関連の破棄
 	mEffekseerManager.Reset();
@@ -217,6 +214,12 @@ void Renderer::UnloadData()
 		delete a.second;
 	}
 
+	// エフェクトの破棄
+	for (auto e : mEffects)
+	{
+		delete e.second;
+	}
+
 	mMeshes.clear();
 }
 
@@ -249,6 +252,13 @@ void Renderer::Draw()
 			mActiveSkyBox->Draw(mSkyBoxShader);
 		}
 
+
+		//エフェクト関連
+		mEffekseerRenderer->BeginRendering();
+		mEffekseerManager->Draw();
+		mEffekseerRenderer->EndRendering();
+
+
 		// メッシュコンポーネントの描画
 		// 基本的なメッシュシェーダーをアクティブにする
 		mMeshShader->SetActive();
@@ -278,9 +288,6 @@ void Renderer::Draw()
 
 	// 当たり判定デバッグBoxの表示
 	PHYSICS->DebugShowBox();
-	
-	mBasicShader->SetActive();
-	mBasicShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
 	// Draw any skinned mMeshes now
 	// Draw any skinned mMeshes now
@@ -669,12 +676,6 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 
-	mBasicShader = new Shader();
-	if (!mBasicShader->Load("Shaders/BasicMesh.vert", "Shaders/BasicMesh.frag"))
-	{
-		return false;
-	}
-
 	mParticleShader = new Shader();
 	if (!mParticleShader->Load("Shaders/Phong.vert", "Shaders/Particle.frag"))
 	{
@@ -699,13 +700,6 @@ bool Renderer::LoadShaders()
 	// メッシュ
 	mMeshShader->SetActive();
 
-	// ビュー行列の設定
-	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f),
-		mScreenWidth, mScreenHeight, 10.0f, 10000.0f);
-
-	mBasicShader->SetActive();
-	mBasicShader->SetMatrixUniform("uViewProj", mView * mProjection);
 	return true;
 }
 

@@ -599,16 +599,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\BasicMesh.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shaders\BasicMesh.vert">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="Shaders\downsampling.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shaders\framebufferScreen.frag">
       <Filter>Shader</Filter>
     </None>
     <None Include="Shaders\framebufferScreen.vert">

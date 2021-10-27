@@ -263,7 +263,6 @@ private:
 	Shader* mMeshShader;
 	// スキンメッシュ
 	Shader*  mSkinnedShader;  
-	Shader* mBasicShader;
 	// パーティクル
 	Shader* mParticleShader;
 
@@ -356,18 +355,20 @@ public:// ゲッターセッター
 	/// ビュー行列を設定する
 	/// </summary>
 	/// <param name="_View"> ビュー行列 </param>
-	void SetViewMatrix(const Matrix4& _View) { mView = _View; }
-
-	/// <summary>
-	/// パーティクルの頂点配列を設定
-	/// </summary>
-	void SetParticleVertex();
+	void SetViewMatrix(const Matrix4& _View);
 
 	/// <summary>
 	/// プロジェクション行列を取得する
 	/// </summary>
 	/// <returns> プロジェクション行列 </returns>
 	Matrix4 GetProjectionMatrix() { return mProjection; }
+
+	void SetProjMatrix(const Matrix4& proj);// プロジェクション行列にセット
+
+	/// <summary>
+	/// パーティクルの頂点配列を設定
+	/// </summary>
+	void SetParticleVertex();
 
 	/// <summary>
 	/// レンダラーの状態を含む構造体を取得

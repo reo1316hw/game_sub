@@ -15,6 +15,11 @@ ActionScene::ActionScene()
 	dir.m_diffuseColor = Vector3(0.36f, 0.44f, 0.5f);
 	dir.m_specColor = Vector3(0.4f, 0.4f, 0.4f);
 
+	// 行列初期化
+	Matrix4 proj;
+	proj = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f), RENDERER->GetScreenWidth(), RENDERER->GetScreenHeight(), 1.0, 5000.0f);
+	RENDERER->SetProjMatrix(proj);
+
 	// マップを生成するためのクラスを生成
     mMapCreate = new MapCreate();
 	mMapCreate->OpenFile();
@@ -63,6 +68,8 @@ SceneBase* ActionScene::Update(const InputState& _KeyState)
 	{
 		PHYSICS->ToggleDebugMode();
 	}
+
+	//RENDERER->GetEffekseerManager()->Update();
 
 	return this;
 }

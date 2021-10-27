@@ -59,9 +59,6 @@ bool Game::Initialize()
     //ゲームオブジェクト管理クラスの初期化
     GameObjectManager::CreateInstance();
 
-	Matrix4 v = Matrix4::CreateLookAt(Vector3(200, 0, -500), Vector3(200,0, 0),Vector3::UnitY);
-	RENDERER->SetViewMatrix(v);
-
 	return true;
 }
 
