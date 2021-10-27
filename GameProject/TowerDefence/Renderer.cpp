@@ -73,7 +73,7 @@ bool Renderer::Initialize(const float& _ScreenWidth, const float& _ScreenHeight,
 	// コアOpenGLプロファイルを使う
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	// OpenGLの使用バージョンを3.3に指定
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	// RGBA各チャンネル8ビットのカラーバッファを使う
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -147,6 +147,22 @@ bool Renderer::Initialize(const float& _ScreenWidth, const float& _ScreenHeight,
 	// UIの初期座標に加算される座標
 	mAddPosition = Vector2::Zero;
 
+	// Effekseer初期化
+	mEffekseerRenderer = ::EffekseerRendererGL::Renderer::Create(8000, EffekseerRendererGL::OpenGLDeviceType::OpenGL3);
+	mEffekseerManager = ::Effekseer::Manager::Create(8000);
+
+	// 描画モジュール作成
+	mEffekseerManager->SetSpriteRenderer(mEffekseerRenderer->CreateSpriteRenderer());
+	mEffekseerManager->SetRibbonRenderer(mEffekseerRenderer->CreateRibbonRenderer());
+	mEffekseerManager->SetRingRenderer(mEffekseerRenderer->CreateRingRenderer());
+	mEffekseerManager->SetTrackRenderer(mEffekseerRenderer->CreateTrackRenderer());
+	mEffekseerManager->SetModelRenderer(mEffekseerRenderer->CreateModelRenderer());
+
+	// Effekseer用のテクスチャ・モデル・マテリアルローダー
+	mEffekseerManager->SetTextureLoader(mEffekseerRenderer->CreateTextureLoader());
+	mEffekseerManager->SetModelLoader(mEffekseerRenderer->CreateModelLoader());
+	mEffekseerManager->SetMaterialLoader(mEffekseerRenderer->CreateMaterialLoader());
+
 	return true;
 }
 
@@ -162,6 +178,11 @@ void Renderer::Shutdown()
 	delete mMeshShader;
 	mBasicShader->Unload();
 	delete mBasicShader;
+
+	// Effekseer関連の破棄
+	mEffekseerManager.Reset();
+	mEffekseerRenderer.Reset();
+
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
@@ -369,6 +390,37 @@ void Renderer::DrawParticle()
 	}
 	glDisable(GL_BLEND);
 	glDepthMask(GL_TRUE);
+}
+
+void Renderer::SetViewMatrix(const Matrix4& view)
+{
+	Matrix4 tmp = view;
+	mView = view;
+
+	// Effekseer に座標系を合わせて行列をセットする
+	Effekseer::Matrix44 efCam;
+	tmp.mat[0][0] *= -1;
+	tmp.mat[0][1] *= -1;
+	tmp.mat[1][2] *= -1;
+	tmp.mat[2][2] *= -1;
+	tmp.mat[3][2] *= -1;
+
+	efCam = tmp;
+	RENDERER->GetEffekseerRenderer()->SetCameraMatrix(efCam);
+}
+
+void Renderer::SetProjMatrix(const Matrix4& proj)
+{
+	mProjection = proj;
+
+	// Effekseer に座標系を合わせて行列をセットする
+	Matrix4 tmp = proj;
+	tmp.mat[2][2] *= -1;
+	tmp.mat[2][3] *= -1;
+
+	Effekseer::Matrix44 eProj;
+	eProj = tmp;
+	RENDERER->GetEffekseerRenderer()->SetProjectionMatrix(eProj);
 }
 
 /// <summary>
@@ -734,6 +786,32 @@ void Renderer::SetLightUniforms(Shader* _shader, const Matrix4& _View)
 	_shader->SetVectorUniform("uDirLight.mSpecColor",
 		mDirLight.m_specColor);
 }
+
+EffekseerEffect* Renderer::GetEffect(const char16_t* fileName)
+{
+	// エフェクトファイルを一度読み込んだかを確認
+	EffekseerEffect* effect = nullptr;
+	auto iter = mEffects.find(fileName);
+
+	// 一度読んでいるなら返す
+	if (iter != mEffects.end())
+	{
+		return iter->second;
+	}
+	//読んでいなければ新規追加
+	effect = new EffekseerEffect;
+	if (effect->LoadEffect(fileName))
+	{
+		mEffects.emplace(fileName, effect);
+	}
+	else
+	{
+		delete effect;
+		effect = nullptr;
+	}
+	return effect;
+}
+
 
 /// <summary>
 /// ブレンドモードを変更する

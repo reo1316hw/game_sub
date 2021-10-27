@@ -31,6 +31,9 @@
 #include <SDL_gamecontroller.h>
 #include <SDL_mouse.h>
 
+#include <Effekseer.h>
+#include <EffekseerRendererGL.h>
+
 #include "Game.h"
 
 #include "Animation.h"
@@ -114,6 +117,7 @@
 #include "SkeletalMeshComponent.h"
 #include "ParticleComponent.h"
 #include "SpriteComponent.h"
+#include "EffectComponent.h"
 
 #include "CubeMapComponent.h"
 #include "SkyBoxObject.h"
@@ -127,5 +131,7 @@
 #include "FPS.h"
 #include "Math.h"
 #include "RapidJsonHelper.h"
+
+#include "EffekseerEffect.h"
 
 #endif

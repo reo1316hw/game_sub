@@ -88,7 +88,7 @@
       <AdditionalLibraryDirectories>..\external\SDL\lib\win\x86;..\external\GLEW\lib\win\x86;..\external\SOIL\lib\win\x86</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;SOIL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -102,12 +102,19 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\external\SDL\include;..\external\GLEW\include;..\external\SOIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\rapidjson\include\rapidjson;..\external\SDL\include\SDL;..\external\GLEW\include\GL;..\external\SOIL\include\SOIL;..\external\Effekseer\Dev\Cpp\Effekseer\;..\external\Effekseer\Dev\Cpp\EffekseerRendererGL\;..\external\Effekseer\Dev\Cpp\Utils;..\external\Effekseer\build\ThirdParty\Install\zlib\include;..\external\Effekseer\build\ThirdParty\Install\libpng\include;..\external\Effekseer\build\ThirdParty\Install\libgd\include;..\external\Effekseer\build\ThirdParty\Install\glew\include;..\external\Effekseer\build\ThirdParty\Install\glfw\include;..\externa\Effekseer\Downloads\OpenSoundMixer\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>..\external\SDL\lib\win\x86;..\external\GLEW\lib\win\x86;..\external\SOIL\lib\win\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\external\SDL\lib\win\x64;..\external\GLEW\lib\win\x64;..\external\SOIL\lib\win\x64;..\external\Effekseer\build\ThirdParty\Install\zlib\lib;..\external\Effekseer\build\ThirdParty\Install\zlib\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\libpng\lib;..\external\Effekseer\build\ThirdParty\Install\libpng\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\libgd\lib;..\external\Effekseer\build\ThirdParty\Install\libgd\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\glew\lib;..\external\Effekseer\build\ThirdParty\Install\glew\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\OpenSoundMixer\lib;..\external\Effekseer\build\ThirdParty\Install\OpenSoundMixer\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\glfw\lib;..\external\Effekseer\build\ThirdParty\Install\glfw\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,12 +149,19 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\external\SDL\include;..\external\GLEW\include;..\external\SOIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\rapidjson\include\rapidjson;..\external\SDL\include\SDL;..\external\GLEW\include\GL;..\external\SOIL\include\SOIL;..\external\Effekseer\Dev\Cpp\Effekseer\;..\external\Effekseer\Dev\Cpp\EffekseerRendererGL\;..\external\Effekseer\Dev\Cpp\Utils;..\external\Effekseer\build\ThirdParty\Install\zlib\include;..\external\Effekseer\build\ThirdParty\Install\libpng\include;..\external\Effekseer\build\ThirdParty\Install\libgd\include;..\external\Effekseer\build\ThirdParty\Install\glew\include;..\external\Effekseer\build\ThirdParty\Install\glfw\include;..\externa\Effekseer\Downloads\OpenSoundMixer\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\external\SDL\lib\win\x86;..\external\GLEW\lib\win\x86;..\external\SOIL\lib\win\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\external\SDL\lib\win\x64;..\external\GLEW\lib\win\x64;..\external\SOIL\lib\win\x64;..\external\Effekseer\build\ThirdParty\Install\zlib\lib;..\external\Effekseer\build\ThirdParty\Install\zlib\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\libpng\lib;..\external\Effekseer\build\ThirdParty\Install\libpng\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\libgd\lib;..\external\Effekseer\build\ThirdParty\Install\libgd\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\glew\lib;..\external\Effekseer\build\ThirdParty\Install\glew\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\OpenSoundMixer\lib;..\external\Effekseer\build\ThirdParty\Install\OpenSoundMixer\lib\$(Configuration);..\external\Effekseer\build\ThirdParty\Install\glfw\lib;..\external\Effekseer\build\ThirdParty\Install\glfw\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -302,6 +316,26 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="EffectComponent.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="EffekseerEffect.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -1032,6 +1066,8 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClInclude Include="BossObjectStateWait.h" />
     <ClInclude Include="CreateEnemys.h" />
     <ClInclude Include="CubeMapComponent.h" />
+    <ClInclude Include="EffectComponent.h" />
+    <ClInclude Include="EffekseerEffect.h" />
     <ClInclude Include="EnemyAttackDecisionObject.h" />
     <ClInclude Include="EnemyGenerator.h" />
     <ClInclude Include="EnemyHitPointFrame.h" />

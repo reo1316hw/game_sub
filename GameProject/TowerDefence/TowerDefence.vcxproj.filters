@@ -252,6 +252,8 @@
     <ClCompile Include="GameClearScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="EffekseerEffect.cpp" />
+    <ClCompile Include="EffectComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -507,6 +509,8 @@
     <ClInclude Include="GameClearScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="EffekseerEffect.h" />
+    <ClInclude Include="EffectComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">

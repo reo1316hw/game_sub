@@ -8,6 +8,9 @@
 
 #define RENDERER Renderer::GetInstance()
 
+// 前方宣言
+class EffekseerEffect;
+
 /// <summary>
 /// 平行光源用の構造体
 /// </summary>
@@ -46,6 +49,7 @@ class ParticleComponent;
 class HDRRenderer;
 class CubeMapComponent;
 class PlayerObject;
+class EffekseerEffect;
 
 /// <summary>
 /// 描画の進行を行うクラス
@@ -208,6 +212,8 @@ private:
 	//ファイル名でテクスチャを取得するための連想配列
 	std::unordered_map<std::string, Texture*>mTextures;
 
+	std::unordered_map<const char16_t*, EffekseerEffect*> mEffects; // エフェクト
+
 	//メッシュコンポーネントのポインタの可変長コンテナ
 	std::vector<MeshComponent*> mMeshComponents;
 	// スケルトンメッシュの描画に使われる
@@ -237,7 +243,6 @@ private:
 	Matrix4 mProjection;
 	// ビルボード行列
 	Matrix4 mBillboardMat;
-	
 	
 	// 平行光源
 	DirectionalLight mDirLight;
@@ -275,6 +280,10 @@ private:
 	CubeMapComponent* mActiveSkyBox; // 有効な(描画する)スカイボックス
 	// キューブ頂点配列
 	VertexArray* mCubeVerts;
+
+	// Effekseer関連
+	Effekseer::RefPtr<EffekseerRendererGL::Renderer> mEffekseerRenderer; // Effekseerレンダラ
+	Effekseer::RefPtr<Effekseer::Manager>            mEffekseerManager; // Effekseerマネージャ  
 
 public:// ゲッターセッター
 
@@ -383,4 +392,10 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> キューブマップの頂点配列 </returns>
 	VertexArray* GetCubeMapVerts() { return mCubeVerts; }
+
+	EffekseerEffect* GetEffect(const char16_t* fileName);
+
+	// Effekseer関連
+	Effekseer::RefPtr<EffekseerRendererGL::Renderer> GetEffekseerRenderer() { return mEffekseerRenderer; }
+	Effekseer::RefPtr<Effekseer::Manager> GetEffekseerManager() { return mEffekseerManager; }
 };

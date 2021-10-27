@@ -1,0 +1,20 @@
+//HPゲージのスケールを設定する
+mHPGaugeScale = mPlayerHP_SPBackgroundScale;
+//プレイヤーの最大HP
+const float maxHP = 100;
+//スケールの割合の計算
+float HPRate = mPlayer->GetLife() / maxHP;
+//HPゲージのスケールをセット
+mHPGaugeScale.x = mPlayerHP_SPBackgroundScale.x * HPRate;
+//現在のHPゲージの幅をもとめる
+float nowHPWidth = static_cast<float>(mPlayerHPGaugeTex->GetWidth()) * mHPGaugeScale.x;
+//現在のHPゲージの幅と前フレームのHPゲージの幅が異なるとき(プレイヤーのHPが増減したとき)
+if (nowHPWidth != mPrePlayerHPWidth)
+{
+
+     const float half = 2.0f;
+     //プレイヤーのHPゲージのオフセットにHPの増減分の値を代入
+     mPlayerHPGaugeOffsetX += (mPrePlayerHPWidth - nowHPWidth) / half;
+}
+//今のフレームのHPゲージの幅を次フレーム用にセットする
+mPrePlayerHPWidth = nowHPWidth;

@@ -74,6 +74,10 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
 	// エネミーのhpの枠を生成
 	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
+
+	// 弾エフェクト生成
+	EffectComponent* ec = new EffectComponent(this, true, true);
+	ec->LoadEffect(u"Assets/Effect/bullet.efk");
 }
 
 /// <summary>
