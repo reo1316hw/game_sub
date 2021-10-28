@@ -136,7 +136,7 @@ void EnemyObjectStateWait::OnCollision(EnemyObject* _owner, const GameObject& _H
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::eWeapon)
+	if (tag == Tag::eFirstAttackEffect)
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;

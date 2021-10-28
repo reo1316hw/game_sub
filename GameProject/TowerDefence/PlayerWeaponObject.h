@@ -13,13 +13,19 @@ public:
 	/// <param name="_skMesh"> 親クラスのスケルトンメッシュのポインタ </param>
 	/// <param name="_GpmeshName"> gpmeshのパス </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-    /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-	PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag, PlayerObject* _playerPtr);
+    /// <param name="_deathPtr"> 死亡状態のクラスのポインタ </param>
+	PlayerWeaponObject(SkeletalMeshComponent* _skMesh, const std::string _GpmeshName, const Tag& _ObjectTag, PlayerObjectStateDeath* _deathPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~PlayerWeaponObject() {};
+
+	/// <summary>
+    /// オブジェクトの更新処理
+    /// </summary>
+    /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	void UpdateGameObject(float _deltaTime)override;
 
 private:
 
@@ -30,4 +36,6 @@ private:
 
 	// 武器メッシュ
 	AttackMeshComponent* mWeaponMesh;
+	// 死亡状態のクラスのポインタ
+	PlayerObjectStateDeath* mDeathPtr;
 };

@@ -3,11 +3,11 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(FirstAttackEffect* _firstAttackEffectPtr)
+PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 	: MBoxEnableTiming(20)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(50.0f)
+	, mIsCollisionState(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
     , mNumFrame(0)
@@ -15,7 +15,6 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(FirstAttackEffect* _f
 	, MValidComboFrame(5)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
-	, mOwnerBoxCollider(_firstAttackEffectPtr->GetBoxCollider())
 {
 }
 
@@ -49,8 +48,8 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
-		// 武器の当たり判定を行うようにする
-		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+		// 1段階目の通常攻撃の当たり判定を有効にする
+		mIsCollisionState = true;
 	}
 
 	if (mIsHit)
@@ -119,8 +118,8 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateFirstAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
-	// 武器の当たり判定を行わないようにする
-	mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
+	// 1段階目の通常攻撃の当たり判定を無効にする
+	mIsCollisionState = false;
 }
 
 /// <summary>

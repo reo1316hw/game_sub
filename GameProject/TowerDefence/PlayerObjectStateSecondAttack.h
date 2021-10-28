@@ -10,8 +10,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateSecondAttack(FirstAttackEffect* _firstAttackEffectPtr);
+	PlayerObjectStateSecondAttack();
 
 	/// <summary>
     /// デストラクタ
@@ -80,7 +79,4 @@ private:
 	Vector3 mPosition;
 	// 前方ベクトル
 	Vector3 mForwardVec;
-
-	// 親の矩形当たり判定を行うクラスのポインタ
-	BoxCollider* mOwnerBoxCollider;
 };

@@ -17,7 +17,6 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, mNowState(PlayerState::ePlayerStateIdle)
 	, mNextState(PlayerState::ePlayerStateIdle)
 	, mSkeltalMeshComponentPtr(nullptr)
-	, mWeaponPtr(nullptr)
 	, mMainCameraPtr(nullptr)
 	, mRunLoopPtr(nullptr)
 	, mSprintStartPtr(nullptr)
@@ -54,22 +53,28 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim, MPlayRate);
 
-	// 武器
-	mWeaponPtr = new PlayerWeaponObject(mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon, this);
-
-	mFirstAttackEffectPtr = new FirstAttackEffect(this, Tag::eFirstAttackEffect);
+	// 死亡状態のクラスのポインタ
+	PlayerObjectStateDeath* deathPtr = nullptr;
+	// 1段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateFirstAttack* firstAttackPtr = nullptr;
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	                  // mStatePool[ePlayerStateIdle]
 	mStatePools.push_back(mRunLoopPtr = new PlayerObjectStateRunLoop);	              // mStatepool[ePlayerStateRunLoop]
 	mStatePools.push_back(mSprintStartPtr = new PlayerObjectStateSprintStart);              // mStatepool[ePlayerStateSprintStart]
 	mStatePools.push_back(mSprintLoopPtr = new PlayerObjectStateSprintLoop);	              // mStatepool[ePlayerStateSprintLoop]
-	mStatePools.push_back(new PlayerObjectStateFirstAttack(mFirstAttackEffectPtr));  // mStatepool[ePlayerStateFirstAttack];
-	mStatePools.push_back(new PlayerObjectStateSecondAttack(mFirstAttackEffectPtr)); // mStatepool[ePlayerStateSecondAttack];
-	mStatePools.push_back(new PlayerObjectStateThirdAttack(mFirstAttackEffectPtr));  // mStatepool[ePlayerStateThirdAttack];
-	mStatePools.push_back(new PlayerObjectStateDashAttack(mFirstAttackEffectPtr));   // mStatepool[ePlayerStateDashAttack];
+	mStatePools.push_back(firstAttackPtr = new PlayerObjectStateFirstAttack);  // mStatepool[ePlayerStateFirstAttack];
+	mStatePools.push_back(new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
+	mStatePools.push_back(new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
+	mStatePools.push_back(new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
 	mStatePools.push_back(new PlayerObjectStateDamage);	                  // mStatepool[ePlayerStateDamage]
-	mStatePools.push_back(new PlayerObjectStateDeath(mWeaponPtr));	      // mStatepool[ePlayerStateDeath]
+	mStatePools.push_back(deathPtr = new PlayerObjectStateDeath);	      // mStatepool[ePlayerStateDeath]
+
+	// 武器
+	new PlayerWeaponObject(mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon, deathPtr);
+
+	// 1段階目の通常攻撃エフェクトのクラスのポインタ
+	mFirstAttackEffectPtr = new FirstAttackEffect(this, Tag::eFirstAttackEffect, firstAttackPtr);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));

@@ -10,8 +10,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateDashAttack(FirstAttackEffect* _firstAttackEffectPtr);
+	PlayerObjectStateDashAttack();
 
 	/// <summary>
 	/// デストラクタ
@@ -82,7 +81,4 @@ private:
 	Vector3 mVelocity;
 	// 前方ベクトル
 	Vector3 mForwardVec;
-
-	// 親の矩形当たり判定を行うクラスのポインタ
-	BoxCollider* mOwnerBoxCollider;
 };

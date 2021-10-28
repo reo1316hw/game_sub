@@ -85,7 +85,7 @@ void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObj
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::eWeapon)
+	if (tag == Tag::eFirstAttackEffect)
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;

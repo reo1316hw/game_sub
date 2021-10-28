@@ -10,8 +10,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateFirstAttack(FirstAttackEffect* _firstAttackEffectPtr);
+	PlayerObjectStateFirstAttack();
 
 	/// <summary>
 	/// デストラクタ
@@ -67,6 +66,10 @@ private:
 	// コンボ有効フレーム
 	const size_t MValidComboFrame;
 
+	// 当たり判定の状態
+	// true : 有効, false : 無効
+	bool mIsCollisionState;
+
 	// ダメージ値
 	int mDamageValue;
 	// 当たり判定するまでのカウント
@@ -79,6 +82,12 @@ private:
 	Vector3 mPosition;
 	// 前方ベクトル
 	Vector3 mForwardVec;
-	// 親の矩形当たり判定を行うクラスのポインタ
-	BoxCollider* mOwnerBoxCollider;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 当たり判定の状態を取得
+	/// </summary>
+	/// <returns> 当たり判定の状態 </returns>
+	bool GetIsCollisionState() { return mIsCollisionState; }
 };

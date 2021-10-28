@@ -114,7 +114,7 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::eWeapon)
+	if (tag == Tag::eFirstAttackEffect)
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;

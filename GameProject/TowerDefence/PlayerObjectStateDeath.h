@@ -7,8 +7,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateDeath(PlayerWeaponObject* _weaponPtr);
+	PlayerObjectStateDeath();
 
 	/// <summary>
 	/// デストラクタ
@@ -32,6 +31,14 @@ public:
 
 private:
 
-	// プレイヤー武器のポインタ
-	PlayerWeaponObject* mWeaponPtr;
+	// 更新をやめるか
+	bool mIsDead;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 更新をやめるかのフラグを取得
+	/// </summary>
+	/// <returns> 更新をやめるかのフラグ </returns>
+	bool GetIsDead() { return mIsDead; }
 };

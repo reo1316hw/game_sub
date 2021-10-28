@@ -5,24 +5,26 @@
 /// </summary>	
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
-FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Tag& _ObjectTag)
+/// <param name="_firstAttackPtr"> 1段階目の通常攻撃状態のクラスのポインタ </param>
+FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Tag& _ObjectTag, PlayerObjectStateFirstAttack* _firstAttackPtr)
 	: GameObject(_ObjectTag)
-	, MEnableIsHitTiming(120)
-	, mIsHitDisableCount(0)
-	, mIsHit(false)
-	, mDisableIsHit(false)
 	, mPlayerPtr(_playerPtr)
+	, mEffectComponentPtr(nullptr)
+	, mFirstAttackPtr(_firstAttackPtr)
 {
+	SetPosition(mPlayerPtr->GetPosition());
+	SetScale(mPlayerPtr->GetScale());
+	SetRotation(mPlayerPtr->GetRotation());
+
 	// 武器の矩形当たり判定
 	mBox = AABB(Vector3(-100.0f, -100.0f, -100.0f), Vector3(100.0f, 100.0f, 100.0f));
-	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
+	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc(), false);
 	mBoxColliderPtr->SetObjectBox(mBox);
 	// 最初は当たり判定を行わないようにする
 	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 
 	// 衝撃エフェクト生成
-	EffectComponent* ec = new EffectComponent(_playerPtr, u"Assets/Effect/SecondAttack.efk", true, true);
-	ec->PlayEffect();
+	mEffectComponentPtr = new EffectComponent(this, u"Assets/Effect/FirstAttack.efk", true, true);
 }
 
 /// <summary>
@@ -31,32 +33,26 @@ FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Tag& _Objec
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void FirstAttackEffect::UpdateGameObject(float _deltaTime)
 {
-	// ヒットストップ時にオブジェクトと常に当たってしまうので、ヒットフラグを一定時間無効にする
-	if (mDisableIsHit)
-	{
-		mIsHit = false;
-		++mIsHitDisableCount;
+	SetPosition(mPlayerPtr->GetPosition());
+	SetRotation(mPlayerPtr->GetRotation());
 
-		if (mIsHitDisableCount >= MEnableIsHitTiming)
-		{
-			mIsHitDisableCount = 0;
-			mDisableIsHit = false;
-		}
+	// 当たり判定を無効にする
+	if (!mFirstAttackPtr->GetIsCollisionState())
+	{
+		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
+		return;
 	}
-}
 
-/// <summary>
-/// ヒットした時の処理
-/// </summary>
-/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void FirstAttackEffect::OnCollision(const GameObject& _HitObject)
-{
-	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
-
-	if (tag == Tag::eEnemy && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
+	// 当たり判定を有効にする
+	if (mFirstAttackPtr->GetIsCollisionState())
 	{
-		mIsHit = true;
-		mDisableIsHit = true;
+		// 再生済みじゃなかったらエフェクトを再生する
+		if (mEffectComponentPtr->IsPlayedEffect())
+		{
+			// エフェクトを再生
+			mEffectComponentPtr->PlayEffect();
+		}
+		
+		mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 	}
 }

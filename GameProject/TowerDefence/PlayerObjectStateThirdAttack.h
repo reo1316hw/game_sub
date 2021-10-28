@@ -12,8 +12,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateThirdAttack(FirstAttackEffect* _firstAttackEffectPtr);
+	PlayerObjectStateThirdAttack();
 
 	/// <summary>
     /// デストラクタ
@@ -77,10 +76,6 @@ private:
 	// 前方ベクトル
 	Vector3 mForwardVec;
 
-	// 親の矩形当たり判定を行うクラスのポインタ
-	BoxCollider* mOwnerBoxCollider;
-	// プレイヤーの武器のポインタ
-	FirstAttackEffect* mFirstAttackEffectPtr;
 	// スケルトンクラスのポインタ
 	SkeletalMeshComponent* skeletalMeshCompPtr;
 };

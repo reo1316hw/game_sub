@@ -3,8 +3,8 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-PlayerObjectStateDeath::PlayerObjectStateDeath(PlayerWeaponObject* _weaponPtr)
-	: mWeaponPtr(_weaponPtr)
+PlayerObjectStateDeath::PlayerObjectStateDeath()
+	: mIsDead(false)
 {
 }
 
@@ -19,7 +19,7 @@ PlayerState PlayerObjectStateDeath::Update(PlayerObject* _owner, const float _De
 	// アニメーションが終了したら更新を止める
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		mWeaponPtr->SetState(State::eDead);
+		mIsDead = true;
 		_owner->SetState(State::eDead);
 	}
 
@@ -36,4 +36,6 @@ void PlayerObjectStateDeath::Enter(PlayerObject* _owner, const float _DeltaTime)
 	// 死亡状態のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDeath));
+
+	mIsDead = false;
 }

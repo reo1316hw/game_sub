@@ -3,8 +3,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(FirstAttackEffect* _firstAttackEffectPtr)
+PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	: MBoxEnableTiming(30)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
@@ -16,8 +15,6 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(FirstAttackEffect* _f
 	, mHitStopCount(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
-	, mOwnerBoxCollider(_firstAttackEffectPtr->GetBoxCollider())
-	, mFirstAttackEffectPtr(_firstAttackEffectPtr)
 	, skeletalMeshCompPtr(nullptr)
 {
 }
@@ -35,12 +32,12 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateDamage;
 	}
 
-	// 攻撃時に武器が当たったらヒットストップを行う
-	if (mFirstAttackEffectPtr->IsHitCheck())
-	{
-		mIsHitStop = true;
-		skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);
-	}
+	//// 攻撃時に武器が当たったらヒットストップを行う
+	//if (mFirstAttackEffectPtr->IsHitCheck())
+	//{
+	//	mIsHitStop = true;
+	//	skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);
+	//}
 
 	// ヒットストップ時に移動処理を無効化
 	if (mIsHitStop)
@@ -73,7 +70,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
 		// 武器の当たり判定を行うようにする
-		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+		//mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
@@ -120,7 +117,7 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 void PlayerObjectStateThirdAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
 	// 武器の当たり判定を行わないようにする
-	mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
+	//mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

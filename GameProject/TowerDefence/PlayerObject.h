@@ -104,8 +104,6 @@ private:
 	PlayerState mNextState;
 	// スケルトンメッシュのポインタ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
-	// 武器のポインタ
-	PlayerWeaponObject* mWeaponPtr;
 	// 1段階目の通常攻撃エフェクトのポインタ
 	FirstAttackEffect* mFirstAttackEffectPtr;
 	// カメラのポインタ

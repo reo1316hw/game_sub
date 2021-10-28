@@ -12,7 +12,8 @@ public:
 	/// </summary>
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	FirstAttackEffect(PlayerObject* _playerPtr, const Tag& _ObjectTag);
+	/// <param name="_firstAttackPtr"> 1段階目の通常攻撃状態のクラスのポインタ </param>
+	FirstAttackEffect(PlayerObject* _playerPtr, const Tag& _ObjectTag, PlayerObjectStateFirstAttack* _firstAttackPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -25,31 +26,12 @@ public:
 	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
 
-	/// <summary>
-	/// ヒットしたか確認
-	/// </summary>
-	/// <returns> ヒットしたか </returns>
-	bool IsHitCheck() { return mIsHit == true; }
-
 private:
-
-	/// <summary>
-	/// ヒットした時の処理
-	/// </summary>
-	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollision(const GameObject& _HitObject)override;
-
-	// ヒットフラグを有効にするタイミング
-	const int MEnableIsHitTiming;
-
-	// ヒットしたか
-	bool mIsHit;
-	// ヒットフラグを無効にするフラグ
-	bool mDisableIsHit;
-
-	// ヒットフラグを無効時間
-	int mIsHitDisableCount;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
+	// エフェクトコンポーネントクラスのポインタ
+	EffectComponent* mEffectComponentPtr;
+	// 1段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateFirstAttack* mFirstAttackPtr;
 };

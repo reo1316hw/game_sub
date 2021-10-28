@@ -3,8 +3,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(FirstAttackEffect* _firstAttackEffectPtr)
+PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 	: MBoxEnableTiming(20)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(300.0f)
@@ -15,7 +14,6 @@ PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(FirstAttackEffect* _fir
 	, MValidComboFrame(5)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
-	, mOwnerBoxCollider(_firstAttackEffectPtr->GetBoxCollider())
 {
 }
 
@@ -50,7 +48,7 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
 		// 武器の当たり判定を行うようにする
-		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+		//mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
 	if (mIsHit)
@@ -120,7 +118,7 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 void PlayerObjectStateDashAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
 {
 	// 武器の当たり判定を行わないようにする
-	mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
+	//mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

@@ -1,11 +1,12 @@
 #include "pch.h"
 
-EffectComponent::EffectComponent(GameObject* owner, const char16_t* effkseerFilename, bool moveOn, bool rotateOn, int updateOrder)
+EffectComponent::EffectComponent(GameObject* owner, const Vector3& _Scale, const char16_t* effkseerFilename, bool moveOn, bool rotateOn, int updateOrder)
 	: Component(owner)
 	, mIsMove(moveOn)
 	, mIsRotate(rotateOn)
 	, mHandle(0)
-	, mRelativePos(0, 0, 0)
+	, mScale(_Scale)
+	, mRelativePos(Vector3::Zero)
 	, mEffectPtr(nullptr)
 {
 	mEffectPtr = RENDERER->GetEffect(effkseerFilename);
@@ -17,15 +18,22 @@ void EffectComponent::PlayEffect()
 	mHandle = mEffectPtr->CreateInstanceHandle(pos);
 }
 
-void EffectComponent::Update(float deltaTime)
+/// <summary>
+/// 再生済みか
+/// </summary>
+bool EffectComponent::IsPlayedEffect()
 {
 	// エフェクトが現在も生きているか？
 	if (!(RENDERER->GetEffekseerManager()->Exists(mHandle)))
 	{
-		//mOwner->SetState(State::eDead);
-		return;
+		return true;
 	}
 
+	return false;
+}
+
+void EffectComponent::Update(float deltaTime)
+{
 	// エフェクトを移動させるか？
 	Matrix4 trans, rot;
 	if (mIsMove)
