@@ -34,8 +34,6 @@ public:
 
 private:
 
-	// オーナーの移動処理を無視するか
-	bool mIsIgnoreOwener;
 	// 回転させるか
 	bool mShouldRotate;
 
@@ -57,11 +55,5 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> 中心をワールド座標に合わせたAABBの構造体 </returns>
 	AABB GetWorldBox() const { return mWorldBox; }
-	
-	/// <summary>
-	/// 矩形当たり判定の行列変換を行う
-	/// </summary>
-	/// <param name="transform"> アタッチされたオブジェクトのワールド行列 </param>
-	void  SetForceTransForm(Matrix4 transform);
 };
 

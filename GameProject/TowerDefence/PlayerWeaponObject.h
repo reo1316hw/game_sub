@@ -21,43 +21,13 @@ public:
 	/// </summary>
 	~PlayerWeaponObject() {};
 
-	/// <summary>
-	/// オブジェクトの更新処理
-	/// </summary>
-	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void UpdateGameObject(float _deltaTime)override;
-
-	/// <summary>
-    /// ヒットしたか確認
-    /// </summary>
-    /// <returns> ヒットしたか </returns>
-	bool IsHitCheck() { return mIsHit == true; }
-
 private:
 
-	/// <summary>
-    /// ヒットした時の処理
-    /// </summary>
-    /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollision(const GameObject& _HitObject)override;
-
-	// ヒットフラグを有効にするタイミング
-	const int MEnableIsHitTiming;
 	// 剣の初期回転値
 	const Vector3 MSwordRot;
 	// 剣の初期座標
 	const Vector3 MSwordPos;
 
-	// ヒットしたか
-	bool mIsHit;
-	// ヒットフラグを無効にするフラグ
-	bool mDisableIsHit;
-
-	// ヒットフラグを無効時間
-	int mIsHitDisableCount;
-
 	// 武器メッシュ
 	AttackMeshComponent* mWeaponMesh;
-	// プレイヤーのポインタ
-	PlayerObject* mPlayerPtr;
 };

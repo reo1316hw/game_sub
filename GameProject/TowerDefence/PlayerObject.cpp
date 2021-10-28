@@ -57,15 +57,17 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// 武器
 	mWeaponPtr = new PlayerWeaponObject(mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon, this);
 
+	mFirstAttackEffectPtr = new FirstAttackEffect(this, Tag::eFirstAttackEffect);
+
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	                  // mStatePool[ePlayerStateIdle]
 	mStatePools.push_back(mRunLoopPtr = new PlayerObjectStateRunLoop);	              // mStatepool[ePlayerStateRunLoop]
 	mStatePools.push_back(mSprintStartPtr = new PlayerObjectStateSprintStart);              // mStatepool[ePlayerStateSprintStart]
 	mStatePools.push_back(mSprintLoopPtr = new PlayerObjectStateSprintLoop);	              // mStatepool[ePlayerStateSprintLoop]
-	mStatePools.push_back(new PlayerObjectStateFirstAttack(mWeaponPtr));  // mStatepool[ePlayerStateFirstAttack];
-	mStatePools.push_back(new PlayerObjectStateSecondAttack(mWeaponPtr)); // mStatepool[ePlayerStateSecondAttack];
-	mStatePools.push_back(new PlayerObjectStateThirdAttack(mWeaponPtr));  // mStatepool[ePlayerStateThirdAttack];
-	mStatePools.push_back(new PlayerObjectStateDashAttack(mWeaponPtr));   // mStatepool[ePlayerStateDashAttack];
+	mStatePools.push_back(new PlayerObjectStateFirstAttack(mFirstAttackEffectPtr));  // mStatepool[ePlayerStateFirstAttack];
+	mStatePools.push_back(new PlayerObjectStateSecondAttack(mFirstAttackEffectPtr)); // mStatepool[ePlayerStateSecondAttack];
+	mStatePools.push_back(new PlayerObjectStateThirdAttack(mFirstAttackEffectPtr));  // mStatepool[ePlayerStateThirdAttack];
+	mStatePools.push_back(new PlayerObjectStateDashAttack(mFirstAttackEffectPtr));   // mStatepool[ePlayerStateDashAttack];
 	mStatePools.push_back(new PlayerObjectStateDamage);	                  // mStatepool[ePlayerStateDamage]
 	mStatePools.push_back(new PlayerObjectStateDeath(mWeaponPtr));	      // mStatepool[ePlayerStateDeath]
 
@@ -77,10 +79,6 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 
 	// 回転処理
 	SelfRotation(Vector3::UnitZ, MAngle);
-
-	// 衝撃エフェクト生成
-	EffectComponent* ec = new EffectComponent(this, true, true);
-	ec->LoadEffect(u"Assets/Effect/SecondAttack.efk");
 }
 
 /// <summary>

@@ -1,24 +1,20 @@
 #include "pch.h"
 
-EffectComponent::EffectComponent(GameObject* owner, bool moveOn, bool rotateOn, int updateOrder)
+EffectComponent::EffectComponent(GameObject* owner, const char16_t* effkseerFilename, bool moveOn, bool rotateOn, int updateOrder)
 	: Component(owner)
 	, mIsMove(moveOn)
 	, mIsRotate(rotateOn)
 	, mHandle(0)
 	, mRelativePos(0, 0, 0)
+	, mEffectPtr(nullptr)
 {
+	mEffectPtr = RENDERER->GetEffect(effkseerFilename);
 }
 
-EffectComponent::~EffectComponent()
+void EffectComponent::PlayEffect()
 {
-}
-
-void EffectComponent::LoadEffect(const char16_t* effkseerFilename)
-{
-	EffekseerEffect* effect = RENDERER->GetEffect(effkseerFilename);
-
-	Vector3 pos = Vector3(0, 0, 0);
-	mHandle = effect->CreateInstanceHandle(pos);
+	Vector3 pos = Vector3::Zero;
+	mHandle = mEffectPtr->CreateInstanceHandle(pos);
 }
 
 void EffectComponent::Update(float deltaTime)

@@ -119,8 +119,8 @@ private:
 	std::vector<BoxCollider*> mWallBoxes;
 	// プレイヤーの矩形当たり判定
 	std::vector<BoxCollider*> mPlayerBoxes;
-	// 武器の矩形当たり判定
-	std::vector<BoxCollider*> mWeaponBoxes;
+	// 1段階目の通常攻撃エフェクトの矩形当たり判定
+	std::vector<BoxCollider*> mFirstAttackEffectBoxes;
 	// エネミーの矩形当たり判定
 	std::vector<BoxCollider*> mEnemyBoxes;
 	// エネミーの攻撃用の矩形当たり判定

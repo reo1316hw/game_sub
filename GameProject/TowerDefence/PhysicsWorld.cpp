@@ -150,7 +150,7 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
-		for (auto itr : mWeaponBoxes)
+		for (auto itr : mFirstAttackEffectBoxes)
 		{
 			// コライダーの親オブジェクトがActiveじゃなければ終了する
 			// コライダーが有効じゃなかったら終了する
@@ -191,7 +191,7 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
-		for (auto itr : mWeaponBoxes)
+		for (auto itr : mFirstAttackEffectBoxes)
 		{
 			// コライダーの親オブジェクトがActiveじゃなければ終了する
 			// コライダーが有効じゃなかったら終了する
@@ -273,9 +273,9 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
-	if (_box->GetOwner()->GetTag() == Tag::eWeapon)
+	if (_box->GetOwner()->GetTag() == Tag::eFirstAttackEffect)
 	{
-		mWeaponBoxes.emplace_back(_box);
+		mFirstAttackEffectBoxes.emplace_back(_box);
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
@@ -329,11 +329,11 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 		std::iter_swap(enemyBox, mEnemyBoxes.end() - 1);
 		mEnemyBoxes.pop_back();
 	}
-	auto weaponBox = std::find(mWeaponBoxes.begin(), mWeaponBoxes.end(), _box);
-	if (weaponBox != mWeaponBoxes.end())
+	auto firstAttackEffectBox = std::find(mFirstAttackEffectBoxes.begin(), mFirstAttackEffectBoxes.end(), _box);
+	if (firstAttackEffectBox != mFirstAttackEffectBoxes.end())
 	{
-		std::iter_swap(weaponBox, mWeaponBoxes.end() - 1);
-		mWeaponBoxes.pop_back();
+		std::iter_swap(firstAttackEffectBox, mFirstAttackEffectBoxes.end() - 1);
+		mFirstAttackEffectBoxes.pop_back();
 	}
 	auto enemyAttackDecisionBox = std::find(mEnemyAttackDecisionBoxes.begin(), mEnemyAttackDecisionBoxes.end(), _box);
 	if (enemyAttackDecisionBox != mEnemyAttackDecisionBoxes.end())
@@ -401,7 +401,7 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mGroundBoxes, Color::Red);
 	DrawBoxs(mWallBoxes, Color::Blue);
 	DrawBoxs(mPlayerBoxes, Color::LightPink);
-	DrawBoxs(mWeaponBoxes, Color::LightGreen);
+	DrawBoxs(mFirstAttackEffectBoxes, Color::LightGreen);
 	DrawBoxs(mEnemyBoxes, Color::White);
 	DrawBoxs(mEnemyAttackDecisionBoxes, Color::Yellow);
 	DrawBoxs(mBossBoxes, Color::LightYellow);

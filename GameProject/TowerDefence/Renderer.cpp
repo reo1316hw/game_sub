@@ -790,6 +790,7 @@ EffekseerEffect* Renderer::GetEffect(const char16_t* fileName)
 	{
 		return iter->second;
 	}
+
 	//“Ç‚ñ‚Å‚¢‚È‚¯‚ê‚ÎV‹K’Ç‰Á
 	effect = new EffekseerEffect;
 	if (effect->LoadEffect(fileName))

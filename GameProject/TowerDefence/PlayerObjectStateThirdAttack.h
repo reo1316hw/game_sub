@@ -1,5 +1,7 @@
 #pragma once
 
+class FirstAttackEffect;
+
 /// <summary>
 /// 3段階目の攻撃
 /// </summary>
@@ -11,7 +13,7 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr);
+	PlayerObjectStateThirdAttack(FirstAttackEffect* _firstAttackEffectPtr);
 
 	/// <summary>
     /// デストラクタ
@@ -78,7 +80,7 @@ private:
 	// 親の矩形当たり判定を行うクラスのポインタ
 	BoxCollider* mOwnerBoxCollider;
 	// プレイヤーの武器のポインタ
-	PlayerWeaponObject* mWeaponPtr;
+	FirstAttackEffect* mFirstAttackEffectPtr;
 	// スケルトンクラスのポインタ
 	SkeletalMeshComponent* skeletalMeshCompPtr;
 };

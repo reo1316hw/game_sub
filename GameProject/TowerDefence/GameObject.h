@@ -40,6 +40,7 @@ enum Tag
 	eCamera,
 	ePlayer,
 	eWeapon,
+	eFirstAttackEffect,
 	eGround,
 	eEnemyManager,
 	eEnemyGenerator,

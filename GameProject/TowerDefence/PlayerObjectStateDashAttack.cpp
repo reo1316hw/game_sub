@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(PlayerWeaponObject* _weaponPtr)
+PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(FirstAttackEffect* _firstAttackEffectPtr)
 	: MBoxEnableTiming(20)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(300.0f)
@@ -15,7 +15,7 @@ PlayerObjectStateDashAttack::PlayerObjectStateDashAttack(PlayerWeaponObject* _we
 	, MValidComboFrame(5)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
-	, mOwnerBoxCollider(_weaponPtr->GetBoxCollider())
+	, mOwnerBoxCollider(_firstAttackEffectPtr->GetBoxCollider())
 {
 }
 

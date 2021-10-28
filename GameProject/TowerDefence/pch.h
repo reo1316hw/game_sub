@@ -134,4 +134,6 @@
 
 #include "EffekseerEffect.h"
 
+#include "FirstAttackEffect.h"
+
 #endif

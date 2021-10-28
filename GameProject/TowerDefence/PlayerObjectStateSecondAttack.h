@@ -11,7 +11,7 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateSecondAttack(PlayerWeaponObject* _weaponPtr);
+	PlayerObjectStateSecondAttack(FirstAttackEffect* _firstAttackEffectPtr);
 
 	/// <summary>
     /// デストラクタ

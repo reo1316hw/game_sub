@@ -7,6 +7,7 @@ class PlayerObjectStateBase;
 class AttackMeshComponent;
 class SphereCollider;
 class PlayerWeaponObject;
+class FirstAttackEffect;
 class MainCameraObject;
 class PlayerObjectStateRunLoop;
 class PlayerObjectStateSprintStart;
@@ -103,8 +104,10 @@ private:
 	PlayerState mNextState;
 	// スケルトンメッシュのポインタ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
-	// プレイヤー武器のポインタ
+	// 武器のポインタ
 	PlayerWeaponObject* mWeaponPtr;
+	// 1段階目の通常攻撃エフェクトのポインタ
+	FirstAttackEffect* mFirstAttackEffectPtr;
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 	// 走り状態のクラスのポインタ

@@ -252,8 +252,15 @@
     <ClCompile Include="GameClearScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="EffekseerEffect.cpp" />
-    <ClCompile Include="EffectComponent.cpp" />
+    <ClCompile Include="FirstAttackEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectComponent.cpp">
+      <Filter>Effect\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EffekseerEffect.cpp">
+      <Filter>Effect\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -509,8 +516,15 @@
     <ClInclude Include="GameClearScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="EffekseerEffect.h" />
-    <ClInclude Include="EffectComponent.h" />
+    <ClInclude Include="FirstAttackEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectComponent.h">
+      <Filter>Effect\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EffekseerEffect.h">
+      <Filter>Effect\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -596,6 +610,12 @@
     </Filter>
     <Filter Include="UI\Component">
       <UniqueIdentifier>{7916fa6b-5ef5-4f2a-94a1-de37efdb19f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{243adb3b-c164-4b97-afba-f284a2ff3bdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect\Component">
+      <UniqueIdentifier>{47ee6fdd-6ecd-4795-aee0-4a8793cd3ea4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

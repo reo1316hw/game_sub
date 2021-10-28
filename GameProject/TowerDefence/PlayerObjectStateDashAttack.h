@@ -11,7 +11,7 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-	PlayerObjectStateDashAttack(PlayerWeaponObject* _weaponPtr);
+	PlayerObjectStateDashAttack(FirstAttackEffect* _firstAttackEffectPtr);
 
 	/// <summary>
 	/// デストラクタ

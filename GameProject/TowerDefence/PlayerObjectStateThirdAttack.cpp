@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _weaponPtr)
+PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(FirstAttackEffect* _firstAttackEffectPtr)
 	: MBoxEnableTiming(30)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
@@ -16,8 +16,8 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack(PlayerWeaponObject* _
 	, mHitStopCount(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
-	, mOwnerBoxCollider(_weaponPtr->GetBoxCollider())
-	, mWeaponPtr(_weaponPtr)
+	, mOwnerBoxCollider(_firstAttackEffectPtr->GetBoxCollider())
+	, mFirstAttackEffectPtr(_firstAttackEffectPtr)
 	, skeletalMeshCompPtr(nullptr)
 {
 }
@@ -36,7 +36,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	}
 
 	// 攻撃時に武器が当たったらヒットストップを行う
-	if (mWeaponPtr->IsHitCheck())
+	if (mFirstAttackEffectPtr->IsHitCheck())
 	{
 		mIsHitStop = true;
 		skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);

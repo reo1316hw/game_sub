@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_weaponPtr"> プレイヤーの武器のポインタ </param>
-PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(PlayerWeaponObject* _weaponPtr)
+PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(FirstAttackEffect* _firstAttackEffectPtr)
 	: MBoxEnableTiming(20)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(50.0f)
@@ -15,7 +15,7 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack(PlayerWeaponObject* _
 	, MValidComboFrame(5)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
-	, mOwnerBoxCollider(_weaponPtr->GetBoxCollider())
+	, mOwnerBoxCollider(_firstAttackEffectPtr->GetBoxCollider())
 {
 }
 
