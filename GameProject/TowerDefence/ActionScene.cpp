@@ -69,7 +69,7 @@ SceneBase* ActionScene::Update(const InputState& _KeyState)
 		PHYSICS->ToggleDebugMode();
 	}
 
-	//RENDERER->GetEffekseerManager()->Update();
+	RENDERER->GetEffekseerManager()->Update();
 
 	return this;
 }

@@ -252,13 +252,6 @@ void Renderer::Draw()
 			mActiveSkyBox->Draw(mSkyBoxShader);
 		}
 
-
-		//エフェクト関連
-		mEffekseerRenderer->BeginRendering();
-		mEffekseerManager->Draw();
-		mEffekseerRenderer->EndRendering();
-
-
 		// メッシュコンポーネントの描画
 		// 基本的なメッシュシェーダーをアクティブにする
 		mMeshShader->SetActive();
@@ -285,6 +278,11 @@ void Renderer::Draw()
 
 	// HDRBufferにレンダリングしたときのDepth情報をスクリーンにコピー
 	mHDRRenderer->CopyDepthToScreen();
+
+	//エフェクト関連
+	mEffekseerRenderer->BeginRendering();
+	mEffekseerManager->Draw();
+	mEffekseerRenderer->EndRendering();
 
 	// 当たり判定デバッグBoxの表示
 	PHYSICS->DebugShowBox();
