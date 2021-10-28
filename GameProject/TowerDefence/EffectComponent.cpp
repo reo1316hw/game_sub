@@ -23,12 +23,10 @@ void EffectComponent::LoadEffect(const char16_t* effkseerFilename)
 
 void EffectComponent::Update(float deltaTime)
 {
- 	//float a = RENDERER->GetEffekseerManager()->CalculateTerm();
-
 	// エフェクトが現在も生きているか？
 	if (!(RENDERER->GetEffekseerManager()->Exists(mHandle)))
 	{
-		mOwner->SetState(State::eDead);
+		//mOwner->SetState(State::eDead);
 		return;
 	}
 
@@ -50,7 +48,7 @@ void EffectComponent::Update(float deltaTime)
 
 	// Effecseer -> GL の100倍 + Zup に合わせる
 	Matrix4 base, convertScale, convertRot;
-	convertScale = Matrix4::CreateScale(10.0f, -10.0f, 10.0f);
+	convertScale = Matrix4::CreateScale(100.0f, -100.0f, 100.0f);
 	convertRot = Matrix4::CreateRotationX(Math::ToRadians(-90.0f));
 	base = convertScale * convertRot * mRelativeRot;
 

@@ -78,9 +78,9 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// 回転処理
 	SelfRotation(Vector3::UnitZ, MAngle);
 
-	// 弾エフェクト生成
+	// 衝撃エフェクト生成
 	EffectComponent* ec = new EffectComponent(this, true, true);
-	ec->LoadEffect(u"Assets/Effect/bullet.efk");
+	ec->LoadEffect(u"Assets/Effect/SecondAttack.efk");
 }
 
 /// <summary>
