@@ -121,6 +121,10 @@ private:
 	std::vector<BoxCollider*> mPlayerBoxes;
 	// 1段階目の通常攻撃エフェクトの矩形当たり判定
 	std::vector<BoxCollider*> mFirstAttackEffectBoxes;
+	// 2段階目の通常攻撃エフェクトの矩形当たり判定
+	std::vector<BoxCollider*> mSecondAttackEffectBoxes;
+	// 3段階目の通常攻撃エフェクトの矩形当たり判定
+	std::vector<BoxCollider*> mThirdAttackEffectBoxes;
 	// エネミーの矩形当たり判定
 	std::vector<BoxCollider*> mEnemyBoxes;
 	// エネミーの攻撃用の矩形当たり判定

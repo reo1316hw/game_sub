@@ -5,6 +5,7 @@
 /// </summary>
 PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 	: MBoxEnableTiming(20)
+	, MBoxDisableTiming(30)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(50.0f)
 	, mIsCollisionState(false)
@@ -50,6 +51,12 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 	{
 		// 1段階目の通常攻撃の当たり判定を有効にする
 		mIsCollisionState = true;
+	}
+
+	if (mHitUntilCount == MBoxDisableTiming)
+	{
+		// 1段階目の通常攻撃の当たり判定を無効にする
+		mIsCollisionState = false;
 	}
 
 	if (mIsHit)
@@ -109,17 +116,6 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 	mPosition = _owner->GetPosition();
 	// 前方ベクトル
 	mForwardVec = _owner->GetForward();
-}
-
-/// <summary>
-/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
-/// </summary>
-/// <param name="_owner"> プレイヤー(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void PlayerObjectStateFirstAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
-{
-	// 1段階目の通常攻撃の当たり判定を無効にする
-	mIsCollisionState = false;
 }
 
 /// <summary>

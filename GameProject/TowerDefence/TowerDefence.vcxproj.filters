@@ -261,6 +261,12 @@
     <ClCompile Include="EffekseerEffect.cpp">
       <Filter>Effect\Component</Filter>
     </ClCompile>
+    <ClCompile Include="SecondAttackEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdAttackEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -524,6 +530,12 @@
     </ClInclude>
     <ClInclude Include="EffekseerEffect.h">
       <Filter>Effect\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SecondAttackEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdAttackEffect.h">
+      <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

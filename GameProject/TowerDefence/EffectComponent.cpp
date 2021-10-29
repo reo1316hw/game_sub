@@ -52,7 +52,7 @@ void EffectComponent::Update(float deltaTime)
 
 	// Effecseer -> GL ÇÃ100î{ + Zup Ç…çáÇÌÇπÇÈ
 	Matrix4 base, convertScale, convertRot;
-	convertScale = Matrix4::CreateScale(100.0f, -100.0f, 100.0f);
+	convertScale = Matrix4::CreateScale(mScale);
 	convertRot = Matrix4::CreateRotationX(Math::ToRadians(-90.0f));
 	base = convertScale * convertRot * mRelativeRot;
 

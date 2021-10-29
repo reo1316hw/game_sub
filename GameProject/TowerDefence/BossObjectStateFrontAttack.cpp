@@ -120,7 +120,13 @@ void BossObjectStateFrontAttack::OnCollision(BossObject* _owner, const GameObjec
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::eWeapon)
+	if (tag == Tag::eFirstAttackEffect)
+	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
+		mIsDamage = true;
+	}
+
+	if (tag == Tag::eSecondAttackEffect)
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;

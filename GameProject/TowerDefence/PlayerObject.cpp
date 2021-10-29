@@ -14,8 +14,10 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, MMaxHp(100)
 	, MPlayRate(1.0f)
 	, MAngle(270.0f)
+	, MAttackEffectScale(Vector3(50.0f, -50.0f, 50.0f))
 	, mNowState(PlayerState::ePlayerStateIdle)
 	, mNextState(PlayerState::ePlayerStateIdle)
+	, mThirdAttackEffectPtr(nullptr)
 	, mSkeltalMeshComponentPtr(nullptr)
 	, mMainCameraPtr(nullptr)
 	, mRunLoopPtr(nullptr)
@@ -57,6 +59,10 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	PlayerObjectStateDeath* deathPtr = nullptr;
 	// 1段階目の通常攻撃状態のクラスのポインタ
 	PlayerObjectStateFirstAttack* firstAttackPtr = nullptr;
+	// 2段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateSecondAttack* secondAttackPtr = nullptr;
+	// 3段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateThirdAttack* thirdAttackPtr = nullptr;
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	                  // mStatePool[ePlayerStateIdle]
@@ -64,8 +70,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mStatePools.push_back(mSprintStartPtr = new PlayerObjectStateSprintStart);              // mStatepool[ePlayerStateSprintStart]
 	mStatePools.push_back(mSprintLoopPtr = new PlayerObjectStateSprintLoop);	              // mStatepool[ePlayerStateSprintLoop]
 	mStatePools.push_back(firstAttackPtr = new PlayerObjectStateFirstAttack);  // mStatepool[ePlayerStateFirstAttack];
-	mStatePools.push_back(new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
-	mStatePools.push_back(new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
+	mStatePools.push_back(secondAttackPtr = new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
+	mStatePools.push_back(thirdAttackPtr = new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
 	mStatePools.push_back(new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
 	mStatePools.push_back(new PlayerObjectStateDamage);	                  // mStatepool[ePlayerStateDamage]
 	mStatePools.push_back(deathPtr = new PlayerObjectStateDeath);	      // mStatepool[ePlayerStateDeath]
@@ -73,8 +79,14 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// 武器
 	new PlayerWeaponObject(mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon, deathPtr);
 
-	// 1段階目の通常攻撃エフェクトのクラスのポインタ
-	mFirstAttackEffectPtr = new FirstAttackEffect(this, Tag::eFirstAttackEffect, firstAttackPtr);
+	// 1段階目の通常攻撃エフェクトを生成
+	new FirstAttackEffect(this, MAttackEffectScale, Tag::eFirstAttackEffect, firstAttackPtr);
+	// 2段階目の通常攻撃エフェクトを生成
+	new SecondAttackEffect(this, MAttackEffectScale, Tag::eSecondAttackEffect, secondAttackPtr);
+	// 3段階目の通常攻撃エフェクトを生成
+	mThirdAttackEffectPtr = new ThirdAttackEffect(this, MAttackEffectScale, Tag::eSecondAttackEffect, thirdAttackPtr);
+	// 3段階目の通常攻撃状態クラスに3段階目の通常攻撃エフェクトクラスのポインタを渡す
+	thirdAttackPtr->SetThirdAttackEffectPtr(mThirdAttackEffectPtr);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));

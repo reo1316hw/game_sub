@@ -3,7 +3,7 @@
 /// <summary>
 /// プレイヤーの1段階目の通常攻撃エフェクト
 /// </summary>
-class FirstAttackEffect : public GameObject
+class SecondAttackEffect : public GameObject
 {
 public:
 
@@ -13,13 +13,13 @@ public:
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	/// <param name="_Scale"> 大きさ </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	/// <param name="_firstAttackPtr"> 1段階目の通常攻撃状態のクラスのポインタ </param>
-	FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObjectStateFirstAttack* _firstAttackPtr);
+	/// <param name="_secondAttackPtr"> 2段階目の通常攻撃状態のクラスのポインタ </param>
+	SecondAttackEffect(PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObjectStateSecondAttack* _secondAttackPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~FirstAttackEffect() {};
+	~SecondAttackEffect() {};
 
 	/// <summary>
 	/// オブジェクトの更新処理
@@ -38,6 +38,6 @@ private:
 	PlayerObject* mPlayerPtr;
 	// エフェクトコンポーネントクラスのポインタ
 	EffectComponent* mEffectComponentPtr;
-	// 1段階目の通常攻撃状態のクラスのポインタ
-	PlayerObjectStateFirstAttack* mFirstAttackPtr;
+	// 2段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateSecondAttack* mSecondAttackPtr;
 };

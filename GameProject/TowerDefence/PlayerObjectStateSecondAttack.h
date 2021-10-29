@@ -40,13 +40,6 @@ public:
 	void Enter(PlayerObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-	/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
-	/// </summary>
-	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
-	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void Exit(PlayerObject* _owner, const float _DeltaTime)override;
-
-	/// <summary>
 	/// ヒットした時の処理
 	/// </summary>
 	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
@@ -57,6 +50,8 @@ private:
 
 	// 当たり判定を有効にするタイミング
 	const int MBoxEnableTiming;
+	// 当たり判定を無効にするタイミング
+	const int MBoxDisableTiming;
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
 	// 攻撃時の速度
@@ -66,6 +61,10 @@ private:
 
 	// コンボ有効フレーム
 	const size_t MValidComboFrame;
+
+	// 当たり判定の状態
+    // true : 有効, false : 無効
+	bool mIsCollisionState;
 
 	// ダメージ値
 	int mDamageValue;
@@ -79,4 +78,12 @@ private:
 	Vector3 mPosition;
 	// 前方ベクトル
 	Vector3 mForwardVec;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 当たり判定の状態を取得
+	/// </summary>
+	/// <returns> 当たり判定の状態 </returns>
+	bool GetIsCollisionState() { return mIsCollisionState; }
 };

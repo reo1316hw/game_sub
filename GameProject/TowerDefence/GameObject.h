@@ -41,6 +41,8 @@ enum Tag
 	ePlayer,
 	eWeapon,
 	eFirstAttackEffect,
+	eSecondAttackEffect,
+	eThirdAttackEffect,
 	eGround,
 	eEnemyManager,
 	eEnemyGenerator,

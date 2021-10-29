@@ -120,5 +120,11 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 		mIsDamage = true;
 	}
 
+	if (tag == Tag::eSecondAttackEffect)
+	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
+		mIsDamage = true;
+	}
+
 	_owner->SetDamageValue(mDamageValue);
 }

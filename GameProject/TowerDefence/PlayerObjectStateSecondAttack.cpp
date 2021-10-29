@@ -5,8 +5,10 @@
 /// </summary>
 PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
 	: MBoxEnableTiming(20)
+	, MBoxDisableTiming(30)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(100.0f)
+	, mIsCollisionState(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mNumFrame(0)
@@ -47,8 +49,14 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
-		// 武器の当たり判定を行うようにする
-		//mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+		// 2段階目の通常攻撃の当たり判定を有効にする
+		mIsCollisionState = true;
+	}
+
+	if (mHitUntilCount == MBoxDisableTiming)
+	{
+		// 2段階目の通常攻撃の当たり判定を無効にする
+		mIsCollisionState = false;
 	}
 
 	if (mIsHit)
@@ -107,17 +115,6 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 	mPosition = _owner->GetPosition();
 	// 前方ベクトル
 	mForwardVec = _owner->GetForward();
-}
-
-/// <summary>
-/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
-/// </summary>
-/// <param name="_owner"> プレイヤー(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void PlayerObjectStateSecondAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
-{
-	// 武器の当たり判定を行わないようにする
-	//mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

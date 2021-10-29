@@ -135,5 +135,7 @@
 #include "EffekseerEffect.h"
 
 #include "FirstAttackEffect.h"
+#include "SecondAttackEffect.h"
+#include "ThirdAttackEffect.h"
 
 #endif

@@ -24,8 +24,11 @@ EnemyAttackDecisionObject::EnemyAttackDecisionObject(GameObject* _owner, const T
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyAttackDecisionObject::UpdateGameObject(float _deltaTime)
 {	
+	// 中心の座標から前にずらした座標
+	Vector3 offsetPos = mOwner->GetForward() * MCenterOffset;
+
 	SetRotation(mOwner->GetRotation());
-	mPosition = mOwner->GetPosition() + mOwner->GetForward() * MCenterOffset;
+	mPosition = mOwner->GetPosition() + offsetPos;
 	SetPosition(mPosition);
 }
 

@@ -5,10 +5,12 @@
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	: MBoxEnableTiming(30)
+	, MBoxDisableTiming(40)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
+	, mIsCollisionState(false)
 	, mIsHitStop(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
@@ -32,12 +34,12 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateDamage;
 	}
 
-	//// 攻撃時に武器が当たったらヒットストップを行う
-	//if (mFirstAttackEffectPtr->IsHitCheck())
-	//{
-	//	mIsHitStop = true;
-	//	skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);
-	//}
+	// 攻撃時に武器が当たったらヒットストップを行う
+	if (mThirdAttackEffectPtr->IsHitCheck())
+	{
+		mIsHitStop = true;
+		skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);
+	}
 
 	// ヒットストップ時に移動処理を無効化
 	if (mIsHitStop)
@@ -69,8 +71,14 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
-		// 武器の当たり判定を行うようにする
-		//mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+		// 3段階目の通常攻撃の当たり判定を有効にする
+		mIsCollisionState = true;
+	}
+
+	if (mHitUntilCount == MBoxDisableTiming)
+	{
+		// 3段階目の通常攻撃の当たり判定を無効にする
+		mIsCollisionState = false;
 	}
 
 	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
@@ -107,17 +115,6 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	mPosition = _owner->GetPosition();
 	// 前方ベクトル
 	mForwardVec = _owner->GetForward();
-}
-
-/// <summary>
-/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
-/// </summary>
-/// <param name="_owner"> プレイヤー(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void PlayerObjectStateThirdAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
-{
-	// 武器の当たり判定を行わないようにする
-	//mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

@@ -84,14 +84,12 @@ private:
 
 	// 最大体力
 	const int MMaxHp;
-	// 剣の初期回転値
-	const Vector3 MSwordRot;
-	// 剣の初期座標
-	const Vector3 MSwordPos;
 	// アニメーションの再生速度
 	const float MPlayRate;
 	// 角度
 	const float MAngle;
+	// 通常攻撃エフェクトの大きさ
+	const Vector3 MAttackEffectScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>       mAnimTypes;
@@ -104,8 +102,8 @@ private:
 	PlayerState mNextState;
 	// スケルトンメッシュのポインタ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
-	// 1段階目の通常攻撃エフェクトのポインタ
-	FirstAttackEffect* mFirstAttackEffectPtr;
+	// 3段階目の通常攻撃エフェクトのポインタ
+	ThirdAttackEffect* mThirdAttackEffectPtr;
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 	// 走り状態のクラスのポインタ
