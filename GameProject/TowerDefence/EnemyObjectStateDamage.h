@@ -42,8 +42,6 @@ public:
 
 private:
 
-	// ヒットストップが終わるタイミング
-	const int MHitStopEndTiming;
 	// ダメージ時の速度
 	const float MDamageSpeed;
 	// ベクトルを短くする値
@@ -60,6 +58,8 @@ private:
 	int mHitPoint;
 	// ヒットストップするフレーム数
 	int mHitStopCount;
+	// ヒットストップが終わるタイミング
+	int mHitStopEndTiming;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;

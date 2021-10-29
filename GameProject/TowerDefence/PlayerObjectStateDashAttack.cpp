@@ -4,16 +4,23 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
-	: MBoxEnableTiming(20)
+	: MBoxEnableTiming(10)
+	, MBoxDisableTiming(20)
 	, MDamageValueEnemyAttack(25)
+	, MHitStopEndTiming(5)
 	, MAttackSpeed(300.0f)
+	, mIsCollisionState(false)
+	, mIsHitStop(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
+	, mHitStopCount(0)
 	, mNumFrame(0)
 	, MPlayRate(1.5f)
 	, MValidComboFrame(5)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
+	, skeletalMeshCompPtr(nullptr)
+	, mDashAttackEffectPtr(nullptr)
 {
 }
 
@@ -25,6 +32,32 @@ PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
+	if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
+
+	// 攻撃時に武器が当たったらヒットストップを行う
+	if (mDashAttackEffectPtr->IsHitCheck())
+	{
+		mIsHitStop = true;
+		skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);
+	}
+
+	// ヒットストップ時に移動処理を無効化
+	if (mIsHitStop)
+	{
+		++mHitStopCount;
+
+		if (mHitStopCount <= MHitStopEndTiming)
+		{
+			return PlayerState::ePlayerStateDashAttack;
+		}
+
+		mIsHitStop = false;
+		mHitStopCount = 0;
+	}
+
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -47,13 +80,14 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 
 	if (mHitUntilCount == MBoxEnableTiming)
 	{
-		// 武器の当たり判定を行うようにする
-		//mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+		// 3段階目の通常攻撃の当たり判定を有効にする
+		mIsCollisionState = true;
 	}
 
-	if (mIsHit)
+	if (mHitUntilCount == MBoxDisableTiming)
 	{
-		return PlayerState::ePlayerStateDamage;
+		// 3段階目の通常攻撃の当たり判定を無効にする
+		mIsCollisionState = false;
 	}
 
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
@@ -93,8 +127,8 @@ void PlayerObjectStateDashAttack::Input(PlayerObject* _owner, const InputState& 
 void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _DeltaTime)
 {
 	// ダッシュ攻撃状態のアニメーション再生
-	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
-	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack), MPlayRate);
+	skeletalMeshCompPtr = _owner->GetSkeletalMeshComponentPtr();
+	skeletalMeshCompPtr->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack), MPlayRate);
 	mIsNextCombo = false;
 	mIsHit = false;
 
@@ -108,17 +142,6 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 	mPosition = _owner->GetPosition();
 	// 前方ベクトル
 	mForwardVec = _owner->GetForward();
-}
-
-/// <summary>
-/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
-/// </summary>
-/// <param name="_owner"> プレイヤー(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void PlayerObjectStateDashAttack::Exit(PlayerObject* _owner, const float _DeltaTime)
-{
-	// 武器の当たり判定を行わないようにする
-	//mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

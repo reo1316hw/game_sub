@@ -43,6 +43,7 @@ enum Tag
 	eFirstAttackEffect,
 	eSecondAttackEffect,
 	eThirdAttackEffect,
+	eDashAttackEffect,
 	eGround,
 	eEnemyManager,
 	eEnemyGenerator,

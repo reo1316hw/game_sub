@@ -102,8 +102,6 @@ private:
 	PlayerState mNextState;
 	// スケルトンメッシュのポインタ
 	SkeletalMeshComponent* mSkeltalMeshComponentPtr;
-	// 3段階目の通常攻撃エフェクトのポインタ
-	ThirdAttackEffect* mThirdAttackEffectPtr;
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 	// 走り状態のクラスのポインタ

@@ -1,5 +1,7 @@
 #pragma once
 
+class DashAttackEffect;
+
 /// <summary>
 /// ダッシュ攻撃
 /// </summary>
@@ -40,13 +42,6 @@ public:
 	void Enter(PlayerObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-	/// プレイヤーの状態が変更して、最後に1回だけ呼び出される関数
-	/// </summary>
-	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
-	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void Exit(PlayerObject* _owner, const float _DeltaTime)override;
-
-	/// <summary>
     /// ヒットした時の処理
     /// </summary>
     /// <param name="_owner"> プレイヤー(親)のポインタ </param>
@@ -57,8 +52,12 @@ private:
 
 	// 当たり判定を有効にするタイミング
 	const int MBoxEnableTiming;
+	// 当たり判定を無効にするタイミング
+	const int MBoxDisableTiming;
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
+	// ヒットストップが終わるタイミング
+	const int MHitStopEndTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -67,10 +66,18 @@ private:
 	// コンボ有効フレーム
 	const size_t MValidComboFrame;
 
+	// 当たり判定の状態
+	// true : 有効, false : 無効
+	bool mIsCollisionState;
+	// ヒットストップするか
+	bool mIsHitStop;
+
 	// ダメージ値
 	int mDamageValue;
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
+	// ヒットストップするフレーム数
+	int mHitStopCount;
 
 	// フレーム数
 	size_t mNumFrame;
@@ -81,4 +88,23 @@ private:
 	Vector3 mVelocity;
 	// 前方ベクトル
 	Vector3 mForwardVec;
+
+	// スケルトンクラスのポインタ
+	SkeletalMeshComponent* skeletalMeshCompPtr;
+	// ダッシュ攻撃エフェクトのクラスのポインタ
+	DashAttackEffect* mDashAttackEffectPtr;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 当たり判定の状態を取得
+	/// </summary>
+	/// <returns> 当たり判定の状態 </returns>
+	bool GetIsCollisionState() { return mIsCollisionState; }
+
+	/// <summary>
+	/// ダッシュ攻撃エフェクトのクラスのポインタを設定
+	/// </summary>
+	/// <param name="_thirdAttackEffectPtr"> ダッシュ攻撃エフェクトのクラスのポインタ </param>
+	void SetDashAttackEffectPtr(DashAttackEffect* _dashAttackEffectPtr) { mDashAttackEffectPtr = _dashAttackEffectPtr; }
 };

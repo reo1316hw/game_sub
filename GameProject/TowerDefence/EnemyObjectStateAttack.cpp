@@ -149,22 +149,32 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
+	if (tag == Tag::eDashAttackEffect)
+	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
+		mIsDamage = true;
+		return;
+	}
+
 	if (tag == Tag::eFirstAttackEffect)
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+		return;
 	}
 
 	if (tag == Tag::eSecondAttackEffect)
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+		return;
 	}
 
 	if (tag == Tag::eThirdAttackEffect)
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+		return;
 	}
 
 	_owner->SetDamageValue(mDamageValue);

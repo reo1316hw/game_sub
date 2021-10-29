@@ -125,6 +125,8 @@ private:
 	std::vector<BoxCollider*> mSecondAttackEffectBoxes;
 	// 3段階目の通常攻撃エフェクトの矩形当たり判定
 	std::vector<BoxCollider*> mThirdAttackEffectBoxes;
+	// ダッシュ攻撃エフェクトの矩形当たり判定
+	std::vector<BoxCollider*> mDashAttackEffectBoxes;
 	// エネミーの矩形当たり判定
 	std::vector<BoxCollider*> mEnemyBoxes;
 	// エネミーの攻撃用の矩形当たり判定

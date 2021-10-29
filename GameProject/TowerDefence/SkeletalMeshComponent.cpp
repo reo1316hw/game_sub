@@ -1,8 +1,8 @@
 #include "pch.h"
 
 SkeletalMeshComponent::SkeletalMeshComponent(GameObject* _owner)
-	:MeshComponent(_owner, true)
-	, MHitStopEndTiming(10)
+	: MeshComponent(_owner, true)
+	, mHitStopEndTiming(0)
 	, mIsHitStop(false)
 	, mHitStopCount(0)
 	, mHitStopRate(0.0f)
@@ -58,12 +58,13 @@ void SkeletalMeshComponent::Update(float _deltaTime)
 
 	mHitStopRate = 1.0f;
 
+	// ヒットストップ
 	if (mIsHitStop)
 	{
 		mHitStopRate = 0.0f;
 		++mHitStopCount;
 
-		if (mHitStopCount >= MHitStopEndTiming)
+		if (mHitStopCount >= mHitStopEndTiming)
 		{
 			mHitStopCount = 0;
 			mIsHitStop = false;
@@ -94,12 +95,14 @@ void SkeletalMeshComponent::Update(float _deltaTime)
 /// </summary>
 /// <param name="_AnimPtr"> アニメーションデータクラスのポインタ </param>
 /// <param name="_PlayRate"> アニメーションの再生速度 </param>
+/// <param name="_HitStopEndTiming"> ヒットストップが終わるタイミング </param>
 /// <returns> アニメーションの残り時間 </returns>
-float SkeletalMeshComponent::PlayAnimation(const Animation* _AnimPtr, const float& _PlayRate)
+float SkeletalMeshComponent::PlayAnimation(const Animation* _AnimPtr, const float& _PlayRate, const int& _HitStopEndTiming)
 {
 	mAnimation = _AnimPtr;
 	mAnimTime = 0.0f;
 	mAnimPlayRate = _PlayRate;
+	mHitStopEndTiming = _HitStopEndTiming;
 
 	if (!mAnimation)
 	{

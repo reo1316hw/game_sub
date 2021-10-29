@@ -185,6 +185,25 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
+		for (auto itr : mDashAttackEffectBoxes)
+		{
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
 	}
 
 	if (_box->GetOwner()->GetTag() == Tag::eBoss)
@@ -246,6 +265,25 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 			}
 		}
 		for (auto itr : mThirdAttackEffectBoxes)
+		{
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mDashAttackEffectBoxes)
 		{
 			// コライダーの親オブジェクトがActiveじゃなければ終了する
 			// コライダーが有効じゃなかったら終了する
@@ -345,6 +383,12 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::eDashAttackEffect)
+	{
+		mDashAttackEffectBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 	if (_box->GetOwner()->GetTag() == Tag::eEnemy)
 	{
 		mEnemyBoxes.emplace_back(_box);
@@ -412,6 +456,12 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 	{
 		std::iter_swap(thirdAttackEffectBox, mThirdAttackEffectBoxes.end() - 1);
 		mThirdAttackEffectBoxes.pop_back();
+	}
+	auto dashAttackEffectBox = std::find(mDashAttackEffectBoxes.begin(), mDashAttackEffectBoxes.end(), _box);
+	if (dashAttackEffectBox != mDashAttackEffectBoxes.end())
+	{
+		std::iter_swap(dashAttackEffectBox, mDashAttackEffectBoxes.end() - 1);
+		mDashAttackEffectBoxes.pop_back();
 	}
 	auto enemyAttackDecisionBox = std::find(mEnemyAttackDecisionBoxes.begin(), mEnemyAttackDecisionBoxes.end(), _box);
 	if (enemyAttackDecisionBox != mEnemyAttackDecisionBoxes.end())
@@ -482,6 +532,7 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mFirstAttackEffectBoxes, Color::LightGreen);
 	DrawBoxs(mSecondAttackEffectBoxes, Color::LightGreen);
 	DrawBoxs(mThirdAttackEffectBoxes, Color::LightGreen);
+	DrawBoxs(mDashAttackEffectBoxes, Color::LightGreen);
 	DrawBoxs(mEnemyBoxes, Color::White);
 	DrawBoxs(mEnemyAttackDecisionBoxes, Color::Yellow);
 	DrawBoxs(mBossBoxes, Color::LightYellow);
@@ -500,10 +551,10 @@ void PhysicsWorld::DrawBoxs(std::vector<BoxCollider*>& _Boxs, const Vector3& _Co
 	mLineShader->SetVectorUniform("uColor", _Color);
 	for (auto item : _Boxs)
 	{
-		/*if (item->GetCollisionState() == CollisionState::eDisableCollision)
+		if (item->GetCollisionState() == CollisionState::eDisableCollision)
 		{
 			return;
-		}*/
+		}
 
 		AABB box = AABB(Vector3::Zero, Vector3::Zero);
 		Vector3 min, max;

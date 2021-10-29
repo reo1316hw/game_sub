@@ -4,8 +4,8 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
-	: MBoxEnableTiming(30)
-	, MBoxDisableTiming(40)
+	: MBoxEnableTiming(45)
+	, MBoxDisableTiming(55)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MAttackSpeed(150.0f)
@@ -35,7 +35,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	}
 
 	// 攻撃時に武器が当たったらヒットストップを行う
-	if (mThirdAttackEffectPtr->IsHitCheck())
+ 	if (mThirdAttackEffectPtr->IsHitCheck())
 	{
 		mIsHitStop = true;
 		skeletalMeshCompPtr->SetIsHitStop(mIsHitStop);

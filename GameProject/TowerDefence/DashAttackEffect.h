@@ -3,7 +3,7 @@
 /// <summary>
 /// プレイヤーの1段階目の通常攻撃エフェクト
 /// </summary>
-class ThirdAttackEffect : public GameObject
+class DashAttackEffect : public GameObject
 {
 public:
 
@@ -13,13 +13,13 @@ public:
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	/// <param name="_Scale"> 大きさ </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	/// <param name="_thirdAttackPtr"> 3段階目の通常攻撃状態のクラスのポインタ </param>
-	ThirdAttackEffect(PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObjectStateThirdAttack* _thirdAttackPtr);
+	/// <param name="_dashAttackPtr"> ダッシュ攻撃状態のクラスのポインタ </param>
+	DashAttackEffect(PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObjectStateDashAttack* _dashAttackPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~ThirdAttackEffect() {};
+	~DashAttackEffect() {};
 
 	/// <summary>
 	/// オブジェクトの更新処理
@@ -55,6 +55,6 @@ private:
 	PlayerObject* mPlayerPtr;
 	// エフェクトコンポーネントクラスのポインタ
 	EffectComponent* mEffectComponentPtr;
-	// 3段階目の通常攻撃状態のクラスのポインタ
-	PlayerObjectStateThirdAttack* mThirdAttackPtr;
+	// ダッシュ攻撃状態のクラスのポインタ
+	PlayerObjectStateDashAttack* mDashAttackPtr;
 };

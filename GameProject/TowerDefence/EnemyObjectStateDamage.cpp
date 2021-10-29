@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
-    : MHitStopEndTiming(10)
+    : mHitStopEndTiming(0)
 	, MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
@@ -37,7 +37,7 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 
 	++mHitStopCount;
 
-	if (mHitStopCount <= MHitStopEndTiming)
+	if (mHitStopCount <= mHitStopEndTiming)
 	{
 		return EnemyState::eEnemyStateDamage;
 	}
@@ -93,11 +93,18 @@ void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 
 	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
 	{
+		mHitStopEndTiming = 10;
+		mIsHitStop = true;
+	}
+
+	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack)
+	{
+		mHitStopEndTiming = 5;
 		mIsHitStop = true;
 	}
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDamage), MPlayRate);
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDamage), MPlayRate, mHitStopEndTiming);
 	meshcomp->SetIsHitStop(mIsHitStop);
 
 	// アニメーション再生時間取得

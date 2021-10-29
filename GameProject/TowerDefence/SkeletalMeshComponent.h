@@ -23,8 +23,9 @@ public:
 	/// </summary>
 	/// <param name="_AnimPtr"> アニメーションデータクラスのポインタ </param>
 	/// <param name="_PlayRate"> アニメーションの再生速度 </param>
+	/// <param name="_HitStopEndTiming"> ヒットストップが終わるタイミング </param>
 	/// <returns> アニメーションの残り時間 </returns>
-	float PlayAnimation(const class Animation* _AnimPtr, const float& _PlayRate = 1.0f);
+	float PlayAnimation(const class Animation* _AnimPtr, const float& _PlayRate = 1.0f, const int& _HitStopEndTiming = 0);
 
 	// 現在再生中のアニメーション
 	const class Animation* GetNowPlayingAnimation() { return mAnimation; }
@@ -41,14 +42,13 @@ private:
 	*/
 	void ComputeMatrixPalette();
 
-	// ヒットストップが終わるタイミング
-	const int MHitStopEndTiming;
-
 	// ヒットストップするか
 	bool mIsHitStop;
 
 	// ヒットストップするフレーム数
 	int mHitStopCount;
+	// ヒットストップが終わるタイミング
+	int mHitStopEndTiming;
 
 	// 行列パレット
 	MatrixPalette mPalette;

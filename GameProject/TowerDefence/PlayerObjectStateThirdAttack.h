@@ -88,7 +88,7 @@ public:// ゲッターセッター
 	bool GetIsCollisionState() { return mIsCollisionState; }
 
 	/// <summary>
-	///  3段階目の通常攻撃エフェクトのクラスのポインタを設定
+	/// 3段階目の通常攻撃エフェクトのクラスのポインタを設定
 	/// </summary>
 	/// <param name="_thirdAttackEffectPtr"> 3段階目の通常攻撃エフェクトのクラスのポインタ </param>
 	void SetThirdAttackEffectPtr(ThirdAttackEffect* _thirdAttackEffectPtr) { mThirdAttackEffectPtr = _thirdAttackEffectPtr; }

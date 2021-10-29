@@ -17,7 +17,6 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, MAttackEffectScale(Vector3(50.0f, -50.0f, 50.0f))
 	, mNowState(PlayerState::ePlayerStateIdle)
 	, mNextState(PlayerState::ePlayerStateIdle)
-	, mThirdAttackEffectPtr(nullptr)
 	, mSkeltalMeshComponentPtr(nullptr)
 	, mMainCameraPtr(nullptr)
 	, mRunLoopPtr(nullptr)
@@ -63,6 +62,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	PlayerObjectStateSecondAttack* secondAttackPtr = nullptr;
 	// 3段階目の通常攻撃状態のクラスのポインタ
 	PlayerObjectStateThirdAttack* thirdAttackPtr = nullptr;
+	// ダッシュ攻撃状態のクラスのポインタ
+	PlayerObjectStateDashAttack* dashAttackPtr = nullptr;
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new PlayerObjectStateIdle());	                  // mStatePool[ePlayerStateIdle]
@@ -72,7 +73,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mStatePools.push_back(firstAttackPtr = new PlayerObjectStateFirstAttack);  // mStatepool[ePlayerStateFirstAttack];
 	mStatePools.push_back(secondAttackPtr = new PlayerObjectStateSecondAttack); // mStatepool[ePlayerStateSecondAttack];
 	mStatePools.push_back(thirdAttackPtr = new PlayerObjectStateThirdAttack);  // mStatepool[ePlayerStateThirdAttack];
-	mStatePools.push_back(new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
+	mStatePools.push_back(dashAttackPtr = new PlayerObjectStateDashAttack);   // mStatepool[ePlayerStateDashAttack];
 	mStatePools.push_back(new PlayerObjectStateDamage);	                  // mStatepool[ePlayerStateDamage]
 	mStatePools.push_back(deathPtr = new PlayerObjectStateDeath);	      // mStatepool[ePlayerStateDeath]
 
@@ -84,9 +85,13 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	// 2段階目の通常攻撃エフェクトを生成
 	new SecondAttackEffect(this, MAttackEffectScale, Tag::eSecondAttackEffect, secondAttackPtr);
 	// 3段階目の通常攻撃エフェクトを生成
-	mThirdAttackEffectPtr = new ThirdAttackEffect(this, MAttackEffectScale, Tag::eSecondAttackEffect, thirdAttackPtr);
+	ThirdAttackEffect* thirdAttackEffectPtr = new ThirdAttackEffect(this, MAttackEffectScale, Tag::eThirdAttackEffect, thirdAttackPtr);
+	// ダッシュ攻撃エフェクトを生成
+	DashAttackEffect* dashEffectPtr = new DashAttackEffect(this, MAttackEffectScale, Tag::eDashAttackEffect, dashAttackPtr);
 	// 3段階目の通常攻撃状態クラスに3段階目の通常攻撃エフェクトクラスのポインタを渡す
-	thirdAttackPtr->SetThirdAttackEffectPtr(mThirdAttackEffectPtr);
+	thirdAttackPtr->SetThirdAttackEffectPtr(thirdAttackEffectPtr);
+	// ダッシュ攻撃状態クラスにダッシュ攻撃エフェクトクラスのポインタを渡す
+	dashAttackPtr->SetDashAttackEffectPtr(dashEffectPtr);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));
@@ -158,34 +163,6 @@ void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
 void PlayerObject::OnCollision(const GameObject& _HitObject)
 {
 	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
-
-	////押し戻し処理
-	//float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;
-	//float dx2 = _HitObject.GetObjectAABB().m_max.x - mBox.m_min.x;
-	//float dy1 = _HitObject.GetObjectAABB().m_min.y - mBox.m_max.y;
-	//float dy2 = _HitObject.GetObjectAABB().m_max.y - mBox.m_min.y;
-	//float dz1 = _HitObject.GetObjectAABB().m_min.z - mBox.m_max.z;
-	//float dz2 = _HitObject.GetObjectAABB().m_max.z - mBox.m_min.z;
-
-	//float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
-	//float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
-	//float dz = Math::Abs(dz1) < Math::Abs(dz2) ? dz1 : dz2;
-
-	//if (Math::Abs(dx) <= Math::Abs(dy)/* && Math::Abs(dx) <= Math::Abs(dz)*/)
-	//{
-	//	mPosition.x += dx;
-	//}
-	//else if (Math::Abs(dy) <= Math::Abs(dx) /*&& Math::Abs(dy) <= Math::Abs(dz)*/)
-	//{
-	//	mPosition.y += dy;
-	//}
-	////else
-	////	//if (Math::Abs(dz) <= Math::Abs(dx) && Math::Abs(dz) <= Math::Abs(dy))
-	////{
-	////	mPosition.z += dz;
-	////}
-
-	//SetPosition(mPosition);
 }
 
 /// <summary>
