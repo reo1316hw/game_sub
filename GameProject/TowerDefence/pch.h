@@ -139,5 +139,12 @@
 #include "ThirdAttackEffect.h"
 #include "DashAttackEffect.h"
 #include "HitEffect.h"
+#include "FrontLaserMagicEffect.h"
+#include "FrontCoreMagicEffect.h"
+#include "AreaMagicEffect.h"
+#include "OverheadMagicEffect.h"
+#include "DangerSignalEffect.h"
+#include "ChantEffect.h"
+#include "TeleportationEffect.h"
 
 #endif

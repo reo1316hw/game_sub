@@ -10,17 +10,14 @@
 DashAttackEffect::DashAttackEffect(PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObjectStateDashAttack* _dashAttackPtr)
 	: GameObject(_ObjectTag)
 	, MOffset(10.0f)
-	, MHeightCorrection(Vector3(0.0f, 0.0f, 25.0f))
 	, mIsHit(false)
 	, mDisableIsHit(false)
 	, mPlayerPtr(_playerPtr)
 	, mEffectComponentPtr(nullptr)
 	, mDashAttackPtr(_dashAttackPtr)
 {
-	SetScale(mPlayerPtr->GetScale());
-
 	// 武器の矩形当たり判定
-	mBox = AABB(Vector3(-30.0f, -200.0f, 100.0f), Vector3(150.0f, 200.0f, 100.0f));
+	mBox = AABB(Vector3(-15.0f, -100.0f, 50.0f), Vector3(75.0f, 100.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 	// 最初は当たり判定を行わないようにする
@@ -36,12 +33,10 @@ DashAttackEffect::DashAttackEffect(PlayerObject* _playerPtr, const Vector3& _Sca
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void DashAttackEffect::UpdateGameObject(float _deltaTime)
 {
-	// 高さ補正後の座標
-	Vector3 postionHeightCorrection = mPlayerPtr->GetPosition() + MHeightCorrection;
-	// 高さ補正後の座標から前にずらした座標
-	Vector3 offsetPos = mPlayerPtr->GetForward() * MOffset;
+	// 前にずらすベクトル
+	Vector3 offsetVec = mPlayerPtr->GetForward() * MOffset;
+	mPosition = mPlayerPtr->GetPosition() + offsetVec;
 
-	mPosition = postionHeightCorrection + offsetPos;
 	SetPosition(mPosition);
 	SetRotation(mPlayerPtr->GetRotation());
 

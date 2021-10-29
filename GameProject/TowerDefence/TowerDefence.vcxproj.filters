@@ -273,6 +273,27 @@
     <ClCompile Include="HitEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="AreaMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ChantEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DangerSignalEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontCoreMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontLaserMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="OverheadMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="TeleportationEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -547,6 +568,27 @@
       <Filter>Effect</Filter>
     </ClInclude>
     <ClInclude Include="HitEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="AreaMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ChantEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DangerSignalEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontCoreMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontLaserMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="OverheadMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="TeleportationEffect.h">
       <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>

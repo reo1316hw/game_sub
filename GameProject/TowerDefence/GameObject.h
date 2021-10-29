@@ -50,6 +50,9 @@ enum Tag
 	eEnemy,
 	eEnemyAttackDecision,
 	eBoss,
+	eFrontCoreMagicEffect,
+	eFrontLaserMagicEffect,
+	eAreaMagicEffect,
 	eHItEffect,
 	eTranslucentWall
 };

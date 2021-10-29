@@ -72,6 +72,10 @@ private:
 	const float MPlayRate;
 	// ヒットエフェクトの大きさ
 	const Vector3 MHitEffectScale;
+	// 前方攻撃エフェクトの大きさ
+	const Vector3 MFrontMagicEffectScale;
+	// 範囲攻撃エフェクトの大きさ
+	const Vector3 MAreaMagicEffectScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>      mAnimTypes;
@@ -92,6 +96,18 @@ private:
 public://ゲッターセッター
 
 	/// <summary>
+	/// 初期座標を取得
+	/// </summary>
+	/// <returns> 初期座標 </returns>
+	Vector3 GetInitPosition() { return mInitPosition; }
+
+	/// <summary>
+	/// 現在のステートを取得
+	/// </summary>
+	/// <returns> 現在のステート </returns>
+	BossState GetNowState() { return mNowState; }
+
+	/// <summary>
 	/// Animationのポインタを取得
 	/// </summary>
 	/// <param name="_State"> ボスの状態 </param>
@@ -103,11 +119,5 @@ public://ゲッターセッター
 	/// </summary>
 	/// <returns> SkeletalMeshComponentのポインタ </returns>
 	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; }
-
-	/// <summary>
-	/// 初期座標を取得
-	/// </summary>
-	/// <returns> 初期座標 </returns>
-	Vector3 GetInitPosition() { return mInitPosition; }
 };
 

@@ -15,6 +15,8 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	, MMaxHp(500)
 	, MPlayRate(1.0f)
 	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
+	, MFrontMagicEffectScale(Vector3(10.0f, -10.0f, 10.0f))
+	, MAreaMagicEffectScale(Vector3(20.0f, -20.0f, 20.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(BossState::eBossStateWait)
 	, mNextState(BossState::eBossStateWait)
@@ -62,6 +64,13 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 
 	// ヒットエフェクト生成
 	new HitEffect(this, MHitEffectScale, Tag::eHItEffect);
+
+	// 前方攻撃エフェクト(中核の部分)を生成
+	new FrontCoreMagicEffect(this, MFrontMagicEffectScale, Tag::eFrontCoreMagicEffect);
+	// 前方攻撃エフェクト(レーザーの部分)を生成
+	new FrontLaserMagicEffect(this, MFrontMagicEffectScale, Tag::eFrontLaserMagicEffect);
+	// 範囲攻撃エフェクト生成
+	new AreaMagicEffect(this, MAreaMagicEffectScale, Tag::eAreaMagicEffect);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

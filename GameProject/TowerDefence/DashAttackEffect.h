@@ -43,8 +43,6 @@ private:
 
 	// 座標との差
 	const float MOffset;
-	// 高さの補正値
-	const Vector3 MHeightCorrection;
 
 	// ヒットしたか
 	bool mIsHit;

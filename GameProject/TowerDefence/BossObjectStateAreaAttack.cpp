@@ -9,6 +9,7 @@ BossObjectStateAreaAttack::BossObjectStateAreaAttack(PlayerObject* _playerPtr)
 	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, MPlayRate(0.8f)
 	, mIsDamage(false)
 	, mDamageValue(0)
 	, mPosition(Vector3::Zero)
@@ -69,7 +70,7 @@ BossState BossObjectStateAreaAttack::Update(BossObject* _owner, const float _Del
 void BossObjectStateAreaAttack::Enter(BossObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateAreaAttack));
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateAreaAttack), MPlayRate);
 
 	mIsDamage = false;
 

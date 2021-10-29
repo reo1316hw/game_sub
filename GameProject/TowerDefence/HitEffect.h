@@ -28,6 +28,9 @@ public:
 
 private:
 
+	// çÇÇ≥ï‚ê≥íl
+	const Vector3 MHeightCorrection;
+
 	// åªç›ÇÃhp
 	int mNowHp;
 

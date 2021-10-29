@@ -8,11 +8,10 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 HitEffect::HitEffect(GameObject* _owner, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
 	, mOwner(_owner)
 	, mEffectComponentPtr(nullptr)
 {
-	SetScale(mOwner->GetScale());
-
 	// エフェクト生成
 	mEffectComponentPtr = new EffectComponent(this, _Scale, u"Assets/Effect/Hit.efk", true, true);
 }
@@ -23,7 +22,7 @@ HitEffect::HitEffect(GameObject* _owner, const Vector3& _Scale, const Tag& _Obje
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void HitEffect::UpdateGameObject(float _deltaTime)
 {
-	mPosition = mOwner->GetPosition() + Vector3(0.0f, 0.0f, 50.0f);
+	mPosition = mOwner->GetPosition() + MHeightCorrection;
 	SetPosition(mPosition);
 	SetRotation(mOwner->GetRotation());
 

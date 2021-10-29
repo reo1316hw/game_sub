@@ -57,6 +57,8 @@ private:
 	const float MVecShortenVelue;
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
+	// アニメーションの再生速度
+	const float MPlayRate;
 
 	// ダメージを受けたか
 	bool mIsDamage;

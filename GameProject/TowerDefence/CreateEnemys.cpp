@@ -6,7 +6,7 @@
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 CreateEnemys::CreateEnemys(GameObject* _owner)
 	: Component(_owner)
-	, MNumGeneratableInOneArea(13)
+	, MNumGeneratableInOneArea(0)
 	, mBossObjectPtr(nullptr)
 {
 }

@@ -4,8 +4,8 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
-	: MBoxEnableTiming(45)
-	, MBoxDisableTiming(55)
+	: MBoxEnableTiming(40)
+	, MBoxDisableTiming(50)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MAttackSpeed(150.0f)
@@ -18,6 +18,7 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, skeletalMeshCompPtr(nullptr)
+	, mThirdAttackEffectPtr(nullptr)
 {
 }
 
