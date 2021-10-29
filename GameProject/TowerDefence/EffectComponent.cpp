@@ -34,6 +34,12 @@ bool EffectComponent::IsPlayedEffect()
 
 void EffectComponent::Update(float deltaTime)
 {
+	// 再生済みだったら処理を抜ける
+	if (IsPlayedEffect())
+	{
+		return;
+	}
+
 	// エフェクトを移動させるか？
 	Matrix4 trans, rot;
 	if (mIsMove)

@@ -90,6 +90,8 @@ private:
 	const float MAngle;
 	// 通常攻撃エフェクトの大きさ
 	const Vector3 MAttackEffectScale;
+	// ヒットエフェクトの大きさ
+	const Vector3 MHitEffectScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>       mAnimTypes;
@@ -127,9 +129,9 @@ public:// ゲッターセッター
 	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; }
 
 	/// <summary>
-	/// 現在のステートを取得
+	/// プレイヤーの現在のステートを取得
 	/// </summary>
-	/// <returns> 現在のステート </returns>
+	/// <returns> プレイヤーの現在のステート </returns>
 	PlayerState GetPlayerState() { return mNowState; }
 
 	/// <summary>

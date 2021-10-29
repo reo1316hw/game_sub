@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// プレイヤーの1段階目の通常攻撃エフェクト
+/// プレイヤーの3段階目の通常攻撃エフェクト
 /// </summary>
 class ThirdAttackEffect : public GameObject
 {

@@ -76,6 +76,8 @@ private:
 
 	// hpゲージの大きさ
 	const Vector3 MHpGaugeScale;
+	// ヒットエフェクトの大きさ
+	const Vector3 MHitEffectScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>       mAnimTypes;
@@ -113,6 +115,12 @@ public://ゲッターセッター
 	/// </summary>
 	/// <returns> SkeletalMeshComponentのポインタ </returns>
 	SkeletalMeshComponent* GetSkeletalMeshComponentPtr() { return mSkeltalMeshComponentPtr; }
+
+	/// <summary>
+	/// エネミーの現在のステートを取得
+	/// </summary>
+	/// <returns> エネミーの現在のステート </returns>
+	EnemyState GetEnemyState() { return mNowState; }
 
 	/// <summary>
 	/// 初期座標を取得

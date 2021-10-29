@@ -138,5 +138,6 @@
 #include "SecondAttackEffect.h"
 #include "ThirdAttackEffect.h"
 #include "DashAttackEffect.h"
+#include "HitEffect.h"
 
 #endif

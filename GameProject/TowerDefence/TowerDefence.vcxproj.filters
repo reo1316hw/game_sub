@@ -270,6 +270,9 @@
     <ClCompile Include="DashAttackEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -541,6 +544,9 @@
       <Filter>Effect</Filter>
     </ClInclude>
     <ClInclude Include="DashAttackEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffect.h">
       <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>

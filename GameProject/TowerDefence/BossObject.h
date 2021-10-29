@@ -70,6 +70,8 @@ private:
 	const int MMaxHp;
 	// アニメーションの再生速度
 	const float MPlayRate;
+	// ヒットエフェクトの大きさ
+	const Vector3 MHitEffectScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>      mAnimTypes;

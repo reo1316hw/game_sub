@@ -15,6 +15,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
 	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))
+	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
 	, mNextState(EnemyState::eEnemyStateTrack)
@@ -52,7 +53,11 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	//anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim);
 
+	// エネミーの攻撃判定生成
 	mEnemyAttackPtr = new EnemyAttackDecisionObject(this, Tag::eEnemyAttackDecision);
+
+	// ヒットエフェクト生成
+	new HitEffect(this, MHitEffectScale, Tag::eHItEffect);
 
 	// アクターステートプールの初期化
 	mStatePools.push_back(new EnemyObjectStateTrack(_playerPtr));	                                // mStatePool[eEnemyStateTrack]

@@ -33,6 +33,7 @@ Effekseer::Handle EffekseerEffect::CreateInstanceHandle(Vector3& pos)
 	{
 		return 0;
 	}
+
 	mHandle = RENDERER->GetEffekseerManager()->Play(mEffectRef, Effekseer::Vector3D(pos.x, pos.y, pos.z));
 	return mHandle;
 }

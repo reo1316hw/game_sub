@@ -26,7 +26,7 @@ DashAttackEffect::DashAttackEffect(PlayerObject* _playerPtr, const Vector3& _Sca
 	// 最初は当たり判定を行わないようにする
 	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 
-	// 衝撃エフェクト生成
+	// エフェクト生成
 	mEffectComponentPtr = new EffectComponent(this, _Scale, u"Assets/Effect/DashAttack.efk", true, true);
 }
 

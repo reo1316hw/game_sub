@@ -14,6 +14,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	: GameObject(_ObjectTag)
 	, MMaxHp(500)
 	, MPlayRate(1.0f)
+	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(BossState::eBossStateWait)
 	, mNextState(BossState::eBossStateWait)
@@ -58,6 +59,9 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mStatePools.push_back(new BossObjectStateTeleportation(_playerPtr));  // mStatepool[eBossStateTeleportation]
 	mStatePools.push_back(new BossObjectStateDamage(_playerPtr));         // mStatepool[eBossStateDamage];
 	mStatePools.push_back(new BossObjectStateDeath(_playerPtr));          // mStatepool[eBossStateDeath];
+
+	// ヒットエフェクト生成
+	new HitEffect(this, MHitEffectScale, Tag::eHItEffect);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

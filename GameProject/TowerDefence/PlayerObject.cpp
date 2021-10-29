@@ -15,6 +15,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, MPlayRate(1.0f)
 	, MAngle(270.0f)
 	, MAttackEffectScale(Vector3(50.0f, -50.0f, 50.0f))
+	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
 	, mNowState(PlayerState::ePlayerStateIdle)
 	, mNextState(PlayerState::ePlayerStateIdle)
 	, mSkeltalMeshComponentPtr(nullptr)
@@ -92,6 +93,9 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	thirdAttackPtr->SetThirdAttackEffectPtr(thirdAttackEffectPtr);
 	// ダッシュ攻撃状態クラスにダッシュ攻撃エフェクトクラスのポインタを渡す
 	dashAttackPtr->SetDashAttackEffectPtr(dashEffectPtr);
+
+	// ヒットエフェクト生成
+	new HitEffect(this, MHitEffectScale, Tag::eHItEffect);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));

@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// プレイヤーの1段階目の通常攻撃エフェクト
+/// ダッシュ攻撃エフェクト
 /// </summary>
 class DashAttackEffect : public GameObject
 {
