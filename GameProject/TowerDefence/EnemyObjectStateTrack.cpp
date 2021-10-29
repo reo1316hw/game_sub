@@ -118,6 +118,8 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -125,6 +127,8 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -132,6 +136,8 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -139,8 +145,8 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
-
-	_owner->SetDamageValue(mDamageValue);
 }

@@ -83,8 +83,8 @@ void DashAttackEffect::OnCollision(const GameObject& _HitObject)
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::eEnemy && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack ||
-		tag == Tag::eBoss && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
+	if (tag == Tag::eEnemy && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack ||
+		tag == Tag::eBoss && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack)
 	{
 		mIsHit = true;
 		mDisableIsHit = true;

@@ -89,6 +89,8 @@ void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObj
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -96,6 +98,8 @@ void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObj
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -103,6 +107,8 @@ void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObj
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -110,8 +116,8 @@ void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObj
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
-
-	_owner->SetDamageValue(mDamageValue);
 }

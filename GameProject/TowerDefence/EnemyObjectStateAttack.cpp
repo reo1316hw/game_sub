@@ -153,6 +153,8 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -160,6 +162,8 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -167,6 +171,8 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
 
@@ -174,8 +180,8 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 	{
 		mDamageValue = MDamageValuePlayerFirstAttack;
 		mIsDamage = true;
+
+		_owner->SetDamageValue(mDamageValue);
 		return;
 	}
-
-	_owner->SetDamageValue(mDamageValue);
 }

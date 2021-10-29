@@ -138,6 +138,10 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 	mElapseTime = 0.0f;
 	mHitUntilCount = 0;
 
+	// ヒットストップ関係初期化
+	mIsHitStop = false;
+	mHitStopCount = 0;
+
 	// 座標
 	mPosition = _owner->GetPosition();
 	// 前方ベクトル
