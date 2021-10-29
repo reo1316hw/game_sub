@@ -18,7 +18,7 @@ FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 	SetScale(mPlayerPtr->GetScale());
 
 	// •Ší‚Ì‹éŒ`“–‚½‚è”»’è
-	mBox = AABB(Vector3(30.0f, -40.0f, 100.0f), Vector3(40.0f, 40.0f, 100.0f));
+	mBox = AABB(Vector3(-30.0f, -40.0f, 100.0f), Vector3(100.0f, 40.0f, 100.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 	// Å‰‚Í“–‚½‚è”»’è‚ðs‚í‚È‚¢‚æ‚¤‚É‚·‚é

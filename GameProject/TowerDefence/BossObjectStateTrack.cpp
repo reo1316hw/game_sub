@@ -150,5 +150,11 @@ void BossObjectStateTrack::OnCollision(BossObject* _owner, const GameObject& _Hi
 		mIsDamage = true;
 	}
 
+	if (tag == Tag::eThirdAttackEffect)
+	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
+		mIsDamage = true;
+	}
+
 	_owner->SetDamageValue(mDamageValue);
 }

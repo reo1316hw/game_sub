@@ -121,5 +121,11 @@ void BossObjectStateOverheadAttack::OnCollision(BossObject* _owner, const GameOb
 		mIsDamage = true;
 	}
 
+	if (tag == Tag::eThirdAttackEffect)
+	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
+		mIsDamage = true;
+	}
+
 	_owner->SetDamageValue(mDamageValue);
 }

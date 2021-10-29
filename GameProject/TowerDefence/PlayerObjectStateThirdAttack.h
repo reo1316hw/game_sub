@@ -82,6 +82,12 @@ private:
 public:// ゲッターセッター
 
 	/// <summary>
+	/// 当たり判定の状態を取得
+	/// </summary>
+	/// <returns> 当たり判定の状態 </returns>
+	bool GetIsCollisionState() { return mIsCollisionState; }
+
+	/// <summary>
 	///  3段階目の通常攻撃エフェクトのクラスのポインタを設定
 	/// </summary>
 	/// <param name="_thirdAttackEffectPtr"> 3段階目の通常攻撃エフェクトのクラスのポインタ </param>

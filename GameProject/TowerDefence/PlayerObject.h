@@ -7,7 +7,7 @@ class PlayerObjectStateBase;
 class AttackMeshComponent;
 class SphereCollider;
 class PlayerWeaponObject;
-class FirstAttackEffect;
+class ThirdAttackEffect;
 class MainCameraObject;
 class PlayerObjectStateRunLoop;
 class PlayerObjectStateSprintStart;

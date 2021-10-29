@@ -27,12 +27,34 @@ public:
 	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
 
+	/// <summary>
+	/// ヒットした時の処理
+	/// </summary>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(const GameObject& _HitObject)override;
+
+	/// <summary>
+	/// ヒットしたか確認
+	/// </summary>
+	/// <returns> ヒットしたか </returns>
+	bool IsHitCheck() { return mIsHit == true; }
+
 private:
 
+	// ヒットフラグを有効にするタイミング
+	const int MEnableIsHitTiming;
 	// 座標との差
 	const float MOffset;
 	// 高さの補正値
 	const Vector3 MHeightCorrection;
+
+	// ヒットしたか
+	bool mIsHit;
+	// ヒットフラグを無効にするフラグ
+	bool mDisableIsHit;
+
+	// ヒットフラグを無効時間
+	int mIsHitDisableCount;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

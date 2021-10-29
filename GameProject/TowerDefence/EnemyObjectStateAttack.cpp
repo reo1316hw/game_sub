@@ -161,5 +161,11 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 		mIsDamage = true;
 	}
 
+	if (tag == Tag::eThirdAttackEffect)
+	{
+		mDamageValue = MDamageValuePlayerFirstAttack;
+		mIsDamage = true;
+	}
+
 	_owner->SetDamageValue(mDamageValue);
 }
