@@ -5,14 +5,14 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
-    : mHitStopEndTiming(0)
-	, MDamageSpeed(100.0f)
+	: MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, MPlayRate(1.0f)
 	, mIsHitStop(false)
 	, mHitPoint(0)
 	, mHitStopCount(0)
+    , mHitStopEndTiming(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
@@ -91,12 +91,14 @@ void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	mIsHitStop = false;
 
+	// プレイヤーのステートが3段階目の通常攻撃状態だったらヒットストップを行う
 	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
 	{
 		mHitStopEndTiming = 10;
 		mIsHitStop = true;
 	}
 
+	// プレイヤーのステートがダッシュ攻撃状態だったらヒットストップを行う
 	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack)
 	{
 		mHitStopEndTiming = 5;

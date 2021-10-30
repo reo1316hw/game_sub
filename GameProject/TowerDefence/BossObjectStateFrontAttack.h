@@ -49,6 +49,17 @@ public:
 
 private:
 
+	/// <summary>
+	/// プレイヤーの攻撃にヒットした時の処理
+	/// </summary>
+	/// <param name="_HitTag"> ヒットする相手 </param>
+	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+	/// <returns> ヒットしたか </returns>
+	bool HitAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// 向きを確定するタイミング
 	const int MTimingFixFacing;
 	// 1段階目の通常攻撃のダメージ値
@@ -67,12 +78,18 @@ private:
 	int mDamageValue;
 	// 向きを確定するまでの時間
 	int mFacingFixUntilTime;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// 座標
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
 
+	// エネミーのポインタ
+	BossObject* mBossPtr;
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };

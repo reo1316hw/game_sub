@@ -79,6 +79,11 @@ void BossObjectStateDeath::Separation(BossObject* _owner, const Vector3& _DirTar
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void BossObjectStateDeath::Enter(BossObject* _owner, const float _DeltaTime)
 {
+	// ボックスの当たり判定を行うコンポーネントクラスのポインタ
+	BoxCollider* boxColliderPtr = _owner->GetBoxCollider();
+	// エネミーの当たり判定を無効にする
+	boxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
+
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateDeath));
 

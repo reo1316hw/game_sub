@@ -49,8 +49,15 @@ private:
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
 
+	// ヒットストップするか
+	bool mIsHitStop;
+
 	// 体力
 	int mHitPoint;
+	// ヒットストップするフレーム数
+	int mHitStopCount;
+	// ヒットストップが終わるタイミング
+	int mHitStopEndTiming;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;

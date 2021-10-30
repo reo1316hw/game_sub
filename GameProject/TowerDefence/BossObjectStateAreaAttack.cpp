@@ -5,15 +5,19 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateAreaAttack::BossObjectStateAreaAttack(PlayerObject* _playerPtr)
-	: MDamageValuePlayerFirstAttack(25)
+	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, MDamageValuePlayerFirstAttack(25)
 	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, MPlayRate(0.8f)
 	, mIsDamage(false)
 	, mDamageValue(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
+	, mHitTag(Tag::eOther)
+	, mBossPtr(nullptr)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -104,29 +108,38 @@ void BossObjectStateAreaAttack::Separation(BossObject* _owner, const Vector3& _D
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void BossObjectStateAreaAttack::OnCollision(BossObject* _owner, const GameObject& _HitObject)
 {
+	mBossPtr = _owner;
 	// 座標
 	mPosition = _owner->GetPosition();
 
 	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
+	mHitTag = _HitObject.GetTag();
 
-	if (tag == Tag::eFirstAttackEffect)
+	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
+		// プレイヤーの攻撃にヒットした時の処理
+		if (HitAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// プレイヤーの攻撃にヒットした時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットする相手 </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+bool BossObjectStateAreaAttack::HitAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
 		mIsDamage = true;
+
+		mBossPtr->SetDamageValue(mDamageValue);
+		return true;
 	}
 
-	if (tag == Tag::eSecondAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-	}
-
-	if (tag == Tag::eThirdAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-	}
-
-	_owner->SetDamageValue(mDamageValue);
+	return false;
 }

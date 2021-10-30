@@ -9,14 +9,13 @@ EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
     , MSeparationVecLength(8.0f)
 	, mIsDamage(false)
 	, mDamageValue(0)
-	, mHitTagListSize(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, MDamageValuePlayerFirstAttack(25)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mHitTag(Tag::eOther)
 	, mEnemyPtr(nullptr)
 {
-	mHitTagListSize = sizeof(mHitTagList) / sizeof(int);
 }
 
 /// <summary>

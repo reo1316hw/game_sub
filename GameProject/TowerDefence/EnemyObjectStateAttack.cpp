@@ -16,7 +16,7 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 	, mIsDamage(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
-	, mHitTagListSize(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
@@ -26,7 +26,6 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 	, mEnemyPtr(nullptr)
 	, mOwnerBoxCollider(_enemyAttackPtr->GetBoxCollider())
 {
-	mHitTagListSize = sizeof(mHitTagList) / sizeof(int);
 }
 
 /// <summary>
@@ -151,42 +150,36 @@ void EnemyObjectStateAttack::Separation(EnemyObject* _owner, const Vector3& _Dir
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	mEnemyPtr = _owner;
+
 	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
+	mHitTag = _HitObject.GetTag();
 
-	if (tag == Tag::eDashAttackEffect)
+	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
+		// プレイヤーの攻撃にヒットした時の処理
+		if (HitAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// プレイヤーの攻撃にヒットした時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットする相手 </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+bool EnemyObjectStateAttack::HitAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
 		mIsDamage = true;
 
-		_owner->SetDamageValue(mDamageValue);
-		return;
+		mEnemyPtr->SetDamageValue(mDamageValue);
+		return true;
 	}
 
-	if (tag == Tag::eFirstAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-
-		_owner->SetDamageValue(mDamageValue);
-		return;
-	}
-
-	if (tag == Tag::eSecondAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-
-		_owner->SetDamageValue(mDamageValue);
-		return;
-	}
-
-	if (tag == Tag::eThirdAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-
-		_owner->SetDamageValue(mDamageValue);
-		return;
-	}
+	return false;
 }

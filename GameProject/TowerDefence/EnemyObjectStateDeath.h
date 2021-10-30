@@ -37,6 +37,13 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
+	/// <summary>
+	/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
+	/// </summary>
+	/// <param name="_owner"> エネミー(親)のポインタ </param>
+	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+	void Exit(EnemyObject* _owner, const float _DeltaTime)override;
+
 private:
 
 	// ヒットストップが終わるタイミング
@@ -68,4 +75,6 @@ private:
 	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
 	// エネミーのhpの枠のポインタ
 	EnemyHitPointFrame* mEnemyHitPointFramePtr;
+	// ボックスの当たり判定を行うコンポーネントクラスのポインタ
+	BoxCollider* mBoxColliderPtr;
 };

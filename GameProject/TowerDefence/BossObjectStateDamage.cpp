@@ -8,7 +8,10 @@ BossObjectStateDamage::BossObjectStateDamage(PlayerObject* _playerPtr)
 	: MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, mIsHitStop(false)
 	, mHitPoint(0)
+	, mHitStopCount(0)
+    , mHitStopEndTiming(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
@@ -26,6 +29,13 @@ BossObjectStateDamage::BossObjectStateDamage(PlayerObject* _playerPtr)
 /// <returns> ボスの状態 </returns>
 BossState BossObjectStateDamage::Update(BossObject* _owner, const float _DeltaTime)
 {
+	++mHitStopCount;
+
+	if (mHitStopCount <= mHitStopEndTiming)
+	{
+		return BossState::eBossStateDamage;
+	}
+
 	// 開始速度
 	float startSpeed = -MDamageSpeed * _DeltaTime;
 	// 終了速度
@@ -78,12 +88,32 @@ void BossObjectStateDamage::Separation(BossObject* _owner, const Vector3& _DirTa
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void BossObjectStateDamage::Enter(BossObject* _owner, const float _DeltaTime)
 {
-	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateDamage));
+	mIsHitStop = false;
 
+	// プレイヤーのステートが3段階目の通常攻撃状態だったらヒットストップを行う
+	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
+	{
+		mHitStopEndTiming = 10;
+		mIsHitStop = true;
+	}
+
+	// プレイヤーのステートがダッシュ攻撃状態だったらヒットストップを行う
+	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack)
+	{
+		mHitStopEndTiming = 5;
+		mIsHitStop = true;
+	}
+
+	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateDamage), 1.0f, mHitStopEndTiming);
+	meshcomp->SetIsHitStop(mIsHitStop);
+	
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(BossState::eBossStateDamage)->GetDuration();
 	mElapseTime = 0.0f;
+
+	// ヒットストップするフレーム数を初期化
+	mHitStopCount = 0;
 
 	// 座標
 	mPosition = _owner->GetPosition();

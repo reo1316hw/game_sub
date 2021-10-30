@@ -279,6 +279,11 @@ void Renderer::Draw()
 	// HDRBufferにレンダリングしたときのDepth情報をスクリーンにコピー
 	mHDRRenderer->CopyDepthToScreen();
 
+	//エフェクト関連
+	mEffekseerRenderer->BeginRendering();
+	mEffekseerManager->Draw();
+	mEffekseerRenderer->EndRendering();
+
 	// 当たり判定デバッグBoxの表示
 	PHYSICS->DebugShowBox();
 
@@ -296,11 +301,6 @@ void Renderer::Draw()
 			sk->Draw(mSkinnedShader);
 		}
 	}
-
-	//エフェクト関連
-	mEffekseerRenderer->BeginRendering();
-	mEffekseerManager->Draw();
-	mEffekseerRenderer->EndRendering();
 
 	DrawParticle();
 

@@ -11,10 +11,13 @@ EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
 	, mIsHitStop(false)
 	, mHitStopCount(0)
 	, mDeathSpeed(200.0f)
-	, mPlayerPtr(_playerPtr)
 	, mPosition(Vector3::Zero)
 	, mInitPosition(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
+	, mPlayerPtr(_playerPtr)
+	, mBoxColliderPtr(nullptr)
+	, mEnemyHitPointGaugePtr(nullptr)
+	, mEnemyHitPointFramePtr(nullptr)
 {
 }
 
@@ -73,8 +76,13 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
+	mBoxColliderPtr = _owner->GetBoxCollider();
+	// エネミーの当たり判定を無効にする
+	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
+
 	mIsHitStop = false;
 
+	// プレイヤーのステートが3段階目の通常攻撃状態だったらヒットストップを行う
 	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
 	{
 		mIsHitStop = true;
@@ -100,4 +108,15 @@ void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mDeathSpeed = 200.0f;
 
 	_owner->RotateToNewForward(mDirPlayerVec);
+}
+
+/// <summary>
+/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void EnemyObjectStateDeath::Exit(EnemyObject* _owner, const float _DeltaTime)
+{
+	// エネミーの当たり判定を有効にする
+	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 }

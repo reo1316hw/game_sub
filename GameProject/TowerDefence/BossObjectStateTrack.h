@@ -49,6 +49,17 @@ public:
 
 private:
 
+	/// <summary>
+	/// プレイヤーの攻撃にヒットした時の処理
+	/// </summary>
+	/// <param name="_HitTag"> ヒットする相手 </param>
+	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+	/// <returns> ヒットしたか </returns>
+	bool HitAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// 頭上攻撃に遷移するタイミング
 	const int MTimingTransitionOverheadAttack;
 	// 1段階目の通常攻撃のダメージ値
@@ -67,6 +78,8 @@ private:
 	int mDamageValue;
 	// 頭上攻撃に遷移するまでのカウント
 	int UntilTransitionOverheadAttackCount;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// 移動速度
 	float mMoveSpeed;
@@ -75,7 +88,11 @@ private:
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
 
+	// エネミーのポインタ
+	BossObject* mBossPtr;
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };
