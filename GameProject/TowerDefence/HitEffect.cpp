@@ -22,10 +22,6 @@ HitEffect::HitEffect(GameObject* _owner, const Vector3& _Scale, const Tag& _Obje
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void HitEffect::UpdateGameObject(float _deltaTime)
 {
-	mPosition = mOwner->GetPosition() + MHeightCorrection;
-	SetPosition(mPosition);
-	SetRotation(mOwner->GetRotation());
-
 	// 1フレーム前のhp
 	int preHp = mNowHp;
 	// 最大hp
@@ -36,6 +32,10 @@ void HitEffect::UpdateGameObject(float _deltaTime)
 	// 1フレーム前のhpと現在のhpが違ったらテクスチャの横幅を変更
 	if (preHp != mNowHp && maxHp != mNowHp)
 	{
+		mPosition = mOwner->GetPosition() + MHeightCorrection;
+		SetPosition(mPosition);
+		SetRotation(mOwner->GetRotation());
+
 		// 再生済みじゃなかったらエフェクトを再生する
 		if (mEffectComponentPtr->IsPlayedEffect())
 		{

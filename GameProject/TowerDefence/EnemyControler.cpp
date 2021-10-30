@@ -70,10 +70,10 @@ void EnemyControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
 			// hpƒQ[ƒW
 			mEnemyHitPointGaugePtr = _enemyObjectPtr->GetEnemyHitPointGaugePtr();
 			// hp‚Ì˜g
-			mEnemyHitPointFramePtr = _enemyObjectPtr->GetEnemyHitPointFramePtr();
+			//mEnemyHitPointFramePtr = _enemyObjectPtr->GetEnemyHitPointFramePtr();
 
 			mEnemyHitPointGaugePtr->SetState(State::eActive);
-			mEnemyHitPointFramePtr->SetState(State::eActive);
+			//mEnemyHitPointFramePtr->SetState(State::eActive);
 			_enemyObjectPtr->SetState(State::eActive);
 
 			++mActiveCount;

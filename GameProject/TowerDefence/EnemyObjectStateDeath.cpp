@@ -52,10 +52,10 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 		// hpƒQ[ƒW
 		mEnemyHitPointGaugePtr = _owner->GetEnemyHitPointGaugePtr();
 		// hp‚Ì˜g
-		mEnemyHitPointFramePtr = _owner->GetEnemyHitPointFramePtr();
+		//mEnemyHitPointFramePtr = _owner->GetEnemyHitPointFramePtr();
 
 		mEnemyHitPointGaugePtr->SetState(State::eDead);
-		mEnemyHitPointFramePtr->SetState(State::eDead);
+		//mEnemyHitPointFramePtr->SetState(State::eDead);
 		_owner->SetHitPoint(_owner->GetMaxHp());
 		_owner->SetState(State::eDead);
 		_owner->SetPosition(mInitPosition);

@@ -30,10 +30,6 @@ FrontCoreMagicEffect::FrontCoreMagicEffect(BossObject* _bossPtr, const Vector3& 
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void FrontCoreMagicEffect::UpdateGameObject(float _deltaTime)
 {
-	mPosition = mBossPtr->GetPosition() + MHeightCorrection;
-	SetPosition(mPosition);
-	SetRotation(mBossPtr->GetRotation());
-
 	// 前のステート
 	BossState preState = mNowState;
 
@@ -48,6 +44,10 @@ void FrontCoreMagicEffect::UpdateGameObject(float _deltaTime)
 	{
 		return;
 	}
+
+	mPosition = mBossPtr->GetPosition() + MHeightCorrection;
+	SetPosition(mPosition);
+	SetRotation(mBossPtr->GetRotation());
 
 	// 再生済みじゃなかったらエフェクトを再生する
 	if (mEffectComponentPtr->IsPlayedEffect())

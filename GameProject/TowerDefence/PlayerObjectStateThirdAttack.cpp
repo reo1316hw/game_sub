@@ -4,12 +4,12 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
-	: MBoxEnableTiming(40)
-	, MBoxDisableTiming(50)
+	: MBoxEnableTiming(35)
+	, MBoxDisableTiming(45)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MAttackSpeed(150.0f)
-	, MPlayRate(1.5f)
+	, MPlayRate(1.8f)
 	, mIsCollisionState(false)
 	, mIsHitStop(false)
 	, mDamageValue(0)

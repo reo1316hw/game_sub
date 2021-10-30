@@ -4,16 +4,16 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
-	: MBoxEnableTiming(20)
-	, MBoxDisableTiming(30)
+	: MBoxEnableTiming(15)
+	, MBoxDisableTiming(25)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(100.0f)
+	, MPlayRate(1.8f)
+	, MValidComboFrame(5)
 	, mIsCollisionState(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mNumFrame(0)
-	, MPlayRate(1.5f)
-	, MValidComboFrame(2)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 {

@@ -71,6 +71,10 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	new FrontLaserMagicEffect(this, MFrontMagicEffectScale, Tag::eFrontLaserMagicEffect);
 	// 範囲攻撃エフェクト生成
 	new AreaMagicEffect(this, MAreaMagicEffectScale, Tag::eAreaMagicEffect);
+	// プレイヤーの頭上に攻撃するエフェクトを生成
+	new OverheadMagicEffect(this, MAreaMagicEffectScale, Tag::eOverheadMagicEffect);
+	// テレポートエフェクト
+	new TeleportationEffect(this, MAreaMagicEffectScale, Tag::eTeleportationEffect);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

@@ -133,13 +133,13 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 void MapCreate::CreateUI()
 {
 	// プレイヤーのhpゲージを生成
-	new PlayerHitPointGauge(MPlayerHitPointGaugePosition + Vector3(0.0f, 200.0f, 0.0f), "Assets/Texture/hp.png", Tag::eOther, mPlayerPtr);
-	// プレイヤーのhpの枠を生成
-	new PlayerHitPointFrame(MPlayerHitPointGaugePosition, "Assets/Texture/hp.png", Tag::eOther);
+	new PlayerHitPointGauge(MPlayerHitPointGaugePosition, "Assets/Texture/hp.png", Tag::eOther, mPlayerPtr);
+	//// プレイヤーのhpの枠を生成
+	//new PlayerHitPointFrame(MPlayerHitPointGaugePosition + Vector3(0.0f, 200.0f, 0.0f), "Assets/Texture/hp.png", Tag::eOther);
 	// ボスのhpゲージを生成
 	new BossHitPointGauge(MBossHitPointGaugePosition, "Assets/Texture/hp.png", Tag::eOther, mBossPtr);
-	// ボスのhpの枠を生成
-	new BossHitPointFrame(MBossHitPointGaugePosition + Vector3(0.0f, -200.0f, 0.0f), "Assets/Texture/hp.png", Tag::eOther);
+	//// ボスのhpの枠を生成
+	//new BossHitPointFrame(MBossHitPointGaugePosition + Vector3(0.0f, -200.0f, 0.0f), "Assets/Texture/hp.png", Tag::eOther);
 }
 
 bool MapCreate::readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName)

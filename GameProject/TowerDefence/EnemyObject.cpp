@@ -77,8 +77,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 
 	// エネミーのhpゲージを生成
 	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
-	// エネミーのhpの枠を生成
-	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
+	//// エネミーのhpの枠を生成
+	//mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/hp.png", Tag::eOther, this);
 }
 
 /// <summary>

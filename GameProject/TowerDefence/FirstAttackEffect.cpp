@@ -32,7 +32,7 @@ FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 void FirstAttackEffect::UpdateGameObject(float _deltaTime)
 {
 	// 前にずらすベクトル
-	Vector3 offsetVec = mPlayerPtr->GetForward()* MOffset;
+	Vector3 offsetVec = mPlayerPtr->GetForward() * MOffset;
 	mPosition = mPlayerPtr->GetPosition() + offsetVec;
 
 	SetPosition(mPosition);
