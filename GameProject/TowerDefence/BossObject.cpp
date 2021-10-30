@@ -17,6 +17,8 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
 	, MFrontMagicEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, MAreaMagicEffectScale(Vector3(20.0f, -20.0f, 20.0f))
+	, MOverheadEffectScale(Vector3(20.0f, -20.0f, 20.0f))
+	, MTeleportationEffectScale(Vector3(40.0f, -40.0f, 40.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(BossState::eBossStateWait)
 	, mNextState(BossState::eBossStateWait)
@@ -72,9 +74,9 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	// 範囲攻撃エフェクト生成
 	new AreaMagicEffect(this, MAreaMagicEffectScale, Tag::eAreaMagicEffect);
 	// プレイヤーの頭上に攻撃するエフェクトを生成
-	new OverheadMagicEffect(this, MAreaMagicEffectScale, Tag::eOverheadMagicEffect);
+	new OverheadMagicEffect(this, MOverheadEffectScale, Tag::eOverheadMagicEffect);
 	// テレポートエフェクト
-	new TeleportationEffect(this, MAreaMagicEffectScale, Tag::eTeleportationEffect);
+	new TeleportationEffect(this, MTeleportationEffectScale, Tag::eTeleportationEffect);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

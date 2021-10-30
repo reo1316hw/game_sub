@@ -49,6 +49,9 @@ public:
 
 private:
 
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// 遷移するタイミング
 	const int MTransitionTimingNum;
 	// 状態遷移確率
@@ -71,12 +74,18 @@ private:
 	int mDamageValue;
 	// 待機する時間のカウント変数
 	int mPeriodWaitCount;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// 座標
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
 
+	// エネミーのポインタ
+	EnemyObject* mEnemyPtr;
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };

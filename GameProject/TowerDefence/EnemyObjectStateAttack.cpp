@@ -5,7 +5,8 @@
 /// </summary>
 /// <param name="_enemyAttackPtr"> エネミーの攻撃判定オブジェクトのポインタ </param>
 EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr)
-	: MBoxEnableTiming(20)
+	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, MBoxEnableTiming(20)
 	, MStateTransitionProbability(100)
 	, MDamageValuePlayerFirstAttack(25)
 	, MAttackSpeed(150.0f)
@@ -15,13 +16,17 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 	, mIsDamage(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
+	, mHitTagListSize(0)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
+	, mHitTag(Tag::eOther)
+	, mEnemyPtr(nullptr)
 	, mOwnerBoxCollider(_enemyAttackPtr->GetBoxCollider())
 {
+	mHitTagListSize = sizeof(mHitTagList) / sizeof(int);
 }
 
 /// <summary>

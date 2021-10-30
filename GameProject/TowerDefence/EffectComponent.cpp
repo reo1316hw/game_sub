@@ -12,10 +12,13 @@ EffectComponent::EffectComponent(GameObject* owner, const Vector3& _Scale, const
 	mEffectPtr = RENDERER->GetEffect(effkseerFilename);
 }
 
-void EffectComponent::PlayEffect()
+void EffectComponent::PlayEffect(const float& _PlayRate)
 {
+	mPlayerRate = _PlayRate;
 	Vector3 pos = Vector3::Zero;
 	mHandle = mEffectPtr->CreateInstanceHandle(pos);
+	// Ä¶‘¬“xÝ’è
+	RENDERER->GetEffekseerManager()->SetSpeed(mHandle, mPlayerRate);
 }
 
 /// <summary>

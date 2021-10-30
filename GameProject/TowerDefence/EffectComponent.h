@@ -8,7 +8,7 @@ public:
 	
 	void Update(float deltaTime) override;
 	
-	void PlayEffect();
+	void PlayEffect(const float& _PlayRate = 1.0f);
 
 	/// <summary>
 	/// 再生済みか
@@ -25,6 +25,9 @@ private:
 	Effekseer::Handle mHandle;           // エフェクトパラメータを管理するためのハンドル
 	bool              mIsMove;           // オーナーアクターの移動に合わせる
 	bool              mIsRotate;         // オーナーアクターの回転移動に合わせる
+
+	// 再生速度
+	float mPlayerRate;
 	
 	// 大きさ
 	Vector3           mScale;

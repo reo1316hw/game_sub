@@ -8,6 +8,7 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 TeleportationEffect::TeleportationEffect(BossObject* _bossPtr, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, MPlayRate(5.0f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
 	, mNowState(_bossPtr->GetNowState())
 	, mBossPtr(_bossPtr)
@@ -43,7 +44,7 @@ void TeleportationEffect::UpdateGameObject(float _deltaTime)
 		if (mEffectComponentPtr->IsPlayedEffect())
 		{
 			// エフェクトを再生
-			mEffectComponentPtr->PlayEffect();
+			mEffectComponentPtr->PlayEffect(MPlayRate);
 			return;
 		}
 	}
@@ -61,6 +62,6 @@ void TeleportationEffect::UpdateGameObject(float _deltaTime)
 	if (mEffectComponentPtr->IsPlayedEffect())
 	{
 		// エフェクトを再生
-		mEffectComponentPtr->PlayEffect();
+		mEffectComponentPtr->PlayEffect(MPlayRate);
 	}
 }

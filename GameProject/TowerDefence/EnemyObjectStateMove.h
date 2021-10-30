@@ -57,6 +57,9 @@ private:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void MoveCalc(EnemyObject* _owner, const float _DeltaTime);
 
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// 遷移するタイミング
 	const int MTransitionTimingNum;
 	// 状態遷移確率
@@ -81,6 +84,8 @@ private:
 	int mDamageValue;
 	// 移動する時間のカウント変数
 	int mPeriodMoveCount;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// 移動速度
 	float mMoveSpeed;
@@ -89,10 +94,13 @@ private:
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
-
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
 	// エネミーの状態
 	EnemyState mEnemyState;
 
+	// エネミーのポインタ
+	EnemyObject* mEnemyPtr;
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };

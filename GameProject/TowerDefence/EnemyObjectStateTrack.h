@@ -49,6 +49,9 @@ public:
 
 private:
 
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// 状態遷移確率
 	const int MStateTransitionProbability;
 	// プレイヤーの1段階目の通常攻撃のダメージ値
@@ -65,6 +68,8 @@ private:
 
 	// ダメージ値
 	int mDamageValue;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// 移動速度
 	float mMoveSpeed;
@@ -73,7 +78,11 @@ private:
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
 
+	// エネミーのポインタ
+	EnemyObject* mEnemyPtr;
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };

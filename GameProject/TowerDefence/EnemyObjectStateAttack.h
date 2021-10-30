@@ -71,6 +71,9 @@ private:
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
 
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// ダメージを受けたか
 	bool mIsDamage;
 
@@ -78,6 +81,8 @@ private:
 	int mHitUntilCount;
 	// ダメージ値
 	int mDamageValue;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;
@@ -90,7 +95,11 @@ private:
 	Vector3 mVelocity;
 	// 前方ベクトル
 	Vector3 mForwardVec;
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
 
+	// エネミーのポインタ
+	EnemyObject* mEnemyPtr;
 	// 親の矩形当たり判定を行うクラスのポインタ
 	BoxCollider* mOwnerBoxCollider;
 };

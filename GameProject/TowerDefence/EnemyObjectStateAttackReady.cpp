@@ -4,14 +4,19 @@
 /// コンストラクタ
 /// </summary>
 EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
-    : MVecShortenVelue(0.1f)
+	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+    , MVecShortenVelue(0.1f)
     , MSeparationVecLength(8.0f)
 	, mIsDamage(false)
 	, mDamageValue(0)
+	, mHitTagListSize(0)
 	, MDamageValuePlayerFirstAttack(25)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
+	, mHitTag(Tag::eOther)
+	, mEnemyPtr(nullptr)
 {
+	mHitTagListSize = sizeof(mHitTagList) / sizeof(int);
 }
 
 /// <summary>
@@ -79,45 +84,38 @@ void EnemyObjectStateAttackReady::Separation(EnemyObject* _owner, const Vector3&
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	mEnemyPtr = _owner;
 	// 座標
-	mPosition = _owner->GetPosition();
+	mPosition = mEnemyPtr->GetPosition();
 
 	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
+	mHitTag = _HitObject.GetTag();
 
-	if (tag == Tag::eDashAttackEffect)
+	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
+		// プレイヤーの攻撃にヒットした時の処理
+		if (HitAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// プレイヤーの攻撃にヒットした時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットする相手 </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+bool EnemyObjectStateAttackReady::HitAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
 		mIsDamage = true;
 
-		_owner->SetDamageValue(mDamageValue);
-		return;
+		mEnemyPtr->SetDamageValue(mDamageValue);
+		return true;
 	}
 
-	if (tag == Tag::eFirstAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-
-		_owner->SetDamageValue(mDamageValue);
-		return;
-	}
-
-	if (tag == Tag::eSecondAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-
-		_owner->SetDamageValue(mDamageValue);
-		return;
-	}
-
-	if (tag == Tag::eThirdAttackEffect)
-	{
-		mDamageValue = MDamageValuePlayerFirstAttack;
-		mIsDamage = true;
-
-		_owner->SetDamageValue(mDamageValue);
-		return;
-	}
+	return false;
 }

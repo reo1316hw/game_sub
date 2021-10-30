@@ -28,6 +28,8 @@ public:
 
 private:
 
+	// エフェクト再生速度
+	const float MPlayRate;
 	// 高さ補正値
 	const Vector3 MHeightCorrection;
 

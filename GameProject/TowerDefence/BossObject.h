@@ -76,6 +76,10 @@ private:
 	const Vector3 MFrontMagicEffectScale;
 	// 範囲攻撃エフェクトの大きさ
 	const Vector3 MAreaMagicEffectScale;
+	// 頭上攻撃エフェクトの大きさ
+	const Vector3 MOverheadEffectScale;
+	// テレポートエフェクトの大きさ
+	const Vector3 MTeleportationEffectScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>      mAnimTypes;
