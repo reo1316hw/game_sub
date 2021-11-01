@@ -11,6 +11,7 @@ PlayerObjectStateSprintStart::PlayerObjectStateSprintStart()
 	, MDirThreshold(0.5f)
 	, MLeftAxisThreshold(0.3f)
 	, mDamageValue(0)
+	, mleftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mMainCameraPtr(nullptr)
@@ -53,12 +54,6 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, const flo
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
-	//左スティックの入力値の値(-1~1)
-	Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
-	
-	//値が更新され続けるのを防ぐために初期化
-	mDirVec = Vector3::Zero;
-
 	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
@@ -85,25 +80,12 @@ void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState&
 		mDirVec += mRightVec;
 	}
 
-	//左スティック入力時の前移動
-	if (leftAxis.y <= -MLeftAxisThreshold)
+	// 左スティックの入力値を取得
+	mleftAxis = _KeyState.m_controller.GetLAxisVec();
+
+	if (mleftAxis.x != 0.0f || mleftAxis.y != 0.0f)
 	{
-		mDirVec += mForwardVec;
-	}
-	//左スティック入力時の後移動
-	if (leftAxis.y >= MLeftAxisThreshold)
-	{
-		mDirVec -= mForwardVec;
-	}
-	//左スティック入力時の左移動
-	if (leftAxis.x <= -MLeftAxisThreshold)
-	{
-		mDirVec -= mRightVec;
-	}
-	//左スティック入力時の右移動
-	if (leftAxis.x >= MLeftAxisThreshold)
-	{
-		mDirVec += mRightVec;
+		mIsRun = true;
 	}
 }
 
@@ -159,6 +141,7 @@ void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, const float _D
 		// カメラの座標
 		Vector3 cameraPos = mMainCameraPtr->GetPosition();
 
+		// カメラ前方ベクトル
 		mForwardVec = mPosition - cameraPos;
 		// 高さ方向を無視
 		mForwardVec.z = 0.0f;
@@ -166,8 +149,14 @@ void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, const float _D
 		// カメラ前方ベクトルと右方向ベクトル算出
 		mForwardVec = Vector3::Normalize(mForwardVec);
 		mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+
+		// カメラの向き基準による移動方向ベクトルを求める
+		mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
 	}
 	
+	// 速度を初期化
+	mCharaSpeed = 0.0f;
+
 	// 入力キーの総和
 	if (mDirVec.LengthSq() > MDirThreshold)
 	{

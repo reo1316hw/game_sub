@@ -9,6 +9,7 @@ PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 	, MDirThreshold(0.5f)
 	, MLeftAxisThreshold(0.3f)
 	, mDamageValue(0)
+	, mleftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mMainCameraPtr(nullptr)
@@ -55,10 +56,7 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
-	//左スティックの入力値の値(-1~1)
-	Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
-
-	//方向キーが入力されたか
+	// 方向キーが入力されたか
 	mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
 		     _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
 		     _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
@@ -68,22 +66,6 @@ void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _Ke
 		     _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
 	         _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 
-	if (leftAxis.x != 0.0f || leftAxis.y != 0.0f)
-	{
-		mIsRun = true;
-	}
-
-	//左Shiftキーが入力されたか
-	mIsSprint = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) ||
-		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
-
-	//Spaceキーが入力されたか
-	mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_Y) ||
-		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
-
-	//値が更新され続けるのを防ぐために初期化
-	mDirVec = Vector3::Zero;
-
 	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
@@ -92,12 +74,12 @@ void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _Ke
 	}
 	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
-		     _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
 	{
 		mDirVec -= mForwardVec;
 	}
 
-	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
+	// コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
 	{
@@ -105,31 +87,26 @@ void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _Ke
 	}
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
-		     _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
 	{
 		mDirVec += mRightVec;
 	}
 
-	//左スティック入力時の前移動
-	if (leftAxis.y <= -MLeftAxisThreshold)
+	// 左スティックの入力値を取得
+	mleftAxis = _KeyState.m_controller.GetLAxisVec();
+
+	if (mleftAxis.x != 0.0f || mleftAxis.y != 0.0f)
 	{
-		mDirVec += mForwardVec;
+		mIsRun = true;
 	}
-	//左スティック入力時の後移動
-	if (leftAxis.y >= MLeftAxisThreshold)
-	{
-		mDirVec -= mForwardVec;
-	}
-	//左スティック入力時の左移動
-	if (leftAxis.x <= -MLeftAxisThreshold)
-	{
-		mDirVec -= mRightVec;
-	}
-	//左スティック入力時の右移動
-	if (leftAxis.x >= MLeftAxisThreshold)
-	{
-		mDirVec += mRightVec;
-	}
+
+	// 左Shiftキーが入力されたか
+	mIsSprint = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) ||
+		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
+
+	// Spaceキーが入力されたか
+	mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_Y) ||
+		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 }
 
 /// <summary>
@@ -179,6 +156,7 @@ void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, const float _Delta
 		// カメラの座標
 		Vector3 cameraPos = mMainCameraPtr->GetPosition();
 
+		// カメラ前方ベクトル
 		mForwardVec = mPosition - cameraPos;
 		// 高さ方向を無視
 		mForwardVec.z = 0.0f;
@@ -186,7 +164,13 @@ void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, const float _Delta
 		// カメラ前方ベクトルと右方向ベクトル算出
 		mForwardVec = Vector3::Normalize(mForwardVec);
 		mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+
+		// カメラの向き基準による移動方向ベクトルを求める
+		mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
 	}
+
+	// 速度を初期化
+	mCharaSpeed = 0.0f;
 
 	// 入力キーの総和
 	if (mDirVec.LengthSq() > MDirThreshold)

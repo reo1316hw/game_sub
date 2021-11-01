@@ -71,6 +71,8 @@ private:
 	// ダメージ値
 	int mDamageValue;
 
+	// 左スティックの入力値(-1~1)
+	Vector2 mleftAxis;
 	// 座標
 	Vector3 mPosition;
 	// 前方ベクトル
