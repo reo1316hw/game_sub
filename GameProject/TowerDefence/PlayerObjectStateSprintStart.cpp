@@ -8,8 +8,7 @@ PlayerObjectStateSprintStart::PlayerObjectStateSprintStart()
 	, MMoveSpeed(100.0f)
 	, MMaxSpeed(12.0f)
 	, MPlayRate(1.2f)
-	, MDirThreshold(0.5f)
-	, MLeftAxisThreshold(0.3f)
+	, MLeftAxisThreshold(0.5f)
 	, mDamageValue(0)
 	, mleftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
@@ -83,7 +82,7 @@ void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState&
 	// 左スティックの入力値を取得
 	mleftAxis = _KeyState.m_controller.GetLAxisVec();
 
-	if (mleftAxis.x != 0.0f || mleftAxis.y != 0.0f)
+	if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
 	{
 		mIsRun = true;
 	}
@@ -136,40 +135,40 @@ void PlayerObjectStateSprintStart::OnCollision(PlayerObject* _owner, const GameO
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
-	if (mMainCameraPtr != nullptr)
+	if (mMainCameraPtr == nullptr)
 	{
-		// カメラの座標
-		Vector3 cameraPos = mMainCameraPtr->GetPosition();
-
-		// カメラ前方ベクトル
-		mForwardVec = mPosition - cameraPos;
-		// 高さ方向を無視
-		mForwardVec.z = 0.0f;
-
-		// カメラ前方ベクトルと右方向ベクトル算出
-		mForwardVec = Vector3::Normalize(mForwardVec);
-		mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
-
-		// カメラの向き基準による移動方向ベクトルを求める
-		mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
+		return;
 	}
-	
-	// 速度を初期化
-	mCharaSpeed = 0.0f;
 
-	// 入力キーの総和
-	if (mDirVec.LengthSq() > MDirThreshold)
+	// カメラの座標
+	Vector3 cameraPos = mMainCameraPtr->GetPosition();
+
+	// カメラ前方ベクトル
+	mForwardVec = mPosition - cameraPos;
+	// 高さ方向を無視
+	mForwardVec.z = 0.0f;
+
+	// カメラ前方ベクトルと右方向ベクトル算出
+	mForwardVec = Vector3::Normalize(mForwardVec);
+	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+
+	// カメラの向き基準による移動方向ベクトルを求める
+	mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
+
+	if (mDirVec == Vector3::Zero)
 	{
-		// 方向キー入力
-		mCharaForwardVec = mDirVec;
-
-		// 進行方向に向けて回転
-		mCharaForwardVec.Normalize();
-		_owner->RotateToNewForward(mCharaForwardVec);
-
-		// 速度を徐々に上げていく
-		mCharaSpeed += MMoveSpeed * _DeltaTime;
+		return;
 	}
+
+	// 方向キー入力
+	mCharaForwardVec = mDirVec;
+
+	// 進行方向に向けて回転
+	mCharaForwardVec.Normalize();
+	_owner->RotateToNewForward(mCharaForwardVec);
+
+	// 速度を徐々に上げていく
+	mCharaSpeed += MMoveSpeed * _DeltaTime;
 
 	if (mCharaSpeed >= MMaxSpeed)
 	{

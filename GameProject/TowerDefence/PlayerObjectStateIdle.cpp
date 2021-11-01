@@ -5,6 +5,7 @@
 /// </summary>
 PlayerObjectStateIdle::PlayerObjectStateIdle()
     : MDamageValueEnemyAttack(25)
+    , MLeftAxisThreshold(0.5f)
     , mDamageValue(0)
 {
 }
@@ -48,9 +49,6 @@ PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, const float _Del
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
-    //左スティックの入力値の値(-1~1)
-    Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
-
    //方向キーが入力されたか
     mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
              _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
@@ -61,8 +59,10 @@ void PlayerObjectStateIdle::Input(PlayerObject* _owner, const InputState& _KeySt
              _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
              _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 
+    //左スティックの入力値の値(-1~1)
+    Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
 
-    if (leftAxis.x != 0.0f || leftAxis.y != 0.0f)
+    if (leftAxis.LengthSq() >= MLeftAxisThreshold)
     {
         mIsRun = true;
     }

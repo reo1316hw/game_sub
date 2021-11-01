@@ -6,8 +6,7 @@
 PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 	: MDamageValueEnemyAttack(25)
 	, MMoveSpeed(300.0f)
-	, MDirThreshold(0.5f)
-	, MLeftAxisThreshold(0.3f)
+	, MLeftAxisThreshold(0.5f)
 	, mDamageValue(0)
 	, mleftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
@@ -95,7 +94,7 @@ void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _Ke
 	// 左スティックの入力値を取得
 	mleftAxis = _KeyState.m_controller.GetLAxisVec();
 
-	if (mleftAxis.x != 0.0f || mleftAxis.y != 0.0f)
+	if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
 	{
 		mIsRun = true;
 	}
@@ -151,40 +150,43 @@ void PlayerObjectStateRunLoop::OnCollision(PlayerObject* _owner, const GameObjec
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, const float _DeltaTime)
 {
-	if (mMainCameraPtr != nullptr)
+	if (mMainCameraPtr == nullptr)
 	{
-		// カメラの座標
-		Vector3 cameraPos = mMainCameraPtr->GetPosition();
+		return;
+	}
 
-		// カメラ前方ベクトル
-		mForwardVec = mPosition - cameraPos;
-		// 高さ方向を無視
-		mForwardVec.z = 0.0f;
+	// カメラの座標
+	Vector3 cameraPos = mMainCameraPtr->GetPosition();
 
-		// カメラ前方ベクトルと右方向ベクトル算出
-		mForwardVec = Vector3::Normalize(mForwardVec);
-		mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+	// カメラ前方ベクトル
+	mForwardVec = mPosition - cameraPos;
+	// 高さ方向を無視
+	mForwardVec.z = 0.0f;
 
-		// カメラの向き基準による移動方向ベクトルを求める
-		mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
+	// カメラ前方ベクトルと右方向ベクトル算出
+	mForwardVec = Vector3::Normalize(mForwardVec);
+	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+
+	// カメラの向き基準による移動方向ベクトルを求める
+	mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
+
+	if (mDirVec == Vector3::Zero)
+	{
+		return;
 	}
 
 	// 速度を初期化
 	mCharaSpeed = 0.0f;
 
-	// 入力キーの総和
-	if (mDirVec.LengthSq() > MDirThreshold)
-	{
-		// 方向キー入力
-		mCharaForwardVec = mDirVec;
+	// 方向キー入力
+	mCharaForwardVec = mDirVec;
 
-		// 進行方向に向けて回転
-		mCharaForwardVec.Normalize();
-		_owner->RotateToNewForward(mCharaForwardVec);
+	// 進行方向に向けて回転
+	mCharaForwardVec.Normalize();
+	_owner->RotateToNewForward(mCharaForwardVec);
 
-		// 現在のスピードを保存
-		mCharaSpeed = MMoveSpeed * _DeltaTime;
-	}
+	// 現在のスピードを保存
+	mCharaSpeed = MMoveSpeed * _DeltaTime;
 
 	mPosition += mCharaSpeed * mCharaForwardVec;
 

@@ -50,6 +50,8 @@ private:
 
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
+	//移動するための左スティックのしきい値
+	const float MLeftAxisThreshold;
 
 	// ダメージ値
 	int mDamageValue;

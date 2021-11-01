@@ -59,8 +59,6 @@ private:
 	const int MDamageValueEnemyAttack;
 	// 移動速度
 	const float MMoveSpeed;
-	// 向きのしきい値
-	const float MDirThreshold;
 	//移動するための左スティックのしきい値
 	const float MLeftAxisThreshold;
 
