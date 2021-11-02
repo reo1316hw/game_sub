@@ -27,20 +27,20 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, const flo
 {
 	MoveCalc(_owner, _DeltaTime);
 
-	mElapseTime += _DeltaTime;
-
 	if (mIsHit)
 	{
 		return PlayerState::ePlayerStateDamage;
 	}
 
-	// アニメーションが終了したらcStopTime硬直後、RUN状態へ
+	if (!mIsSprint || mIsSprint && !mIsRun)
+	{
+		return PlayerState::ePlayerStateIdle;
+	}
+
+	// アニメーションが終了したらRUN状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		if (mElapseTime > mTotalAnimTime)
-		{
-			return PlayerState::ePlayerStateSprintLoop;
-		}
+		return PlayerState::ePlayerStateSprintLoop;
 	}
 
 	return PlayerState::ePlayerStateSprintStart;
@@ -53,6 +53,19 @@ PlayerState PlayerObjectStateSprintStart::Update(PlayerObject* _owner, const flo
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
+	// 向きベクトルを初期化
+	mDirVec = Vector3::Zero;
+
+	//方向キーが入力されたか
+	mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
+		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
+		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+
 	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
@@ -86,6 +99,10 @@ void PlayerObjectStateSprintStart::Input(PlayerObject* _owner, const InputState&
 	{
 		mIsRun = true;
 	}
+
+	//左Shiftキーが入力されたか
+	mIsSprint = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) ||
+		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 }
 
 /// <summary>
@@ -99,10 +116,6 @@ void PlayerObjectStateSprintStart::Enter(PlayerObject* _owner, const float _Delt
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateSprintStart), MPlayRate);
 	mIsHit = false;
-
-	// アニメーション再生時間取得(アニメーションの総時間矯正)
-	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateSprintStart)->GetDuration() - 0.3f;
-	mElapseTime = 0.0f;
 	mCharaSpeed = 0.0f;
 
 	// 座標
@@ -152,8 +165,11 @@ void PlayerObjectStateSprintStart::MoveCalc(PlayerObject* _owner, const float _D
 	mForwardVec = Vector3::Normalize(mForwardVec);
 	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
 
-	// カメラの向き基準による移動方向ベクトルを求める
-	mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
+	if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
+	{
+		// カメラの向き基準による移動方向ベクトルを求める
+		mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
+	}
 
 	if (mDirVec == Vector3::Zero)
 	{

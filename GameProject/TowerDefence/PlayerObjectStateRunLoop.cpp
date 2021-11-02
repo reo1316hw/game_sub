@@ -55,6 +55,9 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
+	// 向きベクトルを初期化
+	mDirVec = Vector3::Zero;
+
 	// 方向キーが入力されたか
 	mIsRun = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
 		     _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
@@ -167,9 +170,12 @@ void PlayerObjectStateRunLoop::MoveCalc(PlayerObject* _owner, const float _Delta
 	mForwardVec = Vector3::Normalize(mForwardVec);
 	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
 
-	// カメラの向き基準による移動方向ベクトルを求める
-	mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
-
+	if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
+	{
+		// カメラの向き基準による移動方向ベクトルを求める
+		mDirVec = mForwardVec * -mleftAxis.y + mRightVec * mleftAxis.x;
+	}
+	
 	if (mDirVec == Vector3::Zero)
 	{
 		return;
