@@ -67,6 +67,12 @@ public:
 	/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 	void GameObjectInput(const InputState& _KeyState)override;
 
+	/// <summary>
+	/// ヒットした時の処理
+	/// </summary>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(const GameObject& _HitObject)override;
+
 private:
 
 	/// <summary>
@@ -75,12 +81,6 @@ private:
 	/// <param name="_Axis"> 軸 </param>
 	/// <param name="_Angle"> 角度 </param>
 	void SelfRotation(const Vector3 _Axis, const float _Angle);
-
-	/// <summary>
-	/// ヒットした時の処理
-	/// </summary>
-	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollision(const GameObject& _HitObject)override;
 
 	// 最大体力
 	const int MMaxHp;

@@ -9,13 +9,18 @@
 /// <param name="_firstAttackPtr"> 1段階目の通常攻撃状態のクラスのポインタ </param>
 FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObjectStateFirstAttack* _firstAttackPtr)
 	: GameObject(_ObjectTag)
+	, mHitTagList{ Tag::eEnemy, Tag::eBoss}
 	, MOffset(10.0f)
+	, mHitEnemyCount(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
+	, mFaceInEnemyVec(Vector3::Zero)
+	, mHitTag(Tag::eOther)
 	, mPlayerPtr(_playerPtr)
 	, mEffectComponentPtr(nullptr)
 	, mFirstAttackPtr(_firstAttackPtr)
 {
 	// 武器の矩形当たり判定
-	mBox = AABB(Vector3(-15.0f, -20.0f, 50.0f), Vector3(50.0f, 20.0f, 50.0f));
+	mBox = AABB(Vector3(0.0f, -20.0f, 50.0f), Vector3(70.0f, 20.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 	// 最初は当たり判定を行わないようにする
@@ -31,6 +36,19 @@ FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void FirstAttackEffect::UpdateGameObject(float _deltaTime)
 {
+	if (mHitEnemyCount != 0)
+	{
+		// ヒットしたエネミーの群れの中心に向くベクトル
+		Vector3 faceInFlockCenterVec = mFaceInEnemyVec / mHitEnemyCount;
+
+		mFaceInEnemyVec = Vector3::Zero;
+		mHitEnemyCount = 0;
+
+		faceInFlockCenterVec.Normalize();
+		// プレイヤーの向きを設定
+		mPlayerPtr->RotateToNewForward(faceInFlockCenterVec);
+	}
+
 	// 前にずらすベクトル
 	Vector3 offsetVec = mPlayerPtr->GetForward() * MOffset;
 	mPosition = mPlayerPtr->GetPosition() + offsetVec;
@@ -51,10 +69,47 @@ void FirstAttackEffect::UpdateGameObject(float _deltaTime)
 		// 再生済みじゃなかったらエフェクトを再生する
 		if (mEffectComponentPtr->IsPlayedEffect())
 		{
+
 			// エフェクトを再生
 			mEffectComponentPtr->PlayEffect();
 		}
 		
 		mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
+	}
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void FirstAttackEffect::OnCollision(const GameObject& _HitObject)
+{
+	// オブジェクトのタグ
+	mHitTag = _HitObject.GetTag();
+
+	for (int i = 0; i < mHitTagListSize; i++)
+	{
+		// 攻撃を受けた時の処理
+		HitAttack(_HitObject, mHitTagList[i]);
+	}
+}
+
+/// <summary>
+/// 攻撃が当たった時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたオブジェクト </param>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+void FirstAttackEffect::HitAttack(const GameObject& _HitObject, const Tag& _HitTag)
+{
+	// ヒットしたオブジェクトに向くベクトルの算出と当たったエネミーのカウントを行う
+	if (mHitTag == _HitTag)
+	{
+		// ヒットしたオブジェクトの座標
+		Vector3 hitObjectPosition = _HitObject.GetPosition();
+		// プレイヤーの座標
+		Vector3 playerPosition = mPlayerPtr->GetPosition();
+
+		mFaceInEnemyVec += hitObjectPosition - playerPosition;
+		++mHitEnemyCount;
 	}
 }

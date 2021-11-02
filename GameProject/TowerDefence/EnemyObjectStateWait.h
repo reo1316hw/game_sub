@@ -50,12 +50,12 @@ public:
 private:
 
 	/// <summary>
-	/// プレイヤーの攻撃にヒットした時の処理
+	/// 攻撃を受けた時の処理
 	/// </summary>
-	/// <param name="_HitTag"> ヒットする相手 </param>
+	/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
 	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
 	/// <returns> ヒットしたか </returns>
-	bool HitAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+	bool ReceivedAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
 
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];

@@ -138,8 +138,8 @@ void BossObjectStateWait::OnCollision(BossObject* _owner, const GameObject& _Hit
 
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		// プレイヤーの攻撃にヒットした時の処理
-		if (HitAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		// 攻撃を受けた時の処理
+		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
 		{
 			return;
 		}
@@ -147,11 +147,12 @@ void BossObjectStateWait::OnCollision(BossObject* _owner, const GameObject& _Hit
 }
 
 /// <summary>
-/// プレイヤーの攻撃にヒットした時の処理
+/// 攻撃を受けた時の処理
 /// </summary>
-/// <param name="_HitTag"> ヒットする相手 </param>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
 /// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
-bool BossObjectStateWait::HitAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+/// <returns> ヒットしたか </returns>
+bool BossObjectStateWait::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
 {
 	if (mHitTag == _hitTag)
 	{

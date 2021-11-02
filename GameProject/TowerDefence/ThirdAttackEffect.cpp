@@ -17,7 +17,7 @@ ThirdAttackEffect::ThirdAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 	, mThirdAttackPtr(_thirdAttackPtr)
 {
 	// •Ší‚Ì‹éŒ`“–‚½‚è”»’è
-	mBox = AABB(Vector3(-15.0f, -80.0f, 50.0f), Vector3(100.0f, 80.0f, 50.0f));
+	mBox = AABB(Vector3(0.0f, -80.0f, 50.0f), Vector3(130.0f, 80.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 	// Å‰‚Í“–‚½‚è”»’è‚ðs‚í‚È‚¢‚æ‚¤‚É‚·‚é

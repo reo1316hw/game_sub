@@ -59,8 +59,6 @@ void GameObject::Update(float _deltaTime)
 			UpdateGameObject(_deltaTime);
 			//このゲームオブジェクトに付属するコンポーネントの更新
 			UpdateComponents(_deltaTime);
-			//Transformのワールド変換
-			ComputeWorldTransform();
 		}
 	}
 	//ポーズ画面のときコンポーネントを更新させない(アニメーションなども止めるため)

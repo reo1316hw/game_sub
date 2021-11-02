@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 	: MBoxEnableTiming(10)
-	, MBoxDisableTiming(20)
+	, MBoxDisableTiming(11)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(5)
 	, MAttackSpeed(300.0f)

@@ -27,10 +27,36 @@ public:
 	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
 
+	/// <summary>
+	/// ヒットした時の処理
+	/// </summary>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(const GameObject& _HitObject)override;
+
 private:
+
+	/// <summary>
+	/// 攻撃が当たった時の処理
+	/// </summary>
+	/// <param name="_HitObject"> ヒットしたオブジェクト </param>
+	/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+	void HitAttack(const GameObject& _HitObject, const Tag& _HitTag);
+
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[2];
 
 	// 座標との差
 	const float MOffset;
+
+	// 何体エネミーと当たっているかカウント
+	int mHitEnemyCount;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
+
+	// エネミーに向いたベクトル
+	Vector3 mFaceInEnemyVec;
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

@@ -121,8 +121,8 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		// プレイヤーの攻撃にヒットした時の処理
-		if (HitAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		// 攻撃を受けた時の処理
+		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
 		{
 			return;
 		}
@@ -130,11 +130,12 @@ void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _
 }
 
 /// <summary>
-/// プレイヤーの攻撃にヒットした時の処理
+/// 攻撃を受けた時の処理
 /// </summary>
-/// <param name="_HitTag"> ヒットする相手 </param>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
 /// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
-bool EnemyObjectStateTrack::HitAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+/// <returns> ヒットしたか </returns>
+bool EnemyObjectStateTrack::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
 {
 	if (mHitTag == _hitTag)
 	{

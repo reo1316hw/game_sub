@@ -551,10 +551,10 @@ void PhysicsWorld::DrawBoxs(std::vector<BoxCollider*>& _Boxs, const Vector3& _Co
 	mLineShader->SetVectorUniform("uColor", _Color);
 	for (auto item : _Boxs)
 	{
-		if (item->GetCollisionState() == CollisionState::eDisableCollision)
+		/*if (item->GetCollisionState() == CollisionState::eDisableCollision)
 		{
 			return;
-		}
+		}*/
 
 		AABB box = AABB(Vector3::Zero, Vector3::Zero);
 		Vector3 min, max;

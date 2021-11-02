@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	: MBoxEnableTiming(35)
-	, MBoxDisableTiming(45)
+	, MBoxDisableTiming(36)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MAttackSpeed(150.0f)

@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 	: MBoxEnableTiming(15)
-	, MBoxDisableTiming(25)
+	, MBoxDisableTiming(16)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(50.0f)
 	, MPlayRate(1.8f)

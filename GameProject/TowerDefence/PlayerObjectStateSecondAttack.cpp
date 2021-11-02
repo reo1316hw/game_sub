@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
 	: MBoxEnableTiming(15)
-	, MBoxDisableTiming(25)
+	, MBoxDisableTiming(16)
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(100.0f)
 	, MPlayRate(1.8f)
