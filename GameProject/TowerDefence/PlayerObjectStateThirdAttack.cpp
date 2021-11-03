@@ -35,6 +35,12 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateDamage;
 	}
 
+	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
+	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
+	{
+		return PlayerState::ePlayerStateIdle;
+	}
+
 	// 攻撃時に武器が当たったらヒットストップを行う
  	if (mThirdAttackEffectPtr->IsHitCheck())
 	{
@@ -55,6 +61,9 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 		mIsHitStop = false;
 		mHitStopCount = 0;
 	}
+
+	// 前方ベクトル
+	mForwardVec = _owner->GetForward();
 
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
@@ -80,12 +89,6 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	{
 		// 3段階目の通常攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
-	}
-
-	// アニメーションが終了したらcStopTime硬直後、IDLE状態へ
-	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
-	{
-		return PlayerState::ePlayerStateIdle;
 	}
 
 	return PlayerState::ePlayerStateThirdAttack;
@@ -114,8 +117,6 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 
 	// 座標
 	mPosition = _owner->GetPosition();
-	// 前方ベクトル
-	mForwardVec = _owner->GetForward();
 }
 
 /// <summary>

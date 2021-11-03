@@ -58,12 +58,17 @@ private:
 	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
+	//移動するための左スティックのしきい値
+	const float MLeftAxisThreshold;
 	// コンボ有効フレーム
 	const size_t MValidComboFrame;
 
 	// 当たり判定の状態
 	// true : 有効, false : 無効
 	bool mIsCollisionState;
+
+	// 回転するか
+	bool mIsRotation;
 
 	// ダメージ値
 	int mDamageValue;
@@ -73,6 +78,8 @@ private:
 	// フレーム数
 	size_t mNumFrame;
 
+	// 左スティックの入力値(-1~1)
+	Vector2 mleftAxis;
 	// 座標
 	Vector3 mPosition;
 	// 前方ベクトル

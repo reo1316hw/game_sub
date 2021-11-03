@@ -23,8 +23,6 @@ PlayerObjectStateSprintLoop::PlayerObjectStateSprintLoop()
 /// <returns> ÉvÉåÉCÉÑÅ[ÇÃèÛë‘ </returns>
 PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	MoveCalc(_owner, _DeltaTime);
-
 	if (mIsHit)
 	{
 		return PlayerState::ePlayerStateDamage;
@@ -46,6 +44,8 @@ PlayerState PlayerObjectStateSprintLoop::Update(PlayerObject* _owner, const floa
 			return PlayerState::ePlayerStateDashAttack;
 		}
 	}
+
+	MoveCalc(_owner, _DeltaTime);
 
 	return PlayerState::ePlayerStateSprintLoop;
 }

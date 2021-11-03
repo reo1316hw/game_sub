@@ -37,6 +37,17 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 		return PlayerState::ePlayerStateDamage;
 	}
 
+	// アニメーションが終了したらアイドル状態か、次のコンボへ
+	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
+	{
+		if (mIsNextCombo)
+		{
+			return PlayerState::ePlayerStateFirstAttack;
+		}
+
+		return PlayerState::ePlayerStateIdle;
+	}
+
 	// 攻撃時に武器が当たったらヒットストップを行う
 	if (mDashAttackEffectPtr->IsHitCheck())
 	{
@@ -88,17 +99,6 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 	{
 		// 3段階目の通常攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
-	}
-
-	// アニメーションが終了したらアイドル状態か、次のコンボへ
-	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
-	{
-		if (mIsNextCombo)
-		{
-			return PlayerState::ePlayerStateFirstAttack;
-		}
-
-		return PlayerState::ePlayerStateIdle;
 	}
 
 	return PlayerState::ePlayerStateDashAttack;

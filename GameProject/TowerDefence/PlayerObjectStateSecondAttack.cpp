@@ -27,6 +27,24 @@ PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
+	if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
+
+	// アニメーションが終了したらアイドル状態か、次のコンボへ
+	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
+	{
+		if (mIsNextCombo)
+		{
+			return PlayerState::ePlayerStateThirdAttack;
+		}
+		return PlayerState::ePlayerStateIdle;
+	}
+
+	// 前方ベクトル
+	mForwardVec = _owner->GetForward();
+
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -57,21 +75,6 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 	{
 		// 2段階目の通常攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
-	}
-
-	if (mIsHit)
-	{
-		return PlayerState::ePlayerStateDamage;
-	}
-
-	// アニメーションが終了したらアイドル状態か、次のコンボへ
-	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
-	{
-		if (mIsNextCombo)
-		{
-			return PlayerState::ePlayerStateThirdAttack;
-		}
-		return PlayerState::ePlayerStateIdle;
 	}
 
 	return PlayerState::ePlayerStateSecondAttack;
@@ -113,8 +116,6 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 
 	// 座標
 	mPosition = _owner->GetPosition();
-	// 前方ベクトル
-	mForwardVec = _owner->GetForward();
 }
 
 /// <summary>

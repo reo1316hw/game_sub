@@ -23,8 +23,6 @@ PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 /// <returns> ÉvÉåÉCÉÑÅ[ÇÃèÛë‘ </returns>
 PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	MoveCalc(_owner, _DeltaTime);
-
 	if (mIsHit)
 	{
 	    return PlayerState::ePlayerStateDamage;
@@ -44,6 +42,8 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _
 	{
 		return PlayerState::ePlayerStateFirstAttack;
 	}
+
+	MoveCalc(_owner, _DeltaTime);
 
 	return PlayerState::ePlayerStateRunLoop;
 }

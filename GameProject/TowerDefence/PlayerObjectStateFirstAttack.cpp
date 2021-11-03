@@ -9,8 +9,10 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 	, MDamageValueEnemyAttack(25)
 	, MAttackSpeed(50.0f)
 	, MPlayRate(1.8f)
+	, MLeftAxisThreshold(0.5f)
 	, MValidComboFrame(10)
 	, mIsCollisionState(false)
+	, mIsRotation(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
     , mNumFrame(0)
@@ -27,6 +29,22 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
+	if (mIsHit)
+	{
+		return PlayerState::ePlayerStateDamage;
+	}
+
+	// アニメーションが終了したらアイドル状態か、次のコンボへ
+	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
+	{
+		if (mIsNextCombo)
+		{
+			return PlayerState::ePlayerStateSecondAttack;
+		}
+
+		return PlayerState::ePlayerStateIdle;
+	}
+
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -59,22 +77,6 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 		mIsCollisionState = false;
 	}
 
-	if (mIsHit)
-	{
-		return PlayerState::ePlayerStateDamage;
-	}
-
-	// アニメーションが終了したらアイドル状態か、次のコンボへ
-	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
-	{
-		if (mIsNextCombo)
-		{
-			return PlayerState::ePlayerStateSecondAttack;
-		}
-
-		return PlayerState::ePlayerStateIdle;
-	}
-
 	return PlayerState::ePlayerStateFirstAttack;
 }
 
@@ -85,6 +87,53 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
+	// 前方ベクトル
+	mForwardVec = _owner->GetForward();
+
+	//方向キーが入力されたか
+	mIsRotation = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
+		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
+		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
+		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
+		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+
+	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
+	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
+	{
+		mDirVec = mForwardVec + Vector3(0.1f, 0.0f, 0.0f);
+	}
+	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
+	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
+	{
+		mDirVec = mForwardVec + Vector3(0.1f, 0.0f, 0.0f);
+	}
+
+	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
+	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
+	{
+		mForwardVec -= Vector3(0.1f, 0.0f, 0.0f);
+	}
+	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
+	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
+	{
+		mForwardVec += Vector3(0.f, 0.0f, 0.0f);
+	}
+
+	// 左スティックの入力値を取得
+	mleftAxis = _KeyState.m_controller.GetLAxisVec();
+
+	if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
+	{
+		mIsRotation = true;
+	}
+
 	// 攻撃ボタン押されたら次のステートへ移行する準備
 	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
 		mNumFrame <= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
@@ -114,8 +163,6 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 
 	// 座標
 	mPosition = _owner->GetPosition();
-	// 前方ベクトル
-	mForwardVec = _owner->GetForward();
 }
 
 /// <summary>
