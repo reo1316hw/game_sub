@@ -45,6 +45,11 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateIdle;
 	}
 
+	if (mDirVec == Vector3::Zero)
+	{
+		return PlayerState::ePlayerStateFirstAttack;
+	}
+
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -52,10 +57,12 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
+	mDirVec.Normalize();
 	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mForwardVec;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirVec;
 
 	_owner->SetPosition(mPosition);
+	_owner->RotateToNewForward(mDirVec);
 
 	// フレーム数を減らしていく
 	if (mNumFrame > 0)
@@ -90,6 +97,9 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 	// 前方ベクトル
 	mForwardVec = _owner->GetForward();
 
+	// カメラ前方ベクトルと右方向ベクトル算出
+	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+
 	//方向キーが入力されたか
 	mIsRotation = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
 		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
@@ -104,26 +114,26 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
 	{
-		mDirVec = mForwardVec + Vector3(0.1f, 0.0f, 0.0f);
+		mDirVec = mForwardVec - mRightVec * 0.1f;
 	}
 	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
 	{
-		mDirVec = mForwardVec + Vector3(0.1f, 0.0f, 0.0f);
+		mDirVec = mForwardVec + mRightVec * 0.1f;
 	}
 
 	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
 	{
-		mForwardVec -= Vector3(0.1f, 0.0f, 0.0f);
+		mDirVec = mForwardVec - mRightVec * 0.1f;
 	}
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
 	{
-		mForwardVec += Vector3(0.f, 0.0f, 0.0f);
+		mDirVec = mForwardVec + mRightVec * 0.1f;
 	}
 
 	// 左スティックの入力値を取得
@@ -161,6 +171,7 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 	mElapseTime = 0.0f;
 	mHitUntilCount = 0;
 
+	mDirVec = Vector3::Zero;
 	// 座標
 	mPosition = _owner->GetPosition();
 }

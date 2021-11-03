@@ -188,7 +188,7 @@ void GameObject::RotateToNewForward(const Vector3& _forward)
 	// X軸ベクトル(1,0,0)とforwardの間の角度を求める
 	float dot = Vector3::Dot(Vector3::UnitX, _forward);
 	float angle = Math::Acos(dot);
-	//printf("%f\n", angle);
+
 	// 下向きだった場合
 	if (dot > 0.9999f)
 	{
