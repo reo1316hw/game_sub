@@ -15,7 +15,7 @@ PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
 	, mHitUntilCount(0)
 	, mNumFrame(0)
 	, mPosition(Vector3::Zero)
-	, mForwardVec(Vector3::Zero)
+	, mMainCameraPtr(nullptr)
 {
 }
 
@@ -43,7 +43,7 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 	}
 
 	// 前方ベクトル
-	mForwardVec = _owner->GetForward();
+	Vector3 forwardVec = _owner->GetForward();
 
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
@@ -53,7 +53,7 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mForwardVec;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forwardVec;
 
 	_owner->SetPosition(mPosition);
 

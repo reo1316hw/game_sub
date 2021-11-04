@@ -16,7 +16,7 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	, mHitUntilCount(0)
 	, mHitStopCount(0)
 	, mPosition(Vector3::Zero)
-	, mForwardVec(Vector3::Zero)
+	, mMainCameraPtr(nullptr)
 	, skeletalMeshCompPtr(nullptr)
 	, mThirdAttackEffectPtr(nullptr)
 {
@@ -63,7 +63,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	}
 
 	// 前方ベクトル
-	mForwardVec = _owner->GetForward();
+	Vector3 forwardVec = _owner->GetForward();
 
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
@@ -73,7 +73,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mForwardVec;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forwardVec;
 
 	_owner->SetPosition(mPosition);
 

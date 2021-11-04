@@ -12,6 +12,9 @@ class MainCameraObject;
 class PlayerObjectStateRunLoop;
 class PlayerObjectStateSprintStart;
 class PlayerObjectStateSprintLoop;
+class PlayerObjectStateFirstAttack;
+class PlayerObjectStateSecondAttack;
+class PlayerObjectStateThirdAttack;
 
 /// <summary>
 /// プレイヤーの状態
@@ -112,6 +115,12 @@ private:
 	PlayerObjectStateSprintStart* mSprintStartPtr;
 	// 全力疾走状態のクラスのポインタ
 	PlayerObjectStateSprintLoop* mSprintLoopPtr;
+	// 1段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateFirstAttack* mFirstAttackPtr;
+	// 2段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateSecondAttack* mSecondAttackPtr;
+	// 3段階目の通常攻撃状態のクラスのポインタ
+	PlayerObjectStateThirdAttack* mThirdAttackPtr;
 
 public:// ゲッターセッター
 

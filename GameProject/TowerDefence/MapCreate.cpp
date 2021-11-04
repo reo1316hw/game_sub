@@ -50,25 +50,25 @@ void MapCreate::OpenFile()
 	mSizeX = mStaticObjectMapData[0].size();
 	mSizeY = mStaticObjectMapData.size();
 	
-	// エネミーマネージャー生成
-	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
-	mCreateEnemysPtr = mEnemyObjectManagerPtr->GetCreateEnemysPtr();
+	//// エネミーマネージャー生成
+	//mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
+	//mCreateEnemysPtr = mEnemyObjectManagerPtr->GetCreateEnemysPtr();
 
 	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
 	// 静的オブジェクトのマップデータにアクセスする
 	AccessMapData(mStaticObjectMapData);
 
-	// エネミーを生成
-	mCreateEnemysPtr->CreateEnemyObject(MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel",
-		                                Tag::eEnemy, mPlayerPtr);
+	//// エネミーを生成
+	//mCreateEnemysPtr->CreateEnemyObject(MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel",
+	//	                                Tag::eEnemy, mPlayerPtr);
 
-	// エネミーボスを生成
-	mBossPtr = mCreateEnemysPtr->CreateBossObject(MCreateBossPosition, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
-		                               "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
-	
-	// UIを生成する
-	CreateUI();
+	//// エネミーボスを生成
+	//mBossPtr = mCreateEnemysPtr->CreateBossObject(MCreateBossPosition, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
+	//	                               "Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
+	//
+	//// UIを生成する
+	//CreateUI();
 }
 
 /// <summary>
@@ -115,8 +115,8 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	}
 	case(MapDataNum::eEnemyGeneratorNum):
 	
-		// エネミーの生成器を生成
-		mCreateEnemysPtr->CreateEnemyGenerator(_ObjectPos, MStaticObjectSize, mPlayerPtr);
+		//// エネミーの生成器を生成
+		//mCreateEnemysPtr->CreateEnemyGenerator(_ObjectPos, MStaticObjectSize, mPlayerPtr);
 		
 		break;
 

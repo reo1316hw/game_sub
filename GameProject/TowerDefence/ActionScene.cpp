@@ -51,11 +51,11 @@ ActionScene::~ActionScene()
 /// <returns> シーンクラスのポインタ </returns>
 SceneBase* ActionScene::Update(const InputState& _KeyState)
 {
-	// ボスのhpが0になったらゲームクリアシーンへ遷移
-	if (mBossPtr->GetHitPoint() <= 0 || _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_O) == Released)
-	{
-		return new GameClearScene();
-	}
+	//// ボスのhpが0になったらゲームクリアシーンへ遷移
+	//if (mBossPtr->GetHitPoint() <= 0 || _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_O) == Released)
+	//{
+	//	return new GameClearScene();
+	//}
 	
 	// プレイヤーのhpが0になったらゲームオーバーシーンへ遷移
 	if (mPlayerPtr->GetHitPoint() <= 0)

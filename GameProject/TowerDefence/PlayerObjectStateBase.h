@@ -83,8 +83,6 @@ protected:
 
 	//向き
 	Vector3 mDirVec;
-	//右方向
-	Vector3 mRightVec;
 	// キャラの前進ベクトル
 	Vector3 mCharaForwardVec;
 

@@ -78,12 +78,11 @@ private:
 	// フレーム数
 	size_t mNumFrame;
 
-	// 左スティックの入力値(-1~1)
-	Vector2 mleftAxis;
 	// 座標
 	Vector3 mPosition;
-	// 前方ベクトル
-	Vector3 mForwardVec;
+
+	// カメラのポインタ
+	MainCameraObject* mMainCameraPtr;
 
 public:// ゲッターセッター
 
@@ -92,4 +91,10 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> 当たり判定の状態 </returns>
 	bool GetIsCollisionState() { return mIsCollisionState; }
+
+	/// <summary>
+	/// カメラのポインタを設定
+	/// </summary>
+	/// <param name="_mainCameraPtr"> カメラのポインタ </param>
+	void SetMainCameraPtr(MainCameraObject* _mainCameraPtr) { mMainCameraPtr = _mainCameraPtr; }
 };

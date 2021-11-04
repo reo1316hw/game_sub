@@ -32,7 +32,7 @@ MainCameraObject::MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPt
 void MainCameraObject::UpdateGameObject(float _deltaTime)
 {
 	// プレイヤーかボスのhpが0以下だったら初期座標に戻す
-	if (mPlayerPtr->GetHitPoint() <= 0 || mBossPtr->GetHitPoint() <= 0)
+	if (mPlayerPtr->GetHitPoint() <= 0 /*|| mBossPtr->GetHitPoint() <= 0*/)
 	{
 		mPosition = mInitPosition;
 		SetPosition(mPosition);

@@ -17,7 +17,7 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 	, mHitUntilCount(0)
     , mNumFrame(0)
 	, mPosition(Vector3::Zero)
-	, mForwardVec(Vector3::Zero)
+	, mMainCameraPtr(nullptr)
 {
 }
 
@@ -50,6 +50,13 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateFirstAttack;
 	}
 
+	mDirVec.Normalize();
+
+	// 前方ベクトル
+	Vector3 forwardVec = _owner->GetForward();
+	// 前方ベクトル
+	Vector3 a = mMainCameraPtr->GetForward();
+
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
 	// 終了速度
@@ -57,9 +64,8 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
-	mDirVec.Normalize();
 	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirVec;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forwardVec;
 
 	_owner->SetPosition(mPosition);
 	_owner->RotateToNewForward(mDirVec);
@@ -94,11 +100,39 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
-	// 前方ベクトル
-	mForwardVec = _owner->GetForward();
+	if (mMainCameraPtr == nullptr)
+	{
+		return;
+	}
 
-	// カメラ前方ベクトルと右方向ベクトル算出
-	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
+	// カメラの座標
+	Vector3 cameraPos = mMainCameraPtr->GetPosition();
+
+	// カメラの前方ベクトル
+	Vector3 cameraForwardVec = cameraPos - mPosition;
+	cameraForwardVec.z = 0.0f;
+	cameraForwardVec = Vector3::Normalize(cameraForwardVec);
+
+	// カメラの右方ベクトル算出
+	Vector3 cameraRightVec = Vector3::Cross(Vector3::UnitZ, cameraForwardVec);
+
+	// 前方ベクトル
+	Vector3 forwardVec = _owner->GetForward();
+	forwardVec = Vector3::Normalize(forwardVec);
+	// 右方ベクトル算出
+	Vector3 rightVec = Vector3::Cross(Vector3::UnitZ, forwardVec);
+
+	float a = Vector3::Dot(cameraForwardVec, forwardVec);
+	float angle = Math::Acos(a) * 180.0f / Math::Pi;
+	float b = 180.0f - angle;
+
+	/*if (b >= 180.0f)
+	{
+	    b += b
+	}*/
+
+	/*printf("%f\n", b);
+	printf("%f , %f\n", cameraForwardVec.x, cameraForwardVec.y);*/
 
 	//方向キーが入力されたか
 	mIsRotation = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
@@ -114,35 +148,35 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
 	{
-		mDirVec = mForwardVec - mRightVec * 0.1f;
+		mDirVec = forwardVec + rightVec * 0.2f;
 	}
 	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
 	{
-		mDirVec = mForwardVec + mRightVec * 0.1f;
+		mDirVec = forwardVec - rightVec * 0.2f;
 	}
 
 	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
 	{
-		mDirVec = mForwardVec - mRightVec * 0.1f;
+		mDirVec = forwardVec - rightVec * 0.2f;
 	}
 	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
 	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
 	{
-		mDirVec = mForwardVec + mRightVec * 0.1f;
+		mDirVec = forwardVec + rightVec * 0.2f;
 	}
 
-	// 左スティックの入力値を取得
-	mleftAxis = _KeyState.m_controller.GetLAxisVec();
+	//// 左スティックの入力値を取得
+	//mleftAxis = _KeyState.m_controller.GetLAxisVec();
 
-	if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
-	{
-		mIsRotation = true;
-	}
+	//if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
+	//{
+	//	mIsRotation = true;
+	//}
 
 	// 攻撃ボタン押されたら次のステートへ移行する準備
 	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
