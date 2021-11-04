@@ -1,4 +1,3 @@
-
 #include "pch.h"
 
 /// <summary>
@@ -79,13 +78,16 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	new PlayerWeaponObject(mSkeltalMeshComponentPtr, "Assets/Model/Sword/Sword.gpmesh", Tag::eWeapon, deathPtr);
 
 	// 1段階目の通常攻撃エフェクトを生成
-	new FirstAttackEffect(this, MAttackEffectScale, Tag::eFirstAttackEffect, mFirstAttackPtr);
+	FirstAttackEffect* firstAttackEffectPtr = new FirstAttackEffect(this, MAttackEffectScale, Tag::eFirstAttackEffect, mFirstAttackPtr);
 	// 2段階目の通常攻撃エフェクトを生成
 	new SecondAttackEffect(this, MAttackEffectScale, Tag::eSecondAttackEffect, mSecondAttackPtr);
 	// 3段階目の通常攻撃エフェクトを生成
 	ThirdAttackEffect* thirdAttackEffectPtr = new ThirdAttackEffect(this, MAttackEffectScale, Tag::eThirdAttackEffect, mThirdAttackPtr);
 	// ダッシュ攻撃エフェクトを生成
 	DashAttackEffect* dashEffectPtr = new DashAttackEffect(this, MAttackEffectScale, Tag::eDashAttackEffect, dashAttackPtr);
+
+	// 1段階目の通常攻撃状態クラスに1段階目の通常攻撃エフェクトクラスのポインタを渡す
+	mFirstAttackPtr->SetFirstAttackEffectPtr(firstAttackEffectPtr);
 	// 3段階目の通常攻撃状態クラスに3段階目の通常攻撃エフェクトクラスのポインタを渡す
 	mThirdAttackPtr->SetThirdAttackEffectPtr(thirdAttackEffectPtr);
 	// ダッシュ攻撃状態クラスにダッシュ攻撃エフェクトクラスのポインタを渡す

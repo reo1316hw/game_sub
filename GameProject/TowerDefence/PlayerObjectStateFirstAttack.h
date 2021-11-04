@@ -1,5 +1,8 @@
 #pragma once
 
+// 前方宣言
+class FirstAttackEffect;
+
 /// <summary>
 /// 1段階目の攻撃
 /// </summary>
@@ -83,6 +86,8 @@ private:
 
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
+	// 1段階目の通常攻撃エフェクトのポインタ
+	FirstAttackEffect* mFirstAttackEffect;
 
 public:// ゲッターセッター
 
@@ -97,4 +102,10 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <param name="_mainCameraPtr"> カメラのポインタ </param>
 	void SetMainCameraPtr(MainCameraObject* _mainCameraPtr) { mMainCameraPtr = _mainCameraPtr; }
+
+	/// <summary>
+	/// 1段階目の通常攻撃エフェクトのポインタを設定
+	/// </summary>
+	/// <param name="_firstAttackEffect"> 1段階目の通常攻撃エフェクトのポインタ </param>
+	void SetFirstAttackEffectPtr(FirstAttackEffect* _firstAttackEffect) { mFirstAttackEffect = _firstAttackEffect; }
 };

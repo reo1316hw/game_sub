@@ -55,6 +55,8 @@ private:
 
 	// エネミーに向いたベクトル
 	Vector3 mFaceInEnemyVec;
+	// ヒットしたエネミーの群れの中心に向くベクトル
+	Vector3 mFaceInFlockCenterVec;
 	// ヒットしたオブジェクトのタグ
 	Tag mHitTag;
 
@@ -64,4 +66,12 @@ private:
 	EffectComponent* mEffectComponentPtr;
 	// 1段階目の通常攻撃状態のクラスのポインタ
 	PlayerObjectStateFirstAttack* mFirstAttackPtr;
+
+public:// ゲッターセター
+
+	/// <summary>
+	/// ヒットしたエネミーの群れの中心に向くベクトルを取得
+	/// </summary>
+	/// <returns> ヒットしたエネミーの群れの中心に向くベクトル </returns>
+	Vector3 GetFaceInFlockCenterVec() { return mFaceInFlockCenterVec; }
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+// ‘O•ûéŒ¾
 class FirstAttackEffect;
 
 /// <summary>

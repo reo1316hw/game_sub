@@ -9,11 +9,12 @@
 /// <param name="_firstAttackPtr"> 1段階目の通常攻撃状態のクラスのポインタ </param>
 FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag, PlayerObjectStateFirstAttack* _firstAttackPtr)
 	: GameObject(_ObjectTag)
-	, mHitTagList{ Tag::eEnemy, Tag::eBoss}
+	, mHitTagList{ Tag::eEnemy, Tag::eBoss }
 	, MOffset(10.0f)
 	, mHitEnemyCount(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mFaceInEnemyVec(Vector3::Zero)
+	, mFaceInFlockCenterVec(Vector3::Zero)
 	, mHitTag(Tag::eOther)
 	, mPlayerPtr(_playerPtr)
 	, mEffectComponentPtr(nullptr)
@@ -36,17 +37,16 @@ FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void FirstAttackEffect::UpdateGameObject(float _deltaTime)
 {
+	mFaceInFlockCenterVec = Vector3::Zero;
+
+	// エネミーにヒットしいたら
 	if (mHitEnemyCount != 0)
 	{
 		// ヒットしたエネミーの群れの中心に向くベクトル
-		Vector3 faceInFlockCenterVec = mFaceInEnemyVec / mHitEnemyCount;
+		mFaceInFlockCenterVec = mFaceInEnemyVec / mHitEnemyCount;
 
 		mFaceInEnemyVec = Vector3::Zero;
 		mHitEnemyCount = 0;
-
-		faceInFlockCenterVec.Normalize();
-		// プレイヤーの向きを設定
-		mPlayerPtr->RotateToNewForward(faceInFlockCenterVec);
 	}
 
 	// 前にずらすベクトル

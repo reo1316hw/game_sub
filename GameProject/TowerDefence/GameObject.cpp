@@ -201,7 +201,7 @@ void GameObject::RotateToNewForward(const Vector3& _forward)
 	}
 	else
 	{
-		// 軸ベクトルとforwardとの外積から回転軸をもとめ、回転させる
+		// X軸ベクトルとforwardとの外積から回転軸をもとめ、回転させる
 		Vector3 axis = Vector3::Cross(Vector3::UnitX, _forward);
 		axis.Normalize();
 		SetRotation(Quaternion(axis, angle));

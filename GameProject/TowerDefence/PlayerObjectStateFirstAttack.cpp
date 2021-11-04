@@ -45,17 +45,21 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateIdle;
 	}
 
+	// 前方ベクトル
+	Vector3 forwardVec = _owner->GetForward();
 	if (mDirVec == Vector3::Zero)
 	{
-		return PlayerState::ePlayerStateFirstAttack;
+		mDirVec = forwardVec;
+	}
+
+	// 攻撃がヒットしたエネミーの群れの中心に向くベクトル
+	Vector3 faceInFlockCenterVec = mFirstAttackEffect->GetFaceInFlockCenterVec();
+	if (faceInFlockCenterVec != Vector3::Zero)
+	{
+		mDirVec = faceInFlockCenterVec;
 	}
 
 	mDirVec.Normalize();
-
-	// 前方ベクトル
-	Vector3 forwardVec = _owner->GetForward();
-	// 前方ベクトル
-	Vector3 a = mMainCameraPtr->GetForward();
 
 	// 開始速度
 	float startSpeed = MAttackSpeed * _DeltaTime;
@@ -65,7 +69,7 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
 	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * forwardVec;
+	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirVec;
 
 	_owner->SetPosition(mPosition);
 	_owner->RotateToNewForward(mDirVec);
@@ -113,26 +117,27 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 	cameraForwardVec.z = 0.0f;
 	cameraForwardVec = Vector3::Normalize(cameraForwardVec);
 
-	// カメラの右方ベクトル算出
-	Vector3 cameraRightVec = Vector3::Cross(Vector3::UnitZ, cameraForwardVec);
-
 	// 前方ベクトル
 	Vector3 forwardVec = _owner->GetForward();
 	forwardVec = Vector3::Normalize(forwardVec);
-	// 右方ベクトル算出
-	Vector3 rightVec = Vector3::Cross(Vector3::UnitZ, forwardVec);
 
-	float a = Vector3::Dot(cameraForwardVec, forwardVec);
-	float angle = Math::Acos(a) * 180.0f / Math::Pi;
-	float b = 180.0f - angle;
-
-	/*if (b >= 180.0f)
+	Vector3 vec = Vector3::Cross(cameraForwardVec, forwardVec);
+	float b = 0.0f;
+	if (vec.z <= 0.0f)
 	{
-	    b += b
-	}*/
-
-	/*printf("%f\n", b);
-	printf("%f , %f\n", cameraForwardVec.x, cameraForwardVec.y);*/
+		float a = Vector3::Dot(cameraForwardVec, forwardVec);
+		float angle = Math::Acos(a) * 180 / Math::Pi;
+		b = 180.0f - angle;
+	}
+	else
+	{
+		b = 180.0f;
+		Vector3 f = cameraForwardVec *= -1.0f;
+		float a = Vector3::Dot(f, forwardVec);
+		float angle = Math::Acos(a) * 180 / Math::Pi;
+		float d = 180.0f - angle;
+		b += d;
+	}
 
 	//方向キーが入力されたか
 	mIsRotation = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
@@ -144,39 +149,253 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
 		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 
-	// コントローラーの十字上もしくはキーボード、Wが入力されたらzを足す
+	// 右方ベクトル算出
+	Vector3 rightVec = Vector3::Cross(Vector3::UnitZ, forwardVec);
+
+	// コントローラーの十字上もしくはキーボード、Wが入力されたら回転する
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
 	{
-		mDirVec = forwardVec + rightVec * 0.2f;
-	}
-	// コントローラーの十字下もしくは、キーボードSが入力されたら-zを足す
-	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
-		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
-	{
-		mDirVec = forwardVec - rightVec * 0.2f;
+		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
+		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
+			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
+		{
+			if (b >= 135.0f && b < 315.0f)
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
+		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
+			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
+		{
+			if (b >= 45.0f && b < 225.0f)
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		if (b >= 0.0f && b < 180.0f)
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+
+		return;
 	}
 
-	//コントローラーの十字左もしくは、キーボードAが入力されたら-xを足す
+	// コントローラーの十字下もしくは、キーボードSが入力されたら回転する
+	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
+		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
+	{
+		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
+		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
+			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
+		{
+			if (b >= 45.0f && b < 225.0f)
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
+		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
+			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
+		{
+			if (b >= 135.0f && b < 315.0f)
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		if (b >= 0.0f && b < 180.0f)
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+
+		return;
+	}
+
+	//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
 	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
 	{
-		mDirVec = forwardVec - rightVec * 0.2f;
+		if (b >= 90.0f && b < 270.0f)
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+
+		return;
 	}
-	// コントローラーの十字右もしくは、キーボードDが入力されたらxを足す
-	else if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
+
+	// コントローラーの十字右もしくは、キーボードDが入力されたら回転する
+	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
 	{
-		mDirVec = forwardVec + rightVec * 0.2f;
+		if (b >= 90.0f && b < 270.0f)
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+
+		return;
 	}
 
-	//// 左スティックの入力値を取得
-	//mleftAxis = _KeyState.m_controller.GetLAxisVec();
+	// 左スティックの入力値を取得
+	Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
 
-	//if (mleftAxis.LengthSq() >= MLeftAxisThreshold)
-	//{
-	//	mIsRotation = true;
-	//}
+	if (leftAxis.y <= -MLeftAxisThreshold)
+	{
+		if (leftAxis.x <= -MLeftAxisThreshold)
+		{
+			if (b >= 135.0f && b < 315.0f)
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		if (leftAxis.x >= MLeftAxisThreshold)
+		{
+			if (b >= 45.0f && b < 225.0f)
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		if (b >= 0.0f && b < 180.0f)
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+
+		return;
+	}
+
+	if (leftAxis.y >= MLeftAxisThreshold)
+	{
+		if (leftAxis.x <= -MLeftAxisThreshold)
+		{
+			if (b >= 45.0f && b < 225.0f)
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		if (leftAxis.x >= MLeftAxisThreshold)
+		{
+			if (b >= 135.0f && b < 315.0f)
+			{
+				mDirVec = forwardVec - rightVec * 0.05f;
+			}
+			else
+			{
+				mDirVec = forwardVec + rightVec * 0.05f;
+			}
+
+			return;
+		}
+
+		if (b >= 0.0f && b < 180.0f)
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+
+		return;
+	}
+
+	//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
+	if (leftAxis.x <= -MLeftAxisThreshold)
+	{
+		if (b >= 90.0f && b < 270.0f)
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+
+		return;
+	}
+
+	// コントローラーの十字右もしくは、キーボードDが入力されたら回転する
+	if (leftAxis.x >= MLeftAxisThreshold)
+	{
+		if (b >= 90.0f && b < 270.0f)
+		{
+			mDirVec = forwardVec - rightVec * 0.05f;
+		}
+		else
+		{
+			mDirVec = forwardVec + rightVec * 0.05f;
+		}
+
+		return;
+	}
 
 	// 攻撃ボタン押されたら次のステートへ移行する準備
 	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
