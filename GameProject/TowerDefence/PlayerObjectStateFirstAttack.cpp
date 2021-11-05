@@ -4,18 +4,18 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
-	: faceAngleList{0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f}
+	: faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
 	, MBoxEnableTiming(15)
 	, MBoxDisableTiming(16)
 	, MDamageValueEnemyAttack(25)
 	, MHalfRotation(180)
+	, MAllRotation(360)
 	, MValidComboFrame(10)
 	, MAttackSpeed(50.0f)
 	, MPlayRate(1.8f)
 	, MLeftAxisThreshold(0.5f)
 	, MValueShortenVector(0.05f)
 	, mIsCollisionState(false)
-	, mIsRotation(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mTwoVectorAngle(0.0f)
@@ -59,7 +59,7 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 	}
 
 	// 攻撃がヒットしたエネミーの群れの中心に向くベクトル
-	Vector3 faceInFlockCenterVec = mFirstAttackEffect->GetFaceInFlockCenterVec();
+	Vector3 faceInFlockCenterVec = mFirstAttackEffectPtr->GetFaceInFlockCenterVec();
 	if (faceInFlockCenterVec != Vector3::Zero)
 	{
 		mDirVec = faceInFlockCenterVec;
@@ -132,20 +132,25 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 	// カメラとプレイヤーの前方ベクトルの外積
 	Vector3 outerProduct = Vector3::Cross(cameraForwardVec, mForwardVec);
 
+	// 180度以下の時
 	if (outerProduct.z <= 0.0f)
 	{
-		float a = Vector3::Dot(cameraForwardVec, mForwardVec);
-		mTwoVectorAngle = Math::Acos(a) * MHalfRotation / Math::Pi;
+		// カメラとプレイヤーの前方ベクトルの内積
+		float innerProduct = Vector3::Dot(cameraForwardVec, mForwardVec);
+		// 角度を算出
+		mTwoVectorAngle = Math::Acos(innerProduct) * MHalfRotation / Math::Pi;
 		mTwoVectorAngle = MHalfRotation - mTwoVectorAngle;
 	}
+	// 180度より大きい時
 	else
 	{
-		float b = 180.0f;
-		Vector3 f = cameraForwardVec *= -1.0f;
-		float a = Vector3::Dot(f, mForwardVec);
-		mTwoVectorAngle = Math::Acos(a) * MHalfRotation / Math::Pi;
-		mTwoVectorAngle = MHalfRotation - mTwoVectorAngle;
-		mTwoVectorAngle += b;
+		// カメラの後方ベクトル
+		Vector3 cameraBackwardVec = cameraForwardVec *= -1.0f;
+		// カメラの後方ベクトルとプレイヤーの前方ベクトルの内積
+		float innerProduct = Vector3::Dot(cameraBackwardVec, mForwardVec);
+		// 角度を算出
+		mTwoVectorAngle = Math::Acos(innerProduct) * MHalfRotation / Math::Pi;
+		mTwoVectorAngle = MAllRotation - mTwoVectorAngle;
 	}
 
 	// 攻撃ボタン押されたら次のステートへ移行する準備
@@ -154,16 +159,6 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 	{
 		mIsNextCombo = true;
 	}
-
-	//方向キーが入力されたか
-	mIsRotation = _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_W) ||
-		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_S) ||
-		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_A) ||
-		_KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_D) ||
-		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_UP) ||
-		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_DOWN) ||
-		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
-		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 
 	// コントローラーの十字上もしくはキーボードWが入力されたら回転する
 	if (VerticalKeyInputOperation(_KeyState, SDL_SCANCODE_W, SDL_CONTROLLER_BUTTON_DPAD_UP,

@@ -67,7 +67,7 @@ private:
 	// 1段階目の通常攻撃状態のクラスのポインタ
 	PlayerObjectStateFirstAttack* mFirstAttackPtr;
 
-public:// ゲッターセター
+public:// ゲッターセッター
 
 	/// <summary>
 	/// ヒットしたエネミーの群れの中心に向くベクトルを取得

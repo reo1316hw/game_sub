@@ -1,5 +1,8 @@
 #pragma once
 
+// 前方宣言
+class SecondAttackEffect;
+
 /// <summary>
 /// 2段階目の攻撃
 /// </summary>
@@ -48,16 +51,81 @@ public:
 
 private:
 
+	/// <summary>
+	/// 縦キー入力操作
+	/// </summary>
+	/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+	/// <param name="_KeyScancode"> 何キーを押したか </param>
+	/// <param name="_ButtonScancode"> 何ボタンを押したか </param>
+	/// <param name="_AngleBorderMinAKey"> Aキー入力時の境目の角度の最小値 </param>
+	/// <param name="_AngleBorderMaxAKey"> Aキー入力時の境目の角度の最大値 </param>
+	/// <param name="_AngleBorderMinDKey"> Dキー入力時の境目の角度の最小値 </param>
+	/// <param name="_AngleBorderMaxDKey"> Dキー入力時の境目の角度の最大値 </param>
+	/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+	/// <returns> true : 何か押した, false : 何も押さなかった </returns>
+	bool VerticalKeyInputOperation(const InputState& _KeyState, const SDL_Scancode& _KeyScancode, const SDL_GameControllerButton& _ButtonScancode,
+		const float& _AngleBorderMinAKey, const float& _AngleBorderMaxAKey, const float& _AngleBorderMinDKey, const float& _AngleBorderMaxDKey, const float& _ValueShortenVector);
+
+	/// <summary>
+	/// 横キー入力操作
+	/// </summary>
+	/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+	/// <param name="_KeyScancode"> 何キーを押したか </param>
+	/// <param name="_ButtonScancode"> 何ボタンを押したか </param>
+	/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+	/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+	/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+	/// <returns> true : 何か押した, false : 何も押さなかった </returns>
+	bool LateralKeyInputOperation(const InputState& _KeyState, const SDL_Scancode& _KeyScancode, const SDL_GameControllerButton& _ButtonScancode,
+		const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector);
+
+	/// <summary>
+	/// 左スティックを左に倒したときの操作
+	/// </summary>
+	/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+	/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+	/// <param name="_ValueShortenVector"></param>
+	/// <returns> true : スティックを倒した, false : スティックを倒さなかった </returns>
+	bool LeftStickDefeatLeftInputOperation(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector);
+
+	/// <summary>
+	/// 左スティックを右に倒したときの操作
+	/// </summary>
+	/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+	/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+	/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+	/// <returns> true : スティックを倒した, false : スティックを倒さなかった </returns>
+	bool LeftStickDefeatRightInputOperation(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector);
+
+	/// <summary>
+	/// 範囲角度で回転させる
+	/// </summary>
+	/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+	/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+	/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+	void RotateInRangeAngle(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector);
+
+	// 向く角度のリスト
+	float faceAngleList[8];
+
 	// 当たり判定を有効にするタイミング
 	const int MBoxEnableTiming;
 	// 当たり判定を無効にするタイミング
 	const int MBoxDisableTiming;
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
+	// 半回転値
+	const int MHalfRotation;
+	// 全回転値
+	const int MAllRotation;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
+	// 左スティックのしきい値
+	const float MLeftAxisThreshold;
+	// ベクトルを短くする値
+	const float MValueShortenVector;
 
 	// コンボ有効フレーム
 	const size_t MValidComboFrame;
@@ -71,14 +139,25 @@ private:
 	// 当たり判定するまでのカウント
 	int mHitUntilCount;
 
+	// 2つのベクトルのなす角
+	float mTwoVectorAngle;
+
 	// フレーム数
 	size_t mNumFrame;
 
+	// 左スティックの入力値を取得
+	Vector2 mLeftAxis;
 	// 座標
 	Vector3 mPosition;
+	// 前方ベクトル
+	Vector3 mForwardVec;
+	// 右方ベクトル
+	Vector3 mRightVec;
 
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
+	// 2段階目の通常攻撃エフェクトのポインタ
+	SecondAttackEffect* mSecondAttackEffectPtr;
 
 public:// ゲッターセッター
 
@@ -93,4 +172,10 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <param name="_mainCameraPtr"> カメラのポインタ </param>
 	void SetMainCameraPtr(MainCameraObject* _mainCameraPtr) { mMainCameraPtr = _mainCameraPtr; }
+
+	/// <summary>
+    /// 2段階目の通常攻撃エフェクトのポインタを設定
+    /// </summary>
+    /// <param name="_firstAttackEffect"> 2段階目の通常攻撃エフェクトのポインタ </param>
+	void SetSecondAttackEffectPtr(SecondAttackEffect* _secondAttackEffectPtr) { mSecondAttackEffectPtr = _secondAttackEffectPtr; }
 };

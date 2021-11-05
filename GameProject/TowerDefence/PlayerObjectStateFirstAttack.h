@@ -116,6 +116,8 @@ private:
 	const int MDamageValueEnemyAttack;
 	// 半回転値
 	const int MHalfRotation;
+	// 全回転値
+	const int MAllRotation;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -131,9 +133,6 @@ private:
 	// 当たり判定の状態
 	// true : 有効, false : 無効
 	bool mIsCollisionState;
-
-	// 回転するか
-	bool mIsRotation;
 
 	// ダメージ値
 	int mDamageValue;
@@ -158,7 +157,7 @@ private:
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 	// 1段階目の通常攻撃エフェクトのポインタ
-	FirstAttackEffect* mFirstAttackEffect;
+	FirstAttackEffect* mFirstAttackEffectPtr;
 
 public:// ゲッターセッター
 
@@ -178,5 +177,5 @@ public:// ゲッターセッター
 	/// 1段階目の通常攻撃エフェクトのポインタを設定
 	/// </summary>
 	/// <param name="_firstAttackEffect"> 1段階目の通常攻撃エフェクトのポインタ </param>
-	void SetFirstAttackEffectPtr(FirstAttackEffect* _firstAttackEffect) { mFirstAttackEffect = _firstAttackEffect; }
+	void SetFirstAttackEffectPtr(FirstAttackEffect* _firstAttackEffectPtr) { mFirstAttackEffectPtr = _firstAttackEffectPtr; }
 };

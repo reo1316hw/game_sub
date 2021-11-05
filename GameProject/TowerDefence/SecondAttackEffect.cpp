@@ -14,6 +14,7 @@ SecondAttackEffect::SecondAttackEffect(PlayerObject* _playerPtr, const Vector3& 
 	, mHitEnemyCount(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mFaceInEnemyVec(Vector3::Zero)
+	, mFaceInFlockCenterVec(Vector3::Zero)
 	, mHitTag(Tag::eOther)
 	, mPlayerPtr(_playerPtr)
 	, mEffectComponentPtr(nullptr)
@@ -36,17 +37,16 @@ SecondAttackEffect::SecondAttackEffect(PlayerObject* _playerPtr, const Vector3& 
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void SecondAttackEffect::UpdateGameObject(float _deltaTime)
 {
+	mFaceInFlockCenterVec = Vector3::Zero;
+
+	// エネミーにヒットしいたら
 	if (mHitEnemyCount != 0)
 	{
 		// ヒットしたエネミーの群れの中心に向くベクトル
-		Vector3 faceInFlockCenterVec = mFaceInEnemyVec / mHitEnemyCount;
+		mFaceInFlockCenterVec = mFaceInEnemyVec / mHitEnemyCount;
 
 		mFaceInEnemyVec = Vector3::Zero;
 		mHitEnemyCount = 0;
-
-		faceInFlockCenterVec.Normalize();
-		// プレイヤーの向きを設定
-		mPlayerPtr->RotateToNewForward(faceInFlockCenterVec);
 	}
 
 	// 前にずらすベクトル
