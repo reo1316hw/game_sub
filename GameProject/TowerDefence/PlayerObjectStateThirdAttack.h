@@ -29,6 +29,13 @@ public:
 	PlayerState Update(PlayerObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
+    /// 入力処理
+    /// </summary>
+    /// <param name="_owner"> プレイヤー(親)のポインタ </param>
+    /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+	void Input(PlayerObject* _owner, const InputState& _KeyState)override;
+
+	/// <summary>
 	/// プレイヤーの状態が変更して、最初に1回だけ呼び出される関数
 	/// </summary>
 	/// <param name="_owner"> プレイヤー(親)のポインタ </param>

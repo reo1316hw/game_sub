@@ -13,12 +13,18 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	, MAllRotation(360)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.8f)
+	, MLeftAxisThreshold(0.5f)
+	, MValueShortenVector(0.05f)
 	, mIsCollisionState(false)
 	, mIsHitStop(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mHitStopCount(0)
+	, mTwoVectorAngle(0.0f)
+	, mLeftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
+	, mForwardVec(Vector3::Zero)
+	, mRightVec(Vector3::Zero)
 	, mMainCameraPtr(nullptr)
 	, skeletalMeshCompPtr(nullptr)
 	, mThirdAttackEffectPtr(nullptr)
@@ -71,13 +77,6 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 		mDirVec = mForwardVec;
 	}
 
-	// 攻撃がヒットしたエネミーの群れの中心に向くベクトル
-	Vector3 faceInFlockCenterVec = mThirdAttackEffectPtr->GetFaceInFlockCenterVec();
-	if (faceInFlockCenterVec != Vector3::Zero)
-	{
-		mDirVec = faceInFlockCenterVec;
-	}
-
 	mDirVec.Normalize();
 
 	// 開始速度
@@ -116,7 +115,7 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 /// </summary>
 /// <param name="_owner"> プレイヤー(親)のポインタ </param>
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
-void PlayerObjectStateSecondAttack::Input(PlayerObject* _owner, const InputState& _KeyState)
+void PlayerObjectStateThirdAttack::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
 	if (mMainCameraPtr == nullptr)
 	{
@@ -159,13 +158,6 @@ void PlayerObjectStateSecondAttack::Input(PlayerObject* _owner, const InputState
 		// 角度を算出
 		mTwoVectorAngle = Math::Acos(innerProduct) * MHalfRotation / Math::Pi;
 		mTwoVectorAngle = MAllRotation - mTwoVectorAngle;
-	}
-
-	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
-		mNumFrame <= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
-	{
-		mIsNextCombo = true;
 	}
 
 	// コントローラーの十字上もしくはキーボードWが入力されたら回転する
@@ -297,6 +289,7 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	mIsHitStop = false;
 	mHitStopCount = 0;
 
+	mDirVec = Vector3::Zero;
 	// 座標
 	mPosition = _owner->GetPosition();
 }
@@ -318,4 +311,120 @@ void PlayerObjectStateThirdAttack::OnCollision(PlayerObject* _owner, const GameO
 	}
 
 	_owner->SetDamageValue(mDamageValue);
+}
+
+/// <summary>
+/// 縦キー入力操作
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+/// <param name="_KeyScancode"> 何キーを押したか </param>
+/// <param name="_ButtonScancode"> 何ボタンを押したか </param>
+/// <returns> true : 何か押した, false : 何も押さなかった </returns>
+bool PlayerObjectStateThirdAttack::VerticalKeyInputOperation(const InputState& _KeyState, const SDL_Scancode& _KeyScancode, const SDL_GameControllerButton& _ButtonScancode,
+	const float& _AngleBorderMinAKey, const float& _AngleBorderMaxAKey, const float& _AngleBorderMinDKey, const float& _AngleBorderMaxDKey, const float& _ValueShortenVector)
+{
+	if (_KeyState.m_controller.GetButtonState(_ButtonScancode) == Held ||
+		_KeyState.m_keyboard.GetKeyState(_KeyScancode) == Held)
+	{
+		// コントローラーの十字左もしくはキーボードAが入力されたら回転する
+		if (LateralKeyInputOperation(_KeyState, SDL_SCANCODE_A,
+			SDL_CONTROLLER_BUTTON_DPAD_LEFT, _AngleBorderMinAKey, _AngleBorderMaxAKey, MValueShortenVector))
+		{
+			return true;
+		}
+
+		// コントローラーの十字左もしくはキーボードDが入力されたら回転する
+		if (LateralKeyInputOperation(_KeyState, SDL_SCANCODE_D,
+			SDL_CONTROLLER_BUTTON_DPAD_RIGHT, _AngleBorderMinDKey, _AngleBorderMaxDKey, -MValueShortenVector))
+		{
+			return true;
+		}
+
+		RotateInRangeAngle(faceAngleList[static_cast<int>(FaceAngleType::eUp)],
+			faceAngleList[static_cast<int>(FaceAngleType::eDown)], -_ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 横キー入力操作
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+/// <param name="_KeyScancode"> 何キーを押したか </param>
+/// <param name="_ButtonScancode"> 何ボタンを押したか </param>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <returns> true : 何か押した, false : 何も押さなかった </returns>
+bool PlayerObjectStateThirdAttack::LateralKeyInputOperation(const InputState& _KeyState, const SDL_Scancode& _KeyScancode,
+	const SDL_GameControllerButton& _ButtonScancode, const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
+	if (_KeyState.m_controller.GetButtonState(_ButtonScancode) == Held ||
+		_KeyState.m_keyboard.GetKeyState(_KeyScancode) == Held)
+	{
+		RotateInRangeAngle(_AngleBorderMin, _AngleBorderMax, _ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 左スティックを左に倒したときの操作
+/// </summary>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <param name="_ValueShortenVector"></param>
+/// <returns> true : スティックを倒した, false : スティックを倒さなかった </returns>
+bool PlayerObjectStateThirdAttack::LeftStickDefeatLeftInputOperation(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	if (mLeftAxis.x < 0.0f)
+	{
+		RotateInRangeAngle(_AngleBorderMin, _AngleBorderMax, _ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 左スティックを右に倒したときの操作
+/// </summary>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+/// <returns> true : スティックを倒した, false : スティックを倒さなかった </returns>
+bool PlayerObjectStateThirdAttack::LeftStickDefeatRightInputOperation(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	if (mLeftAxis.x > 0.0f)
+	{
+		RotateInRangeAngle(_AngleBorderMin, _AngleBorderMax, _ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 範囲角度で回転させる
+/// </summary>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+void PlayerObjectStateThirdAttack::RotateInRangeAngle(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	if (mTwoVectorAngle >= _AngleBorderMin && mTwoVectorAngle < _AngleBorderMax)
+	{
+		mDirVec = mForwardVec + mRightVec * _ValueShortenVector;
+	}
+	else
+	{
+		mDirVec = mForwardVec + mRightVec * -_ValueShortenVector;
+	}
 }

@@ -25,6 +25,7 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 	, mForwardVec(Vector3::Zero)
 	, mRightVec(Vector3::Zero)
 	, mMainCameraPtr(nullptr)
+	, mFirstAttackEffectPtr(nullptr)
 {
 }
 
