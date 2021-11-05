@@ -3,6 +3,19 @@
 // 前方宣言
 class AttackMeshComponent;
 
+// 向く角度の種類
+enum class FaceAngleType
+{
+	eUp = 0,
+	eUpRight,
+	eRight,
+	eDownRight,
+	eDown,
+	eDownLeft,
+	eLeft,
+	eUpLeft
+};
+
 /// <summary>
 /// プレイヤーステートの基底クラス
 /// </summary>

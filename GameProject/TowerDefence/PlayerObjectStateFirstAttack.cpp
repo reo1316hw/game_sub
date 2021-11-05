@@ -4,19 +4,26 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
-	: MBoxEnableTiming(15)
+	: faceAngleList{0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f}
+	, MBoxEnableTiming(15)
 	, MBoxDisableTiming(16)
 	, MDamageValueEnemyAttack(25)
+	, MHalfRotation(180)
+	, MValidComboFrame(10)
 	, MAttackSpeed(50.0f)
 	, MPlayRate(1.8f)
 	, MLeftAxisThreshold(0.5f)
-	, MValidComboFrame(10)
+	, MValueShortenVector(0.05f)
 	, mIsCollisionState(false)
 	, mIsRotation(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
+	, mTwoVectorAngle(0.0f)
     , mNumFrame(0)
+	, mLeftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
+	, mForwardVec(Vector3::Zero)
+	, mRightVec(Vector3::Zero)
 	, mMainCameraPtr(nullptr)
 {
 }
@@ -45,11 +52,10 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateIdle;
 	}
 
-	// 前方ベクトル
-	Vector3 forwardVec = _owner->GetForward();
+	// 向きの情報がなかったら前方ベクトルにする
 	if (mDirVec == Vector3::Zero)
 	{
-		mDirVec = forwardVec;
+		mDirVec = mForwardVec;
 	}
 
 	// 攻撃がヒットしたエネミーの群れの中心に向くベクトル
@@ -118,25 +124,35 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 	cameraForwardVec = Vector3::Normalize(cameraForwardVec);
 
 	// 前方ベクトル
-	Vector3 forwardVec = _owner->GetForward();
-	forwardVec = Vector3::Normalize(forwardVec);
+	mForwardVec = _owner->GetForward();
+	mForwardVec = Vector3::Normalize(mForwardVec);
+	// 右方ベクトル算出
+	mRightVec = Vector3::Cross(Vector3::UnitZ, mForwardVec);
 
-	Vector3 vec = Vector3::Cross(cameraForwardVec, forwardVec);
-	float b = 0.0f;
-	if (vec.z <= 0.0f)
+	// カメラとプレイヤーの前方ベクトルの外積
+	Vector3 outerProduct = Vector3::Cross(cameraForwardVec, mForwardVec);
+
+	if (outerProduct.z <= 0.0f)
 	{
-		float a = Vector3::Dot(cameraForwardVec, forwardVec);
-		float angle = Math::Acos(a) * 180 / Math::Pi;
-		b = 180.0f - angle;
+		float a = Vector3::Dot(cameraForwardVec, mForwardVec);
+		mTwoVectorAngle = Math::Acos(a) * MHalfRotation / Math::Pi;
+		mTwoVectorAngle = MHalfRotation - mTwoVectorAngle;
 	}
 	else
 	{
-		b = 180.0f;
+		float b = 180.0f;
 		Vector3 f = cameraForwardVec *= -1.0f;
-		float a = Vector3::Dot(f, forwardVec);
-		float angle = Math::Acos(a) * 180 / Math::Pi;
-		float d = 180.0f - angle;
-		b += d;
+		float a = Vector3::Dot(f, mForwardVec);
+		mTwoVectorAngle = Math::Acos(a) * MHalfRotation / Math::Pi;
+		mTwoVectorAngle = MHalfRotation - mTwoVectorAngle;
+		mTwoVectorAngle += b;
+	}
+
+	// 攻撃ボタン押されたら次のステートへ移行する準備
+	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
+		mNumFrame <= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
+	{
+		mIsNextCombo = true;
 	}
 
 	//方向キーが入力されたか
@@ -149,259 +165,110 @@ void PlayerObjectStateFirstAttack::Input(PlayerObject* _owner, const InputState&
 		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
 		_KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 
-	// 右方ベクトル算出
-	Vector3 rightVec = Vector3::Cross(Vector3::UnitZ, forwardVec);
-
-	// コントローラーの十字上もしくはキーボード、Wが入力されたら回転する
-	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_UP) == Held ||
-		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_W) == Held)
+	// コントローラーの十字上もしくはキーボードWが入力されたら回転する
+	if (VerticalKeyInputOperation(_KeyState, SDL_SCANCODE_W, SDL_CONTROLLER_BUTTON_DPAD_UP,
+		faceAngleList[static_cast<int>(FaceAngleType::eDownRight)], faceAngleList[static_cast<int>(FaceAngleType::eUpLeft)],
+		faceAngleList[static_cast<int>(FaceAngleType::eUpRight)], faceAngleList[static_cast<int>(FaceAngleType::eDownLeft)],
+		MValueShortenVector))
 	{
-		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
-		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
-			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
-		{
-			if (b >= 135.0f && b < 315.0f)
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
-
-			return;
-		}
-
-		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
-		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
-			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
-		{
-			if (b >= 45.0f && b < 225.0f)
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-
-			return;
-		}
-
-		if (b >= 0.0f && b < 180.0f)
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
-
 		return;
 	}
 
-	// コントローラーの十字下もしくは、キーボードSが入力されたら回転する
-	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == Held ||
-		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_S) == Held)
+	// コントローラーの十字下もしくはキーボードSが入力されたら回転する
+	if (VerticalKeyInputOperation(_KeyState, SDL_SCANCODE_S, SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+		faceAngleList[static_cast<int>(FaceAngleType::eUpRight)], faceAngleList[static_cast<int>(FaceAngleType::eDownLeft)],
+		faceAngleList[static_cast<int>(FaceAngleType::eDownRight)], faceAngleList[static_cast<int>(FaceAngleType::eUpLeft)],
+		-MValueShortenVector))
 	{
-		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
-		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
-			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
-		{
-			if (b >= 45.0f && b < 225.0f)
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
-
-			return;
-		}
-
-		//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
-		if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
-			_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
-		{
-			if (b >= 135.0f && b < 315.0f)
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-
-			return;
-		}
-
-		if (b >= 0.0f && b < 180.0f)
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
-
 		return;
 	}
 
-	//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
-	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == Held ||
-		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_A) == Held)
+	// コントローラーの十字左もしくはキーボードAが入力されたら回転する
+	if (LateralKeyInputOperation(_KeyState, SDL_SCANCODE_A, SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+		faceAngleList[static_cast<int>(FaceAngleType::eRight)], faceAngleList[static_cast<int>(FaceAngleType::eLeft)],
+		MValueShortenVector))
 	{
-		if (b >= 90.0f && b < 270.0f)
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
-
 		return;
 	}
 
-	// コントローラーの十字右もしくは、キーボードDが入力されたら回転する
-	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == Held ||
-		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_D) == Held)
+	// コントローラーの十字左もしくはキーボードDが入力されたら回転する
+	if (LateralKeyInputOperation(_KeyState, SDL_SCANCODE_D, SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+		faceAngleList[static_cast<int>(FaceAngleType::eRight)], faceAngleList[static_cast<int>(FaceAngleType::eLeft)],
+		-MValueShortenVector))
 	{
-		if (b >= 90.0f && b < 270.0f)
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
-
 		return;
 	}
-
+	
 	// 左スティックの入力値を取得
-	Vector2 leftAxis = _KeyState.m_controller.GetLAxisVec();
+	mLeftAxis = _KeyState.m_controller.GetLAxisVec();
 
-	if (leftAxis.y <= -MLeftAxisThreshold)
+	if (mLeftAxis.y <= MLeftAxisThreshold && mLeftAxis.y >= -MLeftAxisThreshold &&
+		mLeftAxis.x <= MLeftAxisThreshold && mLeftAxis.x >= -MLeftAxisThreshold ||
+		mLeftAxis.y == 0.0f && mLeftAxis.x == 0.0f)
 	{
-		if (leftAxis.x <= -MLeftAxisThreshold)
-		{
-			if (b >= 135.0f && b < 315.0f)
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
+		return;
+	}
 
+	// 左スティックを上に倒したら前に向かって回転する
+	if (mLeftAxis.y < 0.0f)
+	{
+		// 左スティックを左に倒したら左前に向かって回転する
+		if(LeftStickDefeatLeftInputOperation(faceAngleList[static_cast<int>(FaceAngleType::eDownRight)],
+			faceAngleList[static_cast<int>(FaceAngleType::eUpLeft)], MValueShortenVector))
+		{
 			return;
 		}
 
-		if (leftAxis.x >= MLeftAxisThreshold)
+		// 左スティックを右に倒したら右前に向かって回転する
+		if (LeftStickDefeatRightInputOperation(faceAngleList[static_cast<int>(FaceAngleType::eUpRight)],
+			faceAngleList[static_cast<int>(FaceAngleType::eDownLeft)], -MValueShortenVector))
 		{
-			if (b >= 45.0f && b < 225.0f)
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-
 			return;
 		}
 
-		if (b >= 0.0f && b < 180.0f)
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
+		// 前に向かって回転する
+		RotateInRangeAngle(faceAngleList[static_cast<int>(FaceAngleType::eUp)],
+			faceAngleList[static_cast<int>(FaceAngleType::eDown)], -MValueShortenVector);
 
 		return;
 	}
 
-	if (leftAxis.y >= MLeftAxisThreshold)
+	// 左スティックを下に倒したら後ろに向かって回転する
+	if (mLeftAxis.y > 0.0f)
 	{
-		if (leftAxis.x <= -MLeftAxisThreshold)
+		// 左スティックを左に倒したら左後ろに向かって回転する
+		if (LeftStickDefeatLeftInputOperation(faceAngleList[static_cast<int>(FaceAngleType::eUpRight)],
+			faceAngleList[static_cast<int>(FaceAngleType::eDownLeft)], MValueShortenVector))
 		{
-			if (b >= 45.0f && b < 225.0f)
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
-
 			return;
 		}
 
-		if (leftAxis.x >= MLeftAxisThreshold)
+		// 左スティックを右に倒したら右後ろに向かって回転する
+		if (LeftStickDefeatRightInputOperation(faceAngleList[static_cast<int>(FaceAngleType::eDownRight)],
+			faceAngleList[static_cast<int>(FaceAngleType::eUpLeft)], -MValueShortenVector))
 		{
-			if (b >= 135.0f && b < 315.0f)
-			{
-				mDirVec = forwardVec - rightVec * 0.05f;
-			}
-			else
-			{
-				mDirVec = forwardVec + rightVec * 0.05f;
-			}
-
 			return;
 		}
 
-		if (b >= 0.0f && b < 180.0f)
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
+		// 後ろに向かって回転する
+		RotateInRangeAngle(faceAngleList[static_cast<int>(FaceAngleType::eUp)],
+			faceAngleList[static_cast<int>(FaceAngleType::eDown)], MValueShortenVector);
 
 		return;
 	}
 
-	//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
-	if (leftAxis.x <= -MLeftAxisThreshold)
+	// 左スティックを左に倒したら左に向かって回転する
+	if (LeftStickDefeatLeftInputOperation(faceAngleList[static_cast<int>(FaceAngleType::eRight)],
+		faceAngleList[static_cast<int>(FaceAngleType::eLeft)], MValueShortenVector))
 	{
-		if (b >= 90.0f && b < 270.0f)
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
-
 		return;
 	}
 
-	// コントローラーの十字右もしくは、キーボードDが入力されたら回転する
-	if (leftAxis.x >= MLeftAxisThreshold)
+	// 左スティックを右に倒したら右に向かって回転する
+	if (LeftStickDefeatRightInputOperation(faceAngleList[static_cast<int>(FaceAngleType::eRight)],
+		faceAngleList[static_cast<int>(FaceAngleType::eLeft)], -MValueShortenVector))
 	{
-		if (b >= 90.0f && b < 270.0f)
-		{
-			mDirVec = forwardVec - rightVec * 0.05f;
-		}
-		else
-		{
-			mDirVec = forwardVec + rightVec * 0.05f;
-		}
-
 		return;
-	}
-
-	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
-		mNumFrame <= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
-	{
-		mIsNextCombo = true;
 	}
 }
 
@@ -446,4 +313,120 @@ void PlayerObjectStateFirstAttack::OnCollision(PlayerObject* _owner, const GameO
 	}
 
 	_owner->SetDamageValue(mDamageValue);
+}
+
+/// <summary>
+/// 縦キー入力操作
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+/// <param name="_KeyScancode"> 何キーを押したか </param>
+/// <param name="_ButtonScancode"> 何ボタンを押したか </param>
+/// <returns> true : 何か押した, false : 何も押さなかった </returns>
+bool PlayerObjectStateFirstAttack::VerticalKeyInputOperation(const InputState& _KeyState, const SDL_Scancode& _KeyScancode, const SDL_GameControllerButton& _ButtonScancode,
+	const float& _AngleBorderMinAKey, const float& _AngleBorderMaxAKey, const float& _AngleBorderMinDKey, const float& _AngleBorderMaxDKey, const float& _ValueShortenVector)
+{
+	if (_KeyState.m_controller.GetButtonState(_ButtonScancode) == Held ||
+		_KeyState.m_keyboard.GetKeyState(_KeyScancode) == Held)
+	{
+		// コントローラーの十字左もしくはキーボードAが入力されたら回転する
+		if (LateralKeyInputOperation(_KeyState, SDL_SCANCODE_A,
+			SDL_CONTROLLER_BUTTON_DPAD_LEFT, _AngleBorderMinAKey, _AngleBorderMaxAKey, MValueShortenVector))
+		{
+			return true;
+		}
+
+		// コントローラーの十字左もしくはキーボードDが入力されたら回転する
+		if (LateralKeyInputOperation(_KeyState, SDL_SCANCODE_D,
+			SDL_CONTROLLER_BUTTON_DPAD_RIGHT, _AngleBorderMinDKey, _AngleBorderMaxDKey, -MValueShortenVector))
+		{
+			return true;
+		}
+
+		RotateInRangeAngle(faceAngleList[static_cast<int>(FaceAngleType::eUp)],
+			faceAngleList[static_cast<int>(FaceAngleType::eDown)], -_ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 横キー入力操作
+/// </summary>
+/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
+/// <param name="_KeyScancode"> 何キーを押したか </param>
+/// <param name="_ButtonScancode"> 何ボタンを押したか </param>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <returns> true : 何か押した, false : 何も押さなかった </returns>
+bool PlayerObjectStateFirstAttack::LateralKeyInputOperation(const InputState& _KeyState, const SDL_Scancode& _KeyScancode,
+	const SDL_GameControllerButton& _ButtonScancode, const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	//コントローラーの十字左もしくは、キーボードAが入力されたら回転する
+	if (_KeyState.m_controller.GetButtonState(_ButtonScancode) == Held ||
+		_KeyState.m_keyboard.GetKeyState(_KeyScancode) == Held)
+	{
+		RotateInRangeAngle(_AngleBorderMin, _AngleBorderMax, _ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 左スティックを左に倒したときの操作
+/// </summary>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <param name="_ValueShortenVector"></param>
+/// <returns> true : スティックを倒した, false : スティックを倒さなかった </returns>
+bool PlayerObjectStateFirstAttack::LeftStickDefeatLeftInputOperation(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	if (mLeftAxis.x < 0.0f)
+	{
+		RotateInRangeAngle(_AngleBorderMin, _AngleBorderMax, _ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 左スティックを右に倒したときの操作
+/// </summary>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+/// <returns> true : スティックを倒した, false : スティックを倒さなかった </returns>
+bool PlayerObjectStateFirstAttack::LeftStickDefeatRightInputOperation(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	if (mLeftAxis.x > 0.0f)
+	{
+		RotateInRangeAngle(_AngleBorderMin, _AngleBorderMax, _ValueShortenVector);
+
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// 範囲角度で回転させる
+/// </summary>
+/// <param name="_AngleBorderMin"> 境目の角度の最小値 </param>
+/// <param name="_AngleBorderMax"> 境目の角度の最大値 </param>
+/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
+void PlayerObjectStateFirstAttack::RotateInRangeAngle(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector)
+{
+	if (mTwoVectorAngle >= _AngleBorderMin && mTwoVectorAngle < _AngleBorderMax)
+	{
+		mDirVec = mForwardVec + mRightVec * _ValueShortenVector;
+	}
+	else
+	{
+		mDirVec = mForwardVec + mRightVec * -_ValueShortenVector;
+	}
 }
