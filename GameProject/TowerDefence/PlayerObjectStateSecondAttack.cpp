@@ -8,7 +8,7 @@ PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
 	, MDamageValueEnemyAttack(25)
 	, MHalfRotation(180)
 	, MAllRotation(360)
-	, MValidComboFrame(0.6f)
+	, MValidComboFrame(0.55f)
 	, MBoxEnableTiming(0.25f)
 	, MBoxDisableTiming(0.27f)
 	, MAttackSpeed(100.0f)
@@ -40,13 +40,14 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 		return PlayerState::ePlayerStateDamage;
 	}
 
+	if (mIsNextCombo)
+	{
+		return PlayerState::ePlayerStateThirdAttack;
+	}
+
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		if (mIsNextCombo)
-		{
-			return PlayerState::ePlayerStateThirdAttack;
-		}
 		return PlayerState::ePlayerStateIdle;
 	}
 
