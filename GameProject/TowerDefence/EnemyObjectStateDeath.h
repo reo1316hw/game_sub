@@ -50,9 +50,11 @@ private:
 	const int MHitStopEndTiming;
 	// アニメーションの再生速度
 	const float MPlayRate;
+	// 死亡時の初期速度
+	const float MDeathInitSpeed;
 	// 減速値
-	const float MDecelerationSpeed;
-	
+	const float MDecelerationSpeedValue;
+
 	// ヒットストップするか
 	bool mIsHitStop;
 
@@ -61,6 +63,8 @@ private:
 
 	// 死亡時の速度
 	float mDeathSpeed;
+	// 減速度
+	float mDecelerationSpeed;
 
 	// 座標
 	Vector3 mPosition;

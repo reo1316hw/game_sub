@@ -7,10 +7,12 @@
 EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
 	: MHitStopEndTiming(10)
 	, MPlayRate(1.5f)
-	, MDecelerationSpeed(1.8f)
+	, MDeathInitSpeed(0.0f)
+	, MDecelerationSpeedValue(0.0f)
 	, mIsHitStop(false)
 	, mHitStopCount(0)
-	, mDeathSpeed(200.0f)
+	, mDeathSpeed(0.0f)
+	, mDecelerationSpeed(0.0f)
 	, mPosition(Vector3::Zero)
 	, mInitPosition(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
@@ -38,7 +40,8 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 
 	// 速度
 	Vector3 velocity = mDeathSpeed * mDirPlayerVec;
-	mDeathSpeed -= MDecelerationSpeed;
+	mDeathSpeed -= mDecelerationSpeed;
+	mDecelerationSpeed += 0.05f;
 
 	if (mDeathSpeed <= 0.0f)
 	{
@@ -105,7 +108,8 @@ void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 	// ヒットストップするフレーム数を初期化
 	mHitStopCount = 0;
 
-	mDeathSpeed = 200.0f;
+	mDeathSpeed = 400.0f;
+	mDecelerationSpeed = 1.8f;
 
 	_owner->RotateToNewForward(mDirPlayerVec);
 }
