@@ -54,15 +54,15 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 
 		if (dirPlayerVec.LengthSq() < MTransitionStateShortDistance)
 		{
-			if (randNum < 25)
+			if (randNum < 50)
 			{
 				return EnemyState::eEnemyStateWait;
 			}
-			else if(randNum >= 25 && randNum < 50)
+			else if(randNum >= 50 && randNum < 65)
 			{
 				return EnemyState::eEnemyStateLeftMove;
 			}
-			else if (randNum >= 50 && randNum < 75)
+			else if (randNum >= 65 && randNum < 80)
 			{
 				return EnemyState::eEnemyStateRightMove;
 			}
@@ -74,11 +74,11 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 		else if (dirPlayerVec.LengthSq() >= MTransitionStateShortDistance &&
 			     dirPlayerVec.LengthSq() < MTransitionStateMediumDistance)
 		{
-			if (randNum < 30)
+			if (randNum < 50)
 			{
 				return EnemyState::eEnemyStateWait;
 			}
-			else if (randNum >= 30 && randNum < 60)
+			else if (randNum >= 50 && randNum < 80)
 			{
 				return EnemyState::eEnemyStateLeftMove;
 			}

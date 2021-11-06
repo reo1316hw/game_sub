@@ -72,11 +72,11 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 		// ƒ‰ƒ“ƒ_ƒ€’l
 		int randNum = rand() % MStateTransitionProbability;
 		
-		if (randNum < 30)
+		if (randNum < 50)
 		{
 			return EnemyState::eEnemyStateWait;
 		}
-		else if(randNum >= 30 && randNum < 60)
+		else if(randNum >= 50 && randNum < 80)
 		{
 			return EnemyState::eEnemyStateLeftMove;
 		}
