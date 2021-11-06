@@ -14,7 +14,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	: GameObject(_ObjectTag)
 	, MMaxHp(500)
 	, MPlayRate(1.0f)
-	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
+	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, MFrontMagicEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, MAreaMagicEffectScale(Vector3(20.0f, -20.0f, 20.0f))
 	, MOverheadEffectScale(Vector3(20.0f, -20.0f, 20.0f))

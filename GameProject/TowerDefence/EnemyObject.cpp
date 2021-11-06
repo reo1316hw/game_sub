@@ -15,7 +15,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
 	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))
-	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
+	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
 	, mNextState(EnemyState::eEnemyStateTrack)
