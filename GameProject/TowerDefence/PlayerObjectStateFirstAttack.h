@@ -108,16 +108,16 @@ private:
 	// 向く角度のリスト
 	float faceAngleList[8];
 
-	// 当たり判定を有効にするタイミング
-	const int MBoxEnableTiming;
-	// 当たり判定を無効にするタイミング
-	const int MBoxDisableTiming;
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
 	// 半回転値
 	const int MHalfRotation;
 	// 全回転値
 	const int MAllRotation;
+	// 当たり判定を有効にするタイミング
+	const float MBoxEnableTiming;
+	// 当たり判定を無効にするタイミング
+	const float MBoxDisableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -128,22 +128,19 @@ private:
 	const float MValueShortenVector;
 
 	// コンボ有効フレーム
-	const size_t MValidComboFrame;
+	const float MValidComboFrame;
 
 	// 当たり判定の状態
 	// true : 有効, false : 無効
 	bool mIsCollisionState;
+	// 現在のステートに入って1回だけ当たり判定を有効にする
+	bool mIsOneCollisionState;
 
 	// ダメージ値
 	int mDamageValue;
-	// 当たり判定するまでのカウント
-	int mHitUntilCount;
 
 	// 2つのベクトルのなす角
 	float mTwoVectorAngle;
-
-	// フレーム数
-	size_t mNumFrame;
 
 	// 左スティックの入力値を取得
 	Vector2 mLeftAxis;

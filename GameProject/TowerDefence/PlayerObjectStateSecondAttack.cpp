@@ -5,24 +5,25 @@
 /// </summary>
 PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
 	: faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
-	, MBoxEnableTiming(15)
-	, MBoxDisableTiming(16)
 	, MDamageValueEnemyAttack(25)
 	, MHalfRotation(180)
 	, MAllRotation(360)
-	, MValidComboFrame(5)
+	, MValidComboFrame(0.6f)
+	, MBoxEnableTiming(0.25f)
+	, MBoxDisableTiming(0.27f)
 	, MAttackSpeed(100.0f)
 	, MPlayRate(1.8f)
 	, MLeftAxisThreshold(0.5f)
 	, MValueShortenVector(0.05f)
+	, mTwoVectorAngle(0.0f)
 	, mIsCollisionState(false)
+	, mIsOneCollisionState(false)
 	, mDamageValue(0)
-	, mHitUntilCount(0)
-	, mNumFrame(0)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mRightVec(Vector3::Zero)
 	, mMainCameraPtr(nullptr)
+	, mSecondAttackEffectPtr(nullptr)
 {
 }
 
@@ -77,24 +78,27 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 	_owner->SetPosition(mPosition);
 	_owner->RotateToNewForward(mDirVec);
 
-	// フレーム数を減らしていく
-	if (mNumFrame > 0)
+	if (mIsOneCollisionState)
 	{
-		--mNumFrame;
+		return PlayerState::ePlayerStateSecondAttack;
 	}
 
-	++mHitUntilCount;
-
-	if (mHitUntilCount == MBoxEnableTiming)
+	if (mElapseTime >= MBoxEnableTiming)
 	{
-		// 2段階目の通常攻撃の当たり判定を有効にする
+		// 1段階目の通常攻撃の当たり判定を有効にする
 		mIsCollisionState = true;
 	}
 
-	if (mHitUntilCount == MBoxDisableTiming)
+	if (!mIsCollisionState)
 	{
-		// 2段階目の通常攻撃の当たり判定を無効にする
+		return PlayerState::ePlayerStateSecondAttack;
+	}
+
+	if (mElapseTime >= MBoxDisableTiming)
+	{
+		// 1段階目の通常攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
+		mIsOneCollisionState = true;
 	}
 
 	return PlayerState::ePlayerStateSecondAttack;
@@ -151,8 +155,8 @@ void PlayerObjectStateSecondAttack::Input(PlayerObject* _owner, const InputState
 	}
 
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
-		mNumFrame <= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
+	if (mElapseTime >= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
+		mElapseTime >= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
 		mIsNextCombo = true;
 	}
@@ -279,9 +283,8 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateSecondAttack)->GetDuration();
-	mNumFrame = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetNumFrames();
 	mElapseTime = 0.0f;
-	mHitUntilCount = 0;
+	mIsOneCollisionState = false;
 
 	mDirVec = Vector3::Zero;
 	// 座標
