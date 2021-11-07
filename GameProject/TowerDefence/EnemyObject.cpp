@@ -45,8 +45,13 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateAttackReady)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyAttackReady.gpanim", false);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateLeftMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyLeftMove.gpanim", true);
 	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateRightMove)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyRightMove.gpanim", true);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDamage.gpanim", false);
-	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyDeath.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateImpactDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyImpact.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateSweepFallDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemySweepFall.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateFlyingBackDamage)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyFlyingBack.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateStandUp)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyStandUp.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateFallingBackDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyFallingBack.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateSweepFallDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemySweepFall.gpanim", false);
+	mAnimTypes[static_cast<int>(EnemyState::eEnemyStateFlyingBackDeath)] = RENDERER->GetAnimation("Assets/Model/Enemy/EnemyFlyingBack.gpanim", false);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
 	const Animation* anim = mAnimTypes[static_cast<int>(EnemyState::eEnemyStateTrack)];
@@ -66,8 +71,13 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mStatePools.push_back(new EnemyObjectStateAttackReady);                                         // mStatepool[eEnemyStateAttackReady]
 	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateLeftMove, _playerPtr));	// mStatepool[eEnemyStateLeftMove]
 	mStatePools.push_back(new EnemyObjectStateMove(EnemyState::eEnemyStateRightMove, _playerPtr));	// mStatepool[eEnemyStateRightMove]
-	mStatePools.push_back(new EnemyObjectStateDamage(_playerPtr));                                  // mStatepool[eEnemyStateDamage];
-	mStatePools.push_back(new EnemyObjectStateDeath(_playerPtr));                                   // mStatepool[eEnemyStateDeath];
+	mStatePools.push_back(new EnemyObjectStateImpactDamage(_playerPtr));                            // mStatepool[eEnemyStateImpactDamage];
+	mStatePools.push_back(new EnemyObjectStateSweepFallDamage);                            // mStatepool[eEnemyStateImpactDamage];
+	mStatePools.push_back(new EnemyObjectStateFlyingBackDamage);                            // mStatepool[eEnemyStateImpactDamage];
+	mStatePools.push_back(new EnemyObjectStateStandUp);                            // mStatepool[eEnemyStateImpactDamage];
+	mStatePools.push_back(new EnemyObjectStateFallingBackDeath);                            // mStatepool[eEnemyStateImpactDamage];
+	mStatePools.push_back(new EnemyObjectStateSweepFallDeath);                            // mStatepool[eEnemyStateImpactDamage];
+	mStatePools.push_back(new EnemyObjectStateFlyingBackDeath);                         // mStatepool[eEnemyStateFlyingBackDeath];
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
+EnemyObjectStateImpactDamage::EnemyObjectStateImpactDamage(PlayerObject* _playerPtr)
 	: MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
@@ -28,7 +28,7 @@ EnemyObjectStateDamage::EnemyObjectStateDamage(PlayerObject* _playerPtr)
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 /// <returns> エネミーの状態 </returns>
-EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _DeltaTime)
+EnemyState EnemyObjectStateImpactDamage::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	if (mHitPoint <= 0)
 	{
@@ -68,7 +68,7 @@ EnemyState EnemyObjectStateDamage::Update(EnemyObject* _owner, const float _Delt
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
-void EnemyObjectStateDamage::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
+void EnemyObjectStateImpactDamage::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -87,7 +87,7 @@ void EnemyObjectStateDamage::Separation(EnemyObject* _owner, const Vector3& _Dir
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyObjectStateDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
+void EnemyObjectStateImpactDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	mIsHitStop = false;
 

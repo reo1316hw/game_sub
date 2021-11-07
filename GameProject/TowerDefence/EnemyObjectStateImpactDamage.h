@@ -1,9 +1,9 @@
 #pragma once
 
 /// <summary>
-/// エネミーがダメージ受けた状態
+/// エネミーがダメージを受けた状態(小さい衝撃)
 /// </summary>
-class EnemyObjectStateDamage : public EnemyObjectStateBase
+class EnemyObjectStateImpactDamage : public EnemyObjectStateBase
 {
 public:
 
@@ -11,12 +11,12 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
-	EnemyObjectStateDamage(PlayerObject* _playerPtr);
+	EnemyObjectStateImpactDamage(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~EnemyObjectStateDamage() {};
+	~EnemyObjectStateImpactDamage() {};
 
 	/// <summary>
 	/// 更新処理

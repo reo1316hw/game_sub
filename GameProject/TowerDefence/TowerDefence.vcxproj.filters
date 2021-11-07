@@ -123,12 +123,6 @@
     <ClCompile Include="EnemyObjectStateBase.cpp">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyObjectStateDamage.cpp">
-      <Filter>GameObject\Map\Enemy\State</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObjectStateDeath.cpp">
-      <Filter>GameObject\Map\Enemy\State</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyObjectStateMove.cpp">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClCompile>
@@ -294,6 +288,27 @@
     <ClCompile Include="TeleportationEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyObjectStateImpactDamage.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateFlyingBackDeath.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateFallingBackDeath.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateFlyingBackDamage.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateStandUp.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateSweepFallDamage.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateSweepFallDeath.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -418,12 +433,6 @@
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="EnemyObjectStateBase.h">
-      <Filter>GameObject\Map\Enemy\State</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateDamage.h">
-      <Filter>GameObject\Map\Enemy\State</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObjectStateDeath.h">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="EnemyObjectStateMove.h">
@@ -590,6 +599,27 @@
     </ClInclude>
     <ClInclude Include="TeleportationEffect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateImpactDamage.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateFlyingBackDeath.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateFallingBackDeath.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateFlyingBackDamage.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateStandUp.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateSweepFallDamage.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateSweepFallDeath.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

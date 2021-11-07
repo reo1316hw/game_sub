@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
+EnemyObjectStateFlyingBackDeath::EnemyObjectStateFlyingBackDeath(PlayerObject* _playerPtr)
 	: MHitStopEndTiming(10)
 	, MPlayRate(1.5f)
 	, MDeathInitSpeed(0.0f)
@@ -29,7 +29,7 @@ EnemyObjectStateDeath::EnemyObjectStateDeath(PlayerObject* _playerPtr)
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 /// <returns> エネミーの状態 </returns>
-EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _DeltaTime)
+EnemyState EnemyObjectStateFlyingBackDeath::Update(EnemyObject* _owner, const float _DeltaTime)
 {
 	++mHitStopCount;
 
@@ -77,7 +77,7 @@ EnemyState EnemyObjectStateDeath::Update(EnemyObject* _owner, const float _Delta
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
+void EnemyObjectStateFlyingBackDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	mBoxColliderPtr = _owner->GetBoxCollider();
 	// エネミーの当たり判定を無効にする
@@ -119,7 +119,7 @@ void EnemyObjectStateDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyObjectStateDeath::Exit(EnemyObject* _owner, const float _DeltaTime)
+void EnemyObjectStateFlyingBackDeath::Exit(EnemyObject* _owner, const float _DeltaTime)
 {
 	// エネミーの当たり判定を有効にする
 	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);

@@ -13,14 +13,19 @@ class BoxCollider;
 /// </summary>
 enum class EnemyState
 {
-	eEnemyStateTrack = 0,       // 追跡
-	eEnemyStateWait,            // 待機
-	eEnemyStateAttack,          // 攻撃
-	eEnemyStateAttackReady,     // 攻撃準備
-	eEnemyStateLeftMove,        // 左移動
-	eEnemyStateRightMove,       // 右移動
-	eEnemyStateDamage,          // ダメージを受けた
-	eEnemyStateDeath,           // 死亡
+	eEnemyStateTrack = 0,        // 追跡
+	eEnemyStateWait,             // 待機
+	eEnemyStateAttack,           // 攻撃
+	eEnemyStateAttackReady,      // 攻撃準備
+	eEnemyStateLeftMove,         // 左移動
+	eEnemyStateRightMove,        // 右移動
+	eEnemyStateImpactDamage,     // ダメージを受けた(小さい衝撃)
+	eEnemyStateSweepFallDamage,  // ダメージを受けた(吹っ飛んで落ちる)
+	eEnemyStateFlyingBackDamage, // ダメージを受けた(遠くまで飛行して落ちる)
+	eEnemyStateStandUp,          // 起き上がり
+	eEnemyStateFallingBackDeath, // 死亡(その場で崩れ落ちる)
+	eEnemyStateSweepFallDeath,   // 死亡(吹っ飛んで落ちる)
+	eEnemyStateFlyingBackDeath,  // 死亡(遠くまで飛行して落ちる)
 
 	eEnemyStateNum,             // 総アニメーション数
 };

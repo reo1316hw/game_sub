@@ -5,9 +5,9 @@ class EnemyHitPointGauge;
 class EnemyHitPointFrame;
 
 /// <summary>
-/// エネミーの死亡状態
+/// エネミーの死亡状態(遠くに飛行して落ちる)
 /// </summary>
-class EnemyObjectStateDeath : public EnemyObjectStateBase
+class EnemyObjectStateFlyingBackDeath : public EnemyObjectStateBase
 {
 public:
 
@@ -15,12 +15,12 @@ public:
 	/// コンストラクタ
 	/// </summary>
     /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-	EnemyObjectStateDeath(PlayerObject* _playerPtr);
+	EnemyObjectStateFlyingBackDeath(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~EnemyObjectStateDeath() {};
+	~EnemyObjectStateFlyingBackDeath() {};
 
 	/// <summary>
 	/// 更新処理
