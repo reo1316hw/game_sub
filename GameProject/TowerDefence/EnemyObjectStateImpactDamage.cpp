@@ -32,14 +32,14 @@ EnemyState EnemyObjectStateImpactDamage::Update(EnemyObject* _owner, const float
 {
 	if (mHitPoint <= 0)
 	{
-		return EnemyState::eEnemyStateDeath;
+		return EnemyState::eEnemyStateFallingBackDeath;
 	}
 
 	++mHitStopCount;
 
 	if (mHitStopCount <= mHitStopEndTiming)
 	{
-		return EnemyState::eEnemyStateDamage;
+		return EnemyState::eEnemyStateImpactDamage;
 	}
 
 	// 開始速度
@@ -60,7 +60,7 @@ EnemyState EnemyObjectStateImpactDamage::Update(EnemyObject* _owner, const float
 		return EnemyState::eEnemyStateWait;
 	}
 
-	return EnemyState::eEnemyStateDamage;
+	return EnemyState::eEnemyStateImpactDamage;
 }
 
 /// <summary>
@@ -106,11 +106,11 @@ void EnemyObjectStateImpactDamage::Enter(EnemyObject* _owner, const float _Delta
 	}
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDamage), MPlayRate, mHitStopEndTiming);
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateImpactDamage), MPlayRate, mHitStopEndTiming);
 	meshcomp->SetIsHitStop(mIsHitStop);
 
 	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration();
+	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateImpactDamage)->GetDuration();
 	mElapseTime = 0.0f;
 
 	// ヒットストップするフレーム数を初期化

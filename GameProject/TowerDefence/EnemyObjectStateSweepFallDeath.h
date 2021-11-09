@@ -7,7 +7,8 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyObjectStateSweepFallDeath();
+	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemyObjectStateSweepFallDeath(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -37,4 +38,37 @@ public:
 	void Exit(EnemyObject* _owner, const float _DeltaTime)override;
 
 private:
+
+	// ダメージ時の速度
+	const float MDamageSpeed;
+	// ベクトルを短くする値
+	const float MVecShortenVelue;
+	// 引き離しベクトルの長さ
+	const float MSeparationVecLength;
+
+	// 体力
+	int mHitPoint;
+
+	// このステートに入ってからの経過時刻
+	float mElapseTime;
+	// アニメーション総時間
+	float mTotalAnimTime;
+
+	// 座標
+	Vector3 mPosition;
+	// 初期座標
+	Vector3 mInitPosition;
+	// 速度
+	Vector3 mVelocity;
+	// プレイヤーに向いたベクトル
+	Vector3 mDirPlayerVec;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
+	// エネミーのhpゲージのポインタ
+	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
+	// エネミーのhpの枠のポインタ
+	EnemyHitPointFrame* mEnemyHitPointFramePtr;
+	// ボックスの当たり判定を行うコンポーネントクラスのポインタ
+	BoxCollider* mBoxColliderPtr;
 };

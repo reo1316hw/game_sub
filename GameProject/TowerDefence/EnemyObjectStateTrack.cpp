@@ -31,6 +31,25 @@ EnemyObjectStateTrack::EnemyObjectStateTrack(PlayerObject* _playerPtr)
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	switch (mHitTag)
+	{
+	case Tag::eDashAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eFirstAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eSecondAttackEffect:
+
+		return EnemyState::eEnemyStateSweepFallDamage;
+
+	case Tag::eThirdAttackEffect:
+
+		return EnemyState::eEnemyStateFlyingBackDamage;
+	}
+
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
@@ -38,7 +57,7 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 
 	if (mIsDamage)
 	{
-		return EnemyState::eEnemyStateDamage;
+		return EnemyState::eEnemyStateImpactDamage;
 	}
 
 	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)

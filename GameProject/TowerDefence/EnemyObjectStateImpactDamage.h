@@ -40,6 +40,13 @@ public:
     /// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
 	void Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)override;
 
+	/*/// <summary>
+	/// ヒットした時の処理
+	/// </summary>
+	/// <param name="_owner"> エネミー(親)のポインタ </param>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;*/
+
 private:
 
 	// ダメージ時の速度

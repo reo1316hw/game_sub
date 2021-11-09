@@ -36,6 +36,25 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	switch (mHitTag)
+	{
+	case Tag::eDashAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eFirstAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eSecondAttackEffect:
+
+		return EnemyState::eEnemyStateSweepFallDamage;
+
+	case Tag::eThirdAttackEffect:
+
+		return EnemyState::eEnemyStateFlyingBackDamage;
+	}
+
 	// 更新される前の座標
 	Vector3 prePosition = mPosition;
 	// 開始速度
@@ -63,7 +82,7 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 
 	if (mIsDamage)
 	{
-		return EnemyState::eEnemyStateDamage;
+		return EnemyState::eEnemyStateImpactDamage;
 	}
 
 	// アニメーションが終了したら移動状態へ

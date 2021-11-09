@@ -37,6 +37,25 @@ EnemyObjectStateMove::EnemyObjectStateMove(const EnemyState& _State, PlayerObjec
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	switch (mHitTag)
+	{
+	case Tag::eDashAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eFirstAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eSecondAttackEffect:
+
+		return EnemyState::eEnemyStateSweepFallDamage;
+
+	case Tag::eThirdAttackEffect:
+
+		return EnemyState::eEnemyStateFlyingBackDamage;
+	}
+
 	// 右方ベクトル
 	Vector3 rightVec = _owner->GetRight();
 	rightVec.z = 0.0f;
@@ -59,7 +78,7 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 
 	if (mIsDamage)
 	{
-		return EnemyState::eEnemyStateDamage;
+		return EnemyState::eEnemyStateImpactDamage;
 	}
 
 	if (mPeriodMoveCount >= MTransitionTimingNum)

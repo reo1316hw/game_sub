@@ -17,9 +17,9 @@ EnemyObjectStateFlyingBackDeath::EnemyObjectStateFlyingBackDeath(PlayerObject* _
 	, mInitPosition(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
-	, mBoxColliderPtr(nullptr)
 	, mEnemyHitPointGaugePtr(nullptr)
 	, mEnemyHitPointFramePtr(nullptr)
+	, mBoxColliderPtr(nullptr)
 {
 }
 
@@ -35,7 +35,7 @@ EnemyState EnemyObjectStateFlyingBackDeath::Update(EnemyObject* _owner, const fl
 
 	if (mHitStopCount <= MHitStopEndTiming)
 	{
-		return EnemyState::eEnemyStateDeath;
+		return EnemyState::eEnemyStateFlyingBackDeath;
 	}
 
 	// 速度
@@ -69,7 +69,7 @@ EnemyState EnemyObjectStateFlyingBackDeath::Update(EnemyObject* _owner, const fl
 		return EnemyState::eEnemyStateTrack;
 	}
 
-	return EnemyState::eEnemyStateDeath;
+	return EnemyState::eEnemyStateFlyingBackDeath;
 }
 
 /// <summary>
@@ -92,8 +92,11 @@ void EnemyObjectStateFlyingBackDeath::Enter(EnemyObject* _owner, const float _De
 	}
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateDeath), MPlayRate);
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateFlyingBackDeath), MPlayRate);
 	meshcomp->SetIsHitStop(mIsHitStop);
+
+	// ヒットストップするフレーム数を初期化
+	mHitStopCount = 0;
 
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -104,9 +107,6 @@ void EnemyObjectStateFlyingBackDeath::Enter(EnemyObject* _owner, const float _De
 	// プレイヤーに向いたベクトル
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
-
-	// ヒットストップするフレーム数を初期化
-	mHitStopCount = 0;
 
 	mDeathSpeed = 400.0f;
 	mDecelerationSpeed = 1.8f;

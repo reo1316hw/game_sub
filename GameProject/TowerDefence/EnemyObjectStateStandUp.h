@@ -29,7 +29,7 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
-	/// <summary>
+	/*/// <summary>
 	/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
@@ -48,7 +48,7 @@ public:
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;
+	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;*/
 
 private:
 };

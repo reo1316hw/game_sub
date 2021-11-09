@@ -26,11 +26,30 @@ EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateAttackReady::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	switch (mHitTag)
+	{
+	case Tag::eDashAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eFirstAttackEffect:
+
+		return EnemyState::eEnemyStateImpactDamage;
+
+	case Tag::eSecondAttackEffect:
+
+		return EnemyState::eEnemyStateSweepFallDamage;
+
+	case Tag::eThirdAttackEffect:
+
+		return EnemyState::eEnemyStateFlyingBackDamage;
+	}
+
 	_owner->SetPosition(mPosition);
 	
 	if (mIsDamage)
 	{
-		return EnemyState::eEnemyStateDamage;
+		return EnemyState::eEnemyStateImpactDamage;
 	}
 
 	// アニメーションが終了したら攻撃状態へ遷移
