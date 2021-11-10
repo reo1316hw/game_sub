@@ -41,7 +41,7 @@ PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const flo
 		return PlayerState::ePlayerStateDamage;
 	}
 
-	// アニメーションが終了したらアイドル状態か、次のコンボへ
+	// 次のコンボへ
 	if (mIsNextCombo)
 	{
 		return PlayerState::ePlayerStateSecondAttack;

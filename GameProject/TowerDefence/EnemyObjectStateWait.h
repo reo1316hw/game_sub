@@ -89,6 +89,7 @@ private:
 	Vector3 mPosition;
 	// 速度
 	Vector3 mVelocity;
+
 	// ヒットしたオブジェクトのタグ
 	Tag mHitTag;
 

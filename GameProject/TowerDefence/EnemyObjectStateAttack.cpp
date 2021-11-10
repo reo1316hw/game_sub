@@ -36,23 +36,26 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	switch (mHitTag)
+	if (mIsDamage)
 	{
-	case Tag::eDashAttackEffect:
+		switch (mHitTag)
+		{
+		case Tag::eDashAttackEffect:
 
-		return EnemyState::eEnemyStateImpactDamage;
+			return EnemyState::eEnemyStateImpactDamage;
 
-	case Tag::eFirstAttackEffect:
+		case Tag::eFirstAttackEffect:
 
-		return EnemyState::eEnemyStateImpactDamage;
+			return EnemyState::eEnemyStateImpactDamage;
 
-	case Tag::eSecondAttackEffect:
+		case Tag::eSecondAttackEffect:
 
-		return EnemyState::eEnemyStateSweepFallDamage;
+			return EnemyState::eEnemyStateSweepFallDamage;
 
-	case Tag::eThirdAttackEffect:
+		case Tag::eThirdAttackEffect:
 
-		return EnemyState::eEnemyStateFlyingBackDamage;
+			return EnemyState::eEnemyStateFlyingBackDamage;
+		}
 	}
 
 	// 更新される前の座標

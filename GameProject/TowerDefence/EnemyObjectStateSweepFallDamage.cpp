@@ -5,15 +5,22 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateSweepFallDamage::EnemyObjectStateSweepFallDamage(PlayerObject* _playerPtr)
-	: MDamageSpeed(100.0f)
+	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, MDamageValuePlayerFirstAttack(25)
+	, MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, mIsDamage(false)
 	, mHitPoint(0)
+	, mDamageValue(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
+	, mHitTag(Tag::eOther)
+	, mEnemyPtr(nullptr)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -29,6 +36,24 @@ EnemyState EnemyObjectStateSweepFallDamage::Update(EnemyObject* _owner, const fl
 	if (mHitPoint <= 0)
 	{
 		return EnemyState::eEnemyStateSweepFallDeath;
+	}
+
+	if (mIsDamage)
+	{
+		switch (mHitTag)
+		{
+		case Tag::eDashAttackEffect:
+
+			return EnemyState::eEnemyStateImpactDamage;
+
+		case Tag::eFirstAttackEffect:
+
+			return EnemyState::eEnemyStateImpactDamage;
+
+		case Tag::eThirdAttackEffect:
+
+			return EnemyState::eEnemyStateFlyingBackDamage;
+		}
 	}
 
 	// 開始速度
@@ -78,6 +103,8 @@ void EnemyObjectStateSweepFallDamage::Separation(EnemyObject* _owner, const Vect
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateSweepFallDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
+	mIsDamage = false;
+
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDamage));
 
@@ -100,4 +127,46 @@ void EnemyObjectStateSweepFallDamage::Enter(EnemyObject* _owner, const float _De
 
 	_owner->RotateToNewForward(mDirPlayerVec);
 	_owner->SetHitPoint(mHitPoint);
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void EnemyObjectStateSweepFallDamage::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
+{
+	mEnemyPtr = _owner;
+
+	// オブジェクトのタグ
+	mHitTag = _HitObject.GetTag();
+
+	for (int i = 0; i < mHitTagListSize; i++)
+	{
+		// 攻撃を受けた時の処理
+		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// 攻撃を受けた時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+/// <returns> ヒットしたか </returns>
+bool EnemyObjectStateSweepFallDamage::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
+		mIsDamage = true;
+
+		mEnemyPtr->SetDamageValue(mDamageValue);
+		return true;
+	}
+
+	return false;
 }

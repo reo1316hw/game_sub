@@ -40,6 +40,7 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 		return PlayerState::ePlayerStateDamage;
 	}
 
+	// ŽŸ‚ÌƒRƒ“ƒ{‚Ö
 	if (mIsNextCombo)
 	{
 		return PlayerState::ePlayerStateThirdAttack;

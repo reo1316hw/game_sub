@@ -4,19 +4,17 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
-	: MBoxEnableTiming(10)
-	, MBoxDisableTiming(11)
-	, MDamageValueEnemyAttack(25)
+	: MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(5)
+	, MValidComboFrame(0.4f)
+	, MBoxEnableTiming(0.15f)
+	, MBoxDisableTiming(0.17f)
+	, MPlayRate(1.5f)
 	, MAttackSpeed(300.0f)
 	, mIsCollisionState(false)
 	, mIsHitStop(false)
 	, mDamageValue(0)
-	, mHitUntilCount(0)
 	, mHitStopCount(0)
-	, mNumFrame(0)
-	, MPlayRate(1.5f)
-	, MValidComboFrame(5)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, skeletalMeshCompPtr(nullptr)
@@ -37,14 +35,15 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 		return PlayerState::ePlayerStateDamage;
 	}
 
+	// 次のコンボへ
+	if (mIsNextCombo)
+	{
+		return PlayerState::ePlayerStateFirstAttack;
+	}
+
 	// アニメーションが終了したらアイドル状態か、次のコンボへ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		if (mIsNextCombo)
-		{
-			return PlayerState::ePlayerStateFirstAttack;
-		}
-
 		return PlayerState::ePlayerStateIdle;
 	}
 
@@ -81,24 +80,27 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 
 	_owner->SetPosition(mPosition);
 
-	// フレーム数を減らしていく
-	if (mNumFrame > 0)
+	if (mIsOneCollisionState)
 	{
-		--mNumFrame;
+		return PlayerState::ePlayerStateDashAttack;
 	}
 
-	++mHitUntilCount;
-
-	if (mHitUntilCount == MBoxEnableTiming)
+	if (mElapseTime >= MBoxEnableTiming)
 	{
-		// 3段階目の通常攻撃の当たり判定を有効にする
+		// ダッシュ攻撃の当たり判定を有効にする
 		mIsCollisionState = true;
 	}
 
-	if (mHitUntilCount == MBoxDisableTiming)
+	if (!mIsCollisionState)
 	{
-		// 3段階目の通常攻撃の当たり判定を無効にする
+		return PlayerState::ePlayerStateDashAttack;
+	}
+
+	if (mElapseTime >= MBoxDisableTiming)
+	{
+		// ダッシュ攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
+		mIsOneCollisionState = true;
 	}
 
 	return PlayerState::ePlayerStateDashAttack;
@@ -112,8 +114,8 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 void PlayerObjectStateDashAttack::Input(PlayerObject* _owner, const InputState& _KeyState)
 {
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (mNumFrame <= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
-		mNumFrame <= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
+	if (mElapseTime >= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
+		mElapseTime >= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
 		mIsNextCombo = true;
 	}
@@ -131,12 +133,11 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 	skeletalMeshCompPtr->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack), MPlayRate);
 	mIsNextCombo = false;
 	mIsHit = false;
+	mIsOneCollisionState = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetDuration() - 0.4f;
-	mNumFrame = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetNumFrames();
 	mElapseTime = 0.0f;
-	mHitUntilCount = 0;
 
 	// ヒットストップ関係初期化
 	mIsHitStop = false;

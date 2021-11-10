@@ -12,6 +12,7 @@ EnemyObjectStateFlyingBackDamage::EnemyObjectStateFlyingBackDamage(PlayerObject*
 	, MDeathInitSpeed(0.0f)
 	, MDecelerationSpeedValue(0.0f)
 	, mIsHitStop(false)
+	, mHitPoint(0)
 	, mHitStopCount(0)
 	, mDeathSpeed(0.0f)
 	, mDecelerationSpeed(0.0f)
@@ -31,6 +32,11 @@ EnemyObjectStateFlyingBackDamage::EnemyObjectStateFlyingBackDamage(PlayerObject*
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateFlyingBackDamage::Update(EnemyObject* _owner, const float _DeltaTime)
 {
+	if (mHitPoint <= 0)
+	{
+		return EnemyState::eEnemyStateFlyingBackDeath;
+	}
+
 	++mHitStopCount;
 
 	if (mHitStopCount <= MHitStopEndTiming)
@@ -117,7 +123,13 @@ void EnemyObjectStateFlyingBackDamage::Enter(EnemyObject* _owner, const float _D
 	mDeathSpeed = 400.0f;
 	mDecelerationSpeed = 1.8f;
 
+	// ダメージ値
+	int damageValue = _owner->GetDamageValue();
+	// 体力
+	mHitPoint = _owner->GetHitPoint() - damageValue;
+
 	_owner->RotateToNewForward(mDirPlayerVec);
+	_owner->SetHitPoint(mHitPoint);
 }
 
 /// <summary>

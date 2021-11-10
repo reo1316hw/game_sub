@@ -33,23 +33,26 @@ EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	switch (mHitTag)
+	if (mIsDamage)
 	{
-	case Tag::eDashAttackEffect:
+		switch (mHitTag)
+		{
+		case Tag::eDashAttackEffect:
 
-		return EnemyState::eEnemyStateImpactDamage;
-	
-	case Tag::eFirstAttackEffect:
-	
-		return EnemyState::eEnemyStateImpactDamage;
-	
-	case Tag::eSecondAttackEffect:
-	
-		return EnemyState::eEnemyStateSweepFallDamage;
-	
-	case Tag::eThirdAttackEffect:
-	
-		return EnemyState::eEnemyStateFlyingBackDamage;
+			return EnemyState::eEnemyStateImpactDamage;
+
+		case Tag::eFirstAttackEffect:
+
+			return EnemyState::eEnemyStateImpactDamage;
+
+		case Tag::eSecondAttackEffect:
+
+			return EnemyState::eEnemyStateSweepFallDamage;
+
+		case Tag::eThirdAttackEffect:
+
+			return EnemyState::eEnemyStateFlyingBackDamage;
+		}
 	}
 
 	// 座標
@@ -177,6 +180,8 @@ bool EnemyObjectStateWait::ReceivedAttack(const Tag& _hitTag, const int& _Damage
 	if (mHitTag == _hitTag)
 	{
 		mDamageValue = _DamageValuePlayerAttack;
+		mIsDamage = true;
+
 		mEnemyPtr->SetDamageValue(mDamageValue);
 		return true;
 	}

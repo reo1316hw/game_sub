@@ -50,37 +50,33 @@ public:
 
 private:
 
-	// 当たり判定を有効にするタイミング
-	const int MBoxEnableTiming;
-	// 当たり判定を無効にするタイミング
-	const int MBoxDisableTiming;
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
 	// ヒットストップが終わるタイミング
 	const int MHitStopEndTiming;
+	// 当たり判定を有効にするタイミング
+	const float MBoxEnableTiming;
+	// 当たり判定を無効にするタイミング
+	const float MBoxDisableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
-
 	// コンボ有効フレーム
-	const size_t MValidComboFrame;
+	const float MValidComboFrame;
 
 	// 当たり判定の状態
 	// true : 有効, false : 無効
 	bool mIsCollisionState;
 	// ヒットストップするか
 	bool mIsHitStop;
+	// 現在のステートに入って1回だけ当たり判定を有効にする
+	bool mIsOneCollisionState;
 
 	// ダメージ値
 	int mDamageValue;
-	// 当たり判定するまでのカウント
-	int mHitUntilCount;
 	// ヒットストップするフレーム数
 	int mHitStopCount;
-
-	// フレーム数
-	size_t mNumFrame;
 
 	// 座標
 	Vector3 mPosition;

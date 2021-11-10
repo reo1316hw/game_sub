@@ -59,7 +59,7 @@ EnemyState EnemyObjectStateSweepFallDeath::Update(EnemyObject* _owner, const flo
 		return EnemyState::eEnemyStateTrack;
 	}
 
-	return EnemyState::eEnemyStateSweepFallDamage;
+	return EnemyState::eEnemyStateSweepFallDeath;
 }
 
 /// <summary>
@@ -74,10 +74,10 @@ void EnemyObjectStateSweepFallDeath::Enter(EnemyObject* _owner, const float _Del
 	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDamage));
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDeath));
 
 	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDamage)->GetDuration();
+	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDeath)->GetDuration();
 	mElapseTime = 0.0f;
 
 	// 座標

@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateFallingBackDeath::EnemyObjectStateFallingBackDeath(PlayerObject* _playerPtr)
-	: MDamageSpeed(100.0f)
+	: MDamageSpeed(50.0f)
 	, MPlayRate(1.0f)
 	, mIsHitStop(false)
 	, mHitStopCount(0)
@@ -94,7 +94,7 @@ void EnemyObjectStateFallingBackDeath::Enter(EnemyObject* _owner, const float _D
 	meshcomp->SetIsHitStop(mIsHitStop);
 
 	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateFallingBackDeath)->GetDuration();
+	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateFallingBackDeath)->GetDuration() - 0.3f;
 	mElapseTime = 0.0f;
 
 	// ヒットストップするフレーム数を初期化

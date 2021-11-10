@@ -62,6 +62,8 @@ private:
 	// ヒットストップするか
 	bool mIsHitStop;
 
+	// 体力
+	int mHitPoint;
 	// ヒットストップするフレーム数
 	int mHitStopCount;
 
