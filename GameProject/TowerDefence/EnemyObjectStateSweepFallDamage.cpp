@@ -7,16 +7,17 @@
 EnemyObjectStateSweepFallDamage::EnemyObjectStateSweepFallDamage(PlayerObject* _playerPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
 	, MDamageValuePlayerFirstAttack(25)
-	, MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, MDamageInitSpeed(100.0f)
+	, MGravity(4.0f)
 	, mIsDamage(false)
 	, mHitPoint(0)
 	, mDamageValue(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
-	, mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
+	, mDamageSpeed(0.0f)
 	, mPosition(Vector3::Zero)
+	, mNowStateInitPos(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
 	, mHitTag(Tag::eOther)
@@ -38,7 +39,7 @@ EnemyState EnemyObjectStateSweepFallDamage::Update(EnemyObject* _owner, const fl
 		return EnemyState::eEnemyStateSweepFallDeath;
 	}
 
-	if (mIsDamage)
+ 	if (mIsDamage)
 	{
 		switch (mHitTag)
 		{
@@ -56,22 +57,23 @@ EnemyState EnemyObjectStateSweepFallDamage::Update(EnemyObject* _owner, const fl
 		}
 	}
 
-	// 開始速度
-	float startSpeed = -MDamageSpeed * _DeltaTime;
-	// 終了速度
-	float endSpeed = MDamageSpeed * _DeltaTime;
+	// 速度
+	Vector3 velocity = mDamageSpeed * Vector3::UnitZ;
+	mDamageSpeed -= MGravity;
 
-	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
-	mElapseTime += _DeltaTime;
-	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirPlayerVec;
+	mPosition += velocity * _DeltaTime;
+
+	if (mPosition.z <= mNowStateInitPos.z)
+	{
+		mPosition.z = mNowStateInitPos.z;
+	}
 
 	_owner->SetPosition(mPosition);
 
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return EnemyState::eEnemyStateWait;
+		return EnemyState::eEnemyStateStandUp;
 	}
 
 	return EnemyState::eEnemyStateSweepFallDamage;
@@ -108,17 +110,17 @@ void EnemyObjectStateSweepFallDamage::Enter(EnemyObject* _owner, const float _De
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDamage));
 
-	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDamage)->GetDuration();
-	mElapseTime = 0.0f;
-
 	// 座標
 	mPosition = _owner->GetPosition();
+	// このステートに入った時の座標
+	mNowStateInitPos = mPosition;
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
+
+	mDamageSpeed = MDamageInitSpeed;
 
 	// ダメージ値
 	int damageValue = _owner->GetDamageValue();
@@ -146,6 +148,8 @@ void EnemyObjectStateSweepFallDamage::OnCollision(EnemyObject* _owner, const Gam
 		// 攻撃を受けた時の処理
 		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
 		{
+			mPosition.z = mNowStateInitPos.z;
+			_owner->SetPosition(mPosition);
 			return;
 		}
 	}

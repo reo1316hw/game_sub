@@ -121,8 +121,11 @@ void EnemyControler::InvadeWithinRange(GameObject* _referenceEnemyItr, GameObjec
 {
 	// 基準となるオブジェクトの座標
 	Vector3 referenceEnemyPos = _referenceEnemyItr->GetPosition();
+	referenceEnemyPos.z = 0.0f;
 	// 対象となるオブジェクトの座標
 	Vector3 targetEnemyPos = _targetEnemyItr->GetPosition();
+	targetEnemyPos.z = 0.0f;
+
 	// オブジェクト同士の距離
 	Vector3 distance = targetEnemyPos - referenceEnemyPos;
 

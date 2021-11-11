@@ -5,12 +5,12 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateSweepFallDeath::EnemyObjectStateSweepFallDeath(PlayerObject* _playerPtr)
-	: MDamageSpeed(100.0f)
-	, MVecShortenVelue(0.1f)
+	: MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, MDeathInitSpeed(100.0f)
+	, MGravity(4.0f)
 	, mHitPoint(0)
-	, mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
+	, mDeathSpeed(0.0f)
 	, mPosition(Vector3::Zero)
 	, mInitPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -30,15 +30,16 @@ EnemyObjectStateSweepFallDeath::EnemyObjectStateSweepFallDeath(PlayerObject* _pl
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateSweepFallDeath::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	// 開始速度
-	float startSpeed = -MDamageSpeed * _DeltaTime;
-	// 終了速度
-	float endSpeed = MDamageSpeed * _DeltaTime;
+	// 速度
+	Vector3 velocity = mDeathSpeed * Vector3::UnitZ;
+	mDeathSpeed -= MGravity;
 
-	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
-	mElapseTime += _DeltaTime;
-	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirPlayerVec;
+	mPosition += velocity * _DeltaTime;
+
+	if (mPosition.z <= mNowStateInitPos.z)
+	{
+		mPosition.z = mNowStateInitPos.z;
+	}
 
 	_owner->SetPosition(mPosition);
 
@@ -76,12 +77,12 @@ void EnemyObjectStateSweepFallDeath::Enter(EnemyObject* _owner, const float _Del
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDeath));
 
-	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDeath)->GetDuration();
-	mElapseTime = 0.0f;
+	mDeathSpeed = MDeathInitSpeed;
 
 	// 座標
 	mPosition = _owner->GetPosition();
+	// このステートに入った時の座標
+	mNowStateInitPos = mPosition;
 	// 初期座標
 	mInitPosition = _owner->GetInitPosition();
 	// プレイヤーの座標

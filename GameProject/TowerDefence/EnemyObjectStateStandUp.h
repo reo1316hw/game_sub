@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// 起き上がり状態
+/// </summary>
 class EnemyObjectStateStandUp : public EnemyObjectStateBase
 {
 public:
@@ -7,7 +10,8 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyObjectStateStandUp();
+    /// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemyObjectStateStandUp(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -29,13 +33,6 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
-	/*/// <summary>
-	/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
-	/// </summary>
-	/// <param name="_owner"> エネミー(親)のポインタ </param>
-	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void Exit(EnemyObject* _owner, const float _DeltaTime)override;
-
 	/// <summary>
 	/// エネミー同士の引き離し
 	/// </summary>
@@ -48,8 +45,45 @@ public:
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;*/
+	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;
 
 private:
+
+	/// <summary>
+	/// 攻撃を受けた時の処理
+	/// </summary>
+	/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+	/// <returns> ヒットしたか </returns>
+	bool ReceivedAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
+	// プレイヤーの1段階目の通常攻撃のダメージ値
+	const int MDamageValuePlayerFirstAttack;
+	// ベクトルを短くする値
+	const float MVecShortenVelue;
+	// 引き離しベクトルの長さ
+	const float MSeparationVecLength;
+
+	// ダメージを受けたか
+	bool mIsDamage;
+
+	// ダメージ値
+	int mDamageValue;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
+
+	// 座標
+	Vector3 mPosition;
+	// 速度
+	Vector3 mVelocity;
+
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
+
+	// エネミーのポインタ
+	EnemyObject* mEnemyPtr;
 };
 

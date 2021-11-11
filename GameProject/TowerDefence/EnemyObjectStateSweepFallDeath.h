@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// エネミーの死亡状態(吹っ飛んで落ちる)
+/// </summary>
 class EnemyObjectStateSweepFallDeath : public EnemyObjectStateBase
 {
 public:
@@ -39,25 +42,27 @@ public:
 
 private:
 
-	// ダメージ時の速度
-	const float MDamageSpeed;
 	// ベクトルを短くする値
 	const float MVecShortenVelue;
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
+	// 死亡時の初速度
+	const float MDeathInitSpeed;
+	// 重力
+	const float MGravity;
 
 	// 体力
 	int mHitPoint;
 
-	// このステートに入ってからの経過時刻
-	float mElapseTime;
-	// アニメーション総時間
-	float mTotalAnimTime;
+	// 死亡時の速度
+	float mDeathSpeed;
 
 	// 座標
 	Vector3 mPosition;
 	// 初期座標
 	Vector3 mInitPosition;
+	// このステートに入った時の座標
+	Vector3 mNowStateInitPos;
 	// 速度
 	Vector3 mVelocity;
 	// プレイヤーに向いたベクトル

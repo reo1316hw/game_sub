@@ -59,7 +59,7 @@ EnemyState EnemyObjectStateWait::Update(EnemyObject* _owner, const float _DeltaT
 	mPosition = _owner->GetPosition();
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
-	// プレイヤーに向いたベクトルsd
+	// プレイヤーに向いたベクトル
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
 	++mPeriodWaitCount;

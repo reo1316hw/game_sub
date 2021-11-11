@@ -74,7 +74,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mStatePools.push_back(new EnemyObjectStateImpactDamage(_playerPtr));                            // mStatepool[eEnemyStateImpactDamage];
 	mStatePools.push_back(new EnemyObjectStateSweepFallDamage(_playerPtr));                            // mStatepool[eEnemyStateImpactDamage];
 	mStatePools.push_back(new EnemyObjectStateFlyingBackDamage(_playerPtr));                            // mStatepool[eEnemyStateImpactDamage];
-	mStatePools.push_back(new EnemyObjectStateStandUp);                            // mStatepool[eEnemyStateImpactDamage];
+	mStatePools.push_back(new EnemyObjectStateStandUp(_playerPtr));                            // mStatepool[eEnemyStateImpactDamage];
 	mStatePools.push_back(new EnemyObjectStateFallingBackDeath(_playerPtr));                            // mStatepool[eEnemyStateImpactDamage];
 	mStatePools.push_back(new EnemyObjectStateSweepFallDeath(_playerPtr));                            // mStatepool[eEnemyStateImpactDamage];
 	mStatePools.push_back(new EnemyObjectStateFlyingBackDeath(_playerPtr));                         // mStatepool[eEnemyStateFlyingBackDeath];

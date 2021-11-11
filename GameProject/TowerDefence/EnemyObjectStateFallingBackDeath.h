@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// エネミーの死亡状態(その場で崩れ落ちる) 
+/// </summary>
 class EnemyObjectStateFallingBackDeath : public EnemyObjectStateBase
 {
 public:

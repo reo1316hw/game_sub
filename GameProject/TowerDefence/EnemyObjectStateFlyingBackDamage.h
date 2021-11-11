@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// エネミーがダメージを受けた状態(遠くまで飛行して落ちる)
+/// </summary>
 class EnemyObjectStateFlyingBackDamage : public EnemyObjectStateBase
 {
 public:
@@ -54,8 +57,8 @@ private:
 	const float MSeparationVecLength;
 	// アニメーションの再生速度
 	const float MPlayRate;
-	// 死亡時の初期速度
-	const float MDeathInitSpeed;
+	// ダメージ時の初期速度
+	const float MDamageInitSpeed;
 	// 減速値
 	const float MDecelerationSpeedValue;
 
@@ -68,7 +71,7 @@ private:
 	int mHitStopCount;
 
 	// 死亡時の速度
-	float mDeathSpeed;
+	float mDamageSpeed;
 	// 減速度
 	float mDecelerationSpeed;
 

@@ -9,12 +9,12 @@ EnemyObjectStateFlyingBackDamage::EnemyObjectStateFlyingBackDamage(PlayerObject*
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, MPlayRate(1.5f)
-	, MDeathInitSpeed(0.0f)
-	, MDecelerationSpeedValue(0.0f)
+	, MDamageInitSpeed(400.0f)
+	, MDecelerationSpeedValue(1.8f)
 	, mIsHitStop(false)
 	, mHitPoint(0)
 	, mHitStopCount(0)
-	, mDeathSpeed(0.0f)
+	, mDamageSpeed(0.0f)
 	, mDecelerationSpeed(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
@@ -45,13 +45,13 @@ EnemyState EnemyObjectStateFlyingBackDamage::Update(EnemyObject* _owner, const f
 	}
 
 	// 速度
-	Vector3 velocity = mDeathSpeed * mDirPlayerVec;
-	mDeathSpeed -= mDecelerationSpeed;
+	Vector3 velocity = mDamageSpeed * mDirPlayerVec;
+	mDamageSpeed -= mDecelerationSpeed;
 	mDecelerationSpeed += 0.05f;
 
-	if (mDeathSpeed <= 0.0f)
+	if (mDamageSpeed <= 0.0f)
 	{
-		mDeathSpeed = 0.0f;
+		mDamageSpeed = 0.0f;
 	}
 
 	mPosition -= velocity * _DeltaTime;
@@ -61,7 +61,7 @@ EnemyState EnemyObjectStateFlyingBackDamage::Update(EnemyObject* _owner, const f
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return EnemyState::eEnemyStateWait;
+		return EnemyState::eEnemyStateStandUp;
 	}
 
 	return EnemyState::eEnemyStateFlyingBackDamage;
@@ -120,8 +120,8 @@ void EnemyObjectStateFlyingBackDamage::Enter(EnemyObject* _owner, const float _D
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
 
-	mDeathSpeed = 400.0f;
-	mDecelerationSpeed = 1.8f;
+	mDamageSpeed = MDamageInitSpeed;
+	mDecelerationSpeed = MDecelerationSpeedValue;
 
 	// ダメージ値
 	int damageValue = _owner->GetDamageValue();

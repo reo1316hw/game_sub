@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// エネミーがダメージを受けた状態(吹っ飛んで落ちる)
+/// </summary>
 class EnemyObjectStateSweepFallDamage : public EnemyObjectStateBase
 {
 public:
@@ -59,12 +62,14 @@ private:
 
 	// プレイヤーの1段階目の通常攻撃のダメージ値
 	const int MDamageValuePlayerFirstAttack;
-	// ダメージ時の速度
-	const float MDamageSpeed;
 	// ベクトルを短くする値
 	const float MVecShortenVelue;
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
+	// ダメージ時の初速度
+	const float MDamageInitSpeed;
+	// 重力
+	const float MGravity;
 
 	// ダメージを受けたか
 	bool mIsDamage;
@@ -76,13 +81,13 @@ private:
 	// ヒットする相手のリストの要素数
 	int mHitTagListSize;
 
-	// このステートに入ってからの経過時刻
-	float mElapseTime;
-	// アニメーション総時間
-	float mTotalAnimTime;
+	// ダメージ時の速度
+	float mDamageSpeed;
 
 	// 座標
 	Vector3 mPosition;
+	// このステートに入った時の座標
+	Vector3 mNowStateInitPos;
 	// 速度
 	Vector3 mVelocity;
 	// プレイヤーに向いたベクトル

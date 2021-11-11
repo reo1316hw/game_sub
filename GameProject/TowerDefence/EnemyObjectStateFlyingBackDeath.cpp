@@ -7,8 +7,8 @@
 EnemyObjectStateFlyingBackDeath::EnemyObjectStateFlyingBackDeath(PlayerObject* _playerPtr)
 	: MHitStopEndTiming(10)
 	, MPlayRate(1.5f)
-	, MDeathInitSpeed(0.0f)
-	, MDecelerationSpeedValue(0.0f)
+	, MDeathInitSpeed(400.0f)
+	, MDecelerationSpeedValue(1.8f)
 	, mIsHitStop(false)
 	, mHitStopCount(0)
 	, mDeathSpeed(0.0f)
@@ -108,8 +108,8 @@ void EnemyObjectStateFlyingBackDeath::Enter(EnemyObject* _owner, const float _De
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
 
-	mDeathSpeed = 400.0f;
-	mDecelerationSpeed = 1.8f;
+	mDeathSpeed = MDeathInitSpeed;
+	mDecelerationSpeed = MDecelerationSpeedValue;
 
 	_owner->RotateToNewForward(mDirPlayerVec);
 }
