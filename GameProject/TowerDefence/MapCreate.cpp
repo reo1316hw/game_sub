@@ -10,13 +10,14 @@ MapCreate::MapCreate()
 	, MBossHitPointGaugePosition(Vector3(400.0f, 400.0f, 0.0f))
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
-	, MShiftVec(Vector3(0.0f, 0.0f, 100.0f))
+	, MGroundShiftVec(Vector3(0.0f, 0.0f, 10.0f))
+	, MWallShiftVec(Vector3(0.0f, 0.0f, 300.0f))
     , mPlayerPtr(nullptr)
 	, mEnemyObjectManagerPtr(nullptr)
 {
 	mSizeX = 0;
 	mSizeY = 0;
-	mOffset = 200;
+	mOffset = 1500;
 }
 
 /// <summary>
@@ -25,7 +26,8 @@ MapCreate::MapCreate()
 MapCreate::~MapCreate()
 {
 	mPlayerMapData.clear();
-	mStaticObjectMapData.clear();
+	mUpperObjectMapData.clear();
+	mLowerObjectMapData.clear();
 }
 
 /// <summary>
@@ -34,21 +36,28 @@ MapCreate::~MapCreate()
 void MapCreate::OpenFile()
 {
 	// プレイヤーのデータの読み込み
-	if (!readTiledJson(mPlayerMapData, "Assets/Config/Fix3dActionGame.json", "Player"))
+	if (!readTiledJson(mPlayerMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Player"))
 	{
 		printf("don't have Layer/Player\n");
 		return;
 	}
 
-	// 静的マップデータの読み込み
-	if (!readTiledJson(mStaticObjectMapData, "Assets/Config/Fix3dActionGame.json", "StaticObject"))
+	// 上層マップデータの読み込み
+	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Upper"))
 	{
 		printf("don't have Layer/StaticObject\n");
 		return;
 	}
 
-	mSizeX = mStaticObjectMapData[0].size();
-	mSizeY = mStaticObjectMapData.size();
+	// 下層マップデータの読み込み
+	if (!readTiledJson(mLowerObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Lower"))
+	{
+		printf("don't have Layer/StaticObject\n");
+		return;
+	}
+
+	mSizeX = mLowerObjectMapData[0].size();
+	mSizeY = mLowerObjectMapData.size();
 	
 	// エネミーマネージャー生成
 	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
@@ -56,8 +65,10 @@ void MapCreate::OpenFile()
 
 	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
-	// 静的オブジェクトのマップデータにアクセスする
-	AccessMapData(mStaticObjectMapData);
+	// 上層オブジェクトのマップデータにアクセスする
+	AccessMapData(mUpperObjectMapData);
+	// 下層オブジェクトのマップデータにアクセスする
+	AccessMapData(mLowerObjectMapData);
 
 	// エネミーを生成
 	mCreateEnemysPtr->CreateEnemyObject(MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel",
@@ -107,10 +118,10 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	case(MapDataNum::eGroundNum):
 	{
 		// 床の座標
-		Vector3 groundPos = _ObjectPos - MShiftVec;
+		Vector3 groundPos = _ObjectPos - MGroundShiftVec;
 
 		new GroundObject(groundPos, MStaticObjectSize,
-			             "Assets/Model/Ground/19Times19_Ground.gpmesh", Tag::eGround);
+			             "Assets/Model/Ground/Ground.gpmesh", Tag::eGround);
 		break;
 	}
 	case(MapDataNum::eEnemyGeneratorNum):
@@ -120,11 +131,22 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		
 		break;
 
-	case(MapDataNum::eTranslucentWallNum):
+	case(MapDataNum::eLateralWallNum):
+	{
+		// 横壁の座標
+		Vector3 lateralWallPos = _ObjectPos + MWallShiftVec;
 
-		//new WallObject(_ObjectPos, MStaticObjectSize, "Assets/Model/Wall/VerticalSuperLongWall.gpmesh", Tag::eTranslucentWall);
+		new WallObject(lateralWallPos, MStaticObjectSize, "Assets/Model/Wall/LateralWall.gpmesh", Tag::eTranslucentWall);
 		break;
-    }
+	}
+	case(MapDataNum::eVerticalWallNum):
+	{
+		// 縦壁の座標
+		Vector3 VerticalWallPos = _ObjectPos + MWallShiftVec;
+		new WallObject(VerticalWallPos, MStaticObjectSize, "Assets/Model/Wall/VerticalWall.gpmesh", Tag::eTranslucentWall);
+		break;
+	}
+	}
 }
 
 /// <summary>

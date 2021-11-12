@@ -17,7 +17,7 @@ ActionScene::ActionScene()
 
 	// 行列初期化
 	Matrix4 proj;
-	proj = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f), RENDERER->GetScreenWidth(), RENDERER->GetScreenHeight(), 1.0, 5000.0f);
+	proj = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f), RENDERER->GetScreenWidth(), RENDERER->GetScreenHeight(), 1.0, 10000.0f);
 	RENDERER->SetProjMatrix(proj);
 
 	// マップを生成するためのクラスを生成

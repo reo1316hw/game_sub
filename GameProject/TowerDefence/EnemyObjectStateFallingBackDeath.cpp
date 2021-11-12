@@ -54,11 +54,11 @@ EnemyState EnemyObjectStateFallingBackDeath::Update(EnemyObject* _owner, const f
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		// hpƒQ[ƒW
-		mEnemyHitPointGaugePtr = _owner->GetEnemyHitPointGaugePtr();
+		//mEnemyHitPointGaugePtr = _owner->GetEnemyHitPointGaugePtr();
 		// hp‚Ì˜g
 		//mEnemyHitPointFramePtr = _owner->GetEnemyHitPointFramePtr();
 
-		mEnemyHitPointGaugePtr->SetState(State::eDead);
+		//mEnemyHitPointGaugePtr->SetState(State::eDead);
 		//mEnemyHitPointFramePtr->SetState(State::eDead);
 		_owner->SetHitPoint(_owner->GetMaxHp());
 		_owner->SetState(State::eDead);

@@ -14,7 +14,8 @@ enum MapDataNum
 	ePlayerNum = 1,
 	eGroundNum,
 	eEnemyGeneratorNum,
-	eTranslucentWallNum
+	eLateralWallNum,
+	eVerticalWallNum
 };
 
 /// <summary>
@@ -72,13 +73,17 @@ private:
 	const Vector3 MStaticObjectSize;
 	// プレイヤーの大きさ
 	const Vector3 MPersonSize;
-	// 丁度よい位置にずらすためのベクトル
-	const Vector3 MShiftVec;
+	// 床を丁度よい位置にずらすためのベクトル
+	const Vector3 MGroundShiftVec;
+	// 壁を丁度よい位置にずらすためのベクトル
+	const Vector3 MWallShiftVec;
 
 	//jsonから読み込んだプレイヤーのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mPlayerMapData;
-	//jsonから読み込んだ静的オブジェクトのマップデータを格納するための可変長配列
-	std::vector<std::vector<int>> mStaticObjectMapData;
+	//jsonから読み込んだ上層オブジェクトのマップデータを格納するための可変長配列
+	std::vector<std::vector<int>> mUpperObjectMapData;
+	//jsonから読み込んだ下層オブジェクトのマップデータを格納するための可変長配列
+	std::vector<std::vector<int>> mLowerObjectMapData;
 
 	// マップデータの横のタイル数
 	int   mSizeX;
