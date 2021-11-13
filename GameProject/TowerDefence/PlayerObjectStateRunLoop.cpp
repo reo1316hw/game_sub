@@ -25,7 +25,7 @@ PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _
 	{
 	    return PlayerState::ePlayerStateDamage;
 	}
-	
+
 	// いずれのボタンも押されていない
 	if (!mIsRun && !mIsAttack)
 	{
@@ -152,6 +152,9 @@ void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, const float _DeltaTim
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateRunLoop::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
+	// 座標
+	mPosition = _owner->GetPosition();
+
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 

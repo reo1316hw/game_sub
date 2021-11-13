@@ -117,6 +117,8 @@ private:
 	std::vector<BoxCollider*> mGroundBoxes;
 	// 壁の矩形当たり判定
 	std::vector<BoxCollider*> mWallBoxes;
+	// 門の矩形当たり判定
+	std::vector<BoxCollider*> mGateBoxes;
 	// プレイヤーの矩形当たり判定
 	std::vector<BoxCollider*> mPlayerBoxes;
 	// 1段階目の通常攻撃エフェクトの矩形当たり判定

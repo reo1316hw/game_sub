@@ -99,7 +99,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	new HitEffect(this, MHitEffectScale, Tag::eHItEffect);
 
 	// 矩形当たり判定
-	mBox = AABB(Vector3(-30.0f, -30.0f, 0.0f), Vector3(30.0f, 30.0f, 170.0f));
+	mBox = AABB(Vector3(-50.0f, -50.0f, 0.0f), Vector3(50.0f, 50.0f, 170.0f));
 
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
@@ -148,6 +148,44 @@ void PlayerObject::GameObjectInput(const InputState& _KeyState)
 }
 
 /// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void PlayerObject::OnCollision(const GameObject& _HitObject)
+{
+	// オブジェクトのタグ
+	Tag tag = _HitObject.GetTag();
+
+	mBox = mBoxColliderPtr->GetWorldBox();
+
+	if (tag == eWall ||
+		tag == eGate)
+	{
+		//押し戻し処理
+		float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;
+		float dx2 = _HitObject.GetObjectAABB().m_max.x - mBox.m_min.x;
+		float dy1 = _HitObject.GetObjectAABB().m_min.y - mBox.m_max.y;
+		float dy2 = _HitObject.GetObjectAABB().m_max.y - mBox.m_min.y;
+
+		float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
+		float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
+
+		if (Math::Abs(dx) <= Math::Abs(dy))
+		{
+			mPosition.x += dx;
+		}
+		else if (Math::Abs(dy) <= Math::Abs(dx))
+		{
+			mPosition.y += dy;
+		}
+
+		SetPosition(mPosition);
+	}
+
+	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
+}
+
+/// <summary>
 /// 回転処理
 /// </summary>
 /// <param name="_Axis"> 軸 </param>
@@ -159,44 +197,6 @@ void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
 	Quaternion inc(_axis, radian);
 	Quaternion target = Quaternion::Concatenate(rot, inc);
 	SetRotation(target);
-}
-
-/// <summary>
-/// ヒットした時の処理
-/// </summary>
-/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void PlayerObject::OnCollision(const GameObject& _HitObject)
-{
-	//// オブジェクトのタグ
-	//Tag tag = _HitObject.GetTag();
-
-	//if (tag == eWall)
-	//{
-	//	//押し戻し処理
-	//	float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;
-	//	float dx2 = _HitObject.GetObjectAABB().m_max.x - mBox.m_min.x;
-	//	float dy1 = _HitObject.GetObjectAABB().m_min.y - mBox.m_max.y;
-	//	float dy2 = _HitObject.GetObjectAABB().m_max.y - mBox.m_min.y;
-	//	float dz1 = _HitObject.GetObjectAABB().m_min.z - mBox.m_max.z;
-	//	float dz2 = _HitObject.GetObjectAABB().m_max.z - mBox.m_min.z;
-
-	//	float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
-	//	float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
-	//	float dz = Math::Abs(dz1) < Math::Abs(dz2) ? dz1 : dz2;
-
-	//	if (Math::Abs(dx) <= Math::Abs(dy))
-	//	{
-	//		mPosition.x += dx;
-	//	}
-	//	else if (Math::Abs(dy) <= Math::Abs(dx))
-	//	{
-	//		mPosition.y += dy;
-	//	}
-
-	//	SetPosition(mPosition);
-	//}
-
-	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
 }
 
 /// <summary>

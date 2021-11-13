@@ -301,6 +301,9 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateSecondAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
+	// 座標
+	mPosition = _owner->GetPosition();
+
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 

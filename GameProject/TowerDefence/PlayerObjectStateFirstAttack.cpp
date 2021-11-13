@@ -303,6 +303,9 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateFirstAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
+	// 座標
+	mPosition = _owner->GetPosition();
+
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
