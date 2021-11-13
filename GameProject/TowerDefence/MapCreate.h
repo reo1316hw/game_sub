@@ -13,9 +13,10 @@ enum MapDataNum
 {
 	ePlayerNum = 1,
 	eGroundNum,
-	eEnemyGeneratorNum,
 	eLateralWallNum,
-	eVerticalWallNum
+	eVerticalWallNum,
+	eEnemyGeneratorNum,
+	eBossNum
 };
 
 /// <summary>
@@ -63,8 +64,6 @@ private:
 	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
 	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);
 	
-	// ボスを生成する座標
-	const Vector3 MCreateBossPosition;
 	// プレイヤーのhpゲージの座標
 	const Vector3 MPlayerHitPointGaugePosition;
 	// ボスのhpゲージの座標
@@ -83,7 +82,9 @@ private:
 	//jsonから読み込んだ上層オブジェクトのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mUpperObjectMapData;
 	//jsonから読み込んだ下層オブジェクトのマップデータを格納するための可変長配列
-	std::vector<std::vector<int>> mLowerObjectMapData;
+	std::vector<std::vector<int>> mUnderObjectMapData;
+	//jsonから読み込んだ最下層オブジェクトのマップデータを格納するための可変長配列
+	std::vector<std::vector<int>> mBottomObjectMapData;
 
 	// マップデータの横のタイル数
 	int   mSizeX;
