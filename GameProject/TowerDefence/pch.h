@@ -90,6 +90,7 @@
 #include "BossObjectStateDeath.h"
 
 #include "GroundObject.h"
+#include "GateObject.h"
 #include "WallObject.h"
 #include "MainCameraObject.h"
 #include "Sprite.h"

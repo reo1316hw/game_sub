@@ -353,7 +353,7 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
-	if (_box->GetOwner()->GetTag() == Tag::eTranslucentWall)
+	if (_box->GetOwner()->GetTag() == Tag::eWall)
 	{
 		mWallBoxes.emplace_back(_box);
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ

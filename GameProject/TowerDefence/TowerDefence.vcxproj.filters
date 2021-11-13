@@ -309,6 +309,9 @@
     <ClCompile Include="EnemyObjectStateSweepFallDeath.cpp">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClCompile>
+    <ClCompile Include="GateObject.cpp">
+      <Filter>GameObject\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -620,6 +623,9 @@
     </ClInclude>
     <ClInclude Include="EnemyObjectStateSweepFallDeath.h">
       <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GateObject.h">
+      <Filter>GameObject\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

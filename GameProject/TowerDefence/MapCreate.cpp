@@ -10,7 +10,8 @@ MapCreate::MapCreate()
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
 	, MGroundShiftVec(Vector3(0.0f, 0.0f, 50.0f))
-	, MWallShiftVec(Vector3(0.0f, 0.0f, 300.0f))
+	, MWallShiftVec(Vector3(0.0f, 0.0f, 350.0f))
+	, MGateShiftVec(Vector3(0.0f, -30.0f, 0.0f))
     , mPlayerPtr(nullptr)
 	, mEnemyObjectManagerPtr(nullptr)
 {
@@ -134,15 +135,15 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		// 横壁の座標
 		Vector3 lateralWallPos = _ObjectPos + MWallShiftVec;
 
-		new WallObject(lateralWallPos, MStaticObjectSize, "Assets/Model/Wall/LateralWall.gpmesh", Tag::eTranslucentWall);
+		new WallObject(lateralWallPos, MStaticObjectSize, "Assets/Model/Wall/LateralWall.gpmesh", Tag::eWall);
 		break;
 	}
 	case(MapDataNum::eVerticalWallNum):
 	{
 		// 縦壁の座標
-		Vector3 VerticalWallPos = _ObjectPos + MWallShiftVec;
+		Vector3 verticalWallPos = _ObjectPos + MWallShiftVec;
 
-		new WallObject(VerticalWallPos, MStaticObjectSize, "Assets/Model/Wall/VerticalWall.gpmesh", Tag::eTranslucentWall);
+		new WallObject(verticalWallPos, MStaticObjectSize, "Assets/Model/Wall/VerticalWall.gpmesh", Tag::eWall);
 		break;
 	}
 	case(MapDataNum::eEnemyGeneratorNum):
@@ -151,11 +152,22 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		mCreateEnemysPtr->CreateEnemyGenerator(_ObjectPos, MStaticObjectSize, mPlayerPtr);
 
 		break;
+
 	case(MapDataNum::eBossNum):
 
 		// エネミーボスを生成
 		mBossPtr = mCreateEnemysPtr->CreateBossObject(_ObjectPos, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
 			"Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
+
+		break;
+
+	case(MapDataNum::eGateNum):
+
+		// 門の座標
+		Vector3 gatePos = _ObjectPos + MGateShiftVec;
+
+		// 門を生成
+		new GateObject(gatePos, MStaticObjectSize, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate);
 
 		break;
 	}

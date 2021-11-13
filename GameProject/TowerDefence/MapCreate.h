@@ -16,7 +16,8 @@ enum MapDataNum
 	eLateralWallNum,
 	eVerticalWallNum,
 	eEnemyGeneratorNum,
-	eBossNum
+	eBossNum,
+	eGateNum
 };
 
 /// <summary>
@@ -76,6 +77,8 @@ private:
 	const Vector3 MGroundShiftVec;
 	// 壁を丁度よい位置にずらすためのベクトル
 	const Vector3 MWallShiftVec;
+	// 門を丁度よい位置にずらすためのベクトル
+	const Vector3 MGateShiftVec;
 
 	//jsonから読み込んだプレイヤーのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mPlayerMapData;

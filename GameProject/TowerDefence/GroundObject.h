@@ -1,10 +1,5 @@
 #pragma once
 
-// ‘O•ûéŒ¾
-class MeshComponent;
-class Mesh;
-class BoxCollider;
-
 /// <summary>
 /// °
 /// </summary>

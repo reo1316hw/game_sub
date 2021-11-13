@@ -56,7 +56,8 @@ enum Tag
 	eOverheadMagicEffect,
 	eTeleportationEffect,
 	eHItEffect,
-	eTranslucentWall
+	eWall,
+	eGate
 };
 
 /// <summary>
