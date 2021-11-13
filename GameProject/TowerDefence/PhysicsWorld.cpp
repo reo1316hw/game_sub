@@ -64,6 +64,32 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 		return;
 	}
 
+	if (_box->GetOwner()->GetTag() == Tag::ePlayer)
+	{
+		for (auto itr : mWallBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+	}
+
 	if (_box->GetOwner()->GetTag() == Tag::eEnemyAttackDecision)
 	{
 		for (auto itr : mPlayerBoxes)

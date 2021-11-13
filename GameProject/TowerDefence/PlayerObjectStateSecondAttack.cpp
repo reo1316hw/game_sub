@@ -9,16 +9,16 @@ PlayerObjectStateSecondAttack::PlayerObjectStateSecondAttack()
 	, MHalfRotation(180)
 	, MAllRotation(360)
 	, MValidComboFrame(0.5f)
-	, MBoxEnableTiming(0.4f)
-	, MBoxDisableTiming(0.43f)
+	, MBoxEnableTiming(0.3f)
 	, MAttackSpeed(100.0f)
 	, MPlayRate(1.8f)
 	, MLeftAxisThreshold(0.5f)
 	, MValueShortenVector(0.05f)
-	, mTwoVectorAngle(0.0f)
 	, mIsCollisionState(false)
 	, mIsOneCollisionState(false)
 	, mDamageValue(0)
+	, mTwoVectorAngle(0.0f)
+	, mBoxDisableTiming(0.0f)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mRightVec(Vector3::Zero)
@@ -96,7 +96,7 @@ PlayerState PlayerObjectStateSecondAttack::Update(PlayerObject* _owner, const fl
 		return PlayerState::ePlayerStateSecondAttack;
 	}
 
-	if (mElapseTime >= MBoxDisableTiming)
+	if (mElapseTime >= mBoxDisableTiming)
 	{
 		// 1段階目の通常攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
@@ -286,6 +286,7 @@ void PlayerObjectStateSecondAttack::Enter(PlayerObject* _owner, const float _Del
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateSecondAttack)->GetDuration();
 	mElapseTime = 0.0f;
+	mBoxDisableTiming = MBoxEnableTiming + _DeltaTime;
 	mIsOneCollisionState = false;
 
 	mDirVec = Vector3::Zero;

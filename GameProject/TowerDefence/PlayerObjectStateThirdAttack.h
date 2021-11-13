@@ -110,10 +110,6 @@ private:
 
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
-	// 当たり判定を有効にするタイミング
-	const int MBoxEnableTiming;
-	// 当たり判定を無効にするタイミング
-	const int MBoxDisableTiming;
 	// ヒットストップが終わるタイミング
 	const int MHitStopEndTiming;
 	// 半回転値
@@ -124,6 +120,8 @@ private:
 	const float MAttackSpeed;
 	// アニメーションの再生速度
 	const float MPlayRate;
+	// 当たり判定を有効にするタイミング
+	const float MBoxEnableTiming;
 	// 左スティックのしきい値
 	const float MLeftAxisThreshold;
 	// ベクトルを短くする値
@@ -132,6 +130,8 @@ private:
 	// 当たり判定の状態
 	// true : 有効, false : 無効
 	bool mIsCollisionState;
+	// 現在のステートに入って1回だけ当たり判定を有効にする
+	bool mIsOneCollisionState;
 	// ヒットストップするか
 	bool mIsHitStop;
 
@@ -144,6 +144,8 @@ private:
 
 	// 2つのベクトルのなす角
 	float mTwoVectorAngle;
+	// 当たり判定を無効にするタイミング
+	float mBoxDisableTiming;
 
 	// 左スティックの入力値を取得
 	Vector2 mLeftAxis;

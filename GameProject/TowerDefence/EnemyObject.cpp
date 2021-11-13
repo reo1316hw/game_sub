@@ -152,19 +152,14 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 		float dy = Math::Abs(dy1) < Math::Abs(dy2) ? dy1 : dy2;
 		float dz = Math::Abs(dz1) < Math::Abs(dz2) ? dz1 : dz2;
 
-		if (Math::Abs(dx) <= Math::Abs(dy) /*&& Math::Abs(dx) <= Math::Abs(dz)*/)
+		if (Math::Abs(dx) <= Math::Abs(dy))
 		{
 			mPosition.x += dx;
 		}
-		else if (Math::Abs(dy) <= Math::Abs(dx) /*&& Math::Abs(dy) <= Math::Abs(dz)*/)
+		else if (Math::Abs(dy) <= Math::Abs(dx))
 		{
 			mPosition.y += dy;
 		}
-		//else
-		////if (Math::Abs(dz) <= Math::Abs(dx) && Math::Abs(dz) <= Math::Abs(dy))
-		//{
-		//	mPosition.z += dz;
-		//}
 
 		SetPosition(mPosition);
 	}

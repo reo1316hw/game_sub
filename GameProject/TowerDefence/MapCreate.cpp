@@ -126,6 +126,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		// è∞ÇÃç¿ïW
 		Vector3 groundPos = _ObjectPos - MGroundShiftVec;
 
+		// è∞Çê∂ê¨
 		new GroundObject(groundPos, MStaticObjectSize,
 			             "Assets/Model/Ground/Ground.gpmesh", Tag::eGround);
 		break;
@@ -134,7 +135,8 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	{
 		// â°ï«ÇÃç¿ïW
 		Vector3 lateralWallPos = _ObjectPos + MWallShiftVec;
-
+		
+		// â°ï«Çê∂ê¨
 		new WallObject(lateralWallPos, MStaticObjectSize, "Assets/Model/Wall/LateralWall.gpmesh", Tag::eWall);
 		break;
 	}
@@ -143,6 +145,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		// ècï«ÇÃç¿ïW
 		Vector3 verticalWallPos = _ObjectPos + MWallShiftVec;
 
+		// ècï«Çê∂ê¨
 		new WallObject(verticalWallPos, MStaticObjectSize, "Assets/Model/Wall/VerticalWall.gpmesh", Tag::eWall);
 		break;
 	}
@@ -162,12 +165,22 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		break;
 
 	case(MapDataNum::eGateNum):
-
+	{
 		// ñÂÇÃç¿ïW
 		Vector3 gatePos = _ObjectPos + MGateShiftVec;
 
 		// ñÂÇê∂ê¨
 		new GateObject(gatePos, MStaticObjectSize, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate);
+
+		break;
+	}
+	case(MapDataNum::eAisleVerticalWallNum):
+
+		// í òHÇÃècï«ÇÃç¿ïW
+		Vector3 aisleVerticalWallPos = _ObjectPos + MWallShiftVec;
+
+		// í òHÇÃècï«Çê∂ê¨
+		new WallObject(aisleVerticalWallPos, MStaticObjectSize, "Assets/Model/Wall/AisleVerticalWall.gpmesh", Tag::eWall);
 
 		break;
 	}

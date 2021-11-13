@@ -8,13 +8,13 @@ PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 	, MHitStopEndTiming(5)
 	, MValidComboFrame(0.4f)
 	, MBoxEnableTiming(0.15f)
-	, MBoxDisableTiming(0.17f)
 	, MPlayRate(1.5f)
 	, MAttackSpeed(300.0f)
 	, mIsCollisionState(false)
 	, mIsHitStop(false)
 	, mDamageValue(0)
 	, mHitStopCount(0)
+	, mBoxDisableTiming(0.0f)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, skeletalMeshCompPtr(nullptr)
@@ -96,7 +96,7 @@ PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const floa
 		return PlayerState::ePlayerStateDashAttack;
 	}
 
-	if (mElapseTime >= MBoxDisableTiming)
+	if (mElapseTime >= mBoxDisableTiming)
 	{
 		// ダッシュ攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
@@ -138,6 +138,7 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack)->GetDuration() - 0.4f;
 	mElapseTime = 0.0f;
+	mBoxDisableTiming = MBoxEnableTiming + _DeltaTime;
 
 	// ヒットストップ関係初期化
 	mIsHitStop = false;

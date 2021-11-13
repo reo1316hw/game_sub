@@ -5,22 +5,23 @@
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	: faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
-	, MBoxEnableTiming(35)
-	, MBoxDisableTiming(36)
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MHalfRotation(180)
 	, MAllRotation(360)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.8f)
+	, MBoxEnableTiming(0.5f)
 	, MLeftAxisThreshold(0.5f)
 	, MValueShortenVector(0.05f)
 	, mIsCollisionState(false)
+	, mIsOneCollisionState(false)
 	, mIsHitStop(false)
 	, mDamageValue(0)
 	, mHitUntilCount(0)
 	, mHitStopCount(0)
 	, mTwoVectorAngle(0.0f)
+	, mBoxDisableTiming(0.0f)
 	, mLeftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
@@ -92,18 +93,27 @@ PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const flo
 	_owner->SetPosition(mPosition);
 	_owner->RotateToNewForward(mDirVec);
 
-	++mHitUntilCount;
+	if (mIsOneCollisionState)
+	{
+		return PlayerState::ePlayerStateThirdAttack;
+	}
 
-	if (mHitUntilCount == MBoxEnableTiming)
+	if (mElapseTime >= MBoxEnableTiming)
 	{
 		// 3段階目の通常攻撃の当たり判定を有効にする
 		mIsCollisionState = true;
 	}
 
-	if (mHitUntilCount == MBoxDisableTiming)
+	if (!mIsCollisionState)
+	{
+		return PlayerState::ePlayerStateThirdAttack;
+	}
+
+	if (mElapseTime >= mBoxDisableTiming)
 	{
 		// 3段階目の通常攻撃の当たり判定を無効にする
 		mIsCollisionState = false;
+		mIsOneCollisionState = true;
 	}
 
 	return PlayerState::ePlayerStateThirdAttack;
@@ -283,7 +293,8 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
 	mElapseTime = 0.0f;
-	mHitUntilCount = 0;
+	mBoxDisableTiming = MBoxEnableTiming + _DeltaTime;
+	mIsOneCollisionState = false;
 
 	// ヒットストップ関係初期化
 	mIsHitStop = false;

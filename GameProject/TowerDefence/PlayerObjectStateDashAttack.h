@@ -56,8 +56,6 @@ private:
 	const int MHitStopEndTiming;
 	// 当たり判定を有効にするタイミング
 	const float MBoxEnableTiming;
-	// 当たり判定を無効にするタイミング
-	const float MBoxDisableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -77,6 +75,9 @@ private:
 	int mDamageValue;
 	// ヒットストップするフレーム数
 	int mHitStopCount;
+
+	// 当たり判定を無効にするタイミング
+	float mBoxDisableTiming;
 
 	// 座標
 	Vector3 mPosition;

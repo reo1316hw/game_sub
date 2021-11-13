@@ -116,8 +116,6 @@ private:
 	const int MAllRotation;
 	// 当たり判定を有効にするタイミング
 	const float MBoxEnableTiming;
-	// 当たり判定を無効にするタイミング
-	const float MBoxDisableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -141,6 +139,8 @@ private:
 
 	// 2つのベクトルのなす角
 	float mTwoVectorAngle;
+	// 当たり判定を無効にするタイミング
+	float mBoxDisableTiming;
 
 	// 左スティックの入力値を取得
 	Vector2 mLeftAxis;
