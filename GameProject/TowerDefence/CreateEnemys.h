@@ -28,8 +28,9 @@ public:
     /// </summary>
     /// <param name="_Pos"> 座標 </param>
     /// <param name="_Scale"> 大きさ </param>
+    /// <param name="_Angle"> 回転角 </param>
     /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-    void CreateEnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, PlayerObject* _playerPtr);
+    void CreateEnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, const float& _Angle, PlayerObject* _playerPtr);
 
     /// <summary>
     /// エネミーを生成

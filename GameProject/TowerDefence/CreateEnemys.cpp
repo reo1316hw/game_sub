@@ -16,10 +16,11 @@ CreateEnemys::CreateEnemys(GameObject* _owner)
 /// </summary>
 /// <param name="_Pos"> 座標 </param>
 /// <param name="_Scale"> 大きさ </param>
+/// <param name="_Angle"> 回転角 </param>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-void CreateEnemys::CreateEnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, PlayerObject* _playerPtr)
+void CreateEnemys::CreateEnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, const float& _Angle, PlayerObject* _playerPtr)
 {
-	mEnemyGeneratorList.push_back(new EnemyGenerator(_Pos, _Scale, Tag::eEnemyGenerator, _playerPtr));
+	mEnemyGeneratorList.push_back(new EnemyGenerator(_Pos, _Scale, _Angle, "Assets/Model/EnemyGenerator/Door.gpmesh", Tag::eEnemyGenerator, _playerPtr));
 }
 
 /// <summary>

@@ -12,6 +12,11 @@ MapCreate::MapCreate()
 	, MGroundShiftVec(Vector3(0.0f, 0.0f, 50.0f))
 	, MWallShiftVec(Vector3(0.0f, 0.0f, 350.0f))
 	, MGateShiftVec(Vector3(0.0f, -30.0f, 0.0f))
+	, MRightEnemyGeneratorShiftVec(Vector3(-60.0f, 0.0f, 0.0f))
+	, MLeftEnemyGeneratorShiftVec(Vector3(60.0f, 0.0f, 0.0f))
+	, MFrontEnemyGeneratorShiftVec(Vector3(0.0f, 60.0f, 0.0f))
+	, MRightEnemyGeneratorAngle(90.0f)
+	, MLeftEnemyGeneratorAngle(270.0f)
     , mPlayerPtr(nullptr)
 	, mEnemyObjectManagerPtr(nullptr)
 {
@@ -149,21 +154,6 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		new WallObject(verticalWallPos, MStaticObjectSize, "Assets/Model/Wall/VerticalWall.gpmesh", Tag::eWall);
 		break;
 	}
-	case(MapDataNum::eEnemyGeneratorNum):
-
-		// エネミーの生成器を生成
-		mCreateEnemysPtr->CreateEnemyGenerator(_ObjectPos, MStaticObjectSize, mPlayerPtr);
-
-		break;
-
-	case(MapDataNum::eBossNum):
-
-		// エネミーボスを生成
-		mBossPtr = mCreateEnemysPtr->CreateBossObject(_ObjectPos, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
-			"Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
-
-		break;
-
 	case(MapDataNum::eGateNum):
 	{
 		// 門の座標
@@ -175,12 +165,50 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		break;
 	}
 	case(MapDataNum::eAisleVerticalWallNum):
-
+	{
 		// 通路の縦壁の座標
 		Vector3 aisleVerticalWallPos = _ObjectPos + MWallShiftVec;
 
 		// 通路の縦壁を生成
 		new WallObject(aisleVerticalWallPos, MStaticObjectSize, "Assets/Model/Wall/AisleVerticalWall.gpmesh", Tag::eWall);
+
+		break;
+	}
+	case(MapDataNum::eRightEnemyGeneratorNum):
+	{
+		// エネミー生成器の座標
+		Vector3 enemyGeneratorPos = _ObjectPos + MRightEnemyGeneratorShiftVec;
+
+		// エネミーの生成器を生成
+		mCreateEnemysPtr->CreateEnemyGenerator(enemyGeneratorPos, MStaticObjectSize, MRightEnemyGeneratorAngle, mPlayerPtr);
+
+		break;
+	}
+	case(MapDataNum::eLeftEnemyGeneratorNum):
+	{
+		// エネミー生成器の座標
+		Vector3 enemyGeneratorPos = _ObjectPos + MLeftEnemyGeneratorShiftVec;
+
+		// エネミーの生成器を生成
+		mCreateEnemysPtr->CreateEnemyGenerator(enemyGeneratorPos, MStaticObjectSize, MLeftEnemyGeneratorAngle, mPlayerPtr);
+
+		break;
+	}
+	case(MapDataNum::eFrontEnemyGeneratorNum):
+	{
+		// エネミー生成器の座標
+		Vector3 enemyGeneratorPos = _ObjectPos + MFrontEnemyGeneratorShiftVec;
+
+		// エネミーの生成器を生成
+		mCreateEnemysPtr->CreateEnemyGenerator(enemyGeneratorPos, MStaticObjectSize, 0.0f, mPlayerPtr);
+
+		break;
+	}
+	case(MapDataNum::eBossNum):
+
+		// エネミーボスを生成
+		mBossPtr = mCreateEnemysPtr->CreateBossObject(_ObjectPos, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
+			"Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
 
 		break;
 	}

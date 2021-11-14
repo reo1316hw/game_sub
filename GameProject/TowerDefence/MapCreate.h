@@ -15,10 +15,12 @@ enum MapDataNum
 	eGroundNum,
 	eLateralWallNum,
 	eVerticalWallNum,
-	eEnemyGeneratorNum,
-	eBossNum,
+	eAisleVerticalWallNum,
 	eGateNum,
-	eAisleVerticalWallNum
+	eRightEnemyGeneratorNum,
+	eLeftEnemyGeneratorNum,
+	eFrontEnemyGeneratorNum,
+	eBossNum
 };
 
 /// <summary>
@@ -66,6 +68,11 @@ private:
 	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
 	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);
 	
+	// マップ右側のエネミー生成器を回転するための角度
+	const float MRightEnemyGeneratorAngle;
+	// マップ左側のエネミー生成器を回転するための角度
+	const float MLeftEnemyGeneratorAngle;
+
 	// プレイヤーのhpゲージの座標
 	const Vector3 MPlayerHitPointGaugePosition;
 	// ボスのhpゲージの座標
@@ -82,6 +89,12 @@ private:
 	const Vector3 MGateShiftVec;
 	// 通路の縦壁を丁度よい位置にずらすためのベクトル
 	const Vector3 MAisleVerticalWallShiftVec;
+	// マップ右側のエネミー生成器を丁度よい位置にずらすためのベクトル
+	const Vector3 MRightEnemyGeneratorShiftVec;
+	// マップ左側のエネミー生成器を丁度よい位置にずらすためのベクトル
+	const Vector3 MLeftEnemyGeneratorShiftVec;
+	// マップ正面側のエネミー生成器を丁度よい位置にずらすためのベクトル
+	const Vector3 MFrontEnemyGeneratorShiftVec;
 
 	//jsonから読み込んだプレイヤーのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mPlayerMapData;

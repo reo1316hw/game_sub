@@ -312,6 +312,9 @@
     <ClCompile Include="GateObject.cpp">
       <Filter>GameObject\Map</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyGeneratorBlackBoard.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -626,6 +629,9 @@
     </ClInclude>
     <ClInclude Include="GateObject.h">
       <Filter>GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyGeneratorBlackBoard.h">
+      <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

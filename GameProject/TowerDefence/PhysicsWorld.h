@@ -131,6 +131,8 @@ private:
 	std::vector<BoxCollider*> mDashAttackEffectBoxes;
 	// エネミーの矩形当たり判定
 	std::vector<BoxCollider*> mEnemyBoxes;
+	// エネミーの生成器の矩形当たり判定
+	std::vector<BoxCollider*> mEnemyGeneratorBoxes;
 	// エネミーの攻撃用の矩形当たり判定
 	std::vector<BoxCollider*> mEnemyAttackDecisionBoxes;
 	// ボスの矩形当たり判定

@@ -64,6 +64,7 @@
 #include "EnemyObject.h"
 #include "EnemyAttackDecisionObject.h"
 #include "EnemyGenerator.h"
+#include "EnemyGeneratorBlackBoard.h"
 #include "EnemyObjectStateBase.h"
 #include "EnemyObjectStateTrack.h"
 #include "EnemyObjectStateWait.h"

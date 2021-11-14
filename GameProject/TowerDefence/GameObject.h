@@ -47,6 +47,7 @@ enum Tag
 	eGround,
 	eEnemyManager,
 	eEnemyGenerator,
+	eEnemyGeneratorBlackBoard,
 	eEnemy,
 	eEnemyAttackDecision,
 	eBoss,

@@ -88,7 +88,29 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
-		for (auto itr : mGateBoxes)
+		//for (auto itr : mGateBoxes)
+		//{
+		//	if (itr == _box)
+		//	{
+		//		continue;
+		//	}
+		//	// コライダーの親オブジェクトがActiveじゃなければ終了する
+		//	// コライダーが有効じゃなかったら終了する
+		//	if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+		//	{
+		//		continue;
+		//	}
+		//	bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+		//	if (hit)
+		//	{
+		//		onCollisionFunc func = mCollisionFunction.at(_box);
+		//		func(*(itr->GetOwner()));
+		//		func = mCollisionFunction.at(itr);
+		//		func(*(_box->GetOwner()));
+		//		_box->Refresh();
+		//	}
+		//}
+		for (auto itr : mEnemyGeneratorBoxes)
 		{
 			if (itr == _box)
 			{
@@ -159,6 +181,28 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 			}
 		}
 		for (auto itr : mGateBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mEnemyGeneratorBoxes)
 		{
 			if (itr == _box)
 			{
@@ -301,6 +345,28 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 			}
 		}
 		for (auto itr : mGateBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mEnemyGeneratorBoxes)
 		{
 			if (itr == _box)
 			{
@@ -515,6 +581,12 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::eEnemyGenerator)
+	{
+		mEnemyGeneratorBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 	if (_box->GetOwner()->GetTag() == Tag::eEnemyAttackDecision)
 	{
 		mEnemyAttackDecisionBoxes.emplace_back(_box);
@@ -564,6 +636,12 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 	{
 		std::iter_swap(enemyBox, mEnemyBoxes.end() - 1);
 		mEnemyBoxes.pop_back();
+	}
+	auto enemyGeneratorBox = std::find(mEnemyGeneratorBoxes.begin(), mEnemyGeneratorBoxes.end(), _box);
+	if (enemyGeneratorBox != mEnemyGeneratorBoxes.end())
+	{
+		std::iter_swap(enemyGeneratorBox, mEnemyGeneratorBoxes.end() - 1);
+		mEnemyGeneratorBoxes.pop_back();
 	}
 	auto firstAttackEffectBox = std::find(mFirstAttackEffectBoxes.begin(), mFirstAttackEffectBoxes.end(), _box);
 	if (firstAttackEffectBox != mFirstAttackEffectBoxes.end())
@@ -661,6 +739,7 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mThirdAttackEffectBoxes, Color::LightGreen);
 	DrawBoxs(mDashAttackEffectBoxes, Color::LightGreen);
 	DrawBoxs(mEnemyBoxes, Color::White);
+	DrawBoxs(mEnemyGeneratorBoxes, Color::Blue);
 	DrawBoxs(mEnemyAttackDecisionBoxes, Color::Yellow);
 	DrawBoxs(mBossBoxes, Color::LightYellow);
 }
