@@ -211,6 +211,14 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 			"Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
 
 		break;
+
+	case(MapDataNum::eTutorialEnemyNum):
+
+		// チュートリアルエネミーを生成
+		mCreateEnemysPtr->CreateEnemyObject(true, _ObjectPos, MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh",
+			"Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, mPlayerPtr);
+
+		break;
 	}
 }
 

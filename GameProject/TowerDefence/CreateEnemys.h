@@ -44,6 +44,19 @@ public:
                            const Tag& _ObjectTag, PlayerObject* _playerPtr);
 
     /// <summary>
+    /// エネミーを生成
+    /// </summary>
+    /// <param name="_ShouldTutorialUse"> チュートリアルで使用するか </param>
+    /// <param name="_Pos"> 座標 </param>
+    /// <param name="_Scale"> 大きさ </param>
+    /// <param name="_GpmeshName"> gpmeshのパス </param>
+    /// <param name="_GpskelName"> gpskelのパス </param>
+    /// <param name="_ObjectTag"> オブジェクトのタグ </param>
+    /// <param name="_playerPtr"> プレイヤーのポインタ </param>
+    void CreateEnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, const Vector3& _Scale,
+        const char* _GpmeshName, const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr);
+    
+    /// <summary>
     /// ボスを生成
     /// </summary>
     /// <param name="_Pos"> 座標 </param>
@@ -60,6 +73,8 @@ private:
 
     // 1区画に生成できる数
     const int MNumGeneratableInOneArea;
+    // チュートリアル区画で生成する数
+    const int MNumGeneratableInTutorialArea;
 
     // エネミー生成器の動的配列
     std::vector<EnemyGenerator*> mEnemyGeneratorList;

@@ -46,18 +46,6 @@ void EnemyGenerator::UpdateGameObject(float _deltaTime)
 }
 
 /// <summary>
-/// エネミーの生成
-/// </summary>
-/// <returns> エネミーのポインタ</returns>
-EnemyObject* EnemyGenerator::CreateEnemyObject()
-{
-	return new EnemyObject(mPosition, mScale, "Assets/Model/Enemy/Enemy.gpmesh"
-		, "Assets/Model/Enemy/Enemy.gpskel"
-		, Tag::eEnemy
-		, mPlayerPtr);
-}
-
-/// <summary>
 /// 回転処理
 /// </summary>
 /// <param name="_Axis"> 軸 </param>

@@ -30,12 +30,6 @@ public:
     /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
 
-	/// <summary>
-	/// エネミーの生成
-	/// </summary>
-	/// <returns> エネミーのポインタ</returns>
-	EnemyObject* CreateEnemyObject();
-
 private:
 
 	/// <summary>

@@ -50,6 +50,19 @@ public:
 		        const Tag& _ObjectTag, PlayerObject* _playerPtr);
 
 	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="_ShouldTutorialUse"> チュートリアルで使用するか </param>
+	/// <param name="_Pos"> 座標 </param>
+	/// <param name="_Scale"> 大きさ </param>
+	/// <param name="_GpmeshName"> gpmeshのパス </param>
+	/// <param name="_GpskelName"> gpskelのパス </param>
+	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
+	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName,
+		const char* _GpskelName, const Tag& _ObjectTag, PlayerObject* _playerPtr);
+
+	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~EnemyObject() {};
