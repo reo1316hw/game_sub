@@ -92,6 +92,7 @@
 
 #include "GroundObject.h"
 #include "GateObject.h"
+#include "GateDoorObject.h"
 #include "WallObject.h"
 #include "MainCameraObject.h"
 #include "Sprite.h"

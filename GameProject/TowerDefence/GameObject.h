@@ -58,7 +58,8 @@ enum Tag
 	eTeleportationEffect,
 	eHItEffect,
 	eWall,
-	eGate
+	eGate,
+	eGateDoor
 };
 
 /// <summary>

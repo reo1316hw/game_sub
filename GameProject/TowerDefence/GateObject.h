@@ -28,4 +28,9 @@ public:
 	void UpdateGameObject(float _deltaTime)override;
 
 private:
+
+	// 門の右扉を丁度よい位置にずらすためのベクトル
+	const Vector3 MRightGateDoorShiftVec;
+	// 門の左扉を丁度よい位置にずらすためのベクトル
+	const Vector3 MLeftGateDoorShiftVec;
 };
