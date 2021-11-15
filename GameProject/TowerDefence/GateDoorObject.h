@@ -23,4 +23,11 @@ public:
 	~GateDoorObject() {};
 
 private:
+
+	/// <summary>
+	/// ‰ñ“]ˆ—
+	/// </summary>
+	/// <param name="_Axis"> ² </param>
+	/// <param name="_Angle"> Šp“x </param>
+	void SelfRotation(const Vector3& _Axis, const float& _Angle);
 };
