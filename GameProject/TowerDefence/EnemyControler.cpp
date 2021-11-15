@@ -12,6 +12,7 @@ EnemyControler::EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPt
 	, MDistanceThreshold(5000.0f)
 	, mUntilInElementsCount(0)
 	, mActiveCount(0)
+	, mDeadCount(0)
 	, mCreateEnemysPtr(_createEnemysPtr)
 	, mEnemyHitPointGaugePtr(nullptr)
 	, mEnemyHitPointFramePtr(nullptr)
@@ -27,13 +28,32 @@ void EnemyControler::Update(float _deltaTime)
 	// エネミーの動的配列
 	std::vector<EnemyObject*> enemyObjectList = mCreateEnemysPtr->GetEnemyObjectList();
 
+	// ボスのポインター
 	BossObject* bossObjectPtr = mCreateEnemysPtr->GetBossObjectPtr();
 
 	++mUntilInElementsCount;
 
+	// オブジェクトの数
+	int objectCount = 0;
+
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
 	{
+	    ++objectCount;
+
+		// 1フレーム前のhp
+		int preHp = mPreHpList[objectCount];
+		// 現在のhp
+		int nowHp = referenceEnemyItr->GetHitPoint();
+
+		mPreHpList.push_back(nowHp);
+
+		// 1フレーム前のhpと現在のhpが違ったら死んだオブジェクトをカウント
+		if (preHp != nowHp && nowHp <= 0)
+		{
+			++mDeadCount;
+		}
+
 		// 一定時間が経ったら非アクティブなエネミーをアクティブにする
 		ActiveEnemy(referenceEnemyItr);
 	
@@ -55,6 +75,24 @@ void EnemyControler::Update(float _deltaTime)
 		// 対象となるエネミーが基準となるボスの範囲内に侵入してきたか求める
 		InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
 	}
+
+	// ボスをオブジェクトの数としてカウント
+	++objectCount;
+
+	// 1フレーム前のhp
+	int preHp = mPreHpList[objectCount];
+	// 現在のhp
+	int nowHp = bossObjectPtr->GetHitPoint();
+
+	mPreHpList.push_back(nowHp);
+
+	// 1フレーム前のhpと現在のhpが違ったら死んだオブジェクトをカウント
+	if (preHp != nowHp && nowHp <= 0)
+	{
+		++mDeadCount;
+	}
+
+	printf("%d\n", mDeadCount);
 }
 
 /// <summary>

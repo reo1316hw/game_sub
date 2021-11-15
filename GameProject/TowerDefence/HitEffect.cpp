@@ -29,7 +29,7 @@ void HitEffect::UpdateGameObject(float _deltaTime)
 	// 現在のhp
 	mNowHp = mOwner->GetHitPoint();
 
-	// 1フレーム前のhpと現在のhpが違ったらテクスチャの横幅を変更
+	// 1フレーム前のhpと現在のhpが違ったらエフェクトを発生
 	if (preHp != mNowHp && maxHp != mNowHp)
 	{
 		mPosition = mOwner->GetPosition() + MHeightCorrection;

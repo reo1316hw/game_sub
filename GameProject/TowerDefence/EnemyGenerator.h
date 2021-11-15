@@ -30,6 +30,9 @@ public:
     /// <param name="_deltaTime"> ÅŒã‚ÌƒtƒŒ[ƒ€‚ğŠ®—¹‚·‚é‚Ì‚É—v‚µ‚½ŠÔ </param>
 	void UpdateGameObject(float _deltaTime)override;
 
+
+	void OpenGate();
+
 private:
 
 	/// <summary>

@@ -53,6 +53,9 @@ private:
 	/// <param name="_targetEnemyItr"> 対象となるエネミー </param>
 	void InvadeWithinRange(GameObject* _referenceEnemyItr, GameObject* _targetEnemyItr);
 
+	// 1フレーム前のhp動的配列
+	std::vector<int> mPreHpList;
+
 	// 配列の要素を入れるタイミング
 	const int MInElementsTiming;
 	// 1回にアクティブにできるエネミーの数の上限
@@ -62,9 +65,10 @@ private:
 
 	// 配列の要素を入れるまでのカウント
 	int mUntilInElementsCount;
-
 	// アクティブになったオブジェクトの数
 	int mActiveCount;
+	// 体力が0になり更新しなくなったオブジェクトの数
+	int mDeadCount;
 
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
