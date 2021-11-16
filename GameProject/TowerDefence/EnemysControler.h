@@ -9,7 +9,7 @@ class EnemyHitPointFrame;
 /// <summary>
 /// エネミーを制御する
 /// </summary>
-class EnemyControler : public Component
+class EnemysControler : public Component
 {
 public:
 	
@@ -18,12 +18,12 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-	EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPtr);
+	EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr);
 	
 	/// <summary>
     /// デストラクタ
     /// </summary>
-	~EnemyControler() {};
+	~EnemysControler() {};
 
 	/// <summary>
     /// フレーム毎の処理
@@ -53,7 +53,15 @@ private:
 	/// <param name="_targetEnemyItr"> 対象となるエネミー </param>
 	void InvadeWithinRange(GameObject* _referenceEnemyItr, GameObject* _targetEnemyItr);
 
-	// 1フレーム前のhp動的配列
+	/// <summary>
+	/// エネミーたちを倒した数をカウント
+	/// </summary>
+	/// <param name="_EnemysCount"> エネミーたちの要素を指定するためのカウント変数 </param>
+	/// <param name="_EnemysSize"> エネミーたちの数 </param>
+	/// <param name="_gameObject"> ゲームオブジェクトのポインタ </param>
+	void EnemysDeathCount(const int& _EnemysCount, const int& _EnemysSize, GameObject* _gameObject);
+
+	// 1フレーム前のhp動的配列	
 	std::vector<int> mPreHpList;
 
 	// 配列の要素を入れるタイミング
@@ -76,5 +84,12 @@ private:
 	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
 	// エネミーのhpの枠のポインタ
 	EnemyHitPointFrame* mEnemyHitPointFramePtr;
-};
 
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 体力が0になり更新しなくなったオブジェクトの数を取得
+	/// </summary>
+	/// <returns> 体力が0になり更新しなくなったオブジェクトの数 </returns>
+	int GetDeadCount() { return mDeadCount; }
+};

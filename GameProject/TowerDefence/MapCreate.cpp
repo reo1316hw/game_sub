@@ -18,7 +18,9 @@ MapCreate::MapCreate()
 	, MRightEnemyGeneratorAngle(90.0f)
 	, MLeftEnemyGeneratorAngle(270.0f)
     , mPlayerPtr(nullptr)
-	, mEnemyObjectManagerPtr(nullptr)
+	, mBossPtr(nullptr)
+	, mCreateEnemysPtr(nullptr)
+	, mEnemysControlerPtr(nullptr)
 {
 	mSizeX = 0;
 	mSizeY = 0;
@@ -73,8 +75,9 @@ void MapCreate::OpenFile()
 	mSizeY = mBottomObjectMapData.size();
 	
 	// エネミーマネージャー生成
-	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
-	mCreateEnemysPtr = mEnemyObjectManagerPtr->GetCreateEnemysPtr();
+	EnemyObjectManager* enemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
+	mCreateEnemysPtr = enemyObjectManagerPtr->GetCreateEnemysPtr();
+	mEnemysControlerPtr = enemyObjectManagerPtr->GetEnemysControlerPtr();
 
 	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
@@ -160,7 +163,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		Vector3 gatePos = _ObjectPos + MGateShiftVec;
 
 		// 門を生成
-		new GateObject(gatePos, MStaticObjectSize, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate);
+		new GateObject(gatePos, MStaticObjectSize, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr);
 
 		break;
 	}

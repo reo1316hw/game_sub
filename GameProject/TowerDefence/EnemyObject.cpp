@@ -231,6 +231,7 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 
 	if (tag == eWall ||
 		tag == eGate ||
+		tag == eGateDoor ||
 		tag == eEnemyGenerator ||
 		tag == ePlayer)
 	{

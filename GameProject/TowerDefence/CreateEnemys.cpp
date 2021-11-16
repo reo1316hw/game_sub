@@ -50,7 +50,7 @@ void CreateEnemys::CreateEnemyObject(const Vector3& _Scale, const char* _GpmeshN
 }
 
 /// <summary>
-/// エネミーを生成
+/// チュートリアルエネミーを生成
 /// </summary>
 /// <param name="_ShouldTutorialUse"> チュートリアルで使用するか </param>
 /// <param name="_Pos"> 座標 </param>

@@ -44,7 +44,7 @@ public:
                            const Tag& _ObjectTag, PlayerObject* _playerPtr);
 
     /// <summary>
-    /// エネミーを生成
+    /// チュートリアルエネミーを生成
     /// </summary>
     /// <param name="_ShouldTutorialUse"> チュートリアルで使用するか </param>
     /// <param name="_Pos"> 座標 </param>

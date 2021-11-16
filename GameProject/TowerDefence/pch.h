@@ -59,7 +59,7 @@
 #include "PlayerWeaponObject.h"
 
 #include "EnemyObjectManager.h"
-#include "EnemyControler.h"
+#include "EnemysControler.h"
 #include "CreateEnemys.h"
 #include "EnemyObject.h"
 #include "EnemyAttackDecisionObject.h"

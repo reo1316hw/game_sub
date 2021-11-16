@@ -180,7 +180,7 @@
     <ClCompile Include="CreateEnemys.cpp">
       <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyControler.cpp">
+    <ClCompile Include="EnemysControler.cpp">
       <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClCompile>
     <ClCompile Include="SkyBoxObject.cpp">
@@ -501,7 +501,7 @@
     <ClInclude Include="CreateEnemys.h">
       <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyControler.h">
+    <ClInclude Include="EnemysControler.h">
       <Filter>GameObject\Map\Enemy\Component</Filter>
     </ClInclude>
     <ClInclude Include="SkyBoxObject.h">

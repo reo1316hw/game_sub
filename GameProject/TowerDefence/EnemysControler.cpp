@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-EnemyControler::EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPtr)
+EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr)
 	: Component(_owner)
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)
@@ -23,7 +23,7 @@ EnemyControler::EnemyControler(GameObject* _owner, CreateEnemys* _createEnemysPt
 /// フレーム毎の処理
 /// </summary>
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyControler::Update(float _deltaTime)
+void EnemysControler::Update(float _deltaTime)
 {
 	// エネミーの動的配列
 	std::vector<EnemyObject*> enemyObjectList = mCreateEnemysPtr->GetEnemyObjectList();
@@ -33,26 +33,18 @@ void EnemyControler::Update(float _deltaTime)
 
 	++mUntilInElementsCount;
 
-	// オブジェクトの数
-	int objectCount = 0;
+	// エネミーたちの要素を指定するためのカウント変数
+	int enemysCount = 0;
+	// エネミーたちの数
+	// エネミーの要素数を取得
+	int enemysSize = enemyObjectList.size();
 
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
 	{
-	    ++objectCount;
+		EnemysDeathCount(enemysCount, enemysSize, referenceEnemyItr);
 
-		// 1フレーム前のhp
-		int preHp = mPreHpList[objectCount];
-		// 現在のhp
-		int nowHp = referenceEnemyItr->GetHitPoint();
-
-		mPreHpList.push_back(nowHp);
-
-		// 1フレーム前のhpと現在のhpが違ったら死んだオブジェクトをカウント
-		if (preHp != nowHp && nowHp <= 0)
-		{
-			++mDeadCount;
-		}
+		++enemysCount;
 
 		// 一定時間が経ったら非アクティブなエネミーをアクティブにする
 		ActiveEnemy(referenceEnemyItr);
@@ -76,30 +68,16 @@ void EnemyControler::Update(float _deltaTime)
 		InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
 	}
 
-	// ボスをオブジェクトの数としてカウント
-	++objectCount;
-
-	// 1フレーム前のhp
-	int preHp = mPreHpList[objectCount];
-	// 現在のhp
-	int nowHp = bossObjectPtr->GetHitPoint();
-
-	mPreHpList.push_back(nowHp);
-
-	// 1フレーム前のhpと現在のhpが違ったら死んだオブジェクトをカウント
-	if (preHp != nowHp && nowHp <= 0)
-	{
-		++mDeadCount;
-	}
-
-	printf("%d\n", mDeadCount);
+	// ボスをカウント
+	++enemysSize;
+	EnemysDeathCount(enemysCount, enemysSize, bossObjectPtr);
 }
 
 /// <summary>
 /// 一定時間が経ったら非アクティブなエネミーをアクティブにする
 /// </summary>
 /// <param name="_enemyObjectPtr"> エネミーのポインタ </param>
-void EnemyControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
+void EnemysControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
 {
 	if (mUntilInElementsCount >= MInElementsTiming)
 	{
@@ -131,7 +109,7 @@ void EnemyControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
 /// </summary>
 /// <param name="_enemyObjectList"> エネミーの動的配列 </param>
 /// <param name="_referenceEnemyItr"> 基準となるエネミー </param>
-void EnemyControler::SearchTargetEnemy(std::vector<EnemyObject*> _enemyObjectList, EnemyObject* _referenceEnemyItr)
+void EnemysControler::SearchTargetEnemy(std::vector<EnemyObject*> _enemyObjectList, EnemyObject* _referenceEnemyItr)
 {
 	for (auto targetEnemyItr : _enemyObjectList)
 	{
@@ -155,7 +133,7 @@ void EnemyControler::SearchTargetEnemy(std::vector<EnemyObject*> _enemyObjectLis
 /// </summary>
 /// <param name="_referenceEnemyItr"> 基準となるオブジェクト </param>
 /// <param name="_targetEnemyItr"> 対象となるオブジェクト </param>
-void EnemyControler::InvadeWithinRange(GameObject* _referenceEnemyItr, GameObject* _targetEnemyItr)
+void EnemysControler::InvadeWithinRange(GameObject* _referenceEnemyItr, GameObject* _targetEnemyItr)
 {
 	// 基準となるオブジェクトの座標
 	Vector3 referenceEnemyPos = _referenceEnemyItr->GetPosition();
@@ -178,5 +156,33 @@ void EnemyControler::InvadeWithinRange(GameObject* _referenceEnemyItr, GameObjec
 		distance.Normalize();
 		// オブジェクトの引き離しを行う
 		_referenceEnemyItr->Separation(distance);
+	}
+}
+
+/// <summary>
+/// エネミーたちの死んだ数をカウント
+/// </summary>
+/// <param name="_EnemysCount"> エネミーたちの要素を指定するためのカウント変数 </param>
+/// <param name="_EnemysSize"> エネミーたちの数 </param>
+/// <param name="_gameObject"> ゲームオブジェクトのポインタ </param>
+void EnemysControler::EnemysDeathCount(const int& _EnemysCount, const int& _EnemysSize, GameObject* _gameObject)
+{
+	// 1フレーム前のhp動的配列の要素がエネミーの数以下だったら要素を追加する
+	if (mPreHpList.size() < _EnemysSize)
+	{
+		mPreHpList.push_back(_gameObject->GetMaxHp());
+	}
+
+	// 1フレーム前のhp
+	int preHp = mPreHpList[_EnemysCount];
+	// 現在のhp
+	int nowHp = _gameObject->GetHitPoint();
+
+	mPreHpList[_EnemysCount] = nowHp;
+
+	// 1フレーム前のhpと現在のhpが違ったら死んだオブジェクトをカウント
+	if (preHp != nowHp && nowHp <= 0)
+	{
+		++mDeadCount;
 	}
 }

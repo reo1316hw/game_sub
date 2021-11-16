@@ -160,6 +160,7 @@ void PlayerObject::OnCollision(const GameObject& _HitObject)
 
 	if (tag == eWall ||
 		tag == eGate ||
+		tag == eGateDoor ||
 		tag == eEnemyGenerator)
 	{
 		//‰Ÿ‚µ–ß‚µˆ—

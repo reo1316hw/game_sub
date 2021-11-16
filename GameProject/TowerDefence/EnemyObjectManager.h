@@ -2,6 +2,7 @@
 
 // 前方宣言
 class CreateEnemys;
+class EnemysControler;
 
 /// <summary>
 /// エネミーの管理
@@ -25,6 +26,8 @@ private:
 
     // エネミーたちを生成するクラスのポインタ
     CreateEnemys* mCreateEnemysPtr;
+    // エネミーたちを制御するクラスのポインタ
+    EnemysControler* mEnemysControlerPtr;
 
 public:// ゲッターセッター
 
@@ -33,4 +36,10 @@ public:// ゲッターセッター
     /// </summary>
     /// <returns> エネミーたちを生成するクラスのポインタ </returns>
     CreateEnemys* GetCreateEnemysPtr() {return mCreateEnemysPtr; }
+
+    /// <summary>
+    /// エネミーたちを制御するクラスのポインタを取得
+    /// </summary>
+    /// <returns> エネミーたちを制御するクラスのポインタ </returns>
+    EnemysControler* GetEnemysControlerPtr() { return mEnemysControlerPtr; }
 };

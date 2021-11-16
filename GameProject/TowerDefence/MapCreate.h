@@ -5,6 +5,7 @@ class PlayerObject;
 class BossObject;
 class EnemyObjectManager;
 class CreateEnemys;
+class EnemysControler;
 
 /// <summary>
 /// マップデータのオブジェクトの番号
@@ -117,10 +118,10 @@ private:
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ
 	BossObject* mBossPtr;
-	// エネミーマネージャーのポインタ
-	EnemyObjectManager* mEnemyObjectManagerPtr;
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
+	// エネミーたちを制御するクラスのポインタ
+	EnemysControler* mEnemysControlerPtr;
 
 public:// ゲッターセッター
 

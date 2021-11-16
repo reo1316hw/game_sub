@@ -88,28 +88,50 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
-		//for (auto itr : mGateBoxes)
-		//{
-		//	if (itr == _box)
-		//	{
-		//		continue;
-		//	}
-		//	// コライダーの親オブジェクトがActiveじゃなければ終了する
-		//	// コライダーが有効じゃなかったら終了する
-		//	if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
-		//	{
-		//		continue;
-		//	}
-		//	bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
-		//	if (hit)
-		//	{
-		//		onCollisionFunc func = mCollisionFunction.at(_box);
-		//		func(*(itr->GetOwner()));
-		//		func = mCollisionFunction.at(itr);
-		//		func(*(_box->GetOwner()));
-		//		_box->Refresh();
-		//	}
-		//}
+		for (auto itr : mGateBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mGateDoorBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
 		for (auto itr : mEnemyGeneratorBoxes)
 		{
 			if (itr == _box)
@@ -181,6 +203,28 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 			}
 		}
 		for (auto itr : mGateBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mGateDoorBoxes)
 		{
 			if (itr == _box)
 			{
@@ -345,6 +389,28 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 			}
 		}
 		for (auto itr : mGateBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mGateDoorBoxes)
 		{
 			if (itr == _box)
 			{
@@ -545,6 +611,12 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::eGateDoor)
+	{
+		mGateDoorBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 	if (_box->GetOwner()->GetTag() == Tag::ePlayer)
 	{
 		mPlayerBoxes.emplace_back(_box);
@@ -624,6 +696,12 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 	{
 		std::iter_swap(gateBox, mGateBoxes.end() - 1);
 		mGateBoxes.pop_back();
+	}
+	auto gateDoorBox = std::find(mGateDoorBoxes.begin(), mGateDoorBoxes.end(), _box);
+	if (gateDoorBox != mGateDoorBoxes.end())
+	{
+		std::iter_swap(gateDoorBox, mGateDoorBoxes.end() - 1);
+		mGateDoorBoxes.pop_back();
 	}
 	auto playerBox = std::find(mPlayerBoxes.begin(), mPlayerBoxes.end(), _box);
 	if (playerBox != mPlayerBoxes.end())
@@ -733,6 +811,7 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mGroundBoxes, Color::Red);
 	DrawBoxs(mWallBoxes, Color::Blue);
 	DrawBoxs(mGateBoxes, Color::LightBlue);
+	DrawBoxs(mGateDoorBoxes, Color::LightBlue);
 	DrawBoxs(mPlayerBoxes, Color::LightPink);
 	DrawBoxs(mFirstAttackEffectBoxes, Color::LightGreen);
 	DrawBoxs(mSecondAttackEffectBoxes, Color::LightGreen);
