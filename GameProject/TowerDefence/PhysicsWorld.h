@@ -139,6 +139,10 @@ private:
 	std::vector<BoxCollider*> mEnemyAttackDecisionBoxes;
 	// ボスの矩形当たり判定
 	std::vector<BoxCollider*> mBossBoxes;
+	// エネミーを更新させるための矩形当たり判定
+	std::vector<BoxCollider*> mEnemyActiveBoxes;
+	// ボスを更新させるための矩形当たり判定
+	std::vector<BoxCollider*> mBossActiveBoxes;
 
 	// デバッグ用の当たり判定描画用シェーダー
 	Shader* mLineShader;

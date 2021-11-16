@@ -103,6 +103,9 @@ void EnemyObjectStateStandUp::OnCollision(EnemyObject* _owner, const GameObject&
 {
 	mEnemyPtr = _owner;
 
+	// 座標
+	mPosition = mEnemyPtr->GetPosition();
+
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
 

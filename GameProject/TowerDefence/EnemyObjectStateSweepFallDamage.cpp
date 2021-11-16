@@ -140,6 +140,9 @@ void EnemyObjectStateSweepFallDamage::OnCollision(EnemyObject* _owner, const Gam
 {
 	mEnemyPtr = _owner;
 
+	// 座標
+	mPosition = mEnemyPtr->GetPosition();
+
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
 

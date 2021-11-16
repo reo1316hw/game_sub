@@ -135,6 +135,7 @@ void EnemyObjectStateTrack::Separation(EnemyObject* _owner, const Vector3& _DirT
 void EnemyObjectStateTrack::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	mEnemyPtr = _owner;
+
 	// À•W
 	mPosition = mEnemyPtr->GetPosition();
 

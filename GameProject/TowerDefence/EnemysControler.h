@@ -18,7 +18,8 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-	EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr);
+	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr, PlayerObject* _playerPtr);
 	
 	/// <summary>
     /// デストラクタ

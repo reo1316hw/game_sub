@@ -164,6 +164,8 @@ void EnemyObjectStateImpactDamage::Enter(EnemyObject* _owner, const float _Delta
 void EnemyObjectStateImpactDamage::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
 	mEnemyPtr = _owner;
+	// 座標
+	mPosition = mEnemyPtr->GetPosition();
 
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();

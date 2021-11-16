@@ -5,7 +5,8 @@
 /// </summary>
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr)
+/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr, PlayerObject* _playerPtr)
 	: Component(_owner)
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)
@@ -13,6 +14,7 @@ EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemys
 	, mUntilInElementsCount(0)
 	, mActiveCount(0)
 	, mDeadCount(0)
+	, mTutorialEnemyDeadCount(0)
 	, mCreateEnemysPtr(_createEnemysPtr)
 	, mEnemyHitPointGaugePtr(nullptr)
 	, mEnemyHitPointFramePtr(nullptr)
@@ -42,11 +44,6 @@ void EnemysControler::Update(float _deltaTime)
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
 	{
-		// エネミーたちを倒した数をカウント
-		EnemysDeathCount(enemysCount, enemysSize, referenceEnemyItr);
-		
-		++enemysCount;
-
 		// 一定時間が経ったら非アクティブなエネミーをアクティブにする
 		ActiveEnemy(referenceEnemyItr);
 	
@@ -54,6 +51,11 @@ void EnemysControler::Update(float _deltaTime)
 		{
 			continue;
 		}
+
+		// エネミーたちを倒した数をカウント
+		EnemysDeathCount(enemysCount, enemysSize, referenceEnemyItr);
+
+		++enemysCount;
 		
 		// 対象となるエネミーを検索
 		SearchTargetEnemy(enemyObjectList, referenceEnemyItr);

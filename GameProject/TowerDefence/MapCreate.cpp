@@ -75,19 +75,20 @@ void MapCreate::OpenFile()
 
 	mSizeX = mBottomObjectMapData[0].size();
 	mSizeY = mBottomObjectMapData.size();
-	
-	// エネミーマネージャー生成
-	EnemyObjectManager* enemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther);
-	mCreateEnemysPtr = enemyObjectManagerPtr->GetCreateEnemysPtr();
-	mEnemysControlerPtr = enemyObjectManagerPtr->GetEnemysControlerPtr();
 
 	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
+
+	// エネミーマネージャー生成
+	EnemyObjectManager* enemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther, mPlayerPtr);
+	mCreateEnemysPtr = enemyObjectManagerPtr->GetCreateEnemysPtr();
+	mEnemysControlerPtr = enemyObjectManagerPtr->GetEnemysControlerPtr();
+
 	// 上層オブジェクトのマップデータにアクセスする
 	AccessMapData(mUpperObjectMapData);
 	// 下層オブジェクトのマップデータにアクセスする
 	AccessMapData(mUnderObjectMapData);
-	// 下層オブジェクトのマップデータにアクセスする
+	// 最下層オブジェクトのマップデータにアクセスする
 	AccessMapData(mBottomObjectMapData);
 
 	// エネミーを生成
@@ -232,6 +233,20 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		// チュートリアルエネミーを生成
 		mCreateEnemysPtr->CreateEnemyObject(true, _ObjectPos, MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh",
 			"Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, mPlayerPtr);
+
+		break;
+
+	case(MapDataNum::eEnemyActiveBoxNum):
+
+		// エネミーを更新させるための当たり判定用矩形オブジェクト生成
+		new EnemyActiveBox(_ObjectPos, MStaticObjectSize, Tag::eEnemyActiveBox);
+
+		break;
+
+	case(MapDataNum::eBossActiveBoxNum):
+
+		// エネミーを更新させるための当たり判定用矩形オブジェクト生成
+		new BossActiveBox(_ObjectPos, MStaticObjectSize, Tag::eBossActiveBox);
 
 		break;
 	}

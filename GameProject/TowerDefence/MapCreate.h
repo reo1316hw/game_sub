@@ -23,7 +23,9 @@ enum MapDataNum
 	eLeftEnemyGeneratorNum,
 	eFrontEnemyGeneratorNum,
 	eBossNum,
-	eTutorialEnemyNum
+	eTutorialEnemyNum,
+	eEnemyActiveBoxNum,
+	eBossActiveBoxNum
 };
 
 /// <summary>

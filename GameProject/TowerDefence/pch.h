@@ -80,6 +80,7 @@
 #include "EnemyObjectStateFallingBackDeath.h"
 #include "EnemyObjectStateSweepFallDeath.h"
 #include "EnemyObjectStateFlyingBackDeath.h"
+#include "EnemyActiveBox.h"
 
 #include "BossObject.h"
 #include "BossObjectStateBase.h"
@@ -91,6 +92,7 @@
 #include "BossObjectStateTeleportation.h"
 #include "BossObjectStateDamage.h"
 #include "BossObjectStateDeath.h"
+#include "BossActiveBox.h"
 
 #include "GroundObject.h"
 

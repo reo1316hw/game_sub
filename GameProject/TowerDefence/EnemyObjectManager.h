@@ -15,7 +15,8 @@ public:
     /// コンストラクタ
     /// </summary>
     /// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	EnemyObjectManager(const Tag& _ObjectTag);
+    /// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	EnemyObjectManager(const Tag& _ObjectTag, PlayerObject* _playerPtr);
 
     /// <summary>
     /// デストラクタ

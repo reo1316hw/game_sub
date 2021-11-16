@@ -156,6 +156,9 @@ void EnemyObjectStateWait::OnCollision(EnemyObject* _owner, const GameObject& _H
 {
 	mEnemyPtr = _owner;
 
+	// 座標
+	mPosition = mEnemyPtr->GetPosition();
+
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
 
