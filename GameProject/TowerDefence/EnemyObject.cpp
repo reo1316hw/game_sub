@@ -12,6 +12,7 @@
 EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
+	, MShouldTutorialUse(false)
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
 	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))
@@ -104,6 +105,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 EnemyObject::EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
+	, MShouldTutorialUse(_ShouldTutorialUse)
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
 	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))

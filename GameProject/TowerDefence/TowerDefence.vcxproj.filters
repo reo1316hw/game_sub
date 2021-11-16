@@ -309,14 +309,20 @@
     <ClCompile Include="EnemyObjectStateSweepFallDeath.cpp">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClCompile>
-    <ClCompile Include="GateObject.cpp">
-      <Filter>GameObject\Map</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyGeneratorBlackBoard.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="GateDoorObject.cpp">
-      <Filter>GameObject\Map</Filter>
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClCompile>
+    <ClCompile Include="GateObject.cpp">
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfRotation.cpp">
+      <Filter>GameObject\Map\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGate.cpp">
+      <Filter>GameObject\Map\Gate\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -630,14 +636,20 @@
     <ClInclude Include="EnemyObjectStateSweepFallDeath.h">
       <Filter>GameObject\Map\Enemy\State</Filter>
     </ClInclude>
-    <ClInclude Include="GateObject.h">
-      <Filter>GameObject\Map</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyGeneratorBlackBoard.h">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="GateDoorObject.h">
-      <Filter>GameObject\Map</Filter>
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClInclude>
+    <ClInclude Include="GateObject.h">
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfRotation.h">
+      <Filter>GameObject\Map\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGate.h">
+      <Filter>GameObject\Map\Gate\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -730,6 +742,15 @@
     </Filter>
     <Filter Include="Effect\Component">
       <UniqueIdentifier>{47ee6fdd-6ecd-4795-aee0-4a8793cd3ea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Gate">
+      <UniqueIdentifier>{cf64e933-f6ae-4026-8f0e-4687dc00190e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Gate\Component">
+      <UniqueIdentifier>{b96348d3-dbe2-4e54-a903-21fdaa716aa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Component">
+      <UniqueIdentifier>{772fec03-37e1-4ddf-bf14-6d72c648152e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

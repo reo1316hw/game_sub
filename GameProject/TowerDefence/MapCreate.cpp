@@ -4,7 +4,9 @@
 /// コンストラクタ
 /// </summary>
 MapCreate::MapCreate()
-	:GameObject(Tag::eOther)
+	: GameObject(Tag::eOther)
+	, OpenToDefeatEnemyNum(110)
+	, OpenToDefeatTutorialEnemyNum(10)
 	, MPlayerHitPointGaugePosition(Vector3(-800.0f, -400.0f, 0.0f))
 	, MBossHitPointGaugePosition(Vector3(400.0f, 400.0f, 0.0f))
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
@@ -163,7 +165,17 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		Vector3 gatePos = _ObjectPos + MGateShiftVec;
 
 		// 門を生成
-		new GateObject(gatePos, MStaticObjectSize, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr);
+		new GateObject(gatePos, MStaticObjectSize, OpenToDefeatEnemyNum, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr);
+
+		break;
+	}
+	case(MapDataNum::eTutorialGateNum):
+	{
+		// チュートリアルの門の座標
+		Vector3 tutorialGatePos = _ObjectPos + MGateShiftVec;
+
+		// 門を生成
+		new GateObject(tutorialGatePos, MStaticObjectSize, OpenToDefeatTutorialEnemyNum, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr);
 
 		break;
 	}

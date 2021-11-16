@@ -42,8 +42,9 @@ void EnemysControler::Update(float _deltaTime)
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
 	{
+		// エネミーたちを倒した数をカウント
 		EnemysDeathCount(enemysCount, enemysSize, referenceEnemyItr);
-
+		
 		++enemysCount;
 
 		// 一定時間が経ったら非アクティブなエネミーをアクティブにする
@@ -67,10 +68,6 @@ void EnemysControler::Update(float _deltaTime)
 		// 対象となるエネミーが基準となるボスの範囲内に侵入してきたか求める
 		InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
 	}
-
-	// ボスをカウント
-	++enemysSize;
-	EnemysDeathCount(enemysCount, enemysSize, bossObjectPtr);
 }
 
 /// <summary>
@@ -160,23 +157,28 @@ void EnemysControler::InvadeWithinRange(GameObject* _referenceEnemyItr, GameObje
 }
 
 /// <summary>
-/// エネミーたちの死んだ数をカウント
+/// エネミーたちを倒した数をカウント
 /// </summary>
 /// <param name="_EnemysCount"> エネミーたちの要素を指定するためのカウント変数 </param>
 /// <param name="_EnemysSize"> エネミーたちの数 </param>
 /// <param name="_gameObject"> ゲームオブジェクトのポインタ </param>
-void EnemysControler::EnemysDeathCount(const int& _EnemysCount, const int& _EnemysSize, GameObject* _gameObject)
+void EnemysControler::EnemysDeathCount(const int& _EnemysCount, const int& _EnemysSize, EnemyObject* _referenceEnemyItr)
 {
+	if (mTutorialEnemyDeadCount >= 10 && _referenceEnemyItr->GetShouldTutorialUse())
+	{
+		return;
+	}
+
 	// 1フレーム前のhp動的配列の要素がエネミーの数以下だったら要素を追加する
 	if (mPreHpList.size() < _EnemysSize)
 	{
-		mPreHpList.push_back(_gameObject->GetMaxHp());
+		mPreHpList.push_back(_referenceEnemyItr->GetMaxHp());
 	}
 
 	// 1フレーム前のhp
 	int preHp = mPreHpList[_EnemysCount];
 	// 現在のhp
-	int nowHp = _gameObject->GetHitPoint();
+	int nowHp = _referenceEnemyItr->GetHitPoint();
 
 	mPreHpList[_EnemysCount] = nowHp;
 
@@ -184,5 +186,12 @@ void EnemysControler::EnemysDeathCount(const int& _EnemysCount, const int& _Enem
 	if (preHp != nowHp && nowHp <= 0)
 	{
 		++mDeadCount;
+
+		if (_referenceEnemyItr->GetShouldTutorialUse())
+		{
+			++mTutorialEnemyDeadCount;
+		}
+
+		printf("%d\n", mDeadCount);
 	}
 }

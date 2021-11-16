@@ -18,6 +18,7 @@ enum MapDataNum
 	eVerticalWallNum,
 	eAisleVerticalWallNum,
 	eGateNum,
+	eTutorialGateNum,
 	eRightEnemyGeneratorNum,
 	eLeftEnemyGeneratorNum,
 	eFrontEnemyGeneratorNum,
@@ -70,6 +71,11 @@ private:
 	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
 	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);
 	
+	// 門を開くために倒すエネミーの数
+	const int OpenToDefeatEnemyNum;
+	// 門を開くために倒すチュートリアルエネミーの数
+	const int OpenToDefeatTutorialEnemyNum;
+
 	// マップ右側のエネミー生成器を回転するための角度
 	const float MRightEnemyGeneratorAngle;
 	// マップ左側のエネミー生成器を回転するための角度

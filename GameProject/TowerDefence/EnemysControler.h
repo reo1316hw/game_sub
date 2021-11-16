@@ -58,8 +58,8 @@ private:
 	/// </summary>
 	/// <param name="_EnemysCount"> エネミーたちの要素を指定するためのカウント変数 </param>
 	/// <param name="_EnemysSize"> エネミーたちの数 </param>
-	/// <param name="_gameObject"> ゲームオブジェクトのポインタ </param>
-	void EnemysDeathCount(const int& _EnemysCount, const int& _EnemysSize, GameObject* _gameObject);
+	/// <param name="_referenceEnemyItr"> 対象となるエネミーのポインタ </param>
+	void EnemysDeathCount(const int& _EnemysCount, const int& _EnemysSize, EnemyObject* _referenceEnemyItr);
 
 	// 1フレーム前のhp動的配列	
 	std::vector<int> mPreHpList;
@@ -77,6 +77,8 @@ private:
 	int mActiveCount;
 	// 体力が0になり更新しなくなったオブジェクトの数
 	int mDeadCount;
+	// チュートリアルエネミーを倒した数
+	int mTutorialEnemyDeadCount;
 
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;

@@ -5,11 +5,12 @@
 /// </summary>
 /// <param name="_Pos"> 座標 </param>
 /// <param name="_Scale"> 大きさ </param>
+/// <param name="_OpenToEnemyDefeatNum"> 門を開くために倒すエネミーの数 </param>
 /// <param name="_GpmeshName"> gpmeshのパス </param>
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 /// <param name="_enemysControlerPtr"> エネミーを制御するコンポーネントクラスのポインタ </param>
-GateObject::GateObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName,
-	const Tag& _ObjectTag, EnemysControler* _enemysControlerPtr)
+GateObject::GateObject(const Vector3& _Pos, const Vector3& _Scale, const int& _OpenToDefeatEnemyNum,
+	const std::string _GpmeshName, const Tag& _ObjectTag, EnemysControler* _enemysControlerPtr)
 	: GameObject(_ObjectTag)
 	, BoxColliderNum(2)
 	, MRightGateDoorAddAngle(0.5f)
@@ -46,12 +47,12 @@ GateObject::GateObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	// 門の右扉の大きさ
 	Vector3 rightGateDoorScale = _Scale * Vector3(-1.0f, 1.0f, 1.0f);
 	// 門の右扉を生成
-	new GateDoorObject(rightGateDoorPos, rightGateDoorScale, MRightGateDoorAddAngle,
+	new GateDoorObject(rightGateDoorPos, rightGateDoorScale, MRightGateDoorAddAngle, _OpenToDefeatEnemyNum,
 		               "Assets/Model/Gate/GateDoor.gpmesh", Tag::eGateDoor, _enemysControlerPtr);
 	// 門の左扉の座標
 	Vector3 leftGateDoorPos = _Pos + MRightGateDoorShiftVec;
 	// 門の左扉を生成
-	new GateDoorObject(leftGateDoorPos, _Scale, MLeftGateDoorAddAngle,
+	new GateDoorObject(leftGateDoorPos, _Scale, MLeftGateDoorAddAngle, _OpenToDefeatEnemyNum,
 		               "Assets/Model/Gate/GateDoor.gpmesh", Tag::eGateDoor, _enemysControlerPtr);
 }
 

@@ -104,8 +104,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 
-	// ‰ñ“]ˆ—
-	SelfRotation(Vector3::UnitZ, MAngle);
+	// ©g‚Ì‰ñ“]ˆ—
+	new SelfRotation(this, Vector3::UnitZ, MAngle);
 }
 
 /// <summary>
@@ -185,20 +185,6 @@ void PlayerObject::OnCollision(const GameObject& _HitObject)
 	}
 
 	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
-}
-
-/// <summary>
-/// ‰ñ“]ˆ—
-/// </summary>
-/// <param name="_Axis"> ² </param>
-/// <param name="_Angle"> Šp“x </param>
-void PlayerObject::SelfRotation(Vector3 _axis, float _angle)
-{
-	float radian = Math::ToRadians(_angle);
-	Quaternion rot = mRotation;
-	Quaternion inc(_axis, radian);
-	Quaternion target = Quaternion::Concatenate(rot, inc);
-	SetRotation(target);
 }
 
 /// <summary>

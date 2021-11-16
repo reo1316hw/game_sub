@@ -43,7 +43,9 @@
 
 #include "GameObject.h"
 #include "GameObjectManager.h"
+
 #include "MapCreate.h"
+
 #include "PlayerObject.h"
 #include "PlayerObjectStateBase.h"
 #include "PlayerObjectStateIdle.h"
@@ -91,10 +93,15 @@
 #include "BossObjectStateDeath.h"
 
 #include "GroundObject.h"
+
+#include "OpenGate.h"
 #include "GateObject.h"
 #include "GateDoorObject.h"
+
 #include "WallObject.h"
+
 #include "MainCameraObject.h"
+
 #include "Sprite.h"
 
 #include "HitPointGaugeController.h"
@@ -126,6 +133,7 @@
 #include "ParticleComponent.h"
 #include "SpriteComponent.h"
 #include "EffectComponent.h"
+#include "SelfRotation.h"
 
 #include "CubeMapComponent.h"
 #include "SkyBoxObject.h"

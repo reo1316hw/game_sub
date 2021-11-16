@@ -78,18 +78,11 @@ public:
 
 private:
 
-	/// <summary>
-	/// 回転処理
-	/// </summary>
-	/// <param name="_Axis"> 軸 </param>
-	/// <param name="_Angle"> 角度 </param>
-	void SelfRotation(const Vector3 _Axis, const float _Angle);
-
 	// 最大体力
 	const int MMaxHp;
 	// アニメーションの再生速度
 	const float MPlayRate;
-	// 角度
+	// 回転角
 	const float MAngle;
 	// 通常攻撃エフェクトの大きさ
 	const Vector3 MAttackEffectScale;

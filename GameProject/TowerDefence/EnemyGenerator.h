@@ -30,17 +30,7 @@ public:
     /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
 
-
-	void OpenGate();
-
 private:
-
-	/// <summary>
-	/// 回転処理
-	/// </summary>
-	/// <param name="_Axis"> 軸 </param>
-	/// <param name="_Angle"> 角度 </param>
-	void SelfRotation(const Vector3& _Axis, const float& _Angle);
 
 
 	// プレイヤーのポインタ

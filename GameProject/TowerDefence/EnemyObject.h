@@ -87,8 +87,12 @@ private:
     /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 	void OnCollision(const GameObject& _HitObject)override;
 
+	// チュートリアルで使用するか
+	const bool MShouldTutorialUse;
+	
 	// 最大体力
 	const int MMaxHp;
+
 	// アニメーションの再生速度
 	const float MPlayRate;
 
@@ -120,6 +124,12 @@ private:
 	EnemyHitPointFrame* mEnemyHitPointFramePtr;
 
 public://ゲッターセッター
+
+	/// <summary>
+	/// チュートリアルで使用するかフラグを取得
+	/// </summary>
+	/// <returns> チュートリアルで使用するかフラグ </returns>
+	const bool GetShouldTutorialUse() const { return MShouldTutorialUse; }
 
 	/// <summary>
 	/// Animationのポインタを取得

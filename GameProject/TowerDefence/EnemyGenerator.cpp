@@ -32,8 +32,8 @@ EnemyGenerator::EnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, const
 	// エネミー生成器の中身の黒い部分を生成
 	new EnemyGeneratorBlackBoard(_Pos, _Scale, _Angle, "Assets/Model/EnemyGenerator/Board.gpmesh", Tag::eEnemyGeneratorBlackBoard);
 
-	// 回転処理
-	SelfRotation(Vector3::UnitZ, _Angle);
+	// 自身の回転処理
+	new SelfRotation(this, Vector3::UnitZ, _Angle);
 }
 
 /// <summary>
@@ -43,18 +43,4 @@ EnemyGenerator::EnemyGenerator(const Vector3& _Pos, const Vector3& _Scale, const
 void EnemyGenerator::UpdateGameObject(float _deltaTime)
 {
 	mBox = mBoxColliderPtr->GetWorldBox();
-}
-
-/// <summary>
-/// 回転処理
-/// </summary>
-/// <param name="_Axis"> 軸 </param>
-/// <param name="_Angle"> 角度 </param>
-void EnemyGenerator::SelfRotation(const Vector3& _Axis, const float& _Angle)
-{
-	float radian = Math::ToRadians(_Angle);
-	Quaternion rot = mRotation;
-	Quaternion inc(_Axis, radian);
-	Quaternion target = Quaternion::Concatenate(rot, inc);
-	SetRotation(target);
 }

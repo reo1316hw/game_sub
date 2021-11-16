@@ -12,11 +12,12 @@ public:
 	/// </summary>
 	/// <param name="_Pos"> 座標 </param>
 	/// <param name="_Scale"> 大きさ </param>
+	/// <param name="_OpenToEnemyDefeatNum"> 門を開くために倒すエネミーの数 </param>
 	/// <param name="_GpmeshName"> gpmeshのパス </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
 	/// <param name="_enemysControlerPtr"> エネミーを制御するコンポーネントクラスのポインタ </param>
-	GateObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, 
-		const Tag& _ObjectTag, EnemysControler* _enemysControlerPtr);
+	GateObject(const Vector3& _Pos, const Vector3& _Scale, const int& _OpenToDefeatEnemyNum,
+		const std::string _GpmeshName, const Tag& _ObjectTag, EnemysControler* _enemysControlerPtr);
 
 	/// <summary>
 	/// デストラクタ
