@@ -18,8 +18,10 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
-	EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr, PlayerObject* _playerPtr);
+	/// <param name="_enemyActiveBoxPtr"> エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
+	/// <param name="_bossActiveBoxPtr"> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
+	EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr, 
+		EnemyActiveBox* _enemyActiveBoxPtr, BossActiveBox* _bossActiveBoxPtr);
 	
 	/// <summary>
     /// デストラクタ
@@ -83,6 +85,10 @@ private:
 
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
+	// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ
+	EnemyActiveBox* mEnemyActiveBoxPtr;
+	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
+	BossActiveBox* mBossActiveBoxPtr;
 	// エネミーのhpゲージのポインタ
 	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
 	// エネミーのhpの枠のポインタ

@@ -5,8 +5,10 @@
 /// </summary>
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_createEnemysPtr"> エネミーたちを生成するクラスのポインタ </param>
-/// <param name="_playerPtr"> プレイヤーのポインタ </param>
-EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr, PlayerObject* _playerPtr)
+/// <param name="_enemyActiveBoxPtr"> エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
+/// <param name="_bossActiveBoxPtr"> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
+EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr,
+	EnemyActiveBox* _enemyActiveBoxPtr, BossActiveBox* _bossActiveBoxPtr)
 	: Component(_owner)
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)
@@ -16,6 +18,8 @@ EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemys
 	, mDeadCount(0)
 	, mTutorialEnemyDeadCount(0)
 	, mCreateEnemysPtr(_createEnemysPtr)
+	, mEnemyActiveBoxPtr(_enemyActiveBoxPtr)
+	, mBossActiveBoxPtr(_bossActiveBoxPtr)
 	, mEnemyHitPointGaugePtr(nullptr)
 	, mEnemyHitPointFramePtr(nullptr)
 {
@@ -44,21 +48,32 @@ void EnemysControler::Update(float _deltaTime)
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
 	{
-		// 一定時間が経ったら非アクティブなエネミーをアクティブにする
-		ActiveEnemy(referenceEnemyItr);
+		// エネミーたちを倒した数をカウント
+		EnemysDeathCount(enemysCount, enemysSize, referenceEnemyItr);
+
+		++enemysCount;
+
+		// エネミーを更新させるための当たり判定用矩形オブジェクトに当たっていたら
+		if (mEnemyActiveBoxPtr->GetIsHitPlayer())
+		{
+			// 一定時間が経ったら非アクティブなエネミーをアクティブにする
+			ActiveEnemy(referenceEnemyItr);
+		}
 	
 		if (referenceEnemyItr->GetState() != State::eActive)
 		{
 			continue;
 		}
-
-		// エネミーたちを倒した数をカウント
-		EnemysDeathCount(enemysCount, enemysSize, referenceEnemyItr);
-
-		++enemysCount;
 		
 		// 対象となるエネミーを検索
 		SearchTargetEnemy(enemyObjectList, referenceEnemyItr);
+
+		// ボスを更新させるための当たり判定用矩形オブジェクトに当たっていたら
+		if (mBossActiveBoxPtr->GetIsHitPlayer())
+		{
+			// ボスをアクティブにする
+			bossObjectPtr->SetState(eActive);
+		}
 
 		if (bossObjectPtr->GetState() != State::eActive)
 		{
@@ -80,7 +95,7 @@ void EnemysControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
 {
 	if (mUntilInElementsCount >= MInElementsTiming)
 	{
-		if (_enemyObjectPtr->GetState() != State::eActive)
+		if (_enemyObjectPtr->GetState() != State::eActive && !_enemyObjectPtr->GetShouldTutorialUse())
 		{
 			// hpゲージ
 			//mEnemyHitPointGaugePtr = _enemyObjectPtr->GetEnemyHitPointGaugePtr();

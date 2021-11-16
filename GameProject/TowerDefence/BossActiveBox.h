@@ -25,4 +25,23 @@ public:
 	/// </summary>
 	/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void UpdateGameObject(float _deltaTime)override;
+
+	/// <summary>
+	/// ヒットした時の処理
+	/// </summary>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(const GameObject& _HitObject)override;
+
+private:
+
+	// プレイヤーと当たったか
+	bool mIsHitPlayer;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// プレイヤーと当たったかフラグを取得
+	/// </summary>
+	/// <returns> プレイヤーと当たったか </returns>
+	bool GetIsHitPlayer() { return mIsHitPlayer; }
 };

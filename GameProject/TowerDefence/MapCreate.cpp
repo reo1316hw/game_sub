@@ -34,10 +34,11 @@ MapCreate::MapCreate()
 /// </summary>
 MapCreate::~MapCreate()
 {
-	mPlayerMapData.clear();
 	mUpperObjectMapData.clear();
 	mUnderObjectMapData.clear();
 	mBottomObjectMapData.clear();
+	mPlayerMapData.clear();
+	mEnemysMapData.clear();
 }
 
 /// <summary>
@@ -45,13 +46,6 @@ MapCreate::~MapCreate()
 /// </summary>
 void MapCreate::OpenFile()
 {
-	// プレイヤーのデータの読み込み
-	if (!readTiledJson(mPlayerMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Player"))
-	{
-		printf("don't have Layer/Player\n");
-		return;
-	}
-
 	// 上層マップデータの読み込み
 	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Upper"))
 	{
@@ -73,19 +67,35 @@ void MapCreate::OpenFile()
 		return;
 	}
 
-	mSizeX = mBottomObjectMapData[0].size();
-	mSizeY = mBottomObjectMapData.size();
+	// プレイヤーのデータの読み込み
+	if (!readTiledJson(mPlayerMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Player"))
+	{
+		printf("don't have Layer/Player\n");
+		return;
+	}
+
+	// エネミーたちのデータの読み込み
+	if (!readTiledJson(mEnemysMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Enemys"))
+	{
+		printf("don't have Layer/Enemys\n");
+		return;
+	}
+
+	mSizeX = mEnemysMapData[0].size();
+	mSizeY = mEnemysMapData.size();
 
 	// プレイヤーのマップデータにアクセスする
 	AccessMapData(mPlayerMapData);
+	// 上層オブジェクトのマップデータにアクセスする
+	AccessMapData(mUpperObjectMapData);
 
 	// エネミーマネージャー生成
-	EnemyObjectManager* enemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther, mPlayerPtr);
+	EnemyObjectManager* enemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther, mEnemyActiveBoxPtr, mBossActiveBoxPtr);
 	mCreateEnemysPtr = enemyObjectManagerPtr->GetCreateEnemysPtr();
 	mEnemysControlerPtr = enemyObjectManagerPtr->GetEnemysControlerPtr();
 
-	// 上層オブジェクトのマップデータにアクセスする
-	AccessMapData(mUpperObjectMapData);
+	// エネミーたちのマップデータにアクセスする
+	AccessMapData(mEnemysMapData);
 	// 下層オブジェクトのマップデータにアクセスする
 	AccessMapData(mUnderObjectMapData);
 	// 最下層オブジェクトのマップデータにアクセスする
@@ -239,14 +249,14 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	case(MapDataNum::eEnemyActiveBoxNum):
 
 		// エネミーを更新させるための当たり判定用矩形オブジェクト生成
-		new EnemyActiveBox(_ObjectPos, MStaticObjectSize, Tag::eEnemyActiveBox);
+		mEnemyActiveBoxPtr = new EnemyActiveBox(_ObjectPos, MStaticObjectSize, Tag::eEnemyActiveBox);
 
 		break;
 
 	case(MapDataNum::eBossActiveBoxNum):
 
 		// エネミーを更新させるための当たり判定用矩形オブジェクト生成
-		new BossActiveBox(_ObjectPos, MStaticObjectSize, Tag::eBossActiveBox);
+		mBossActiveBoxPtr = new BossActiveBox(_ObjectPos, MStaticObjectSize, Tag::eBossActiveBox);
 
 		break;
 	}

@@ -158,16 +158,6 @@ void PlayerObject::OnCollision(const GameObject& _HitObject)
 
 	mBox = mBoxColliderPtr->GetWorldBox();
 
-	if (tag == eEnemyActiveBox)
-	{
-
-	}
-
-	if (tag == eBossActiveBox)
-	{
-
-	}
-
 	// ‰Ÿ‚µ–ß‚µˆ—
 	if (tag == eWall ||
 		tag == eGate ||

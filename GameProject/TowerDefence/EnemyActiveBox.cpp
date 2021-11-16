@@ -8,6 +8,7 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 EnemyActiveBox::EnemyActiveBox(const Vector3& _Pos, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, mIsHitPlayer(false)
 {
 	//GameObjectメンバ変数の初期化
 	SetScale(_Scale);
@@ -26,4 +27,19 @@ EnemyActiveBox::EnemyActiveBox(const Vector3& _Pos, const Vector3& _Scale, const
 void EnemyActiveBox::UpdateGameObject(float _deltaTime)
 {
 	mBox = mBoxColliderPtr->GetWorldBox();
+}
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void EnemyActiveBox::OnCollision(const GameObject& _HitObject)
+{
+	// オブジェクトのタグ
+	Tag tag = _HitObject.GetTag();
+
+	if (tag == ePlayer)
+	{
+		mIsHitPlayer = true;
+	}
 }

@@ -6,6 +6,8 @@ class BossObject;
 class EnemyObjectManager;
 class CreateEnemys;
 class EnemysControler;
+class EnemyActiveBox;
+class BossActiveBox;
 
 /// <summary>
 /// マップデータのオブジェクトの番号
@@ -106,14 +108,16 @@ private:
 	// マップ正面側のエネミー生成器を丁度よい位置にずらすためのベクトル
 	const Vector3 MFrontEnemyGeneratorShiftVec;
 
-	//jsonから読み込んだプレイヤーのマップデータを格納するための可変長配列
-	std::vector<std::vector<int>> mPlayerMapData;
 	//jsonから読み込んだ上層オブジェクトのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mUpperObjectMapData;
 	//jsonから読み込んだ下層オブジェクトのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mUnderObjectMapData;
 	//jsonから読み込んだ最下層オブジェクトのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mBottomObjectMapData;
+	//jsonから読み込んだプレイヤーのマップデータを格納するための可変長配列
+	std::vector<std::vector<int>> mPlayerMapData;
+	//jsonから読み込んだエネミーたちのマップデータを格納するための可変長配列
+	std::vector<std::vector<int>> mEnemysMapData;
 
 	// マップデータの横のタイル数
 	int   mSizeX;
@@ -126,6 +130,10 @@ private:
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ
 	BossObject* mBossPtr;
+	// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ
+	EnemyActiveBox* mEnemyActiveBoxPtr;
+	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
+	BossActiveBox* mBossActiveBoxPtr;
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
 	// エネミーたちを制御するクラスのポインタ

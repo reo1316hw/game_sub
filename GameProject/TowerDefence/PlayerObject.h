@@ -78,6 +78,11 @@ public:
 
 private:
 
+	// アニメーション可変長コンテナ
+	std::vector<const Animation*>       mAnimTypes;
+	// ステートクラスプール
+	std::vector<PlayerObjectStateBase*> mStatePools;
+
 	// 最大体力
 	const int MMaxHp;
 	// アニメーションの再生速度
@@ -88,11 +93,6 @@ private:
 	const Vector3 MAttackEffectScale;
 	// ヒットエフェクトの大きさ
 	const Vector3 MHitEffectScale;
-
-	// アニメーション可変長コンテナ
-	std::vector<const Animation*>       mAnimTypes;
-	// ステートクラスプール
-	std::vector<PlayerObjectStateBase*> mStatePools;
 
 	// 現在のステート
 	PlayerState mNowState;
