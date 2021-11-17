@@ -143,6 +143,10 @@ private:
 	std::vector<BoxCollider*> mEnemyActiveBoxes;
 	// ボスを更新させるための矩形当たり判定
 	std::vector<BoxCollider*> mBossActiveBoxes;
+	// エネミーが起動することによって出現する半透明の壁の矩形当たり判定
+	std::vector<BoxCollider*> mEnemyBootSemitransparentWallBoxes;
+	// ボスが起動することによって出現する半透明の壁の矩形当たり判定
+	std::vector<BoxCollider*> mBossBootSemitransparentWallBoxes;
 
 	// デバッグ用の当たり判定描画用シェーダー
 	Shader* mLineShader;

@@ -8,6 +8,8 @@ class CreateEnemys;
 class EnemysControler;
 class EnemyActiveBox;
 class BossActiveBox;
+class EnemyBootSemitransparentWall;
+class BossBootSemitransparentWall;
 
 /// <summary>
 /// マップデータのオブジェクトの番号
@@ -129,6 +131,10 @@ private:
 	EnemyActiveBox* mEnemyActiveBoxPtr;
 	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
 	BossActiveBox* mBossActiveBoxPtr;
+	// エネミーが起動することによって出現する半透明の壁のポインタ
+	EnemyBootSemitransparentWall* mEnemyBootSemitransparentWallPtr;
+	// ボスが起動することによって出現する半透明の壁のポインタ
+	BossBootSemitransparentWall* mBossBootSemitransparentWallPtr;
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
 	// エネミーたちを制御するクラスのポインタ

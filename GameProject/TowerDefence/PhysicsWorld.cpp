@@ -198,6 +198,50 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
+		for (auto itr : mEnemyBootSemitransparentWallBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mBossBootSemitransparentWallBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
 	}
 
 	if (_box->GetOwner()->GetTag() == Tag::eEnemyAttackDecision)
@@ -406,6 +450,50 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
+		for (auto itr : mEnemyBootSemitransparentWallBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mBossBootSemitransparentWallBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
 	}
 
 	if (_box->GetOwner()->GetTag() == Tag::eBoss)
@@ -582,6 +670,50 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				continue;
 			}
 
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mEnemyBootSemitransparentWallBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mBossBootSemitransparentWallBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
 			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
 			if (hit)
 			{
@@ -727,6 +859,18 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::eEnemyBootSemitransparentWall)
+	{
+		mEnemyBootSemitransparentWallBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetOwner()->GetTag() == Tag::eBossBootSemitransparentWall)
+	{
+		mBossBootSemitransparentWallBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 }
 
 /// <summary>
@@ -825,6 +969,18 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 		std::iter_swap(bossActiveBox, mBossActiveBoxes.end() - 1);
 		mBossActiveBoxes.pop_back();
 	}
+	auto enemyBootSemitransparentWallBox = std::find(mEnemyBootSemitransparentWallBoxes.begin(), mEnemyBootSemitransparentWallBoxes.end(), _box);
+	if (enemyBootSemitransparentWallBox != mEnemyBootSemitransparentWallBoxes.end())
+	{
+		std::iter_swap(enemyBootSemitransparentWallBox, mEnemyBootSemitransparentWallBoxes.end() - 1);
+		mEnemyBootSemitransparentWallBoxes.pop_back();
+	}
+	auto bossBootSemitransparentWallBox = std::find(mBossBootSemitransparentWallBoxes.begin(), mBossBootSemitransparentWallBoxes.end(), _box);
+	if (bossBootSemitransparentWallBox != mBossBootSemitransparentWallBoxes.end())
+	{
+		std::iter_swap(bossBootSemitransparentWallBox, mBossBootSemitransparentWallBoxes.end() - 1);
+		mBossBootSemitransparentWallBoxes.pop_back();
+	}
 	
     mCollisionFunction.erase(_box);
 }
@@ -891,6 +1047,8 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mBossBoxes, Color::LightYellow);
 	DrawBoxs(mEnemyActiveBoxes, Color::Green);
 	DrawBoxs(mBossActiveBoxes, Color::Green);
+	DrawBoxs(mEnemyBootSemitransparentWallBoxes, Color::Green);
+	DrawBoxs(mBossBootSemitransparentWallBoxes, Color::Green);
 }
 
 /// <summary>

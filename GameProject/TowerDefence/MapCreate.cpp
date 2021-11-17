@@ -103,6 +103,11 @@ void MapCreate::OpenFile()
 	// エネミーを生成
 	mCreateEnemysPtr->CreateEnemyObject(MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel",
 		                                Tag::eEnemy, mPlayerPtr);
+
+	// エネミーがアクティブになることによって影響するオブジェクトの親クラスを生成
+	new EnemyActiveAffectedObjects(Tag::eOther, mEnemyActiveBoxPtr, mEnemyBootSemitransparentWallPtr);
+	// ボスがアクティブになることによって影響するオブジェクトの親クラスを生成
+	new BossActiveAffectedObjects(Tag::eOther, mBossActiveBoxPtr, mBossBootSemitransparentWallPtr);
 }
 
 /// <summary>
@@ -264,14 +269,14 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	case(MapDataNum::eEnemyBootSemitransparentWallNum):
 
 		// エネミーが起動することによって出現する半透明の壁を生成
-		new EnemyBootSemitransparentWall(_ObjectPos, MStaticObjectSize, Tag::eEnemyBootSemitransparentWall);
+		mEnemyBootSemitransparentWallPtr = new EnemyBootSemitransparentWall(_ObjectPos, MStaticObjectSize, Tag::eEnemyBootSemitransparentWall);
 
 		break;
 
 	case(MapDataNum::eBossBootSemitransparentWallNum):
 
 		// ボスが起動することによって出現する半透明の壁を生成
-		new BossBootSemitransparentWall(_ObjectPos, MStaticObjectSize, Tag::eBossBootSemitransparentWall);
+		mBossBootSemitransparentWallPtr = new BossBootSemitransparentWall(_ObjectPos, MStaticObjectSize, Tag::eBossBootSemitransparentWall);
 
 		break;
 	}

@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// ボスが起動することによって出現する半透明の壁
+/// エネミーが起動することによって出現する半透明の壁
 /// </summary>
 class EnemyBootSemitransparentWall : public GameObject
 {

@@ -238,7 +238,9 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 		tag == eGate ||
 		tag == eGateDoor ||
 		tag == eEnemyGenerator ||
-		tag == ePlayer)
+		tag == ePlayer ||
+		tag == eEnemyBootSemitransparentWall ||
+		tag == eBossBootSemitransparentWall)
 	{
 		//‰Ÿ‚µ–ß‚µˆ—
 		float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;

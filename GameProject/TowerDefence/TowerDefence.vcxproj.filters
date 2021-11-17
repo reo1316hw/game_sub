@@ -324,20 +324,32 @@
     <ClCompile Include="OpenGate.cpp">
       <Filter>GameObject\Map\Gate\Component</Filter>
     </ClCompile>
-    <ClCompile Include="BossActiveBox.cpp">
-      <Filter>GameObject\Map\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyActiveBox.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="UIRoot.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBootSemitransparentWall.cpp">
-      <Filter>GameObject\Map\Enemy</Filter>
+    <ClCompile Include="BossActiveAffectedObjects.cpp">
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="BossActiveBox.cpp">
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects</Filter>
     </ClCompile>
     <ClCompile Include="BossBootSemitransparentWall.cpp">
-      <Filter>GameObject\Map\Boss</Filter>
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="BossBootSemitransparentWallSwitch.cpp">
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyActiveAffectedObjects.cpp">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyActiveBox.cpp">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBootSemitransparentWall.cpp">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBootSemitransparentWallSwitch.cpp">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -666,20 +678,32 @@
     <ClInclude Include="OpenGate.h">
       <Filter>GameObject\Map\Gate\Component</Filter>
     </ClInclude>
-    <ClInclude Include="BossActiveBox.h">
-      <Filter>GameObject\Map\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyActiveBox.h">
-      <Filter>GameObject\Map\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="UIRoot.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyBootSemitransparentWall.h">
-      <Filter>GameObject\Map\Enemy</Filter>
+    <ClInclude Include="BossActiveAffectedObjects.h">
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BossActiveBox.h">
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects</Filter>
     </ClInclude>
     <ClInclude Include="BossBootSemitransparentWall.h">
-      <Filter>GameObject\Map\Boss</Filter>
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BossBootSemitransparentWallSwitch.h">
+      <Filter>GameObject\Map\Boss\BossActiveAffectedObjects\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyActiveAffectedObjects.h">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyActiveBox.h">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBootSemitransparentWall.h">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBootSemitransparentWallSwitch.h">
+      <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -781,6 +805,18 @@
     </Filter>
     <Filter Include="GameObject\Map\Component">
       <UniqueIdentifier>{772fec03-37e1-4ddf-bf14-6d72c648152e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Boss\BossActiveAffectedObjects">
+      <UniqueIdentifier>{5ec5384c-4158-4503-9de5-d724ea9b7ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Boss\BossActiveAffectedObjects\Component">
+      <UniqueIdentifier>{5696ffb2-dffa-4882-bb67-782f4a443212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy\EnemyActiveAffectedObjects">
+      <UniqueIdentifier>{c34ed08d-e5e8-4921-aad0-bced7d457a11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy\EnemyActiveAffectedObjects\Component">
+      <UniqueIdentifier>{2192d20e-920e-441f-a198-15767c6e450b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -162,7 +162,9 @@ void PlayerObject::OnCollision(const GameObject& _HitObject)
 	if (tag == eWall ||
 		tag == eGate ||
 		tag == eGateDoor ||
-		tag == eEnemyGenerator)
+		tag == eEnemyGenerator || 
+		tag == eEnemyBootSemitransparentWall ||
+		tag == eBossBootSemitransparentWall)
 	{
 		//‰Ÿ‚µ–ß‚µˆ—
 		float dx1 = _HitObject.GetObjectAABB().m_min.x - mBox.m_max.x;

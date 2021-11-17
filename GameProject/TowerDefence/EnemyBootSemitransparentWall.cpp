@@ -12,9 +12,10 @@ EnemyBootSemitransparentWall::EnemyBootSemitransparentWall(const Vector3& _Pos, 
 	//GameObjectƒƒ“ƒo•Ï”‚Ì‰Šú‰»
 	SetScale(_Scale);
 	SetPosition(_Pos);
+	SetState(eDead);
 
 	// “–‚½‚è”»’è
-	AABB box = AABB(Vector3(-2000.0f, -1.0f, -2000.0f), Vector3(2000.0f, 1.0f, 2000.0f));
+	AABB box = AABB(Vector3(-2000.0f, 0.0f, -2000.0f), Vector3(2000.0f, 100.0f, 2000.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(box);
 }

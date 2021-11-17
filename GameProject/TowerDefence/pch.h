@@ -82,6 +82,8 @@
 #include "EnemyObjectStateFlyingBackDeath.h"
 #include "EnemyActiveBox.h"
 #include "EnemyBootSemitransparentWall.h"
+#include "EnemyActiveAffectedObjects.h"
+#include "EnemyBootSemitransparentWallSwitch.h"
 
 #include "BossObject.h"
 #include "BossObjectStateBase.h"
@@ -95,6 +97,8 @@
 #include "BossObjectStateDeath.h"
 #include "BossActiveBox.h"
 #include "BossBootSemitransparentWall.h"
+#include "BossActiveAffectedObjects.h"
+#include "BossBootSemitransparentWallSwitch.h"
 
 #include "GroundObject.h"
 
