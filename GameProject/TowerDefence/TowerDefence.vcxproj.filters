@@ -351,6 +351,9 @@
     <ClCompile Include="EnemyBootSemitransparentWallSwitch.cpp">
       <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects\Component</Filter>
     </ClCompile>
+    <ClCompile Include="BossHitPointUISwitch.cpp">
+      <Filter>UI\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -704,6 +707,9 @@
     </ClInclude>
     <ClInclude Include="EnemyBootSemitransparentWallSwitch.h">
       <Filter>GameObject\Map\Enemy\EnemyActiveAffectedObjects\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHitPointUISwitch.h">
+      <Filter>UI\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

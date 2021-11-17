@@ -26,12 +26,6 @@ public:
     /// </summary>
 	~UIRoot() {};
 
-    /// <summary>
-    /// ゲームオブジェクトのアップデート
-    /// </summary>
-    /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
-    void UpdateGameObject(float _deltaTime)override;
-
 private:
 
     // プレイヤーのhpゲージの大きさ
@@ -42,11 +36,4 @@ private:
     const Vector3 MPlayerHitPointPosition;
     // ボスのhpゲージの座標
     const Vector3 MBossHitPointPosition;
-
-    // ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
-    BossActiveBox* mBossActiveBoxPtr;
-    // ボスのhpゲージのポインタ
-    BossHitPointGauge* mBossHitPointGaugePtr;
-    // ボスのhpフレームのポインタ
-    BossHitPointFrame* mBossHitPointFramePtr;
 };

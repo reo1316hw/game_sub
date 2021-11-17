@@ -14,32 +14,16 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr,
 	, MBossHitPointPosition(Vector3(400.0f, 400.0f, 0.0f))
 	, MPlayerHitPointScale(Vector2(1.0f, 0.5f))
 	, MBossHitPointScale(Vector2(1.0f, 0.5f))
-	, mBossActiveBoxPtr(_bossActiveBoxPtr)
-	, mBossHitPointGaugePtr(nullptr)
-	, mBossHitPointFramePtr(nullptr)
 {
 	// プレイヤーのhpゲージを生成
 	new PlayerHitPointGauge(MPlayerHitPointPosition, "Assets/Texture/PlayerHpGauge.png", Tag::eOther, _playerPtr, MPlayerHitPointScale);
 	// プレイヤーのhpの枠を生成
 	new PlayerHitPointFrame(MPlayerHitPointPosition, "Assets/Texture/PlayerHpFrame.png", Tag::eOther, MPlayerHitPointScale);
 	// ボスのhpゲージを生成
-	mBossHitPointGaugePtr = new BossHitPointGauge(MBossHitPointPosition, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, _bossPtr, MBossHitPointScale);
+	BossHitPointGauge* bossHitPointGaugePtr = new BossHitPointGauge(MBossHitPointPosition, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, _bossPtr, MBossHitPointScale);
 	// ボスのhpの枠を生成
-	mBossHitPointFramePtr = new BossHitPointFrame(MBossHitPointPosition, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, MBossHitPointScale);
-}
+	BossHitPointFrame* bossHitPointFramePtr = new BossHitPointFrame(MBossHitPointPosition, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, MBossHitPointScale);
 
-/// <summary>
-/// ゲームオブジェクトのアップデート
-/// </summary>
-/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void UIRoot::UpdateGameObject(float _deltaTime)
-{
-	if (!mBossActiveBoxPtr->GetIsHitPlayer() || mBossHitPointGaugePtr->GetState() == eActive 
-		&& mBossHitPointFramePtr->GetState() == eActive)
-	{
-		return;
-	}
-
-	mBossHitPointGaugePtr->SetState(eActive);
-	mBossHitPointFramePtr->SetState(eActive);
+	// ボスの体力UIのON/OFFを行うコンポーネントを生成
+	new BossHitPointUISwitch(this, _bossActiveBoxPtr, bossHitPointGaugePtr, bossHitPointFramePtr);
 }
