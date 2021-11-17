@@ -34,6 +34,10 @@ public:
 
 private:
 
+    // プレイヤーのhpゲージの大きさ
+    const Vector2 MPlayerHitPointScale;
+    // ボスのhpゲージの大きさ
+    const Vector2 MBossHitPointScale;
     // プレイヤーのhpゲージの座標
     const Vector3 MPlayerHitPointPosition;
     // ボスのhpゲージの座標
