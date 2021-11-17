@@ -17,8 +17,9 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_texture"> テクスチャのポインタ </param>
+	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 	/// <param name="_DrawOrder"> 描画の順番 </param>
-	SpriteComponent(GameObject* _owner, Texture* _texture, const int& _DrawOrder = 100);
+	SpriteComponent(GameObject* _owner, Texture* _texture, const Vector2& _Scale , const int& _DrawOrder = 100);
 
 	/// <summary>
 	/// コンストラクタ
@@ -26,8 +27,10 @@ public:
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_texture"> テクスチャのポインタ </param>
 	/// <param name="_hitPointGaugeController"> hpゲージを制御するクラスのポインタ </param>
+	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 	/// <param name="_DrawOrder"> 描画の順番 </param>
-    SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, const int& _DrawOrder = 100);
+    SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController,
+		const Vector2& _Scale, const int& _DrawOrder = 100);
 
 	/// <summary>
 	/// デストラクタ
@@ -40,8 +43,11 @@ public:
     /// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
     virtual void Draw(Shader* _shader);
 
-protected:
+private:
 	
+	// テクスチャの大きさ
+	const Vector2 MScale;
+
 	// 描画を行うか
 	bool mVisible;
 

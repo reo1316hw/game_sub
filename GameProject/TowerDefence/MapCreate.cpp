@@ -105,8 +105,8 @@ void MapCreate::OpenFile()
 	mCreateEnemysPtr->CreateEnemyObject(MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel",
 		                                Tag::eEnemy, mPlayerPtr);
 	
-	//// UI‚ğ¶¬‚·‚é
-	//CreateUI();
+	// UI‚ğ¶¬‚·‚é
+	CreateUI();
 }
 
 /// <summary>

@@ -16,9 +16,9 @@ public:
 	/// <param name="_Pos"> UIの生成場所(スクリーン座標) </param>
 	/// <param name="_TextureName"> テクスチャのパス </param>
 	/// <param name="_ObjectTag"> アタッチしたゲームオブジェクトのタグ </param>
-	/// <param name="_Scale"> 画像の拡大サイズ </param>
+	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 	PlayerHitPointFrame(const Vector3& _Pos, const std::string& _TextureName,
-		 const Tag& _ObjectTag, const float& _Scale = 1.0f);
+		 const Tag& _ObjectTag, const Vector2& _Scale = Vector2(1.0f, 1.0f));
 
 	/// <summary>
 	/// デストラクタ

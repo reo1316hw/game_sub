@@ -7,9 +7,9 @@
 /// <param name="_TextureName"> テクスチャのパス </param>
 /// <param name="_ObjectTag"> アタッチしたゲームオブジェクトのタグ </param>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-/// <param name="_Scale"> 画像の拡大サイズ </param>
+/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
-	PlayerObject* _playerPtr, const float& _Scale)
+	PlayerObject* _playerPtr, const Vector2& _Scale)
 	: GameObject(_ObjectTag)
 	, mHitPointGaugeControllerPtr(nullptr)
 	, mSpritePtr(nullptr)
@@ -23,5 +23,5 @@ PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string&
 	mHitPointGaugeControllerPtr = new HitPointGaugeController(_playerPtr, texture);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mSpritePtr = new SpriteComponent(this, texture, mHitPointGaugeControllerPtr);
+	mSpritePtr = new SpriteComponent(this, texture, mHitPointGaugeControllerPtr, _Scale);
 }

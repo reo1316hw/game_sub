@@ -9,7 +9,7 @@
 /// <param name="_bossPtr"> プレイヤーのポインタ </param>
 /// <param name="_Scale"> 画像の拡大サイズ </param>
 BossHitPointGauge::BossHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
-	BossObject* _bossPtr, const float& _Scale)
+	BossObject* _bossPtr, const Vector2& _Scale)
 	: GameObject(_ObjectTag)
 	, mHitPointGaugeControllerPtr(nullptr)
 	, mSpritePtr(nullptr)
@@ -23,5 +23,5 @@ BossHitPointGauge::BossHitPointGauge(const Vector3& _Pos, const std::string& _Te
 	mHitPointGaugeControllerPtr = new HitPointGaugeController(_bossPtr, texture);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mSpritePtr = new SpriteComponent(this, texture, mHitPointGaugeControllerPtr);
+	mSpritePtr = new SpriteComponent(this, texture, mHitPointGaugeControllerPtr, _Scale);
 }

@@ -7,9 +7,9 @@
 /// <param name="_TextureName"> テクスチャのパス </param>
 /// <param name="_ObjectTag"> アタッチしたゲームオブジェクトのタグ </param>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-/// <param name="_Scale"> 画像の拡大サイズ </param>
+/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 PlayerHitPointFrame::PlayerHitPointFrame(const Vector3& _Pos, const std::string& _TextureName,
-	const Tag& _ObjectTag, const float& _Scale)
+	const Tag& _ObjectTag, const Vector2& _Scale)
 	: GameObject(_ObjectTag)
 	, mSpritePtr(nullptr)
 {
@@ -19,5 +19,5 @@ PlayerHitPointFrame::PlayerHitPointFrame(const Vector3& _Pos, const std::string&
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mSpritePtr = new SpriteComponent(this, texture);
+	mSpritePtr = new SpriteComponent(this, texture, _Scale);
 }

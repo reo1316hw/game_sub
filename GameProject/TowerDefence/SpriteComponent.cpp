@@ -5,9 +5,11 @@
 /// </summary>
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_texture"> テクスチャのポインタ </param>
+/// <param name="_Scale"> 大きさ </param>
 /// <param name="_DrawOrder"> 描画の順番 </param>
-SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, const int& _DrawOrder)
+SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, const Vector2& _Scale, const int& _DrawOrder)
     : Component(_owner)
+	, MScale(_Scale)
     , mDrawOrder(_DrawOrder)
     , mTextureWidth(0)
     , mTextureHeight(0)
@@ -28,9 +30,12 @@ SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, const in
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_texture"> テクスチャのポインタ </param>
 /// <param name="_hitPointGaugeController"> hpゲージを制御するクラスのポインタ </param>
+/// <param name="_Scale"> テクスチャの大きさ </param>
 /// <param name="_DrawOrder"> 描画の順番 </param>
-SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, const int& _DrawOrder)
+SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController,
+	const Vector2& _Scale, const int& _DrawOrder)
 	: Component(_owner)
+	, MScale(_Scale)
 	, mDrawOrder(_DrawOrder)
 	, mTextureWidth(0)
 	, mTextureHeight(0)
@@ -73,8 +78,8 @@ void SpriteComponent::Draw(Shader * _shader)
 	}
 
 	Matrix4 scaleMatrix = Matrix4::CreateScale(
-		static_cast<float>(mTextureWidth),
-		static_cast<float>(mTextureHeight),
+		static_cast<float>(mTextureWidth * MScale.x),
+		static_cast<float>(mTextureHeight * MScale.y),
 		1.0f);
 
 	Matrix4 world = scaleMatrix * mOwner->GetWorldTransform();
