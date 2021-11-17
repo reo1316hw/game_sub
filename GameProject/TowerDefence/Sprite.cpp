@@ -10,5 +10,9 @@ Sprite::Sprite(const std::string _TextureName, const bool& _ReUseGameObject, con
 	:GameObject(Tag::eOther, _ReUseGameObject)
 {
 	Texture* texture = RENDERER->GetTexture(_TextureName);
+
+	mPosition.x -= texture->GetWidth() * 0.5f;
+	SetPosition(mPosition);
+
 	mSpriteComponent = new SpriteComponent(this, texture, _Scale);
 }

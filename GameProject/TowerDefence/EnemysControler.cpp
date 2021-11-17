@@ -98,12 +98,12 @@ void EnemysControler::ActiveEnemy(EnemyObject* _enemyObjectPtr)
 		if (_enemyObjectPtr->GetState() != State::eActive && !_enemyObjectPtr->GetShouldTutorialUse())
 		{
 			// hpƒQ[ƒW
-			//mEnemyHitPointGaugePtr = _enemyObjectPtr->GetEnemyHitPointGaugePtr();
+			mEnemyHitPointGaugePtr = _enemyObjectPtr->GetEnemyHitPointGaugePtr();
 			// hp‚Ì˜g
-			//mEnemyHitPointFramePtr = _enemyObjectPtr->GetEnemyHitPointFramePtr();
+			mEnemyHitPointFramePtr = _enemyObjectPtr->GetEnemyHitPointFramePtr();
 
-			//mEnemyHitPointGaugePtr->SetState(State::eActive);
-			//mEnemyHitPointFramePtr->SetState(State::eActive);
+			mEnemyHitPointGaugePtr->SetState(State::eActive);
+			mEnemyHitPointFramePtr->SetState(State::eActive);
 			_enemyObjectPtr->SetState(State::eActive);
 
 			++mActiveCount;

@@ -86,9 +86,9 @@ private:
 	const float MLeftEnemyGeneratorAngle;
 
 	// プレイヤーのhpゲージの座標
-	const Vector3 MPlayerHitPointGaugePosition;
+	const Vector3 MPlayerHitPointPosition;
 	// ボスのhpゲージの座標
-	const Vector3 MBossHitPointGaugePosition;
+	const Vector3 MBossHitPointPosition;
 	// 静的オブジェクトの大きさ
 	const Vector3 MStaticObjectSize;
 	// プレイヤーの大きさ

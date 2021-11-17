@@ -10,7 +10,7 @@
 EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Scale, const std::string& _TextureName,
 	const Tag& _ObjectTag, EnemyObject* _enemyPtr)
 	: GameObject(_ObjectTag)
-	, MOffset(Vector3(-25.0f, 0.0f, 100.0f))
+	, MOffset(Vector3(0.0f, 0.0f, 100.0f))
 	, mHitPointGaugeControllerPtr(nullptr)
 	, mParticlePtr(nullptr)
 	, mEnemyPtr(_enemyPtr)

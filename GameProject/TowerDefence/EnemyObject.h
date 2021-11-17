@@ -98,6 +98,8 @@ private:
 
 	// hpゲージの大きさ
 	const Vector3 MHpGaugeScale;
+	// hpフレームの大きさ
+	const Vector3 MHpFrameScale;
 	// ヒットエフェクトの大きさ
 	const Vector3 MHitEffectScale;
 

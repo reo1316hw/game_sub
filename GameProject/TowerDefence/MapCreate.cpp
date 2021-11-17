@@ -7,8 +7,8 @@ MapCreate::MapCreate()
 	: GameObject(Tag::eOther)
 	, OpenToDefeatEnemyNum(110)
 	, OpenToDefeatTutorialEnemyNum(10)
-	, MPlayerHitPointGaugePosition(Vector3(-800.0f, -400.0f, 0.0f))
-	, MBossHitPointGaugePosition(Vector3(400.0f, 400.0f, 0.0f))
+	, MPlayerHitPointPosition(Vector3(-800.0f, -400.0f, 0.0f))
+	, MBossHitPointPosition(Vector3(400.0f, 400.0f, 0.0f))
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
 	, MGroundShiftVec(Vector3(0.0f, 0.0f, 50.0f))
@@ -268,13 +268,13 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 void MapCreate::CreateUI()
 {
 	// プレイヤーのhpゲージを生成
-	new PlayerHitPointGauge(MPlayerHitPointGaugePosition, "Assets/Texture/hp.png", Tag::eOther, mPlayerPtr);
+	new PlayerHitPointGauge(MPlayerHitPointPosition, "Assets/Texture/HpGauge.png", Tag::eOther, mPlayerPtr);
 	// プレイヤーのhpの枠を生成
-	new PlayerHitPointFrame(MPlayerHitPointGaugePosition + Vector3(0.0f, 200.0f, 0.0f), "Assets/Texture/hp.png", Tag::eOther);
+	new PlayerHitPointFrame(MPlayerHitPointPosition, "Assets/Texture/HpFrame.png", Tag::eOther);
 	// ボスのhpゲージを生成
-	new BossHitPointGauge(MBossHitPointGaugePosition, "Assets/Texture/hp.png", Tag::eOther, mBossPtr);
+	new BossHitPointGauge(MBossHitPointPosition, "Assets/Texture/HpGauge.png", Tag::eOther, mBossPtr);
 	// ボスのhpの枠を生成
-	new BossHitPointFrame(MBossHitPointGaugePosition + Vector3(0.0f, -200.0f, 0.0f), "Assets/Texture/hp.png", Tag::eOther);
+	new BossHitPointFrame(MBossHitPointPosition, "Assets/Texture/HpFrame.png", Tag::eOther);
 }
 
 bool MapCreate::readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName)

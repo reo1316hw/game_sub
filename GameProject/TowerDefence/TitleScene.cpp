@@ -4,6 +4,7 @@
 /// コンストラクタ
 /// </summary>
 TitleScene::TitleScene()
+    : MSpriteScale(Vector2(2.0f, 1.0f))
 {
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));
@@ -13,7 +14,7 @@ TitleScene::TitleScene()
 	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	// スタート画面用のスプライトを生成
-	mSprite = new Sprite("Assets/Texture/Title.png", false, Vector2(2.0f, 1.0f));
+	mSprite = new Sprite("Assets/Texture/Title.png", false, MSpriteScale);
 }
 
 /// <summary>

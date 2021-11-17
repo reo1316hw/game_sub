@@ -4,6 +4,7 @@
 /// コンストラクタ
 /// </summary>
 GameClearScene::GameClearScene()
+	: MSpriteScale(Vector2(2.0f, 1.0f))
 {
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));
@@ -12,8 +13,8 @@ GameClearScene::GameClearScene()
 	dir.m_diffuseColor = Vector3(0.78f, 0.88f, 1.0f);
 	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
 
-	// スタート画面用のスプライトを生成
-	mSprite = new Sprite("Assets/Texture/GameClear.png", true);
+	// ゲームクリア用のスプライトを生成
+	mSprite = new Sprite("Assets/Texture/GameClear.png", true, MSpriteScale);
 }
 
 /// <summary>

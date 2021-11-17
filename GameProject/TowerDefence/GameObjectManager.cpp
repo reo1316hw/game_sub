@@ -38,7 +38,7 @@ void GameObjectManager::UpdateGameObject(float _deltaTime)
 		cameraObject->Update(_deltaTime);
 	}
 
-	// 1マップ目を更新する
+	// ゲームオブジェクトを更新する
 	for (auto gameObject : mGameObjects)
 	{
 		gameObject->Update(_deltaTime);
@@ -140,6 +140,8 @@ void GameObjectManager::RemoveAllUsedGameObject()
 		}
 		delete obj;
 	}
+
+	mGameObjects = reUseObjects;
 }
 
 //GameObject * GameObjectManager::FindGameObject(Tag _tag)

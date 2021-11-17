@@ -25,4 +25,7 @@ public:
 	SceneBase* Update(const InputState& _KeyState)override;
 
 private:
+
+	// スプライトの拡大サイズ
+	const Vector2 MSpriteScale;
 };
