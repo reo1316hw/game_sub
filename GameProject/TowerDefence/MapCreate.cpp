@@ -15,6 +15,7 @@ MapCreate::MapCreate()
 	, MRightEnemyGeneratorShiftVec(Vector3(-60.0f, 0.0f, 0.0f))
 	, MLeftEnemyGeneratorShiftVec(Vector3(60.0f, 0.0f, 0.0f))
 	, MFrontEnemyGeneratorShiftVec(Vector3(0.0f, 60.0f, 0.0f))
+	, MEnemysActiveBoxShiftVec(Vector3(0.0f, -200.0f, 0.0f))
 	, MRightEnemyGeneratorAngle(90.0f)
 	, MLeftEnemyGeneratorAngle(270.0f)
     , mPlayerPtr(nullptr)
@@ -242,16 +243,35 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		break;
 
 	case(MapDataNum::eEnemyActiveBoxNum):
+	{
+		// エネミーを更新させるための当たり判定用矩形オブジェクトの座標
+		Vector3 enemyActiveBoxPos = _ObjectPos + MEnemysActiveBoxShiftVec;
 
 		// エネミーを更新させるための当たり判定用矩形オブジェクト生成
-		mEnemyActiveBoxPtr = new EnemyActiveBox(_ObjectPos, MStaticObjectSize, Tag::eEnemyActiveBox);
+		mEnemyActiveBoxPtr = new EnemyActiveBox(enemyActiveBoxPos, MStaticObjectSize, Tag::eEnemyActiveBox);
+
+		break;
+	}
+	case(MapDataNum::eBossActiveBoxNum):
+	{
+		// ボスを更新させるための当たり判定用矩形オブジェクトの座標
+		Vector3 bossActiveBoxPos = _ObjectPos + MEnemysActiveBoxShiftVec;
+		// ボスを更新させるための当たり判定用矩形オブジェクト生成
+		mBossActiveBoxPtr = new BossActiveBox(bossActiveBoxPos, MStaticObjectSize, Tag::eBossActiveBox);
+
+		break;
+	}
+	case(MapDataNum::eEnemyBootSemitransparentWallNum):
+
+		// エネミーが起動することによって出現する半透明の壁を生成
+		new EnemyBootSemitransparentWall(_ObjectPos, MStaticObjectSize, Tag::eEnemyBootSemitransparentWall);
 
 		break;
 
-	case(MapDataNum::eBossActiveBoxNum):
+	case(MapDataNum::eBossBootSemitransparentWallNum):
 
-		// エネミーを更新させるための当たり判定用矩形オブジェクト生成
-		mBossActiveBoxPtr = new BossActiveBox(_ObjectPos, MStaticObjectSize, Tag::eBossActiveBox);
+		// ボスが起動することによって出現する半透明の壁を生成
+		new BossBootSemitransparentWall(_ObjectPos, MStaticObjectSize, Tag::eBossBootSemitransparentWall);
 
 		break;
 	}

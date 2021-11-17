@@ -333,6 +333,12 @@
     <ClCompile Include="UIRoot.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyBootSemitransparentWall.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BossBootSemitransparentWall.cpp">
+      <Filter>GameObject\Map\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -668,6 +674,12 @@
     </ClInclude>
     <ClInclude Include="UIRoot.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBootSemitransparentWall.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BossBootSemitransparentWall.h">
+      <Filter>GameObject\Map\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

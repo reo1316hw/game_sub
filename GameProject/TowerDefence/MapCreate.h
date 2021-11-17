@@ -27,7 +27,9 @@ enum MapDataNum
 	eBossNum,
 	eTutorialEnemyNum,
 	eEnemyActiveBoxNum,
-	eBossActiveBoxNum
+	eBossActiveBoxNum,
+	eEnemyBootSemitransparentWallNum,
+	eBossBootSemitransparentWallNum
 };
 
 /// <summary>
@@ -98,6 +100,8 @@ private:
 	const Vector3 MLeftEnemyGeneratorShiftVec;
 	// マップ正面側のエネミー生成器を丁度よい位置にずらすためのベクトル
 	const Vector3 MFrontEnemyGeneratorShiftVec;
+	// エネミーたちを更新させるための当たり判定用矩形オブジェクトの座標を丁度よい位置にずらすためのベクトル
+	const Vector3 MEnemysActiveBoxShiftVec;
 
 	//jsonから読み込んだ上層オブジェクトのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mUpperObjectMapData;
