@@ -11,10 +11,12 @@ EnemyObjectStateSweepFallDamage::EnemyObjectStateSweepFallDamage(PlayerObject* _
 	, MSeparationVecLength(4.0f)
 	, MDamageInitSpeed(100.0f)
 	, MGravity(4.0f)
+	, MNotHitTime(0.02f)
 	, mIsDamage(false)
 	, mHitPoint(0)
 	, mDamageValue(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
+	, mElapseTime(0.0f)
 	, mDamageSpeed(0.0f)
 	, mPosition(Vector3::Zero)
 	, mNowStateInitPos(Vector3::Zero)
@@ -56,6 +58,8 @@ EnemyState EnemyObjectStateSweepFallDamage::Update(EnemyObject* _owner, const fl
 			return EnemyState::eEnemyStateFlyingBackDamage;
 		}
 	}
+
+	mElapseTime += _DeltaTime;
 
 	// 速度
 	Vector3 velocity = mDamageSpeed * Vector3::UnitZ;
@@ -109,6 +113,7 @@ void EnemyObjectStateSweepFallDamage::Enter(EnemyObject* _owner, const float _De
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateSweepFallDamage));
+	mElapseTime = 0.0f;
 
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -138,6 +143,11 @@ void EnemyObjectStateSweepFallDamage::Enter(EnemyObject* _owner, const float _De
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateSweepFallDamage::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	if (mElapseTime <= MNotHitTime)
+	{
+		return;
+	}
+
 	mEnemyPtr = _owner;
 
 	// 座標

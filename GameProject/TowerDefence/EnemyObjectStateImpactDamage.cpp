@@ -11,6 +11,7 @@ EnemyObjectStateImpactDamage::EnemyObjectStateImpactDamage(PlayerObject* _player
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, MPlayRate(1.0f)
+	, MNotHitTime(0.02f)
 	, mIsHitStop(false)
 	, mIsDamage(false)
 	, mHitPoint(0)
@@ -163,6 +164,11 @@ void EnemyObjectStateImpactDamage::Enter(EnemyObject* _owner, const float _Delta
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void EnemyObjectStateImpactDamage::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
+	if (mElapseTime <= MNotHitTime)
+	{
+		return;
+	}
+
 	mEnemyPtr = _owner;
 	// 座標
 	mPosition = mEnemyPtr->GetPosition();

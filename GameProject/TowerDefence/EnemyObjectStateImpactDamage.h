@@ -70,6 +70,8 @@ private:
 	const float MSeparationVecLength;
 	// アニメーションの再生速度
 	const float MPlayRate;
+	// 当たり判定を行わない時間
+	const float MNotHitTime;
 
 	// ヒットストップするか
 	bool mIsHitStop;

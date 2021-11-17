@@ -70,6 +70,8 @@ private:
 	const float MDamageInitSpeed;
 	// 重力
 	const float MGravity;
+	// 当たり判定を行わない時間
+	const float MNotHitTime;
 
 	// ダメージを受けたか
 	bool mIsDamage;
@@ -81,6 +83,8 @@ private:
 	// ヒットする相手のリストの要素数
 	int mHitTagListSize;
 
+	// このステートに入ってからの経過時刻
+	float mElapseTime;
 	// ダメージ時の速度
 	float mDamageSpeed;
 
