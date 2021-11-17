@@ -15,8 +15,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	, MShouldTutorialUse(false)
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
-	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))
-	, MHpFrameScale(Vector3(0.101f, 2.0f, 1.5f))
+	, MHpGaugeScale(Vector3(0.05f, 1.0f, 4.0f))
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
@@ -88,9 +87,9 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/HpGauge.png", Tag::eOther, this);
+	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, this);
 	// エネミーのhpの枠を生成
-	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpFrameScale, "Assets/Texture/HpFrame.png", Tag::eOther, this);
+	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, this);
 }
 
 /// <summary>
@@ -109,8 +108,7 @@ EnemyObject::EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, co
 	, MShouldTutorialUse(_ShouldTutorialUse)
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
-	, MHpGaugeScale(Vector3(0.1f, 1.0f, 1.0f))
-	, MHpFrameScale(Vector3(0.105f, 200.0f, 1.5f))
+	, MHpGaugeScale(Vector3(0.05f, 1.0f, 4.0f))
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
@@ -181,10 +179,10 @@ EnemyObject::EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, co
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/HpGauge.png", Tag::eOther, this);
+	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, this);
 	mEnemyHitPointGaugePtr->SetState(eActive);
 	// エネミーのhpの枠を生成
-	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpFrameScale, "Assets/Texture/HpFrame.png", Tag::eOther, this);
+	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, this);
 	mEnemyHitPointFramePtr->SetState(eActive);
 
 }

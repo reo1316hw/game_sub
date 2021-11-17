@@ -336,10 +336,9 @@ void Renderer::Draw()
 /// </summary>
 void Renderer::DrawParticle()
 {
-
 	std::sort(mParticles.begin(), mParticles.end(), std::greater<ParticleComponent*>());
 
-	if (mParticles.size() == 0)
+ 	if (mParticles.size() == 0)
 	{
 		return;
 	}

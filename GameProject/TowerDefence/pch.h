@@ -106,6 +106,7 @@
 
 #include "Sprite.h"
 
+#include "UIRoot.h"
 #include "HitPointGaugeController.h"
 #include "PlayerHitPointGauge.h"
 #include "PlayerHitPointFrame.h"

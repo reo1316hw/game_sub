@@ -33,6 +33,7 @@ EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Scale, const std::string&
 /// <param name="_deltaTime"> ÅŒã‚ÌƒtƒŒ[ƒ€‚ğŠ®—¹‚·‚é‚Ì‚É—v‚µ‚½ŠÔ </param>
 void EnemyHitPointGauge::UpdateGameObject(float _deltaTime)
 {
+
 	mPosition = mEnemyPtr->GetPosition() + MOffset;
 	SetPosition(mPosition);
 }

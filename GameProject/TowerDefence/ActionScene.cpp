@@ -6,6 +6,7 @@
 ActionScene::ActionScene()
 	: mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
+	, mBossActiveBoxPtr(nullptr)
 	, mMainCameraPtr(nullptr)
 {
 	// ライトを設定(設定しないと何も映らない)
@@ -25,9 +26,12 @@ ActionScene::ActionScene()
 	mMapCreate->OpenFile();
 	mPlayerPtr = mMapCreate->GetPlayerPtr();
 	mBossPtr = mMapCreate->GetBossPtr();
+	mBossActiveBoxPtr = mMapCreate->GetBossActiveBoxPtr();
 
 	// カメラ生成
 	mMainCameraPtr = new MainCameraObject(mPlayerPtr, mBossPtr, true);
+	// UIの親クラス
+	new UIRoot(Tag::eOther, mPlayerPtr, mBossPtr, mBossActiveBoxPtr);
 
 	// プレイヤークラスでカメラのポインタを設定
 	mPlayerPtr->SetMainCameraPtr(mMainCameraPtr);

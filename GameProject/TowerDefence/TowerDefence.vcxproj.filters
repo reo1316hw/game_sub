@@ -330,6 +330,9 @@
     <ClCompile Include="EnemyActiveBox.cpp">
       <Filter>GameObject\Map\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="UIRoot.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -662,6 +665,9 @@
     </ClInclude>
     <ClInclude Include="EnemyActiveBox.h">
       <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="UIRoot.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@ BossHitPointFrame::BossHitPointFrame(const Vector3& _Pos, const std::string& _Te
 	, mSpritePtr(nullptr)
 {
 	SetPosition(_Pos);
+	SetState(eDead);
 
 	// テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);

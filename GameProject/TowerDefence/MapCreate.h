@@ -67,11 +67,6 @@ private:
 	/// <param name="_ObjectPos"> オブジェクトの座標 </param>
 	void CreateGameObject(const unsigned int _Name, const Vector3 _ObjectPos);
 
-	/// <summary>
-	/// UIを生成する
-	/// </summary>
-	void CreateUI();
-
 	bool readTiledJson(std::vector<std::vector<int>>& _mapData, const char* _fileName, const char* _layerName);
 	int  findLayerIndex(rapidjson::GenericArray<false,rapidjson::Value>& _layer,std::string& _layerName);
 	
@@ -85,10 +80,6 @@ private:
 	// マップ左側のエネミー生成器を回転するための角度
 	const float MLeftEnemyGeneratorAngle;
 
-	// プレイヤーのhpゲージの座標
-	const Vector3 MPlayerHitPointPosition;
-	// ボスのhpゲージの座標
-	const Vector3 MBossHitPointPosition;
 	// 静的オブジェクトの大きさ
 	const Vector3 MStaticObjectSize;
 	// プレイヤーの大きさ
@@ -152,4 +143,10 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> ボスのポインタ </returns>
 	BossObject* GetBossPtr() { return mBossPtr; }
+
+	/// <summary>
+	/// ボスを更新させるための当たり判定用矩形オブジェクトのポインタを取得
+	/// </summary>
+	/// <returns> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </returns>
+	BossActiveBox* GetBossActiveBoxPtr() { return mBossActiveBoxPtr; }
 };
