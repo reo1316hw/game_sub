@@ -11,8 +11,6 @@
 PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
 	PlayerObject* _playerPtr, const Vector2& _Scale)
 	: GameObject(_ObjectTag)
-	, mHitPointGaugeControllerPtr(nullptr)
-	, mSpritePtr(nullptr)
 {
 	SetPosition(_Pos);
 
@@ -20,8 +18,8 @@ PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string&
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス
-	mHitPointGaugeControllerPtr = new HitPointGaugeController(_playerPtr, texture);
+	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(_playerPtr, texture);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mSpritePtr = new SpriteComponent(this, texture, mHitPointGaugeControllerPtr, _Scale);
+	new SpriteComponent(this, texture, hitPointGaugeControllerPtr, _Scale);
 }

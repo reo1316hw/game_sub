@@ -8,7 +8,9 @@ static bool saveFlag = false;
 /// 隠蔽
 /// </summary>
 Renderer::Renderer()
-	: mScreenWidth(0)
+	: MFontTextureNum(100)
+	, MFontSize(72)
+	, mScreenWidth(0)
 	, mScreenHeight(0)
 	, mUndefineTexID(0)
 	, mAmbientLight(Vector3::Zero)
@@ -143,8 +145,16 @@ bool Renderer::Initialize(const float& _ScreenWidth, const float& _ScreenHeight,
 	CreateParticleVerts();
 
 	CreateCubeVerts();
-	// UIの初期座標に加算される座標
-	mAddPosition = Vector2::Zero;
+
+	// SDL_ttfの初期化
+	if (TTF_Init() != 0)
+	{
+		SDL_Log("Failed to initialize SDL_ttf");
+		return false;
+	}
+
+	// フォントテクスチャを生成
+	CreateFontTexture(MFontTextureNum, MFontSize);
 
 	// Effekseer初期化
 	mEffekseerRenderer = ::EffekseerRendererGL::Renderer::Create(8000, EffekseerRendererGL::OpenGLDeviceType::OpenGL3);
@@ -175,6 +185,14 @@ void Renderer::Shutdown()
 	delete mSpriteShader;
 	mMeshShader->Unload();
 	delete mMeshShader;
+	mSkinnedShader->Unload();
+	delete mSkinnedShader;
+	delete mParticleVertex;
+	mParticleShader->Unload();
+	delete mParticleShader;
+	delete mCubeVerts;
+	mSkyBoxShader->Unload();
+	delete mSkyBoxShader;
 
 	// Effekseer関連の破棄
 	mEffekseerManager.Reset();
@@ -189,38 +207,46 @@ void Renderer::Shutdown()
 /// </summary>
 void Renderer::UnloadData()
 {
-	// すべてのテクスチャのデータを解放
+	// すべてのテクスチャのデータを破棄
 	for (auto i : mTextures)
 	{
 		i.second->Unload();
 		delete i.second;
 	}
-	mTextures.clear();
-
-	// すべてのメッシュのデータを解放
+	// すべてのフォントのデータを破棄
+	for (auto i : mFonts)
+	{
+		i.second->Unload();
+		delete i.second;
+	}
+	// すべてのメッシュのデータを破棄
 	for (auto i : mMeshes)
 	{
 		i.second->Unload();
 		delete i.second;
 	}
-	// Unload skeletons
+	// すべてのスケルトンメッシュのデータを破棄
 	for (auto s : mSkeletons)
 	{
 		delete s.second;
 	}
-	// Unload animations
+	// すべてのアニメーションのデータを破棄
 	for (auto a : mAnims)
 	{
 		delete a.second;
 	}
-
-	// エフェクトの破棄
+	// すべてのエフェクトのデータを破棄
 	for (auto e : mEffects)
 	{
 		delete e.second;
 	}
 
+	mTextures.clear();
+	mFonts.clear();
 	mMeshes.clear();
+	mSkeletons.clear();
+	mAnims.clear();
+	mEffects.clear();
 }
 
 /// <summary>
@@ -757,6 +783,31 @@ void Renderer::SetParticleVertex()
 }
 
 /// <summary>
+/// フォントテクスチャの生成
+/// </summary>
+/// <param name="_Value"> テクスチャの枚数 </param>
+/// <param name="_FontSize"> フォントサイズ </param>
+void Renderer::CreateFontTexture(const int& _Value, const int& _FontSize)
+{
+	// フォントの生成
+	Font* font = GetFont("Assets/Font/impact.ttf");
+
+	// 格納する可変長配列をリサイズ
+	mFontTextures.resize(_Value + 1);
+
+	// フォントテクスチャを指定した枚数生成する
+	for (int i = 0; i <= _Value; i++)
+	{
+		std::string str;
+		str = std::to_string(i);
+		mFontTextures[i] = font->RenderText(str, Color::White, _FontSize);
+	}
+
+	std::string str = "/ 100";
+	mFontTextures.push_back(font->RenderText(str, Color::White, _FontSize));
+}
+
+/// <summary>
 /// 光源情報をシェーダーの変数にセットする
 /// </summary>
 /// <param name="_shader"> セットするShaderクラスのポインタ </param>
@@ -778,11 +829,16 @@ void Renderer::SetLightUniforms(Shader* _shader, const Matrix4& _View)
 		mDirLight.m_specColor);
 }
 
-EffekseerEffect* Renderer::GetEffect(const char16_t* fileName)
+/// <summary>
+/// エフェクトを取得
+/// </summary>
+/// <param name="_FileName"> 取得したいエフェクトのファイル名 </param>
+/// <returns> エフェクトクラスのポインタ </returns>
+EffekseerEffect* Renderer::GetEffect(const char16_t* _FileName)
 {
 	// エフェクトファイルを一度読み込んだかを確認
 	EffekseerEffect* effect = nullptr;
-	auto iter = mEffects.find(fileName);
+	auto iter = mEffects.find(_FileName);
 
 	// 一度読んでいるなら返す
 	if (iter != mEffects.end())
@@ -792,9 +848,9 @@ EffekseerEffect* Renderer::GetEffect(const char16_t* fileName)
 
 	//読んでいなければ新規追加
 	effect = new EffekseerEffect;
-	if (effect->LoadEffect(fileName))
+	if (effect->LoadEffect(_FileName))
 	{
-		mEffects.emplace(fileName, effect);
+		mEffects.emplace(_FileName, effect);
 	}
 	else
 	{
@@ -856,4 +912,46 @@ Vector3 Renderer::CalcCameraPos()
 	transMat.Transpose();
 
 	return Vector3(Vector3::Transform(v, transMat));
+}
+
+/// <summary>
+/// フォントを取得
+/// </summary>
+/// <param name="_FileName"> 取得したいフォントのファイル名  </param>
+/// <returns> フォントクラスのポインタ </returns>
+Font* Renderer::GetFont(const std::string& _FileName)
+{
+	Font* font = nullptr;
+	//すでに作成されてないか調べる
+	auto itr = mFonts.find(_FileName);
+	if (itr != mFonts.end())
+	{
+		font = itr->second;
+	}
+	//作成済みでない場合、新しくフォントを作成
+	else
+	{
+		font = new Font();
+		if (font->Load(_FileName))
+		{
+			mFonts.emplace(_FileName, font);
+		}
+		else
+		{
+			delete font;
+			font = nullptr;
+		}
+	}
+
+	return font;
+}
+
+/// <summary>
+/// フォントテクスチャを取得
+/// </summary>
+/// <param name="_Number"> 数字 </param>
+/// <returns> テクスチャクラスのポインタ </returns>
+Texture* Renderer::GetFontTexture(const int& _Number)
+{
+	return mFontTextures[_Number];
 }

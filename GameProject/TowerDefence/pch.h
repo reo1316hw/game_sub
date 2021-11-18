@@ -30,6 +30,7 @@
 #include <SDL_scancode.h>
 #include <SDL_gamecontroller.h>
 #include <SDL_mouse.h>
+#include <SDL_ttf.h>
 
 #include <Effekseer.h>
 #include <EffekseerRendererGL.h>
@@ -146,6 +147,9 @@
 #include "SpriteComponent.h"
 #include "EffectComponent.h"
 #include "SelfRotation.h"
+
+#include "Font.h"
+#include "DeadEnemyCountText.h"
 
 #include "CubeMapComponent.h"
 #include "SkyBoxObject.h"

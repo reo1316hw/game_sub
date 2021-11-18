@@ -26,4 +26,7 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr,
 
 	// ボスの体力UIのON/OFFを行うコンポーネントを生成
 	new BossHitPointUISwitch(this, _bossActiveBoxPtr, bossHitPointGaugePtr, bossHitPointFramePtr);
+
+	// 
+	new DeadEnemyCountText(Vector3::Zero, Tag::eOther, Vector2(5.0f, 1.0f));
 }

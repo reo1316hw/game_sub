@@ -11,7 +11,6 @@ EnemyHitPointFrame::EnemyHitPointFrame(const Vector3& _Scale, const std::string&
 	const Tag& _ObjectTag, EnemyObject* _enemyPtr)
 	: GameObject(_ObjectTag)
 	, MOffset(Vector3(0.0f, 0.0f, 100.0f))
-	, mParticlePtr(nullptr)
 	, mEnemyPtr(_enemyPtr)
 {
 	SetState(eDead);
@@ -20,7 +19,7 @@ EnemyHitPointFrame::EnemyHitPointFrame(const Vector3& _Scale, const std::string&
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mParticlePtr = new ParticleComponent(this, texture, _Scale);
+	new ParticleComponent(this, texture, _Scale);
 }
 
 /// <summary>

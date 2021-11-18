@@ -174,6 +174,13 @@ private:
 	void CreateCubeVerts();
 
 	/// <summary>
+    /// フォントテクスチャの生成
+    /// </summary>
+    /// <param name="_Value"> テクスチャの枚数 </param>
+    /// <param name="_FontSize"> フォントサイズ </param>
+	void CreateFontTexture(const int& _Value, const int& _FontSize);
+
+	/// <summary>
 	/// 全てのパーティクルを描画準備
 	/// </summary>
 	void DrawParticle();
@@ -203,25 +210,34 @@ private:
 	/// <returns> カメラ位置(ワールド座標) </returns>
 	Vector3 CalcCameraPos();
 
-	// スケルトンデータ
+	// ファイル名でスケルトンを取得するための連想配列
 	std::unordered_map<std::string, Skeleton*> mSkeletons;
-	// アニメーションデータ
+	// ファイル名でアニメーションを取得するための連想配列
 	std::unordered_map<std::string, Animation*> mAnims;
-	//ファイル名でメッシュを取得するための連想配列
+	// ファイル名でメッシュを取得するための連想配列
 	std::unordered_map<std::string, Mesh*> mMeshes;
-	//ファイル名でテクスチャを取得するための連想配列
+	// ファイル名でテクスチャを取得するための連想配列
 	std::unordered_map<std::string, Texture*>mTextures;
+	// ファイル名でエフェクトを取得するための連想配列
+	std::unordered_map<const char16_t*, EffekseerEffect*> mEffects;
+	// ファイル名でフォントを取得するための連想配列
+	std::unordered_map<std::string, class Font*> mFonts;
 
-	std::unordered_map<const char16_t*, EffekseerEffect*> mEffects; // エフェクト
-
-	//メッシュコンポーネントのポインタの可変長コンテナ
+	// メッシュの描画に使われるメッシュコンポーネントのポインタの可変長コンテナ
 	std::vector<MeshComponent*> mMeshComponents;
-	// スケルトンメッシュの描画に使われる
+	// スケルトンメッシュの描画に使われるスケルトンメッシュコンポーネントのポインタの可変長コンテナ
 	std::vector<SkeletalMeshComponent*> mSkeletalMeshes;
-	//スプライトコンポーネントのポインタの可変長コンテナ
+	// スプライトの描画に使われるスプライトコンポーネントのポインタの可変長コンテナ
 	std::vector<SpriteComponent*> mSprites;
-	//パーティクルのポインタ
+	// パーティクルの描画に使われるパーティクルコンポーネントのポインタの可変長コンテナ
 	std::vector<ParticleComponent*> mParticles;
+	// フォントの描画に使われるテクスチャのポインタの可変長コンテナ
+	std::vector<Texture*> mFontTextures;
+
+	// フォントテクスチャの枚数(使いたい数字分だけ)
+	const int MFontTextureNum;
+	// フォントのサイズ
+	const int MFontSize;
 
 	// 未設定テクスチャの場合に割り当てられる黒色テクスチャ
 	unsigned int mUndefineTexID;
@@ -230,9 +246,6 @@ private:
 	float mScreenWidth;
 	// スクリーンの縦幅
 	float mScreenHeight;
-
-	// UIの初期座標に加算される座標
-	Vector2 mAddPosition;
 
 	// 環境光
 	Vector3 mAmbientLight;
@@ -265,20 +278,19 @@ private:
 	Shader*  mSkinnedShader;  
 	// パーティクル
 	Shader* mParticleShader;
-
-	// スカイボックス
-	Shader* mSkyBoxShader;
 	// パーティクル用頂点定義
 	VertexArray* mParticleVertex;
-	// プレイヤー
-	PlayerObject* mPlayer;
-
-	// HDR レンダラー
-	HDRRenderer* mHDRRenderer;
-	// キューブマップ
-	CubeMapComponent* mActiveSkyBox; // 有効な(描画する)スカイボックス
+	// スカイボックス
+	Shader* mSkyBoxShader;
 	// キューブ頂点配列
 	VertexArray* mCubeVerts;
+	// 有効な(描画する)キューブマップ
+	CubeMapComponent* mActiveSkyBox; 
+
+	// プレイヤー
+	PlayerObject* mPlayer;
+	// HDR レンダラー
+	HDRRenderer* mHDRRenderer;
 
 	// Effekseer関連
 	Effekseer::RefPtr<EffekseerRendererGL::Renderer> mEffekseerRenderer; // Effekseerレンダラ
@@ -298,6 +310,20 @@ public:// ゲッターセッター
 	/// <param name="_FileName"> 取得したいテクスチャのファイル名 </param>
 	/// <returns> テクスチャクラスのポインタ </returns>
 	Texture* GetTexture(const std::string& _FileName);
+
+	/// <summary>
+	/// フォントを取得
+	/// </summary>
+	/// <param name="_FileName"> 取得したいフォントのファイル名 </param>
+	/// <returns> フォントクラスのポインタ </returns>
+	Font* GetFont(const std::string& _FileName);
+
+	/// <summary>
+	/// フォントテクスチャを取得
+	/// </summary>
+	/// <param name="_Number"> 数字 </param>
+	/// <returns> テクスチャクラスのポインタ </returns>
+	Texture* GetFontTexture(const int& _Number);
 
 	/// <summary>
 	/// スケルトンモデルを取得
@@ -394,7 +420,12 @@ public:// ゲッターセッター
 	/// <returns> キューブマップの頂点配列 </returns>
 	VertexArray* GetCubeMapVerts() { return mCubeVerts; }
 
-	EffekseerEffect* GetEffect(const char16_t* fileName);
+	/// <summary>
+	/// エフェクトを取得
+	/// </summary>
+	/// <param name="_FileName"> 取得したいエフェクトのファイル名 </param>
+	/// <returns> エフェクトクラスのポインタ </returns>
+	EffekseerEffect* GetEffect(const char16_t* _FileName);
 
 	// Effekseer関連
 	Effekseer::RefPtr<EffekseerRendererGL::Renderer> GetEffekseerRenderer() { return mEffekseerRenderer; }

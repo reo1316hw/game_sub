@@ -1,8 +1,5 @@
 #pragma once
 
-// 前方宣言
-class SpriteComponent;
-
 /// <summary>
 /// プレイヤーのhpの枠
 /// </summary>
@@ -15,7 +12,7 @@ public:
 	/// </summary>
 	/// <param name="_Pos"> UIの生成場所(スクリーン座標) </param>
 	/// <param name="_TextureName"> テクスチャのパス </param>
-	/// <param name="_ObjectTag"> アタッチしたゲームオブジェクトのタグ </param>
+	/// <param name="_ObjectTag"> ゲームオブジェクトのタグ </param>
 	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 	PlayerHitPointFrame(const Vector3& _Pos, const std::string& _TextureName,
 		 const Tag& _ObjectTag, const Vector2& _Scale = Vector2(1.0f, 1.0f));
@@ -26,7 +23,4 @@ public:
 	~PlayerHitPointFrame() {};
 
 private:
-
-	// スクリーン上に描画するコンポーネントクラスのポインタ
-	SpriteComponent* mSpritePtr;
 };

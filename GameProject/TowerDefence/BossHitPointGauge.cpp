@@ -11,8 +11,6 @@
 BossHitPointGauge::BossHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
 	BossObject* _bossPtr, const Vector2& _Scale)
 	: GameObject(_ObjectTag)
-	, mHitPointGaugeControllerPtr(nullptr)
-	, mSpritePtr(nullptr)
 {
 	SetPosition(_Pos);
 	SetState(eDead);
@@ -21,8 +19,8 @@ BossHitPointGauge::BossHitPointGauge(const Vector3& _Pos, const std::string& _Te
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス
-	mHitPointGaugeControllerPtr = new HitPointGaugeController(_bossPtr, texture);
+	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(_bossPtr, texture);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mSpritePtr = new SpriteComponent(this, texture, mHitPointGaugeControllerPtr, _Scale);
+	new SpriteComponent(this, texture, hitPointGaugeControllerPtr, _Scale);
 }

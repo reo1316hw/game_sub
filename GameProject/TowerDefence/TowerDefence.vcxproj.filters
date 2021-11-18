@@ -354,6 +354,12 @@
     <ClCompile Include="BossHitPointUISwitch.cpp">
       <Filter>UI\Component</Filter>
     </ClCompile>
+    <ClCompile Include="DeadEnemyCountText.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -710,6 +716,12 @@
     </ClInclude>
     <ClInclude Include="BossHitPointUISwitch.h">
       <Filter>UI\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadEnemyCountText.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

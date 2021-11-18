@@ -11,7 +11,6 @@
 PlayerHitPointFrame::PlayerHitPointFrame(const Vector3& _Pos, const std::string& _TextureName,
 	const Tag& _ObjectTag, const Vector2& _Scale)
 	: GameObject(_ObjectTag)
-	, mSpritePtr(nullptr)
 {
 	SetPosition(_Pos);
 
@@ -19,5 +18,5 @@ PlayerHitPointFrame::PlayerHitPointFrame(const Vector3& _Pos, const std::string&
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// スクリーン上に描画するコンポーネントクラス
-	mSpritePtr = new SpriteComponent(this, texture, _Scale);
+	new SpriteComponent(this, texture, _Scale);
 }
