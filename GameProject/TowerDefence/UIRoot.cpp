@@ -8,7 +8,7 @@
 /// <param name="_bossPtr"> ボスのポインタ </param>
 /// <param name="_bossActiveBoxPtr"> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
 UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr,
-	BossObject* _bossPtr, BossActiveBox* _bossActiveBoxPtr)
+	BossObject* _bossPtr, DeadObjectActiveBox* _bossActiveBoxPtr)
 	: GameObject(_ObjectTag)
 	, MPlayerHitPointPosition(Vector3(-800.0f, -400.0f, 0.0f))
 	, MBossHitPointPosition(Vector3(400.0f, 400.0f, 0.0f))
@@ -24,9 +24,11 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr,
 	// ボスのhpの枠を生成
 	BossHitPointFrame* bossHitPointFramePtr = new BossHitPointFrame(MBossHitPointPosition, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, MBossHitPointScale);
 
-	// ボスの体力UIのON/OFFを行うコンポーネントを生成
-	new BossHitPointUISwitch(this, _bossActiveBoxPtr, bossHitPointGaugePtr, bossHitPointFramePtr);
-
-	// 
+	// 倒したエネミーのカウントUIを生成
 	new DeadEnemyCountText(Vector3::Zero, Tag::eOther, Vector2(5.0f, 1.0f));
+
+	// ボスのhpゲージのON/OFFを行うコンポーネントを生成
+	new DeadObjectSwitch(this, _bossActiveBoxPtr, bossHitPointGaugePtr);
+	// ボスのhpの枠のON/OFFを行うコンポーネントを生成
+	new DeadObjectSwitch(this, _bossActiveBoxPtr, bossHitPointFramePtr);
 }

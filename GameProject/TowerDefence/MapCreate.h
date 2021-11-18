@@ -6,10 +6,7 @@ class BossObject;
 class EnemyObjectManager;
 class CreateEnemys;
 class EnemysControler;
-class EnemyActiveBox;
-class BossActiveBox;
-class EnemyBootSemitransparentWall;
-class BossBootSemitransparentWall;
+class DeadObjectActiveBox;
 
 /// <summary>
 /// マップデータのオブジェクトの番号
@@ -128,13 +125,14 @@ private:
 	// ボスのポインタ
 	BossObject* mBossPtr;
 	// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ
-	EnemyActiveBox* mEnemyActiveBoxPtr;
+	DeadObjectActiveBox* mEnemyActiveBoxPtr;
 	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
-	BossActiveBox* mBossActiveBoxPtr;
+	DeadObjectActiveBox* mBossActiveBoxPtr;
 	// エネミーが起動することによって出現する半透明の壁のポインタ
-	EnemyBootSemitransparentWall* mEnemyBootSemitransparentWallPtr;
+	GameObject* mEnemyBootSemitransparentWallPtr;
 	// ボスが起動することによって出現する半透明の壁のポインタ
-	BossBootSemitransparentWall* mBossBootSemitransparentWallPtr;
+	GameObject* mBossBootSemitransparentWallPtr;
+
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
 	// エネミーたちを制御するクラスのポインタ
@@ -158,5 +156,5 @@ public:// ゲッターセッター
 	/// ボスを更新させるための当たり判定用矩形オブジェクトのポインタを取得
 	/// </summary>
 	/// <returns> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </returns>
-	BossActiveBox* GetBossActiveBoxPtr() { return mBossActiveBoxPtr; }
+	DeadObjectActiveBox* GetBossActiveBoxPtr() { return mBossActiveBoxPtr; }
 };

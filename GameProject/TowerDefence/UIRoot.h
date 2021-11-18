@@ -19,7 +19,7 @@ public:
 	/// <param name="_bossPtr"> ボスのポインタ </param>
     /// <param name="_bossActiveBoxPtr"> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
 	UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr,
-        BossObject* _bossPtr, BossActiveBox* _bossActiveBoxPtr);
+        BossObject* _bossPtr, DeadObjectActiveBox* _bossActiveBoxPtr);
 
     /// <summary>
     /// デストラクタ

@@ -31,7 +31,7 @@ private:
 	// ボスのポインタ
 	BossObject* mBossPtr;
 	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
-	BossActiveBox* mBossActiveBoxPtr;
+	DeadObjectActiveBox* mBossActiveBoxPtr;
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 };

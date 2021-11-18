@@ -8,7 +8,7 @@
 /// <param name="_enemyActiveBoxPtr"> エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
 /// <param name="_bossActiveBoxPtr"> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
 EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemysPtr,
-	EnemyActiveBox* _enemyActiveBoxPtr, BossActiveBox* _bossActiveBoxPtr)
+	DeadObjectActiveBox* _enemyActiveBoxPtr, DeadObjectActiveBox* _bossActiveBoxPtr)
 	: Component(_owner)
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)

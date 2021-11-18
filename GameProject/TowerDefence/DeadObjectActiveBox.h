@@ -1,9 +1,9 @@
 #pragma once
 
 /// <summary>
-/// ボスを更新させるための当たり判定用矩形オブジェクト
+/// 更新していないオブジェクトを更新させるための当たり判定用矩形オブジェクト
 /// </summary>
-class BossActiveBox : public GameObject
+class DeadObjectActiveBox : public GameObject
 {
 public:
 
@@ -13,12 +13,12 @@ public:
 	/// <param name="_Pos"> 座標 </param>
 	/// <param name="_Scale"> 大きさ </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	BossActiveBox(const Vector3& _Pos, const Vector3& _Scale, const Tag& _ObjectTag);
+	DeadObjectActiveBox(const Vector3& _Pos, const Vector3& _Scale, const Tag& _ObjectTag);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~BossActiveBox() {};
+	~DeadObjectActiveBox() {};
 
 	/// <summary>
 	/// オブジェクトの更新処理

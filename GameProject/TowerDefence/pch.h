@@ -82,11 +82,6 @@
 #include "EnemyObjectStateSweepFallDeath.h"
 #include "EnemyObjectStateFlyingBackDeath.h"
 
-#include "EnemyBootSemitransparentWallSwitch.h"
-#include "EnemyActiveBox.h"
-#include "EnemyBootSemitransparentWall.h"
-#include "EnemyActiveAffectedObjects.h"
-
 #include "BossObject.h"
 #include "BossObjectStateBase.h"
 #include "BossObjectStateWait.h"
@@ -98,10 +93,10 @@
 #include "BossObjectStateDamage.h"
 #include "BossObjectStateDeath.h"
 
-#include "BossBootSemitransparentWallSwitch.h"
-#include "BossActiveBox.h"
-#include "BossBootSemitransparentWall.h"
-#include "BossActiveAffectedObjects.h"
+#include "DeadObjectSwitch.h"
+#include "DeadObjectActiveBox.h"
+#include "SemitransparentWallSwitcher.h"
+#include "SemitransparentWall.h"
 
 #include "GroundObject.h"
 
@@ -116,7 +111,6 @@
 #include "Sprite.h"
 
 #include "UIRoot.h"
-#include "BossHitPointUISwitch.h"
 #include "HitPointGaugeController.h"
 #include "PlayerHitPointGauge.h"
 #include "PlayerHitPointFrame.h"

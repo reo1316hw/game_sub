@@ -1,9 +1,9 @@
 #pragma once
 
 /// <summary>
-/// エネミーが起動することによって出現する半透明の壁
+/// 半透明の壁
 /// </summary>
-class EnemyBootSemitransparentWall : public GameObject
+class SemitransparentWall : public GameObject
 {
 public:
 
@@ -13,12 +13,12 @@ public:
 	/// <param name="_Pos"> 座標 </param>
 	/// <param name="_Scale"> 大きさ </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	EnemyBootSemitransparentWall(const Vector3& _Pos, const Vector3& _Scale, const Tag& _ObjectTag);
+	SemitransparentWall(const Vector3& _Pos, const Vector3& _Scale, const Tag& _ObjectTag);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~EnemyBootSemitransparentWall() {};
+	~SemitransparentWall() {};
 
 	/// <summary>
 	/// オブジェクトの更新処理

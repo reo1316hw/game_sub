@@ -17,7 +17,7 @@ public:
     /// <param name="_ObjectTag"> オブジェクトのタグ </param>
     /// <param name="_enemyActiveBoxPtr"> エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
     /// <param name="_bossActiveBoxPtr"> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
-	EnemyObjectManager(const Tag& _ObjectTag, EnemyActiveBox* _enemyActiveBoxPtr, BossActiveBox* _bossActiveBoxPtr);
+	EnemyObjectManager(const Tag& _ObjectTag, DeadObjectActiveBox* _enemyActiveBoxPtr, DeadObjectActiveBox* _bossActiveBoxPtr);
 
     /// <summary>
     /// デストラクタ
