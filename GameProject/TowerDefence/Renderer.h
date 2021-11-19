@@ -321,9 +321,9 @@ public:// ゲッターセッター
 	/// <summary>
 	/// フォントテクスチャを取得
 	/// </summary>
-	/// <param name="_Number"> 数字 </param>
+	/// <param name="_FontDataNum"> フォントテクスチャ配列の要素数 </param>
 	/// <returns> テクスチャクラスのポインタ </returns>
-	Texture* GetFontTexture(const int& _Number);
+	Texture* GetFontTexture(const int& _FontDataNum);
 
 	/// <summary>
 	/// スケルトンモデルを取得

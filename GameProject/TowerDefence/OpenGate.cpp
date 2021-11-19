@@ -16,6 +16,7 @@ OpenGate::OpenGate(GameObject* _owner, const Vector3& _Axis, const float& _AddAn
 	, MAddAngle(_AddAngle)
 	, MOpenAngle(90.0f)
 	, MAxis(_Axis)
+	, mIsOpen(false)
 	, mAngle(0.0f)
 	, mEnemysControlerPtr(_enemysControlerPtr)
 	, mSelfRotationPtr(_selfRotationPtr)
@@ -30,10 +31,16 @@ void OpenGate::Update(float _deltaTime)
 {
 	if (Math::Abs(mAngle) > MOpenAngle)
 	{
+		mIsOpen = false;
 		return;
 	}
 
 	if (mEnemysControlerPtr->GetDeadCount() >= MOpenToDefeatEnemyNum)
+	{
+		mIsOpen = true;
+	}
+
+	if (mIsOpen)
 	{
 		mAngle += MAddAngle;
 

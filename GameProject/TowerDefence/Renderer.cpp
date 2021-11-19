@@ -803,7 +803,9 @@ void Renderer::CreateFontTexture(const int& _Value, const int& _FontSize)
 		mFontTextures[i] = font->RenderText(str, Color::White, _FontSize);
 	}
 
-	std::string str = "/ 100";
+	std::string str = "/ 10";
+	mFontTextures.push_back(font->RenderText(str, Color::White, _FontSize));
+	str = "/ 100";
 	mFontTextures.push_back(font->RenderText(str, Color::White, _FontSize));
 }
 
@@ -949,9 +951,9 @@ Font* Renderer::GetFont(const std::string& _FileName)
 /// <summary>
 /// フォントテクスチャを取得
 /// </summary>
-/// <param name="_Number"> 数字 </param>
+/// <param name="_FontDataNum"> フォントテクスチャ配列の要素数 </param>
 /// <returns> テクスチャクラスのポインタ </returns>
-Texture* Renderer::GetFontTexture(const int& _Number)
+Texture* Renderer::GetFontTexture(const int& _FontDataNum)
 {
-	return mFontTextures[_Number];
+	return mFontTextures[_FontDataNum];
 }

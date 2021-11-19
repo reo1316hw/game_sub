@@ -1,9 +1,9 @@
 #pragma once
 
 /// <summary>
-/// 倒したエネミーのカウントUI
+/// 倒すエネミーの数のUI
 /// </summary>
-class DeadEnemyCountText : public GameObject
+class DefeatEnemyNumberText : public GameObject
 {
 public:
 
@@ -13,16 +13,17 @@ public:
     /// <param name="_Pos"> UIの生成場所(スクリーン座標) </param>
     /// <param name="_ObjectTag"> アタッチしたゲームオブジェクトのタグ </param>
     /// <param name="_State"> ゲームオブジェクトの状態 </param>
+    /// <param name="_FontDataNum"> フォントテクスチャ配列の要素数 </param>
     /// <param name="_DefeatEnemyNum">  倒すエネミーの数 </param>
     /// <param name="_enemysControlerPtr"> エネミーたちを制御するクラスのポインタ </param>
     /// <param name="_Scale"> テクスチャの拡大サイズ </param>
-    DeadEnemyCountText(const Vector3& _Pos, const Tag& _ObjectTag, const State& _State, const int& _DefeatEnemyNum, 
-        EnemysControler* _enemysControlerPtr, const Vector2& _Scale = Vector2(1.0f, 1.0f));
+    DefeatEnemyNumberText(const Vector3& _Pos, const Tag& _ObjectTag, const State& _State, const int& _FontDataNum, 
+        const int& _DefeatEnemyNum, EnemysControler* _enemysControlerPtr, const Vector2& _Scale = Vector2(1.0f, 1.0f));
 
     /// <summary>
     /// デストラクタ
     /// </summary>
-    ~DeadEnemyCountText() {};
+    ~DefeatEnemyNumberText() {};
 
 private:
 };

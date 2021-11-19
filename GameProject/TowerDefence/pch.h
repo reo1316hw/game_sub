@@ -93,9 +93,9 @@
 #include "BossObjectStateDamage.h"
 #include "BossObjectStateDeath.h"
 
-#include "DeadObjectSwitch.h"
+#include "DeadObjectEnable.h"
 #include "DeadObjectActiveBox.h"
-#include "SemitransparentWallSwitcher.h"
+#include "SemitransparentWallEnabler.h"
 #include "SemitransparentWall.h"
 
 #include "GroundObject.h"
@@ -143,7 +143,10 @@
 #include "SelfRotation.h"
 
 #include "Font.h"
+#include "DeadEnemyCountTextChange.h"
+#include "DeadEnemyCounterDisable.h"
 #include "DeadEnemyCountText.h"
+#include "DefeatEnemyNumberText.h"
 
 #include "CubeMapComponent.h"
 #include "SkyBoxObject.h"

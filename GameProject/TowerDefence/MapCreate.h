@@ -153,6 +153,18 @@ public:// ゲッターセッター
 	BossObject* GetBossPtr() { return mBossPtr; }
 
 	/// <summary>
+	/// エネミーたちを制御するクラスのポインタを取得
+	/// </summary>
+	/// <returns> エネミーたちを制御するクラスのポインタ </returns>
+	EnemysControler* GetEnemysControlerPtr() { return mEnemysControlerPtr; }
+
+	/// <summary>
+	/// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタを取得
+	/// </summary>
+	/// <returns> エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ </returns>
+	DeadObjectActiveBox* GetEnemyActiveBoxPtr() { return mEnemyActiveBoxPtr; }
+
+	/// <summary>
 	/// ボスを更新させるための当たり判定用矩形オブジェクトのポインタを取得
 	/// </summary>
 	/// <returns> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </returns>

@@ -5,7 +5,7 @@
 /// </summary>
 MapCreate::MapCreate()
 	: GameObject(Tag::eOther)
-	, OpenToDefeatEnemyNum(110)
+	, OpenToDefeatEnemyNum(100)
 	, OpenToDefeatTutorialEnemyNum(10)
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
@@ -104,10 +104,10 @@ void MapCreate::OpenFile()
 	mCreateEnemysPtr->CreateEnemyObject(MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh", "Assets/Model/Enemy/Enemy.gpskel",
 		                                Tag::eEnemy, mPlayerPtr);
 
-	// エネミーが起動することによって出現する半透明の壁をON/OFFするオブジェクトを生成
-	new SemitransparentWallSwitcher(Tag::eOther, mEnemyActiveBoxPtr, mEnemyBootSemitransparentWallPtr);
-	// ボスが起動することによって出現する半透明の壁をON/OFFするオブジェクトを生成
-	new SemitransparentWallSwitcher(Tag::eOther, mBossActiveBoxPtr, mBossBootSemitransparentWallPtr);
+	// エネミーが起動することによって出現する半透明の壁を有効にするオブジェクトを生成
+	new SemitransparentWallEnabler(Tag::eOther, mEnemyActiveBoxPtr, mEnemyBootSemitransparentWallPtr);
+	// ボスが起動することによって出現する半透明の壁を有効にするオブジェクトを生成
+	new SemitransparentWallEnabler(Tag::eOther, mBossActiveBoxPtr, mBossBootSemitransparentWallPtr);
 }
 
 /// <summary>

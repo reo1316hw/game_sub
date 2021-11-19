@@ -60,10 +60,16 @@ private:
 
 	// hpゲージを制御するコンポーネントクラスのポインタ
 	HitPointGaugeController* mHitPointGaugeControllerPtr;
-	// クラスのポインタ
+	// テクスチャクラスのポインタ
 	Texture* mTexture;
 
 public:// ゲッターセッター
+
+	/// <summary>
+	/// テクスチャを設定
+	/// </summary>
+	/// <param name="_texture"> テクスチャクラスのポインタ </param>
+	void SetTexture(Texture* _texture) { mTexture = _texture; }
 
 	/// <summary>
 	/// 描画順を取得

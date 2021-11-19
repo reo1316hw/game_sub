@@ -327,9 +327,6 @@
     <ClCompile Include="UIRoot.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="DeadEnemyCountText.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -339,11 +336,23 @@
     <ClCompile Include="DeadObjectActiveBox.cpp">
       <Filter>GameObject\Map\DeadObjectActiveBox</Filter>
     </ClCompile>
-    <ClCompile Include="DeadObjectSwitch.cpp">
+    <ClCompile Include="DeadObjectEnable.cpp">
       <Filter>GameObject\Map\DeadObjectActiveBox\Component</Filter>
     </ClCompile>
-    <ClCompile Include="SemitransparentWallSwitcher.cpp">
+    <ClCompile Include="SemitransparentWallEnabler.cpp">
       <Filter>GameObject\Map\SemitransparentWall</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadEnemyCountText.cpp">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="DefeatEnemyNumberText.cpp">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadEnemyCounterDisable.cpp">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadEnemyCountTextChange.cpp">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -675,9 +684,6 @@
     <ClInclude Include="UIRoot.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="DeadEnemyCountText.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -687,11 +693,23 @@
     <ClInclude Include="DeadObjectActiveBox.h">
       <Filter>GameObject\Map\DeadObjectActiveBox</Filter>
     </ClInclude>
-    <ClInclude Include="DeadObjectSwitch.h">
+    <ClInclude Include="DeadObjectEnable.h">
       <Filter>GameObject\Map\DeadObjectActiveBox\Component</Filter>
     </ClInclude>
-    <ClInclude Include="SemitransparentWallSwitcher.h">
+    <ClInclude Include="SemitransparentWallEnabler.h">
       <Filter>GameObject\Map\SemitransparentWall</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadEnemyCountText.h">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="DefeatEnemyNumberText.h">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadEnemyCounterDisable.h">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadEnemyCountTextChange.h">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -802,6 +820,12 @@
     </Filter>
     <Filter Include="GameObject\Map\DeadObjectActiveBox\Component">
       <UniqueIdentifier>{6e4df2b3-0791-4606-8e81-5153006c646a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\DeadEnemyCounter">
+      <UniqueIdentifier>{2413843e-cdf3-4aa3-b676-094e6ff77efb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\DeadEnemyCounter\Component">
+      <UniqueIdentifier>{86990902-fa96-40a4-b8c4-6494fd7c32d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

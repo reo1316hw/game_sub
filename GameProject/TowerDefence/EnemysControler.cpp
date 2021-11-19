@@ -45,6 +45,12 @@ void EnemysControler::Update(float _deltaTime)
 	// エネミーの要素数を取得
 	int enemysSize = enemyObjectList.size();
 
+	if (mTutorialEnemyDeadCount == 10)
+	{
+		++mTutorialEnemyDeadCount;
+		mDeadCount = 0;
+	}
+
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
 	{

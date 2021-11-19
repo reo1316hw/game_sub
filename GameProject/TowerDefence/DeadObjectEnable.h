@@ -4,9 +4,9 @@
 class DeadObjectActiveBox;
 
 /// <summary>
-/// ボスが起動することによって出現する半透明の壁のON/OFFを行うコンポーネント
+/// ボスが起動することによって出現する半透明の壁のを有効にするコンポーネント
 /// </summary>
-class DeadObjectSwitch : public Component
+class DeadObjectEnable : public Component
 {
 public:
 
@@ -16,12 +16,12 @@ public:
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_bossActiveBoxPtr"> 更新させてないオブジェクトを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
 	/// <param name="_deadObjectPtr"> 更新させてないオブジェクトのポインタ </param>
-	DeadObjectSwitch(GameObject* _owner, DeadObjectActiveBox* _deadObjectActiveBoxPtr, GameObject* _deadObjectPtr);
+	DeadObjectEnable(GameObject* _owner, DeadObjectActiveBox* _deadObjectActiveBoxPtr, GameObject* _deadObjectPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~DeadObjectSwitch() {};
+	~DeadObjectEnable() {};
 
 	/// <summary>
 	/// フレーム毎の処理

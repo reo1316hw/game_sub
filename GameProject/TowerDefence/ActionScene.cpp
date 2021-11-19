@@ -6,7 +6,6 @@
 ActionScene::ActionScene()
 	: mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
-	, mBossActiveBoxPtr(nullptr)
 	, mMainCameraPtr(nullptr)
 {
 	// ライトを設定(設定しないと何も映らない)
@@ -26,12 +25,18 @@ ActionScene::ActionScene()
 	mMapCreate->OpenFile();
 	mPlayerPtr = mMapCreate->GetPlayerPtr();
 	mBossPtr = mMapCreate->GetBossPtr();
-	mBossActiveBoxPtr = mMapCreate->GetBossActiveBoxPtr();
+
+	// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ
+	DeadObjectActiveBox* enemyActiveBoxPtr = mMapCreate->GetEnemyActiveBoxPtr();
+	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
+	DeadObjectActiveBox* bossActiveBoxPtr = mMapCreate->GetBossActiveBoxPtr();
+	// エネミーたちを制御するクラスのポインタ
+	EnemysControler* enemysControlerPtr = mMapCreate->GetEnemysControlerPtr();
 
 	// カメラ生成
 	mMainCameraPtr = new MainCameraObject(mPlayerPtr, mBossPtr, true);
 	// UIの親クラス
-	new UIRoot(Tag::eOther, mPlayerPtr, mBossPtr, mBossActiveBoxPtr);
+	new UIRoot(Tag::eOther, mPlayerPtr, mBossPtr, enemyActiveBoxPtr, bossActiveBoxPtr, enemysControlerPtr);
 
 	// プレイヤークラスでカメラのポインタを設定
 	mPlayerPtr->SetMainCameraPtr(mMainCameraPtr);

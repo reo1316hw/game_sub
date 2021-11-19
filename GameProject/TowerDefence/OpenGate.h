@@ -46,6 +46,8 @@ private:
 	// ‰ñ“]Ž²
 	const Vector3& MAxis;
 	
+	// ŠJ‚­‚©
+	bool mIsOpen;
 	// ‰ñ“]Šp
 	float mAngle;
 
