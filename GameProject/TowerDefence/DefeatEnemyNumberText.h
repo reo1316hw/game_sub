@@ -18,7 +18,7 @@ public:
     /// <param name="_enemysControlerPtr"> エネミーたちを制御するクラスのポインタ </param>
     /// <param name="_Scale"> テクスチャの拡大サイズ </param>
     DefeatEnemyNumberText(const Vector3& _Pos, const Tag& _ObjectTag, const State& _State, const int& _FontDataNum, 
-        const int& _DefeatEnemyNum, EnemysControler* _enemysControlerPtr, const Vector2& _Scale = Vector2(1.0f, 1.0f));
+        const int& _DefeatEnemyNum, EnemysControler* _enemysControlerPtr, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f));
 
     /// <summary>
     /// デストラクタ

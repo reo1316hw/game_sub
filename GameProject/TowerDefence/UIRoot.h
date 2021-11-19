@@ -35,15 +35,6 @@ private:
     // 無限にエネミーが湧いてくるエリアで倒すエネミーの数
     const int MInfinitelyDefeatEnemyNum;
 
-    // プレイヤーのhpゲージの大きさ
-    const Vector2 MPlayerHitPointScale;
-    // ボスのhpゲージの大きさ
-    const Vector2 MBossHitPointScale;
-    // 倒したエネミーのカウントUIの大きさ
-    const Vector2 MDeadEnemyCountTextScale;
-    // 倒すエネミーの数のUIの大きさ
-    const Vector2 MDefeatEnemyNumberTextScale;
-
     // プレイヤーのhpゲージの座標
     const Vector3 MPlayerHitPointPosition;
     // ボスのhpゲージの座標
@@ -52,4 +43,12 @@ private:
     const Vector3 MDeadEnemyCountTextPosition;
     // 倒すエネミーの数のUIの座標
     const Vector3 MDefeatEnemyNumberTextPosition;
+    // プレイヤーのhpゲージの大きさ
+    const Vector3 MPlayerHitPointScale;
+    // ボスのhpゲージの大きさ
+    const Vector3 MBossHitPointScale;
+    // 倒したエネミーのカウントUIの大きさ
+    const Vector3 MDeadEnemyCountTextScale;
+    // 倒すエネミーの数のUIの大きさ
+    const Vector3 MDefeatEnemyNumberTextScale;
 };

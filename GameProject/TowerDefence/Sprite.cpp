@@ -14,5 +14,5 @@ Sprite::Sprite(const std::string _TextureName, const bool& _ReUseGameObject, con
 	mPosition.x -= texture->GetWidth() * 0.5f;
 	SetPosition(mPosition);
 
-	mSpriteComponent = new SpriteComponent(this, texture, _Scale);
+	mSpriteComponent = new SpriteComponent(this, texture);
 }

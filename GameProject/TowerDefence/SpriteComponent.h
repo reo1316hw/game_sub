@@ -17,20 +17,8 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_texture"> テクスチャのポインタ </param>
-	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 	/// <param name="_DrawOrder"> 描画の順番 </param>
-	SpriteComponent(GameObject* _owner, Texture* _texture, const Vector2& _Scale , const int& _DrawOrder = 100);
-
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
-	/// <param name="_texture"> テクスチャのポインタ </param>
-	/// <param name="_hitPointGaugeController"> hpゲージを制御するクラスのポインタ </param>
-	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
-	/// <param name="_DrawOrder"> 描画の順番 </param>
-    SpriteComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController,
-		const Vector2& _Scale, const int& _DrawOrder = 100);
+	SpriteComponent(GameObject* _owner, Texture* _texture, const int& _DrawOrder = 100);
 
 	/// <summary>
 	/// デストラクタ
@@ -44,9 +32,6 @@ public:
     virtual void Draw(Shader* _shader);
 
 private:
-	
-	// テクスチャの大きさ
-	const Vector2 MScale;
 
 	// 描画を行うか
 	bool mVisible;
@@ -54,22 +39,20 @@ private:
 	// 描画される順番（数値が少ないほど早く更新される）
     int mDrawOrder;
 	// テクスチャの横幅
-    int mTextureWidth;
+	int mTextureWidth;
 	// テクスチャの縦幅
-    int mTextureHeight;
+	int mTextureHeight;
 
-	// hpゲージを制御するコンポーネントクラスのポインタ
-	HitPointGaugeController* mHitPointGaugeControllerPtr;
 	// テクスチャクラスのポインタ
 	Texture* mTexture;
 
 public:// ゲッターセッター
 
 	/// <summary>
-	/// テクスチャを設定
+	/// テクスチャを設定し、縦横の長さを計算する
 	/// </summary>
 	/// <param name="_texture"> テクスチャクラスのポインタ </param>
-	void SetTexture(Texture* _texture) { mTexture = _texture; }
+	void SetTexture(Texture* _texture);
 
 	/// <summary>
 	/// 描画順を取得

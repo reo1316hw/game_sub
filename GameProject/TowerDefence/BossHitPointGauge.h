@@ -16,7 +16,7 @@ public:
 	/// <param name="_bossPtr"> プレイヤーのポインタ </param>
 	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 	BossHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
-		BossObject* _bossPtr, const Vector2& _Scale = Vector2(1.0f, 1.0f));
+		BossObject* _bossPtr, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f));
 
 	/// <summary>
 	/// デストラクタ

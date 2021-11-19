@@ -16,7 +16,7 @@ public:
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 	PlayerHitPointGauge(const Vector3& _Pos, const std::string& _TextureName, const Tag& _ObjectTag,
-		                PlayerObject* _playerPtr, const Vector2& _Scale = Vector2(1.0f,1.0f));
+		                PlayerObject* _playerPtr, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f));
 
 	/// <summary>
 	/// デストラクタ
