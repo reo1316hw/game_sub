@@ -17,7 +17,7 @@ public:
 	/// <param name="_TextureName"> テクスチャのパス </param>
 	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
     /// <param name="_ReUseGameObject"> 再利用するか </param>
-	Sprite(const std::string _TextureName, const bool& _ReUseGameObject = false, const Vector2& _Scale = Vector2(1.0f, 1.0f));
+	Sprite(const std::string _TextureName, const bool& _ReUseGameObject = false, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f));
 
 	/// <summary>
 	/// デストラクタ

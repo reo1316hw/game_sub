@@ -5,47 +5,17 @@
 /// </summary>
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_texture"> テクスチャのポインタ </param>
-/// <param name="_Scale"> 画像の描画サイズ </param>
 /// <param name="_UpdateOrder"> コンポーネントの更新順番（数値が小さいほど早く更新される）</param>
-ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, const Vector3& _Scale, const int& _UpdateOrder)
+ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, const int& _UpdateOrder)
 	: Component(_owner, _UpdateOrder)
-	, mScale(_Scale)
 	, mAlpha(1.0f)
 	, mBlendType(ParticleType::eParticleBlendAlpha)
 	, mVisible(true)
 	, mDrawOrder(_UpdateOrder)
-	, mColor(Vector3(1, 1, 1))
+	, mScale(Vector3::Zero)
+	, mColor(Vector3(1.0f, 1.0f, 1.0f))
 	, mTextureWidth(0)
 	, mTextureHeight(0)
-	, mHitPointGaugeControllerPtr(nullptr)
-	, mTexture(_texture)
-{
-	mTextureWidth = mTexture->GetWidth();
-	mTextureHeight = mTexture->GetHeight();
-
-	//レンダラーにポインターを送る
-	RENDERER->AddParticle(this);
-}
-
-/// <summary>
-/// コンストラクタ
-/// </summary>
-/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
-/// <param name="_texture"> テクスチャのポインタ </param>
-/// <param name="_hitPointGaugeControllerconst"> hpゲージを制御するクラスのポインタ </param>
-/// <param name="_Scale"> 画像の描画サイズ </param>
-/// <param name="_UpdateOrder"> コンポーネントの更新順番（数値が小さいほど早く更新される）</param>
-ParticleComponent::ParticleComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeController, const Vector3& _Scale, const int& _UpdateOrder)
-	: Component(_owner, _UpdateOrder)
-	, mScale(_Scale)
-	, mAlpha(1.0f)
-	, mBlendType(ParticleType::eParticleBlendAlpha)
-	, mVisible(true)
-	, mDrawOrder(_UpdateOrder)
-	, mColor(Color::White)
-	, mTextureWidth(0)
-	, mTextureHeight(0)
-	, mHitPointGaugeControllerPtr(_hitPointGaugeController)
 	, mTexture(_texture)
 {
 	mTextureWidth = mTexture->GetWidth();
@@ -76,11 +46,7 @@ void ParticleComponent::Draw(Shader* _shader)
 		return;
 	}
 
-	// hpゲージを制御するコンポーネントクラスがあったらテクスチャの横幅を更新する
-	if (mHitPointGaugeControllerPtr != nullptr)
-	{
-		mTextureWidth = mHitPointGaugeControllerPtr->GetTextureWidthAfterChange();
-	}
+	mScale = mOwner->GetScale();
 
 	// 拡大縮小行列
 	Matrix4 matScale = Matrix4::CreateScale(

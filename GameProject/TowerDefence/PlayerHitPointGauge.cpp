@@ -19,7 +19,7 @@ PlayerHitPointGauge::PlayerHitPointGauge(const Vector3& _Pos, const std::string&
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス
-	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(_playerPtr, texture);
+	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(this, _playerPtr);
 
 	// スクリーン上に描画するコンポーネントクラス
 	new SpriteComponent(this, texture);

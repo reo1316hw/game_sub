@@ -27,6 +27,6 @@ public:
 private:
 
 	// スプライトの拡大サイズ
-	const Vector2 MSpriteScale;
+	const Vector3 MSpriteScale;
 };
 

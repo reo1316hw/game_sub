@@ -13,13 +13,14 @@ EnemyHitPointFrame::EnemyHitPointFrame(const Vector3& _Scale, const std::string&
 	, MOffset(Vector3(0.0f, 0.0f, 100.0f))
 	, mEnemyPtr(_enemyPtr)
 {
+	SetScale(_Scale);
 	SetState(eDead);
 
 	// テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// スクリーン上に描画するコンポーネントクラス
-	new ParticleComponent(this, texture, _Scale);
+	new ParticleComponent(this, texture);
 }
 
 /// <summary>

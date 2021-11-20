@@ -22,20 +22,9 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_texture"> テクスチャのポインタ </param>
-	/// <param name="_Scale"> 画像の描画サイズ </param>
 	/// <param name="_UpdateOrder"> コンポーネントの更新順番（数値が小さいほど早く更新される）</param>
-	ParticleComponent(GameObject* _owner, Texture* _texture, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f), const int& _UpdateOrder = 100);
+	ParticleComponent(GameObject* _owner, Texture* _texture,  const int& _UpdateOrder = 100);
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
-	/// <param name="_texture"> テクスチャのポインタ </param>
-	/// <param name="_hitPointGaugeControllerconst"> hpゲージを制御するクラスのポインタ </param>
-	/// <param name="_Scale"> 画像の描画サイズ </param>
-	/// <param name="_UpdateOrder"> コンポーネントの更新順番（数値が小さいほど早く更新される）</param>
-	ParticleComponent(GameObject* _owner, Texture* _texture, HitPointGaugeController* _hitPointGaugeControllerconst, const Vector3& _Scale = Vector3(1.0f,1.0f,1.0f), const int& _updateOrder = 100);
-	
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -77,8 +66,6 @@ private:
 	// ブレンドタイプ
 	ParticleType mBlendType;
 
-	// hpゲージを制御するコンポーネントクラスのポインタ
-	HitPointGaugeController* mHitPointGaugeControllerPtr;
 	// クラスのポインタ
 	Texture* mTexture;
 

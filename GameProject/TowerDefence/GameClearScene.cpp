@@ -4,7 +4,7 @@
 /// コンストラクタ
 /// </summary>
 GameClearScene::GameClearScene()
-	: MSpriteScale(Vector2(2.0f, 1.0f))
+	: MSpriteScale(Vector3(2.0f, 1.0f, 1.0f))
 {
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));

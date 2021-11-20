@@ -4,13 +4,13 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_owner"> アタッチしたオブジェクトのポインタ </param>
-/// <param name="_texture"> テクスチャ情報 </param>
-HitPointGaugeController::HitPointGaugeController(GameObject* _owner, Texture* _texture)
+/// <param name="_gameObjectPtr"> プレイヤーの基底クラスのポインタ </param>
+HitPointGaugeController::HitPointGaugeController(GameObject* _owner, GameObject* _gameObjectPtr)
 	: Component(_owner)
-	, mTextureWidthAfterChange(0)
-	, mTextureMaxWidth(_texture->GetWidth())
 	, mNowHp(0)
-	, mMaxHp(static_cast<float>(mOwner->GetHitPoint()))
+	, mMaxHp(static_cast<float>(_gameObjectPtr->GetHitPoint()))
+	, mInitScale(mOwner->GetScale())
+	, mGameObjectPtr(_gameObjectPtr)
 {
 }
 
@@ -23,13 +23,15 @@ void HitPointGaugeController::Update(float _deltaTime)
 	// 1フレーム前のhp
 	int preHp = mNowHp;
 	// 現在のhp
-	mNowHp = mOwner->GetHitPoint();
+	mNowHp = mGameObjectPtr->GetHitPoint();
 
 	// 1フレーム前のhpと現在のhpが違ったらテクスチャの横幅を変更
 	if (preHp != mNowHp)
 	{
 		// 縮小率
 		float scaleDownRate = mNowHp / mMaxHp;
-		mTextureWidthAfterChange = scaleDownRate * mTextureMaxWidth;
+		// アタッチしたオブジェクトの大きさ
+ 		Vector3 scale = Vector3(mInitScale.x * scaleDownRate, mInitScale.y, mInitScale.z);
+		mOwner->SetScale(scale);
 	}
 }

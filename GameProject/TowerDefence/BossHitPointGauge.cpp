@@ -20,7 +20,7 @@ BossHitPointGauge::BossHitPointGauge(const Vector3& _Pos, const std::string& _Te
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス
-	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(_bossPtr, texture);
+	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(this, _bossPtr);
 
 	// スクリーン上に描画するコンポーネントクラス
 	new SpriteComponent(this, texture);

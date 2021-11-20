@@ -13,16 +13,17 @@ EnemyHitPointGauge::EnemyHitPointGauge(const Vector3& _Scale, const std::string&
 	, MOffset(Vector3(0.0f, 0.0f, 100.0f))
 	, mEnemyPtr(_enemyPtr)
 {
+	SetScale(_Scale);
 	SetState(eDead);
 
 	// テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス
-	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(mEnemyPtr, texture);
+	HitPointGaugeController* hitPointGaugeControllerPtr = new HitPointGaugeController(this, mEnemyPtr);
 
 	// スクリーン上に描画するコンポーネントクラス
-	new ParticleComponent(this, texture, hitPointGaugeControllerPtr, _Scale);
+	new ParticleComponent(this, texture);
 }
 
 /// <summary>
