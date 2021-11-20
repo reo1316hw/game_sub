@@ -31,6 +31,8 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	SetPosition(_Pos);
 	mMaxHp = MMaxHp;
 	mHitPoint = mMaxHp;
+	// オブジェクトのスケールサイズを求めるための左辺の値を設定
+	SetScaleLeftSideValue(mHitPoint);
 
 	// 生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);

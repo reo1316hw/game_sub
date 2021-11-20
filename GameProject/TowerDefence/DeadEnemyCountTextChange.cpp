@@ -8,6 +8,11 @@
 /// <param name="_enemysControlerPtr"> エネミーを制御するコンポーネントのポインタ </param>
 DeadEnemyCountTextChange::DeadEnemyCountTextChange(GameObject* _owner, SpriteComponent* _spriteComponentPtr, EnemysControler* _enemysControlerPtr)
 	: Component(_owner)
+	, MInitPos(mOwner->GetPosition())
+	, MTenPlace(10)
+	, MOneHundredPlace(100)
+	, MTenPlaceShiftVec(Vector3(-12.0f, 0.0f, 0.0f))
+	, MOneHundredPlaceShiftVec(Vector3(-22.0f, 0.0f, 0.0f))
 	, mNowDeadEnemyCount(0)
 	, mSpriteComponentPtr(_spriteComponentPtr)
 	, mEnemysControlerPtr(_enemysControlerPtr)
@@ -30,10 +35,15 @@ void DeadEnemyCountTextChange::Update(float _deltaTime)
 		return;
 	}
 
-	if (mNowDeadEnemyCount >= 10)
+	if (mNowDeadEnemyCount >= MTenPlace)
 	{
-		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(-20.0f, 0.0f, 0.0f));
-		//mOwner->SetScale(Vector3(2.0f, 1.0f, 1.0f));
+		mOwner->SetPosition(MInitPos + MTenPlaceShiftVec);
+	}
+
+	if (mNowDeadEnemyCount >= MOneHundredPlace)
+	{
+		mOwner->SetPosition(MInitPos + MOneHundredPlaceShiftVec);
+		return;
 	}
 
 	mSpriteComponentPtr->SetTexture(RENDERER->GetFontTexture(mNowDeadEnemyCount));

@@ -3,7 +3,7 @@
 /// <summary>
 /// hpゲージを制御する
 /// </summary>
-class HitPointGaugeController : public Component
+class TextureSizeChanger : public Component
 {
 public:
 
@@ -12,12 +12,12 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチしたオブジェクトのポインタ </param>
 	/// <param name="_gameObjectPtr"> 基底クラスのポインタ </param>
-	HitPointGaugeController(GameObject* _owner, GameObject* _gameObjectPtr);
+	TextureSizeChanger(GameObject* _owner, GameObject* _gameObjectPtr);
 	
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~HitPointGaugeController() {};
+	~TextureSizeChanger() {};
 
 	/// <summary>
 	/// フレーム毎の処理
@@ -27,11 +27,11 @@ public:
 
 private:
 
-	// 現在の体力
-	int mNowHp;
+	// 現在のスケールサイズを求めるための左辺の値
+	int mNowScaleLeftSideValue;
 
-	// 最大体力
-	float mMaxHp;
+	// スケールサイズを求めるための右辺の値
+	float mScaleRightSideValue;
 
 	// アタッチしたオブジェクトの初期の大きさ
 	Vector3 mInitScale;

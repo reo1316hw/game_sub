@@ -46,5 +46,7 @@ void PlayerObjectStateDamage::Enter(PlayerObject* _owner, const float _DeltaTime
 	// 体力
 	mHitPoint = _owner->GetHitPoint() - damageValue;
 
+	// オブジェクトのスケールサイズを求めるための左辺の値を設定
+	_owner->SetScaleLeftSideValue(mHitPoint);
 	_owner->SetHitPoint(mHitPoint);
 }

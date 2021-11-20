@@ -128,6 +128,8 @@ void EnemyObjectStateFlyingBackDamage::Enter(EnemyObject* _owner, const float _D
 	// 体力
 	mHitPoint = _owner->GetHitPoint() - damageValue;
 
+	// オブジェクトのスケールサイズを求めるための左辺の値を設定
+	_owner->SetScaleLeftSideValue(mHitPoint);
 	_owner->RotateToNewForward(mDirPlayerVec);
 	_owner->SetHitPoint(mHitPoint);
 }

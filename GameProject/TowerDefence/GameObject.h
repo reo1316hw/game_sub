@@ -202,6 +202,8 @@ protected:
 	int mHitPoint;
 	// 最大hp
 	int mMaxHp;
+	// スケールサイズを求めるための左辺の値
+	int mScaleLeftSideValue;
 	// ダメージ値
 	int mDamageValue;
 
@@ -353,7 +355,20 @@ public:// ゲッターセッター
 	/// オブジェクトの体力を設定する
 	/// </summary>
 	/// <param name="_HitPoint"> オブジェクトの体力 </param>
-	void SetHitPoint(const int _HitPoint) { mHitPoint = _HitPoint; }
+	void SetHitPoint(const int& _HitPoint) { mHitPoint = _HitPoint; }
+
+	/// <summary>
+	/// オブジェクトのスケールサイズを求めるための左辺の値を取得する
+	/// </summary>
+	/// <returns> オブジェクトのスケールサイズを求めるための左辺の値</returns>
+	int GetScaleLeftSideValue() { return mScaleLeftSideValue; }
+
+	/// <summary>
+    /// オブジェクトのスケールサイズを求めるための左辺の値を設定する
+    /// </summary>
+    /// <param name="_ScaleLeftSideValue"> オブジェクトのスケールサイズを求めるための左辺の値 </param>
+	void SetScaleLeftSideValue(const int& _ScaleLeftSideValue) { mScaleLeftSideValue = _ScaleLeftSideValue; }
+
 
 	/// <summary>
 	/// オブジェクトのダメージ値を取得する

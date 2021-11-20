@@ -111,7 +111,12 @@
 #include "Sprite.h"
 
 #include "UIRoot.h"
-#include "HitPointGaugeController.h"
+#include "TextureSizeChanger.h"
+#include "SpriteGauge.h"
+#include "SpriteFrame.h"
+#include "ParticleGauge.h"
+#include "ParticleFrame.h"
+
 #include "PlayerHitPointGauge.h"
 #include "PlayerHitPointFrame.h"
 #include "EnemyHitPointGauge.h"

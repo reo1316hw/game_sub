@@ -219,26 +219,8 @@
     <ClCompile Include="BossObjectStateDeath.cpp">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerHitPointGauge.cpp">
-      <Filter>UI\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="HitPointGaugeController.cpp">
+    <ClCompile Include="TextureSizeChanger.cpp">
       <Filter>UI\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyHitPointGauge.cpp">
-      <Filter>UI\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="BossHitPointGauge.cpp">
-      <Filter>UI\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerHitPointFrame.cpp">
-      <Filter>UI\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyHitPointFrame.cpp">
-      <Filter>UI\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="BossHitPointFrame.cpp">
-      <Filter>UI\Boss</Filter>
     </ClCompile>
     <ClCompile Include="GameOverScene.cpp">
       <Filter>Scene</Filter>
@@ -354,6 +336,10 @@
     <ClCompile Include="DeadEnemyCountTextChange.cpp">
       <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteGauge.cpp" />
+    <ClCompile Include="SpriteFrame.cpp" />
+    <ClCompile Include="ParticleGauge.cpp" />
+    <ClCompile Include="ParticleFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -576,26 +562,8 @@
     <ClInclude Include="BossObjectStateDeath.h">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerHitPointGauge.h">
-      <Filter>UI\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="HitPointGaugeController.h">
+    <ClInclude Include="TextureSizeChanger.h">
       <Filter>UI\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyHitPointGauge.h">
-      <Filter>UI\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="BossHitPointGauge.h">
-      <Filter>UI\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerHitPointFrame.h">
-      <Filter>UI\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyHitPointFrame.h">
-      <Filter>UI\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="BossHitPointFrame.h">
-      <Filter>UI\Boss</Filter>
     </ClInclude>
     <ClInclude Include="GameOverScene.h">
       <Filter>Scene</Filter>
@@ -711,6 +679,10 @@
     <ClInclude Include="DeadEnemyCountTextChange.h">
       <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteGauge.h" />
+    <ClInclude Include="SpriteFrame.h" />
+    <ClInclude Include="ParticleGauge.h" />
+    <ClInclude Include="ParticleFrame.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -784,15 +756,6 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{a4188c99-c305-4947-9ccd-4e07bec25d76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Player">
-      <UniqueIdentifier>{4ab684cd-dfc2-4b3a-9879-ee6f88fbf0de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Enemy">
-      <UniqueIdentifier>{2ceef051-3777-4e49-884e-a88c28441d31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Boss">
-      <UniqueIdentifier>{d2e3ed64-ac44-4ed4-bfad-31ba4c466b5e}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI\Component">
       <UniqueIdentifier>{7916fa6b-5ef5-4f2a-94a1-de37efdb19f6}</UniqueIdentifier>

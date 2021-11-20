@@ -31,6 +31,18 @@ private:
 	// 現在の倒したエネミーの数
 	int mNowDeadEnemyCount;
 
+	// 10の位
+	const int MTenPlace;
+	// 100の位
+	const int MOneHundredPlace;
+
+	// 初期座標
+	const Vector3 MInitPos;
+	// カウントが10の位に達したときにずらすベクトル
+	const Vector3 MTenPlaceShiftVec;
+	// カウントが100の位に達したときにずらすベクトル
+	const Vector3 MOneHundredPlaceShiftVec;
+
 	// 画像データクラスを管理し、スクリーン上に描画するコンポーネントのポインタ
 	SpriteComponent* mSpriteComponentPtr;
 	// エネミーを制御するコンポーネントのポインタ

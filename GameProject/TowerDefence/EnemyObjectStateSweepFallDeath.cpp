@@ -53,7 +53,9 @@ EnemyState EnemyObjectStateSweepFallDeath::Update(EnemyObject* _owner, const flo
 
 		mEnemyHitPointGaugePtr->SetState(State::eDead);
 		mEnemyHitPointFramePtr->SetState(State::eDead);
+
 		_owner->SetHitPoint(_owner->GetMaxHp());
+		_owner->SetScaleLeftSideValue(_owner->GetMaxHp());
 		_owner->SetState(State::eDead);
 		_owner->SetPosition(mInitPosition);
 
