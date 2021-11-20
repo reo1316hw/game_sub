@@ -71,9 +71,9 @@ private:
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 	// エネミーのhpゲージのポインタ
-	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
+	ParticleGauge* mEnemyHitPointGaugePtr;
 	// エネミーのhpの枠のポインタ
-	EnemyHitPointFrame* mEnemyHitPointFramePtr;
+	ParticleFrame* mEnemyHitPointFramePtr;
 	// ボックスの当たり判定を行うコンポーネントクラスのポインタ
 	BoxCollider* mBoxColliderPtr;
 };

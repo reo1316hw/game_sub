@@ -336,10 +336,18 @@
     <ClCompile Include="DeadEnemyCountTextChange.cpp">
       <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteGauge.cpp" />
-    <ClCompile Include="SpriteFrame.cpp" />
-    <ClCompile Include="ParticleGauge.cpp" />
-    <ClCompile Include="ParticleFrame.cpp" />
+    <ClCompile Include="ParticleFrame.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleGauge.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteFrame.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteGauge.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -679,10 +687,18 @@
     <ClInclude Include="DeadEnemyCountTextChange.h">
       <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteGauge.h" />
-    <ClInclude Include="SpriteFrame.h" />
-    <ClInclude Include="ParticleGauge.h" />
-    <ClInclude Include="ParticleFrame.h" />
+    <ClInclude Include="ParticleGauge.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleFrame.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteFrame.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteGauge.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">

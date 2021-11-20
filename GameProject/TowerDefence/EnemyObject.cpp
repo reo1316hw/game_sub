@@ -89,9 +89,9 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, this);
+	mEnemyHitPointGaugePtr = new ParticleGauge(this, MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther);
 	// エネミーのhpの枠を生成
-	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, this);
+	mEnemyHitPointFramePtr = new ParticleFrame(this, MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther);
 }
 
 /// <summary>
@@ -183,10 +183,10 @@ EnemyObject::EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, co
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	mEnemyHitPointGaugePtr = new EnemyHitPointGauge(MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, this);
+	mEnemyHitPointGaugePtr = new ParticleGauge(this, MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther);
 	mEnemyHitPointGaugePtr->SetState(eActive);
 	// エネミーのhpの枠を生成
-	mEnemyHitPointFramePtr = new EnemyHitPointFrame(MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, this);
+	mEnemyHitPointFramePtr = new ParticleFrame(this, MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther);
 	mEnemyHitPointFramePtr->SetState(eActive);
 
 }

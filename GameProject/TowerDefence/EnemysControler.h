@@ -5,6 +5,8 @@
 class EnemyObject;
 class EnemyHitPointGauge;
 class EnemyHitPointFrame;
+class ParticleGauge;
+class ParticleFrame;
 
 /// <summary>
 /// エネミーを制御する
@@ -90,9 +92,9 @@ private:
 	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
 	DeadObjectActiveBox* mBossActiveBoxPtr;
 	// エネミーのhpゲージのポインタ
-	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
+	ParticleGauge* mEnemyHitPointGaugePtr;
 	// エネミーのhpの枠のポインタ
-	EnemyHitPointFrame* mEnemyHitPointFramePtr;
+	ParticleFrame* mEnemyHitPointFramePtr;
 
 public:// ゲッターセッター
 

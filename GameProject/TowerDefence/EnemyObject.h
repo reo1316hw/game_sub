@@ -7,6 +7,8 @@ class EnemyAttackDecisionObject;
 class EnemyHitPointGauge;
 class EnemyHitPointFrame;
 class BoxCollider;
+class ParticleGauge;
+class ParticleFrame;
 
 /// <summary>
 /// エネミーの状態
@@ -119,9 +121,9 @@ private:
 	// エネミーの攻撃判定オブジェクトのポインタ
 	EnemyAttackDecisionObject* mEnemyAttackPtr;
 	// エネミーのhpゲージのポインタ
-	EnemyHitPointGauge* mEnemyHitPointGaugePtr;
+	ParticleGauge* mEnemyHitPointGaugePtr;
 	// エネミーのhpの枠のポインタ
-	EnemyHitPointFrame* mEnemyHitPointFramePtr;
+	ParticleFrame* mEnemyHitPointFramePtr;
 
 public://ゲッターセッター
 
@@ -160,13 +162,13 @@ public://ゲッターセッター
 	/// エネミーのhpゲージのポインタ
 	/// </summary>
 	/// <returns> エネミーのhpゲージ </returns>
-	EnemyHitPointGauge* GetEnemyHitPointGaugePtr() {return mEnemyHitPointGaugePtr; }
+	ParticleGauge* GetEnemyHitPointGaugePtr() {return mEnemyHitPointGaugePtr; }
 
 	/// <summary>
 	/// エネミーのhpの枠のポインタ
 	/// </summary>
 	/// <returns> エネミーのhpの枠 </returns>
-	EnemyHitPointFrame* GetEnemyHitPointFramePtr() { return mEnemyHitPointFramePtr; }
+	ParticleFrame* GetEnemyHitPointFramePtr() { return mEnemyHitPointFramePtr; }
 
 };
 
