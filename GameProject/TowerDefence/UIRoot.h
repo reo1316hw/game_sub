@@ -32,16 +32,6 @@ public:
 
 private:
 
-    // プレイヤーのhpゲージの座標
-    const Vector3 MPlayerHitPointPosition;
-    // ボスのhpゲージの座標
-    const Vector3 MBossHitPointPosition;
-    // 倒したエネミーのカウントゲージの座標
-    const Vector3 MDeadEnemyCountPosition;
-    // 倒したエネミーのカウントテキストの座標
-    const Vector3 MDeadEnemyCountTextPosition;
-    // 倒すエネミーの数のテキストの座標
-    const Vector3 MDefeatEnemyNumberTextPosition;
     // プレイヤーのhpゲージの大きさ
     const Vector3 MPlayerHitPointScale;
     // ボスのhpゲージの大きさ
@@ -52,4 +42,18 @@ private:
     const Vector3 MDeadEnemyCountTextScale;
     // 倒すエネミーの数のテキストの大きさ
     const Vector3 MDefeatEnemyNumberTextScale;
+    // 操作説明UIの大きさ
+    const Vector3 MOperationExplanationScale;
+    // プレイヤーのhpゲージの座標
+    const Vector3 MPlayerHitPointPosition;
+    // ボスのhpゲージの座標
+    const Vector3 MBossHitPointPosition;
+    // 倒したエネミーのカウントゲージの座標
+    const Vector3 MDeadEnemyCountPosition;
+    // 倒したエネミーのカウントテキストの座標
+    const Vector3 MDeadEnemyCountTextPosition;
+    // 倒すエネミーの数のテキストの座標
+    const Vector3 MDefeatEnemyNumberTextPosition;
+    // 操作説明UIの座標
+    const Vector3 MOperationExplanationtPosition;
 };

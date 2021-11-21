@@ -116,6 +116,8 @@
 #include "SpriteFrame.h"
 #include "ParticleGauge.h"
 #include "ParticleFrame.h"
+#include "OperationExplanationBehavior.h"
+#include "OperationExplanation.h"
 
 #include "InputSystem.h"
 

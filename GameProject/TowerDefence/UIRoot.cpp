@@ -19,11 +19,13 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	, MDeadEnemyCountScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MDeadEnemyCountTextScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MDefeatEnemyNumberTextScale(Vector3(1.0f, 0.5f, 1.0f))
+	, MOperationExplanationScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MPlayerHitPointPosition(Vector3(-800.0f, -400.0f, 0.0f))
 	, MBossHitPointPosition(Vector3(400.0f, 400.0f, 0.0f))
 	, MDeadEnemyCountPosition(Vector3(-800.0f, 400.0f, 0.0f))
 	, MDeadEnemyCountTextPosition(Vector3(-250.0f, 400.0f, 0.0f))
 	, MDefeatEnemyNumberTextPosition(Vector3(-220.0f, 400.0f, 0.0f))
+	, MOperationExplanationtPosition(Vector3(400.0f, -400.0f, 0.0f))
 {
 	// プレイヤーのhpゲージを生成
 	new SpriteGauge(_playerPtr, MPlayerHitPointPosition, "Assets/Texture/PlayerHpGauge.png", Tag::eOther, State::eActive, MPlayerHitPointScale);
@@ -44,6 +46,9 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	DefeatEnemyNumberText* defeatTutorialEnemyNumberTextPtr = new DefeatEnemyNumberText(MDefeatEnemyNumberTextPosition, Tag::eOther, State::eActive, 101, _enemysControlerPtr, MDefeatEnemyNumberTextScale);
 	// 無限にエネミーが湧いてくるエリアの倒すエネミーの数のUIを生成
 	DefeatEnemyNumberText* defeatInfinitelyEnemyNumberTextPtr = new DefeatEnemyNumberText(MDefeatEnemyNumberTextPosition, Tag::eOther, State::eDead, 102, _enemysControlerPtr, MDefeatEnemyNumberTextScale);
+
+	// 操作説明UIを生成
+	new OperationExplanation(MOperationExplanationtPosition,"Assets/Texture/EnemyHpFrame.png", Tag::eOther, MOperationExplanationScale);
 
 	// ボスのhpゲージを有効にするコンポーネントを生成
 	new DeadObjectEnable(this, _bossActiveBoxPtr, bossHitPointGaugePtr);
