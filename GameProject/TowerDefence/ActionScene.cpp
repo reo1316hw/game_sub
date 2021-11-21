@@ -25,6 +25,7 @@ ActionScene::ActionScene()
 	mMapCreate->OpenFile();
 	mPlayerPtr = mMapCreate->GetPlayerPtr();
 	mBossPtr = mMapCreate->GetBossPtr();
+	mEnemyObjectManagerPtr = mMapCreate->GetEnemyObjectManagerPtr();
 
 	// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ
 	DeadObjectActiveBox* enemyActiveBoxPtr = mMapCreate->GetEnemyActiveBoxPtr();
@@ -36,7 +37,7 @@ ActionScene::ActionScene()
 	// カメラ生成
 	mMainCameraPtr = new MainCameraObject(mPlayerPtr, mBossPtr, true);
 	// UIの親クラス
-	new UIRoot(Tag::eOther, mPlayerPtr, mBossPtr, enemyActiveBoxPtr, bossActiveBoxPtr, enemysControlerPtr);
+	new UIRoot(Tag::eOther, mPlayerPtr, mBossPtr, mEnemyObjectManagerPtr, enemyActiveBoxPtr, bossActiveBoxPtr, enemysControlerPtr);
 
 	// プレイヤークラスでカメラのポインタを設定
 	mPlayerPtr->SetMainCameraPtr(mMainCameraPtr);

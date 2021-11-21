@@ -20,6 +20,11 @@ MapCreate::MapCreate()
 	, MLeftEnemyGeneratorAngle(270.0f)
     , mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
+	, mEnemyObjectManagerPtr(nullptr)
+	, mEnemyActiveBoxPtr(nullptr)
+	, mBossActiveBoxPtr(nullptr)
+	, mEnemyBootSemitransparentWallPtr(nullptr)
+	, mBossBootSemitransparentWallPtr(nullptr)
 	, mCreateEnemysPtr(nullptr)
 	, mEnemysControlerPtr(nullptr)
 {
@@ -89,9 +94,9 @@ void MapCreate::OpenFile()
 	AccessMapData(mUpperObjectMapData);
 
 	// エネミーマネージャー生成
-	EnemyObjectManager* enemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther, mEnemyActiveBoxPtr, mBossActiveBoxPtr);
-	mCreateEnemysPtr = enemyObjectManagerPtr->GetCreateEnemysPtr();
-	mEnemysControlerPtr = enemyObjectManagerPtr->GetEnemysControlerPtr();
+	mEnemyObjectManagerPtr = new EnemyObjectManager(Tag::eOther, mEnemyActiveBoxPtr, mBossActiveBoxPtr);
+	mCreateEnemysPtr = mEnemyObjectManagerPtr->GetCreateEnemysPtr();
+	mEnemysControlerPtr = mEnemyObjectManagerPtr->GetEnemysControlerPtr();
 
 	// エネミーたちのマップデータにアクセスする
 	AccessMapData(mEnemysMapData);

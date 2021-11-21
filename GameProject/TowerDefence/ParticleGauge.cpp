@@ -8,7 +8,8 @@
 /// <param name="_TextureName"> テクスチャのパス </param>
 /// <param name="_ObjectTag"> ゲームオブジェクトのタグ </param>
 ParticleGauge::ParticleGauge(GameObject* _owner, const Vector3& _Scale,
-	const std::string& _TextureName, const Tag& _ObjectTag)
+	const std::string& _TextureName, const Tag& _ObjectTag,
+	const bool& _IsInitScaleChange)
 	: GameObject(_ObjectTag)
 	, MOffset(Vector3(0.0f, 0.0f, 100.0f))
 	, mOwner(_owner)
@@ -20,7 +21,7 @@ ParticleGauge::ParticleGauge(GameObject* _owner, const Vector3& _Scale,
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラスを生成
-	new TextureSizeChanger(this, mOwner);
+	new TextureSizeChanger(this, mOwner, _IsInitScaleChange);
 
 	// スクリーン上に描画するコンポーネントクラスを生成
 	new ParticleComponent(this, texture);

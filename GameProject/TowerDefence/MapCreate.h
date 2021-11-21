@@ -124,6 +124,8 @@ private:
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ
 	BossObject* mBossPtr;
+	// エネミーを管理するクラスのポインタ
+	EnemyObjectManager* mEnemyObjectManagerPtr;
 	// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ
 	DeadObjectActiveBox* mEnemyActiveBoxPtr;
 	// ボスを更新させるための当たり判定用矩形オブジェクトのポインタ
@@ -151,6 +153,12 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> ボスのポインタ </returns>
 	BossObject* GetBossPtr() { return mBossPtr; }
+
+	/// <summary>
+	/// エネミーを管理するクラスのポインタを取得
+	/// </summary>
+	/// <returns> エネミーを管理するクラスのポインタ </returns>
+	EnemyObjectManager* GetEnemyObjectManagerPtr() { return mEnemyObjectManagerPtr; }
 
 	/// <summary>
 	/// エネミーたちを制御するクラスのポインタを取得

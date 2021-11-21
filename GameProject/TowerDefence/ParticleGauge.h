@@ -17,8 +17,10 @@ public:
 	/// <param name="_Scale"> 画像の拡大サイズ </param>
 	/// <param name="_TextureName"> テクスチャのパス </param>
 	/// <param name="_ObjectTag"> ゲームオブジェクトのタグ </param>
+	/// <param name="_IsInitScaleChange"> 最初にオブジェクトの大きさの変更を行うか </param>
 	ParticleGauge(GameObject* _owner, const Vector3& _Scale,
-		const std::string& _TextureName, const Tag& _ObjectTag);
+		const std::string& _TextureName, const Tag& _ObjectTag,
+		const bool& _IsInitScaleChange = false);
 
 	/// <summary>
 	/// デストラクタ

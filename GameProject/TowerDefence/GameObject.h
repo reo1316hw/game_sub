@@ -204,6 +204,8 @@ protected:
 	int mMaxHp;
 	// スケールサイズを求めるための左辺の値
 	int mScaleLeftSideValue;
+	// スケールサイズを求めるための右辺の値
+	int mScaleRightSideValue;
 	// ダメージ値
 	int mDamageValue;
 
@@ -369,6 +371,17 @@ public:// ゲッターセッター
     /// <param name="_ScaleLeftSideValue"> オブジェクトのスケールサイズを求めるための左辺の値 </param>
 	void SetScaleLeftSideValue(const int& _ScaleLeftSideValue) { mScaleLeftSideValue = _ScaleLeftSideValue; }
 
+	/// <summary>
+	/// オブジェクトのスケールサイズを求めるための右辺の値を取得する
+	/// </summary>
+	/// <returns> オブジェクトのスケールサイズを求めるための右辺の値</returns>
+	int GetScaleRightSideValue() { return mScaleRightSideValue; }
+
+	/// <summary>
+	/// オブジェクトのスケールサイズを求めるための右辺の値を設定する
+	/// </summary>
+	/// <param name="_ScaleLeftSideValue"> オブジェクトのスケールサイズを求めるための右辺の値 </param>
+	void SetScaleRightSideValue(const int& _ScaleRightSideValue) { mScaleRightSideValue = _ScaleRightSideValue; }
 
 	/// <summary>
 	/// オブジェクトのダメージ値を取得する

@@ -30,8 +30,8 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mInitPosition = mPosition;
 	mMaxHp = MMaxHp;
 	mHitPoint = mMaxHp;
-	// オブジェクトのスケールサイズを求めるための左辺の値を設定
-	SetScaleLeftSideValue(mHitPoint);
+	// オブジェクトのスケールサイズを求めるための右辺の値を設定
+	SetScaleRightSideValue(mHitPoint);
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);
@@ -125,7 +125,7 @@ EnemyObject::EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, co
 	mMaxHp = MMaxHp;
 	mHitPoint = mMaxHp;
 	// オブジェクトのスケールサイズを求めるための左辺の値を設定
-	SetScaleLeftSideValue(mHitPoint);
+	SetScaleRightSideValue(mHitPoint);
 
 	///生成 TestObjectの生成時と同じくComponent基底クラスは自動で管理クラスに追加され自動で解放される
 	mSkeltalMeshComponentPtr = new SkeletalMeshComponent(this);

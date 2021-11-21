@@ -12,6 +12,7 @@ EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemys
 	: Component(_owner)
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)
+	, mDefeatEnemyNum(10)
 	, MDistanceThreshold(5000.0f)
 	, mUntilInElementsCount(0)
 	, mActiveCount(0)
@@ -23,6 +24,8 @@ EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemys
 	, mEnemyHitPointGaugePtr(nullptr)
 	, mEnemyHitPointFramePtr(nullptr)
 {
+	// オブジェクトのスケールサイズを求めるための右辺の値を設定
+	mOwner->SetScaleRightSideValue(mDefeatEnemyNum);
 }
 
 /// <summary>
@@ -49,6 +52,11 @@ void EnemysControler::Update(float _deltaTime)
 	{
 		++mTutorialEnemyDeadCount;
 		mDeadCount = 0;
+		mDefeatEnemyNum = 100;
+		// オブジェクトのスケールサイズを求めるための右辺の値を設定
+		mOwner->SetScaleRightSideValue(mDefeatEnemyNum);
+		// オブジェクトのスケールサイズを求めるための左辺の値を設定
+		mOwner->SetScaleLeftSideValue(mDeadCount);
 	}
 
 	// 基準となるエネミーを検索
@@ -209,12 +217,12 @@ void EnemysControler::EnemysDeathCount(const int& _EnemysCount, const int& _Enem
 	if (preHp != nowHp && nowHp <= 0)
 	{
 		++mDeadCount;
+		// オブジェクトのスケールサイズを求めるための左辺の値を設定
+		mOwner->SetScaleLeftSideValue(mDeadCount);
 
 		if (_referenceEnemyItr->GetShouldTutorialUse())
 		{
 			++mTutorialEnemyDeadCount;
 		}
-
-		printf("%d\n", mDeadCount);
 	}
 }

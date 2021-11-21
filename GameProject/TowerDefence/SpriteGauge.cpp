@@ -9,8 +9,9 @@
 /// <param name="_ObjectTag">ゲームオブジェクトのタグ </param>
 /// <param name="_State"> ゲームオブジェクトの状態 </param>
 /// <param name="_Scale"> 画像の拡大サイズ </param>
+/// <param name="_IsInitScaleChange"> 最初にオブジェクトの大きさの変更を行うか </param>
 SpriteGauge::SpriteGauge(GameObject* _owner, const Vector3& _Pos, const std::string& _TextureName,
-	const Tag& _ObjectTag, const State& _State, const Vector3& _Scale)
+	const Tag& _ObjectTag, const State& _State, const Vector3& _Scale, const bool& _IsInitScaleChange)
 	: GameObject(_ObjectTag)
 {
 	SetPosition(_Pos);
@@ -21,7 +22,7 @@ SpriteGauge::SpriteGauge(GameObject* _owner, const Vector3& _Pos, const std::str
 	Texture* texture = RENDERER->GetTexture(_TextureName);
 
 	// hpゲージを制御するコンポーネントクラス
-	TextureSizeChanger* textureSizeChangerPtr = new TextureSizeChanger(this, _owner);
+	TextureSizeChanger* textureSizeChangerPtr = new TextureSizeChanger(this, _owner, _IsInitScaleChange);
 
 	// スクリーン上に描画するコンポーネントクラス
 	new SpriteComponent(this, texture);

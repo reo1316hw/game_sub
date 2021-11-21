@@ -4,14 +4,19 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_owner"> アタッチしたオブジェクトのポインタ </param>
-/// <param name="_gameObjectPtr"> プレイヤーの基底クラスのポインタ </param>
-TextureSizeChanger::TextureSizeChanger(GameObject* _owner, GameObject* _gameObjectPtr)
+/// <param name="_gameObjectPtr"> 基底クラスのポインタ </param>
+/// <param name="_IsInitScaleChange"> 最初にオブジェクトの大きさの変更を行うか </param>
+TextureSizeChanger::TextureSizeChanger(GameObject* _owner, GameObject* _gameObjectPtr, const bool& _IsInitScaleChange)
 	: Component(_owner)
 	, mNowScaleLeftSideValue(0)
-	, mScaleRightSideValue(static_cast<float>(_gameObjectPtr->GetScaleLeftSideValue()))
+	, mScaleRightSideValue(0)
 	, mInitScale(mOwner->GetScale())
 	, mGameObjectPtr(_gameObjectPtr)
 {
+	if (_IsInitScaleChange)
+	{
+		mNowScaleLeftSideValue = 1;
+	}
 }
 
 /// <summary>
@@ -28,6 +33,7 @@ void TextureSizeChanger::Update(float _deltaTime)
 	// 1フレーム前の左辺の値と現在の左辺の値が違ったらテクスチャの横幅を変更
 	if (mPreScaleLeftSideValue != mNowScaleLeftSideValue)
 	{
+		mScaleRightSideValue = static_cast<float>(mGameObjectPtr->GetScaleRightSideValue());
 		// 収縮率
 		float scaleContractionRate = mNowScaleLeftSideValue / mScaleRightSideValue;
 		// アタッチしたオブジェクトの大きさ

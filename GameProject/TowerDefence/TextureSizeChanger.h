@@ -12,7 +12,8 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチしたオブジェクトのポインタ </param>
 	/// <param name="_gameObjectPtr"> 基底クラスのポインタ </param>
-	TextureSizeChanger(GameObject* _owner, GameObject* _gameObjectPtr);
+	/// <param name="_IsInitScaleChange"> 最初にオブジェクトの大きさの変更を行うか </param>
+	TextureSizeChanger(GameObject* _owner, GameObject* _gameObjectPtr, const bool& _IsInitScaleChange);
 	
 	/// <summary>
 	/// デストラクタ

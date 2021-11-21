@@ -84,6 +84,8 @@ private:
 	int mDeadCount;
 	// チュートリアルエネミーを倒した数
 	int mTutorialEnemyDeadCount;
+	// エネミーを倒す数
+	int mDefeatEnemyNum;
 
 	// エネミーたちを生成するクラスのポインタ
 	CreateEnemys* mCreateEnemysPtr;
