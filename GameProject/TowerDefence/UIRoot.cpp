@@ -14,8 +14,6 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	EnemyObjectManager* _EnemyObjectManagerPtr, DeadObjectActiveBox* _enemyActiveBoxPtr,
 	DeadObjectActiveBox* _bossActiveBoxPtr, EnemysControler* _enemysControlerPtr)
 	: GameObject(_ObjectTag)
-	, MTutorialDefeatEnemyNum(10)
-	, MInfinitelyDefeatEnemyNum(100)
 	, MPlayerHitPointScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MBossHitPointScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MDeadEnemyCountScale(Vector3(1.0f, 0.5f, 1.0f))
@@ -36,16 +34,16 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	// ボスのhpの枠を生成
 	SpriteFrame* bossHitPointFramePtr = new SpriteFrame(MBossHitPointPosition, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, State::eDead, MBossHitPointScale);
 	// 倒したエネミーのカウントゲージを生成
-	SpriteGauge* deadEnemyCountGaugePtr = new SpriteGauge(_EnemyObjectManagerPtr, MDeadEnemyCountPosition, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, State::eActive, MDeadEnemyCountScale, true);
+	SpriteGauge* deadEnemyCountGaugePtr = new SpriteGauge(_EnemyObjectManagerPtr, MDeadEnemyCountPosition, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, State::eActive, _enemysControlerPtr, MDeadEnemyCountScale, true);
 	// 倒したエネミーのカウントフレームを生成
-	SpriteFrame* deadEnemyCountFramePtr = new SpriteFrame(MDeadEnemyCountPosition, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, State::eActive, MDeadEnemyCountScale);
+	SpriteFrame* deadEnemyCountFramePtr = new SpriteFrame(MDeadEnemyCountPosition, "Assets/Texture/EnemyHpFrame.png", Tag::eOther, State::eActive, _enemysControlerPtr, MDeadEnemyCountScale);
 
 	// 倒したエネミーのカウントUIを生成
-	DeadEnemyCountText* deadEnemyCountTextPtr = new DeadEnemyCountText(MDeadEnemyCountTextPosition, Tag::eOther, State::eActive, MTutorialDefeatEnemyNum, _enemysControlerPtr, MDeadEnemyCountTextScale);
+	DeadEnemyCountText* deadEnemyCountTextPtr = new DeadEnemyCountText(MDeadEnemyCountTextPosition, Tag::eOther, _enemysControlerPtr, MDeadEnemyCountTextScale);
 	// チュートリアルエリアの倒すエネミーの数のUIを生成
-	DefeatEnemyNumberText* defeatTutorialEnemyNumberTextPtr = new DefeatEnemyNumberText(MDefeatEnemyNumberTextPosition, Tag::eOther, State::eActive, 101, MTutorialDefeatEnemyNum, _enemysControlerPtr, MDefeatEnemyNumberTextScale);
+	DefeatEnemyNumberText* defeatTutorialEnemyNumberTextPtr = new DefeatEnemyNumberText(MDefeatEnemyNumberTextPosition, Tag::eOther, State::eActive, 101, _enemysControlerPtr, MDefeatEnemyNumberTextScale);
 	// 無限にエネミーが湧いてくるエリアの倒すエネミーの数のUIを生成
-	DefeatEnemyNumberText* defeatInfinitelyEnemyNumberTextPtr = new DefeatEnemyNumberText(MDefeatEnemyNumberTextPosition, Tag::eOther, State::eDead, 102, MInfinitelyDefeatEnemyNum, _enemysControlerPtr, MDefeatEnemyNumberTextScale);
+	DefeatEnemyNumberText* defeatInfinitelyEnemyNumberTextPtr = new DefeatEnemyNumberText(MDefeatEnemyNumberTextPosition, Tag::eOther, State::eDead, 102, _enemysControlerPtr, MDefeatEnemyNumberTextScale);
 
 	// ボスのhpゲージを有効にするコンポーネントを生成
 	new DeadObjectEnable(this, _bossActiveBoxPtr, bossHitPointGaugePtr);

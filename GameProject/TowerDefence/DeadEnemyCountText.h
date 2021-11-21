@@ -23,9 +23,4 @@ public:
     ~DeadEnemyCountText() {};
 
 private:
-
-    // 最初に倒すエネミーの数
-    const int MFirstDefeatEnemyNum;
-    // 次に倒すエネミーの数
-    const int MNextDefeatEnemyNum;
 };

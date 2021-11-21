@@ -32,11 +32,6 @@ public:
 
 private:
 
-    // チュートリアルエリアで倒すエネミーの数
-    const int MTutorialDefeatEnemyNum;
-    // 無限にエネミーが湧いてくるエリアで倒すエネミーの数
-    const int MInfinitelyDefeatEnemyNum;
-
     // プレイヤーのhpゲージの座標
     const Vector3 MPlayerHitPointPosition;
     // ボスのhpゲージの座標

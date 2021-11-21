@@ -11,9 +11,8 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
-	/// <param name="_DefeatEnemyNum">  倒すエネミーの数 </param>
 	/// <param name="_enemysControlerPtr"> エネミーたちを制御するクラスのポインタ </param>
-	DeadEnemyCounterDisable(GameObject* _owner, const int& _DefeatEnemyNum, EnemysControler* _enemysControlerPtr);
+	DeadEnemyCounterDisable(GameObject* _owner, EnemysControler* _enemysControlerPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -28,8 +27,13 @@ public:
 
 private:
 
+	// 最初に倒すエネミーの数
+	const int MFirstDefeatEnemyNum;
+	// 次に倒すエネミーの数
+	const int MNextDefeatEnemyNum;
+
 	// 倒すエネミーの数
-	const int MDefeatEnemyNum;
+	int mDeadEnemyNum;
 
 	// エネミーを制御するクラスのポインタ
 	EnemysControler* mEnemysControlerPtr;
