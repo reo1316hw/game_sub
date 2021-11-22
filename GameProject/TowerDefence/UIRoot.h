@@ -17,13 +17,12 @@ public:
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	/// <param name="_bossPtr"> ボスのポインタ </param>
-    /// <param name="_EnemyObjectManagerPtr"> エネミーを管理するクラスのポインタ </param>
+    /// <param name="_enemyObjectManagerPtr"> エネミーを管理するクラスのポインタ </param>
     /// <param name="_enemyActiveBoxPtr"> エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
     /// <param name="_bossActiveBoxPtr"> ボスを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
-    /// <param name="_enemysControlerPtr"> エネミーたちを制御するクラスのポインタ </param>
 	UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bossPtr,
-        EnemyObjectManager* _EnemyObjectManagerPtr, DeadObjectActiveBox* _enemyActiveBoxPtr,
-        DeadObjectActiveBox* _bossActiveBoxPtr, EnemysControler* _enemysControlerPtr);
+        EnemyObjectManager* _enemyObjectManagerPtr, DeadObjectActiveBox* _enemyActiveBoxPtr,
+        DeadObjectActiveBox* _bossActiveBoxPtr);
 
     /// <summary>
     /// デストラクタ

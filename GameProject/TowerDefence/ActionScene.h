@@ -30,8 +30,6 @@ private:
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ
 	BossObject* mBossPtr;
-	// エネミーを管理するクラスのポインタ
-	EnemyObjectManager* mEnemyObjectManagerPtr;
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 };

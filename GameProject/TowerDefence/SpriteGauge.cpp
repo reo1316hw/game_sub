@@ -36,11 +36,11 @@ SpriteGauge::SpriteGauge(GameObject* _owner, const Vector3& _Pos, const std::str
 /// <param name="_TextureName"> テクスチャのパス </param>
 /// <param name="_ObjectTag">ゲームオブジェクトのタグ </param>
 /// <param name="_State"> ゲームオブジェクトの状態 </param>
-/// <param name="_enemysControlerPtr"> エネミーを制御するクラスのポインタ </param>
+/// <param name="_enemyObjectManagerPtr"> エネミーを管理するクラスの基底クラスのポインタ </param>
 /// <param name="_Scale"> 画像の拡大サイズ </param>
 /// <param name="_IsInitScaleChange"> 最初にオブジェクトの大きさの変更を行うか </param>
 SpriteGauge::SpriteGauge(GameObject* _owner, const Vector3& _Pos, const std::string& _TextureName,
-	const Tag& _ObjectTag, const State& _State, EnemysControler* _enemysControlerPtr,
+	const Tag& _ObjectTag, const State& _State, EnemyObjectManager* _enemyObjectManagerPtr,
 	const Vector3& _Scale, const bool& _IsInitScaleChange)
 	: GameObject(_ObjectTag)
 {
@@ -57,6 +57,6 @@ SpriteGauge::SpriteGauge(GameObject* _owner, const Vector3& _Pos, const std::str
 	// スクリーン上に描画するコンポーネントクラス
 	new SpriteComponent(this, texture);
 
-	// 倒したエネミーをカウントするオブジェクトを無効にするコンポーネントを生成
-	new DeadEnemyCounterDisable(this, _enemysControlerPtr);
+	// オブジェクトを無効にするコンポーネントを生成
+	new ActiveObjectDisable(this, _enemyObjectManagerPtr);
 }

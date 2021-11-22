@@ -14,9 +14,9 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
-	/// <param name="_bossActiveBoxPtr"> 更新させてないオブジェクトを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
+	/// <param name="_activeForObjectPtr"> 更新させてないオブジェクトを更新させるためのオブジェクトの基底クラスのポインタ </param>
 	/// <param name="_deadObjectPtr"> 更新させてないオブジェクトのポインタ </param>
-	DeadObjectEnable(GameObject* _owner, DeadObjectActiveBox* _deadObjectActiveBoxPtr, GameObject* _deadObjectPtr);
+	DeadObjectEnable(GameObject* _owner, GameObject* _activeForObjectPtr, GameObject* _deadObjectPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -31,8 +31,8 @@ public:
 
 private:
 
-	// 更新させてないオブジェクトを更新させるための当たり判定用矩形オブジェクトのポインタ
-	DeadObjectActiveBox* mDeadObjectActiveBoxPtr;
+	// 更新させてないオブジェクトを更新させるためのオブジェクトの基底クラスのポインタ
+	GameObject* mActiveForObjectPtr;
 	// 更新させてないオブジェクトのポインタ
 	GameObject* mDeadObjectPtr;
 };

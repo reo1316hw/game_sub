@@ -4,11 +4,11 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
-/// <param name="_bossActiveBoxPtr"> 更新させてないオブジェクトを更新させるための当たり判定用矩形オブジェクトのポインタ </param>
+/// <param name="_bossActiveBoxPtr"> 更新させてないオブジェクトを更新させるための当たり判定用矩形オブジェクトの基底クラスのポインタ </param>
 /// <param name="_deadObjectPtr"> 更新させてないオブジェクトのポインタ </param>
-DeadObjectEnable::DeadObjectEnable(GameObject* _owner, DeadObjectActiveBox* _deadObjectActiveBoxPtr, GameObject* _deadObjectPtr)
+DeadObjectEnable::DeadObjectEnable(GameObject* _owner, GameObject* _activeForObjectPtr, GameObject* _deadObjectPtr)
 	: Component(_owner)
-	, mDeadObjectActiveBoxPtr(_deadObjectActiveBoxPtr)
+	, mActiveForObjectPtr(_activeForObjectPtr)
 	, mDeadObjectPtr(_deadObjectPtr)
 {
 }
@@ -19,7 +19,7 @@ DeadObjectEnable::DeadObjectEnable(GameObject* _owner, DeadObjectActiveBox* _dea
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 < /param>
 void DeadObjectEnable::Update(float _deltaTime)
 {
-	if (!mDeadObjectActiveBoxPtr->GetIsEnable() || mDeadObjectPtr->GetState() == eActive)
+	if (!mActiveForObjectPtr->GetIsEnable() || mDeadObjectPtr->GetState() == eActive)
 	{
 		return;
 	}

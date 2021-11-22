@@ -330,7 +330,7 @@
     <ClCompile Include="DefeatEnemyNumberText.cpp">
       <Filter>UI\DeadEnemyCounter</Filter>
     </ClCompile>
-    <ClCompile Include="DeadEnemyCounterDisable.cpp">
+    <ClCompile Include="ActiveObjectDisable.cpp">
       <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClCompile>
     <ClCompile Include="DeadEnemyCountTextChange.cpp">
@@ -687,7 +687,7 @@
     <ClInclude Include="DefeatEnemyNumberText.h">
       <Filter>UI\DeadEnemyCounter</Filter>
     </ClInclude>
-    <ClInclude Include="DeadEnemyCounterDisable.h">
+    <ClInclude Include="ActiveObjectDisable.h">
       <Filter>UI\DeadEnemyCounter\Component</Filter>
     </ClInclude>
     <ClInclude Include="DeadEnemyCountTextChange.h">

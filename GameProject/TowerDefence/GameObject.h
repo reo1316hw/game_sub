@@ -235,6 +235,8 @@ private:
 
 	// 有効にするかフラグ
 	bool mIsEnable;
+	// 無効にするフラグ
+	bool mIsDisable;
 
 public:// ゲッターセッター
 
@@ -249,6 +251,18 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <param name="_IsEnable"> 有効にするかフラグ </param>
 	void SetIsEnable(const bool& _IsEnable) { mIsEnable = _IsEnable; }
+
+	/// <summary>
+	/// 無効にするかフラグを取得
+	/// </summary>
+	/// <returns> 無効にするか </returns>
+	bool GetIsDisable() { return mIsDisable; }
+
+	/// <summary>
+    /// 無効にするかフラグを設定
+    /// </summary>
+    /// <param name="_IsDisable"> 無効にするかフラグ </param>
+	void SetIsDisable(const bool& _IsDisable) { mIsDisable = _IsDisable; }
 
 	/// <summary>
 	/// オブジェクトの座標を取得する

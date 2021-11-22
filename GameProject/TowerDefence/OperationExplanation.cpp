@@ -14,7 +14,7 @@ OperationExplanation::OperationExplanation(const Vector3& _Pos, const std::strin
 {
 	SetPosition(_Pos);
 	SetScale(_Scale);
-	SetState(eActive);
+	SetState(eDead);
 
 	// テクスチャの取得
 	Texture* texture = RENDERER->GetTexture(_TextureName);
@@ -24,4 +24,7 @@ OperationExplanation::OperationExplanation(const Vector3& _Pos, const std::strin
 
 	// 操作説明UIの挙動コンポーネントを生成
 	new OperationExplanationBehavior(this, _playerPtr);
+
+	// オブジェクトを無効にするコンポーネントを生成
+	new ActiveObjectDisable(this, this);
 }

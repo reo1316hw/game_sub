@@ -12,9 +12,12 @@ EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemys
 	: Component(_owner)
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)
-	, mDefeatEnemyNum(10)
+	, MFirstDefeatEnemyNum(10)
+	, MNextDefeatEnemyNum(100)
 	, MDistanceThreshold(5000.0f)
+	, mDefeatEnemyNum(MFirstDefeatEnemyNum)
 	, mIsActive(false)
+	, mIsDisable(false)
 	, mUntilInElementsCount(0)
 	, mActiveCount(0)
 	, mDeadCount(0)
@@ -49,16 +52,19 @@ void EnemysControler::Update(float _deltaTime)
 	// エネミーの要素数を取得
 	int enemysSize = enemyObjectList.size();
 
-	if (mTutorialEnemyDeadCount == 10)
+	// チュートリアルエネミーを一定数倒したら倒したエネミーの数をリセットして倒すエネミーの数を変更
+	if (mTutorialEnemyDeadCount == MFirstDefeatEnemyNum)
 	{
 		++mTutorialEnemyDeadCount;
 		mDeadCount = 0;
-		mDefeatEnemyNum = 100;
+		mDefeatEnemyNum = MNextDefeatEnemyNum;
 		// オブジェクトのスケールサイズを求めるための右辺の値を設定
 		mOwner->SetScaleRightSideValue(mDefeatEnemyNum);
 		// オブジェクトのスケールサイズを求めるための左辺の値を設定
 		mOwner->SetScaleLeftSideValue(mDeadCount);
 	}
+
+	mIsDisable = false;
 
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
@@ -106,6 +112,8 @@ void EnemysControler::Update(float _deltaTime)
 		// 対象となるエネミーが基準となるボスの範囲内に侵入してきたか求める
 		InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
 	}
+
+	mOwner->SetIsDisable(mIsDisable);
 }
 
 /// <summary>
@@ -230,6 +238,11 @@ void EnemysControler::EnemysDeathCount(const int& _EnemysCount, const int& _Enem
 		if (_referenceEnemyItr->GetShouldTutorialUse())
 		{
 			++mTutorialEnemyDeadCount;
+		}
+
+		if (mDeadCount >= mDefeatEnemyNum)
+		{
+			mIsDisable = true;
 		}
 	}
 }

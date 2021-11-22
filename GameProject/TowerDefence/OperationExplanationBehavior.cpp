@@ -7,7 +7,12 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 OperationExplanationBehavior::OperationExplanationBehavior(GameObject* _owner, PlayerObject* _playerPtr)
 	: Component(_owner)
+	, MMoveSpeed(40.0f)
+	, MStopForDistance(200000.0f)
 	, MInitPosition(mOwner->GetPosition())
+	, MRightDirVec(Vector3(1.0f, 0.0f, 0.0f))
+	, MLeftDirVec(Vector3(-1.0f, 0.0f, 0.0f))
+	, mIsDisable(false)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -23,10 +28,14 @@ void OperationExplanationBehavior::Update(float _deltaTime)
 	// 距離
 	Vector3 distance = position - MInitPosition;
 
-	if (distance.LengthSq() <= 50000.0f)
+	mIsDisable = false;
+	mOwner->SetIsDisable(mIsDisable);
+
+	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateIdle && 
+		distance.LengthSq() <= MStopForDistance)
 	{
 		// 速度
-		Vector3 velocity = Vector3(-1.0f, 0.0f, 0.0f) * 20.0f;
+		Vector3 velocity = MLeftDirVec * MMoveSpeed;
 		position += velocity;
 		mOwner->SetPosition(position);
 
@@ -40,11 +49,13 @@ void OperationExplanationBehavior::Update(float _deltaTime)
 
 	if (distance.LengthSq() <= 0.0f)
 	{
+		mIsDisable = true;
+		mOwner->SetIsDisable(mIsDisable);
 		return;
 	}
 
 	// 速度
-	Vector3 velocity = Vector3(1.0f, 0.0f, 0.0f) * 20.0f;
+	Vector3 velocity = MRightDirVec * MMoveSpeed;
 	position += velocity;
 	mOwner->SetPosition(position);
 }

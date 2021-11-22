@@ -21,6 +21,8 @@ GameObject::GameObject(const Tag& _objectTag, bool _reUseGameObject)
 	, mTag(_objectTag)
 	, mReUseObject(_reUseGameObject)
 	, mRecomputeWorldTransform(true)
+	, mIsEnable(false)
+	, mIsDisable(false)
 {
 	mGameObjectId++;
 	//GameObjectManager‚Éƒ|ƒCƒ“ƒ^‚ð“n‚·

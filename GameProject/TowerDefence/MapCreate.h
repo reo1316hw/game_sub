@@ -161,12 +161,6 @@ public:// ゲッターセッター
 	EnemyObjectManager* GetEnemyObjectManagerPtr() { return mEnemyObjectManagerPtr; }
 
 	/// <summary>
-	/// エネミーたちを制御するクラスのポインタを取得
-	/// </summary>
-	/// <returns> エネミーたちを制御するクラスのポインタ </returns>
-	EnemysControler* GetEnemysControlerPtr() { return mEnemysControlerPtr; }
-
-	/// <summary>
 	/// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタを取得
 	/// </summary>
 	/// <returns> エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ </returns>

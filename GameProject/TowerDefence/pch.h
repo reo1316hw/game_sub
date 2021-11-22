@@ -144,7 +144,7 @@
 
 #include "Font.h"
 #include "DeadEnemyCountTextChange.h"
-#include "DeadEnemyCounterDisable.h"
+#include "ActiveObjectDisable.h"
 #include "DeadEnemyCountText.h"
 #include "DefeatEnemyNumberText.h"
 

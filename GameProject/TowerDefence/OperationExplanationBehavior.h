@@ -27,8 +27,20 @@ public:
 
 private:
 
+	// 移動速度
+	const float MMoveSpeed;
+	// 止めるための距離
+	const float MStopForDistance;
+
 	// 初期座標
 	const Vector3 MInitPosition;
+	// 右向きのベクトル
+	const Vector3 MRightDirVec;
+	// 左向きのベクトル
+	const Vector3 MLeftDirVec;
+
+	// 無効にするかのフラグ
+	bool mIsDisable;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

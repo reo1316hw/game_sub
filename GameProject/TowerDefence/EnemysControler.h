@@ -73,11 +73,17 @@ private:
 	const int MInElementsTiming;
 	// 1回にアクティブにできるエネミーの数の上限
 	const int MMaxActiveInOnce;
+	// 最初に倒すエネミーの数
+	const int MFirstDefeatEnemyNum;
+	// 次に倒すエネミーの数
+	const int MNextDefeatEnemyNum;
 	// 距離のしきい値
 	const float MDistanceThreshold;
 
 	// アクティブかどうかのフラグ
 	bool mIsActive;
+	// 無効にするかのフラグ
+	bool mIsDisable;
 
 	// 配列の要素を入れるまでのカウント
 	int mUntilInElementsCount;
@@ -103,9 +109,9 @@ private:
 
 public:// ゲッターセッター
 
-	/// <summary>
-	/// 体力が0になり更新しなくなったオブジェクトの数を取得
-	/// </summary>
-	/// <returns> 体力が0になり更新しなくなったオブジェクトの数 </returns>
+    /// <summary>
+    /// 体力が0になり更新しなくなったオブジェクトの数を取得
+    /// </summary>
+    /// <returns> 体力が0になり更新しなくなったオブジェクトの数 </returns>
 	int GetDeadCount() { return mDeadCount; }
 };
