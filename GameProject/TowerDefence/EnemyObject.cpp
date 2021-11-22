@@ -89,7 +89,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	mEnemyHitPointGaugePtr = new ParticleGauge(this, MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther);
+	mEnemyHitPointGaugePtr = new ParticleGauge(this, MHpGaugeScale, "Assets/Texture/EnemyHpGauge01.png", Tag::eOther);
 	// エネミーのhpの枠を生成
 	mEnemyHitPointFramePtr = new ParticleFrame(this, MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther);
 }
