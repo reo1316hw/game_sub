@@ -5,7 +5,7 @@
 /// </summary>
 MapCreate::MapCreate()
 	: GameObject(Tag::eOther)
-	, OpenToDefeatEnemyNum(100)
+	, OpenToDefeatEnemyNum(50)
 	, OpenToDefeatTutorialEnemyNum(10)
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))

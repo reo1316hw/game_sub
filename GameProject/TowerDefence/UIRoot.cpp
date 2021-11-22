@@ -20,8 +20,10 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	, MDefeatEnemyNumberTextScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MOperationExplanationScale(Vector3(1.0f, 1.0f, 1.0f))
 	, MPlayerHitPointPosition(Vector3(-800.0f, -400.0f, 0.0f))
-	, MBossHitPointPosition(Vector3(400.0f, 400.0f, 0.0f))
-	, MDeadEnemyCountPosition(Vector3(-800.0f, 400.0f, 0.0f))
+	, MBossHitPointGaugePosition(Vector3(407.0f, 400.0f, 0.0f))
+	, MBossHitPointFramePosition(Vector3(400.0f, 400.0f, 0.0f))
+	, MDeadEnemyCountGaugePosition(Vector3(-793.0f, 400.0f, 0.0f))
+	, MDeadEnemyCountFramePosition(Vector3(-800.0f, 400.0f, 0.0f))
 	, MDeadEnemyCountTextPosition(Vector3(-250.0f, 400.0f, 0.0f))
 	, MDefeatEnemyNumberTextPosition(Vector3(-220.0f, 400.0f, 0.0f))
 	, MOperationExplanationtPosition(Vector3(1100.0f, -400.0f, 0.0f))
@@ -31,13 +33,13 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	// プレイヤーのhpの枠を生成
 	new SpriteFrame(MPlayerHitPointPosition, "Assets/Texture/PlayerHpFrame.png", Tag::eOther, State::eActive, MPlayerHitPointScale);
 	// ボスのhpゲージを生成
-	SpriteGauge* bossHitPointGaugePtr = new SpriteGauge(_bossPtr, MBossHitPointPosition, "Assets/Texture/EnemyHpGauge01.png", Tag::eOther, State::eDead, MBossHitPointScale);
+	SpriteGauge* bossHitPointGaugePtr = new SpriteGauge(_bossPtr, MBossHitPointGaugePosition, "Assets/Texture/EnemyHpGauge01.png", Tag::eOther, State::eDead, MBossHitPointScale);
 	// ボスのhpの枠を生成
-	SpriteFrame* bossHitPointFramePtr = new SpriteFrame(MBossHitPointPosition, "Assets/Texture/SpriteFrame.png", Tag::eOther, State::eDead, MBossHitPointScale);
+	SpriteFrame* bossHitPointFramePtr = new SpriteFrame(MBossHitPointFramePosition, "Assets/Texture/SpriteFrame.png", Tag::eOther, State::eDead, MBossHitPointScale);
 	// 倒したエネミーのカウントゲージを生成
-	SpriteGauge* deadEnemyCountGaugePtr = new SpriteGauge(_enemyObjectManagerPtr, MDeadEnemyCountPosition + Vector3(5.0f, 0.0f, 0.0f), "Assets/Texture/EnemyHpGauge01.png", Tag::eOther, State::eActive, _enemyObjectManagerPtr, MDeadEnemyCountScale, true);
+	SpriteGauge* deadEnemyCountGaugePtr = new SpriteGauge(_enemyObjectManagerPtr, MDeadEnemyCountGaugePosition, "Assets/Texture/EnemyHpGauge01.png", Tag::eOther, State::eActive, _enemyObjectManagerPtr, MDeadEnemyCountScale, true);
 	// 倒したエネミーのカウントフレームを生成
-	SpriteFrame* deadEnemyCountFramePtr = new SpriteFrame(MDeadEnemyCountPosition, "Assets/Texture/SpriteFrame.png", Tag::eOther, State::eActive, _enemyObjectManagerPtr, MDeadEnemyCountScale);
+	SpriteFrame* deadEnemyCountFramePtr = new SpriteFrame(MDeadEnemyCountFramePosition, "Assets/Texture/SpriteFrame.png", Tag::eOther, State::eActive, _enemyObjectManagerPtr, MDeadEnemyCountScale);
 
 	// 倒したエネミーのカウントUIを生成
 	DeadEnemyCountText* deadEnemyCountTextPtr = new DeadEnemyCountText(MDeadEnemyCountTextPosition, Tag::eOther, _enemyObjectManagerPtr, MDeadEnemyCountTextScale);

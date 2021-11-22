@@ -46,9 +46,13 @@ private:
     // プレイヤーのhpゲージの座標
     const Vector3 MPlayerHitPointPosition;
     // ボスのhpゲージの座標
-    const Vector3 MBossHitPointPosition;
+    const Vector3 MBossHitPointGaugePosition;
+    // ボスのhpフレームの座標
+    const Vector3 MBossHitPointFramePosition;
     // 倒したエネミーのカウントゲージの座標
-    const Vector3 MDeadEnemyCountPosition;
+    const Vector3 MDeadEnemyCountGaugePosition;
+    // 倒したエネミーのカウントフレームの座標
+    const Vector3 MDeadEnemyCountFramePosition;
     // 倒したエネミーのカウントテキストの座標
     const Vector3 MDeadEnemyCountTextPosition;
     // 倒すエネミーの数のテキストの座標

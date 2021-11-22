@@ -805,7 +805,7 @@ void Renderer::CreateFontTexture(const int& _Value, const int& _FontSize)
 
 	std::string str = "/ 10";
 	mFontTextures.push_back(font->RenderText(str, Color::White, _FontSize));
-	str = "/ 100";
+	str = "/ 50";
 	mFontTextures.push_back(font->RenderText(str, Color::White, _FontSize));
 }
 

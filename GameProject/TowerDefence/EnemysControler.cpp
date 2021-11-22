@@ -13,7 +13,7 @@ EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemys
 	, MInElementsTiming(300)
 	, MMaxActiveInOnce(8)
 	, MFirstDefeatEnemyNum(10)
-	, MNextDefeatEnemyNum(100)
+	, MNextDefeatEnemyNum(50)
 	, MDistanceThreshold(5000.0f)
 	, mDefeatEnemyNum(MFirstDefeatEnemyNum)
 	, mIsActive(false)
