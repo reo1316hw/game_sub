@@ -45,7 +45,7 @@ BossState BossObjectStateFrontAttack::Update(BossObject* _owner, const float _De
 		return BossState::eBossStateDamage;
 	}
 
-	// アニメーションが終了したら移動状態へ
+	// アニメーションが終了していなかったら
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
 		if (dirPlayerVec.LengthSq() < MTransitionStateDistance)

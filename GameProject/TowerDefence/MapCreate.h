@@ -83,8 +83,10 @@ private:
 
 	// 静的オブジェクトの大きさ
 	const Vector3 MStaticObjectSize;
-	// プレイヤーの大きさ
+	// 人型モデルの大きさ
 	const Vector3 MPersonSize;
+	// ボスの大きさ
+	const Vector3 MBossSize;
 	// 床を丁度よい位置にずらすためのベクトル
 	const Vector3 MGroundShiftVec;
 	// 壁を丁度よい位置にずらすためのベクトル

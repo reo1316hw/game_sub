@@ -11,7 +11,7 @@ EnemyObjectStateImpactDamage::EnemyObjectStateImpactDamage(PlayerObject* _player
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, MPlayRate(1.0f)
-	, MNotHitTime(0.02f)
+	, MNotHitTime(0.1f)
 	, mIsHitStop(false)
 	, mIsDamage(false)
 	, mHitPoint(0)

@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateDamage::BossObjectStateDamage(PlayerObject* _playerPtr)
-	: MDamageSpeed(100.0f)
+	: MDamageSpeed(150.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mIsHitStop(false)
@@ -56,7 +56,7 @@ BossState BossObjectStateDamage::Update(BossObject* _owner, const float _DeltaTi
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return BossState::eBossStateWait;
+		return BossState::eBossStateTeleportation;
 	}
 
 	return BossState::eBossStateDamage;
@@ -105,7 +105,7 @@ void BossObjectStateDamage::Enter(BossObject* _owner, const float _DeltaTime)
 	}
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateDamage), 1.0f, mHitStopEndTiming);
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateDamage), 1.5f, mHitStopEndTiming);
 	meshcomp->SetIsHitStop(mIsHitStop);
 	
 	// アニメーション再生時間取得

@@ -9,6 +9,7 @@ MapCreate::MapCreate()
 	, OpenToDefeatTutorialEnemyNum(10)
 	, MStaticObjectSize(Vector3(1.0f, 1.0f, 1.0f))
 	, MPersonSize(Vector3(0.5f, 0.5f, 0.5f))
+	, MBossSize((Vector3(0.7f, 0.7f, 0.7f)))
 	, MGroundShiftVec(Vector3(0.0f, 0.0f, 50.0f))
 	, MWallShiftVec(Vector3(0.0f, 0.0f, 350.0f))
 	, MGateShiftVec(Vector3(0.0f, -30.0f, 0.0f))
@@ -51,35 +52,35 @@ MapCreate::~MapCreate()
 void MapCreate::OpenFile()
 {
 	// 上層マップデータの読み込み
-	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Upper"))
+	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Upper"))
 	{
 		printf("don't have Layer/UpperObject\n");
 		return;
 	}
 
 	// 下層マップデータの読み込み
-	if (!readTiledJson(mUnderObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Under"))
+	if (!readTiledJson(mUnderObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Under"))
 	{
 		printf("don't have Layer/UnderObject\n");
 		return;
 	}
 
 	// 最下層マップデータの読み込み
-	if (!readTiledJson(mBottomObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Bottom"))
+	if (!readTiledJson(mBottomObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Bottom"))
 	{
 		printf("don't have Layer/BottomObject\n");
 		return;
 	}
 
 	// プレイヤーのデータの読み込み
-	if (!readTiledJson(mPlayerMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Player"))
+	if (!readTiledJson(mPlayerMapData, "Assets/Config/DebugValkyrieWarriors.json", "Player"))
 	{
 		printf("don't have Layer/Player\n");
 		return;
 	}
 
 	// エネミーたちのデータの読み込み
-	if (!readTiledJson(mEnemysMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Enemys"))
+	if (!readTiledJson(mEnemysMapData, "Assets/Config/DebugValkyrieWarriors.json", "Enemys"))
 	{
 		printf("don't have Layer/Enemys\n");
 		return;
@@ -239,7 +240,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 	case(MapDataNum::eBossNum):
 
 		// エネミーボスを生成
-		mBossPtr = mCreateEnemysPtr->CreateBossObject(_ObjectPos, MPersonSize, "Assets/Model/Boss/Boss.gpmesh",
+		mBossPtr = mCreateEnemysPtr->CreateBossObject(_ObjectPos, MBossSize, "Assets/Model/Boss/Boss.gpmesh",
 			"Assets/Model/Boss/Boss.gpskel", Tag::eBoss, mPlayerPtr);
 
 		break;

@@ -11,7 +11,7 @@ EnemyObjectStateSweepFallDamage::EnemyObjectStateSweepFallDamage(PlayerObject* _
 	, MSeparationVecLength(4.0f)
 	, MDamageInitSpeed(100.0f)
 	, MGravity(4.0f)
-	, MNotHitTime(0.02f)
+	, MNotHitTime(0.1f)
 	, mIsDamage(false)
 	, mHitPoint(0)
 	, mDamageValue(0)
