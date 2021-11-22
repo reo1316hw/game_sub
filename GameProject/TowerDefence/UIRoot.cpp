@@ -18,7 +18,7 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	, MDeadEnemyCountScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MDeadEnemyCountTextScale(Vector3(1.0f, 0.5f, 1.0f))
 	, MDefeatEnemyNumberTextScale(Vector3(1.0f, 0.5f, 1.0f))
-	, MOperationExplanationScale(Vector3(0.5f, 0.5f, 1.0f))
+	, MOperationExplanationScale(Vector3(1.0f, 1.0f, 1.0f))
 	, MPlayerHitPointPosition(Vector3(-800.0f, -400.0f, 0.0f))
 	, MBossHitPointPosition(Vector3(400.0f, 400.0f, 0.0f))
 	, MDeadEnemyCountPosition(Vector3(-800.0f, 400.0f, 0.0f))
@@ -47,7 +47,7 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	DefeatEnemyNumberText* defeatInfinitelyEnemyNumberTextPtr = new DefeatEnemyNumberText(MDefeatEnemyNumberTextPosition, Tag::eOther, State::eDead, 102, _enemyObjectManagerPtr, MDefeatEnemyNumberTextScale);
 
 	// 操作説明UIを生成
-	OperationExplanation* operationExplanationPtr = new OperationExplanation(MOperationExplanationtPosition,"Assets/Texture/EnemyHpFrame.png", Tag::eOther, _playerPtr, MOperationExplanationScale);
+	OperationExplanation* operationExplanationPtr = new OperationExplanation(MOperationExplanationtPosition, "Assets/Texture/OperationExplanation.png", Tag::eOther, _playerPtr, MOperationExplanationScale);
 
 	// ボスのhpゲージを有効にするコンポーネントを生成
 	new DeadObjectEnable(this, _bossActiveBoxPtr, bossHitPointGaugePtr);

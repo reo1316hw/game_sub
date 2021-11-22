@@ -36,4 +36,6 @@ private:
 
 	// プレイヤーと当たったか
 	bool mIsHitPlayer;
+	// 有効にするかのフラグ
+	bool mIsEnable;
 };

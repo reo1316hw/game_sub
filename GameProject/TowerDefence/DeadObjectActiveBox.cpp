@@ -9,6 +9,7 @@
 DeadObjectActiveBox::DeadObjectActiveBox(const Vector3& _Pos, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
 	, mIsHitPlayer(false)
+	, mIsEnable(false)
 {
 	//GameObjectメンバ変数の初期化
 	SetScale(_Scale);
@@ -18,6 +19,9 @@ DeadObjectActiveBox::DeadObjectActiveBox(const Vector3& _Pos, const Vector3& _Sc
 	AABB box = AABB(Vector3(-2000.0f, -1.0f, -2000.0f), Vector3(2000.0f, 1.0f, 2000.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(box);
+
+	// オブジェクトを無効にするコンポーネントを生成
+	new ActiveObjectDisable(this, this);
 }
 
 /// <summary>
@@ -27,6 +31,16 @@ DeadObjectActiveBox::DeadObjectActiveBox(const Vector3& _Pos, const Vector3& _Sc
 void DeadObjectActiveBox::UpdateGameObject(float _deltaTime)
 {
 	mBox = mBoxColliderPtr->GetWorldBox();
+
+	mIsEnable = false;
+
+	if (mIsHitPlayer)
+	{
+		mIsHitPlayer = false;
+		mIsEnable = true;
+	}
+
+	SetIsEnable(mIsEnable);
 }
 
 /// <summary>
@@ -37,12 +51,10 @@ void DeadObjectActiveBox::OnCollision(const GameObject& _HitObject)
 {
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
-	mIsHitPlayer = false;
 
 	if (tag == ePlayer)
 	{
 		mIsHitPlayer = true;
+		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 	}
-
-	SetIsEnable(mIsHitPlayer);
 }

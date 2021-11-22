@@ -52,10 +52,9 @@ void EnemysControler::Update(float _deltaTime)
 	// エネミーの要素数を取得
 	int enemysSize = enemyObjectList.size();
 
-	// チュートリアルエネミーを一定数倒したら倒したエネミーの数をリセットして倒すエネミーの数を変更
-	if (mTutorialEnemyDeadCount == MFirstDefeatEnemyNum)
+	// エネミーを一定数倒したら倒したエネミーの数をリセットして倒すエネミーの数を変更
+	if (mDeadCount >= mDefeatEnemyNum)
 	{
-		++mTutorialEnemyDeadCount;
 		mDeadCount = 0;
 		mDefeatEnemyNum = MNextDefeatEnemyNum;
 		// オブジェクトのスケールサイズを求めるための右辺の値を設定
@@ -111,6 +110,11 @@ void EnemysControler::Update(float _deltaTime)
 		InvadeWithinRange(referenceEnemyItr, bossObjectPtr);
 		// 対象となるエネミーが基準となるボスの範囲内に侵入してきたか求める
 		InvadeWithinRange(bossObjectPtr, referenceEnemyItr);
+	}
+
+	if (mDeadCount >= mDefeatEnemyNum)
+	{
+		mIsDisable = true;
 	}
 
 	mOwner->SetIsDisable(mIsDisable);
@@ -238,11 +242,6 @@ void EnemysControler::EnemysDeathCount(const int& _EnemysCount, const int& _Enem
 		if (_referenceEnemyItr->GetShouldTutorialUse())
 		{
 			++mTutorialEnemyDeadCount;
-		}
-
-		if (mDeadCount >= mDefeatEnemyNum)
-		{
-			mIsDisable = true;
 		}
 	}
 }
