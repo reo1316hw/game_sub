@@ -4,9 +4,11 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_owner"> アタッチしたオブジェクトのポインタ </param>
-OperationExplanationBehavior::OperationExplanationBehavior(GameObject* _owner)
+/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+OperationExplanationBehavior::OperationExplanationBehavior(GameObject* _owner, PlayerObject* _playerPtr)
 	: Component(_owner)
 	, MInitPosition(mOwner->GetPosition())
+	, mPlayerPtr(_playerPtr)
 {
 }
 
@@ -30,4 +32,19 @@ void OperationExplanationBehavior::Update(float _deltaTime)
 
 		return;
 	}
+
+	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateIdle)
+	{
+		return;
+	}
+
+	if (distance.LengthSq() <= 0.0f)
+	{
+		return;
+	}
+
+	// 速度
+	Vector3 velocity = Vector3(1.0f, 0.0f, 0.0f) * 20.0f;
+	position += velocity;
+	mOwner->SetPosition(position);
 }

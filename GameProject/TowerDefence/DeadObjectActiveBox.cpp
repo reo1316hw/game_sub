@@ -37,9 +37,12 @@ void DeadObjectActiveBox::OnCollision(const GameObject& _HitObject)
 {
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
+	mIsHitPlayer = false;
 
 	if (tag == ePlayer)
 	{
 		mIsHitPlayer = true;
 	}
+
+	SetIsEnable(mIsHitPlayer);
 }

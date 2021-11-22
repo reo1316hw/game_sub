@@ -76,6 +76,9 @@ private:
 	// 距離のしきい値
 	const float MDistanceThreshold;
 
+	// アクティブかどうかのフラグ
+	bool mIsActive;
+
 	// 配列の要素を入れるまでのカウント
 	int mUntilInElementsCount;
 	// アクティブになったオブジェクトの数

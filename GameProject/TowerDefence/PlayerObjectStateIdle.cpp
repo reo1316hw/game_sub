@@ -87,6 +87,9 @@ void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
     SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
     meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateIdle));
     mIsHit = false;
+
+    mIsIdle = true;
+    _owner->SetIsEnable(mIsIdle);
 }
 
 /// <summary>

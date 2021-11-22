@@ -19,7 +19,7 @@ DeadObjectEnable::DeadObjectEnable(GameObject* _owner, DeadObjectActiveBox* _dea
 /// <param name="_deltaTime"> ÅŒã‚ÌƒtƒŒ[ƒ€‚ğŠ®—¹‚·‚é‚Ì‚É—v‚µ‚½ŠÔ < /param>
 void DeadObjectEnable::Update(float _deltaTime)
 {
-	if (!mDeadObjectActiveBoxPtr->GetIsHitPlayer() || mDeadObjectPtr->GetState() == eActive)
+	if (!mDeadObjectActiveBoxPtr->GetIsEnable() || mDeadObjectPtr->GetState() == eActive)
 	{
 		return;
 	}

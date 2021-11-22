@@ -220,12 +220,8 @@ protected:
 	Vector3 mPosition;
 	Vector3 mScale;
 	Quaternion  mRotation;
-	// 速度
-	Vector3 mVelocity;
 	// ワールド行列
 	Matrix4		mWorldTransform;
-	// 移動速度
-	float mMoveSpeed;
 	// ワールド変換の処理を行う必要性があるか
 	bool mRecomputeWorldTransform;
 	
@@ -237,7 +233,22 @@ private:
 	// シーンを跨ぐ際に解放されるオブジェクトかどうか、カメラなどが対象になる
 	bool mReUseObject;
 
+	// 有効にするかフラグ
+	bool mIsEnable;
+
 public:// ゲッターセッター
+
+	/// <summary>
+	/// 有効にするかフラグを取得
+	/// </summary>
+	/// <returns> 有効にするか </returns>
+	bool GetIsEnable() { return mIsEnable; }
+
+	/// <summary>
+	/// 有効にするかフラグを設定
+	/// </summary>
+	/// <param name="_IsEnable"> 有効にするかフラグ </param>
+	void SetIsEnable(const bool& _IsEnable) { mIsEnable = _IsEnable; }
 
 	/// <summary>
 	/// オブジェクトの座標を取得する

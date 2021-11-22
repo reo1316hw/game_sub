@@ -14,6 +14,7 @@ EnemysControler::EnemysControler(GameObject* _owner, CreateEnemys* _createEnemys
 	, MMaxActiveInOnce(8)
 	, mDefeatEnemyNum(10)
 	, MDistanceThreshold(5000.0f)
+	, mIsActive(false)
 	, mUntilInElementsCount(0)
 	, mActiveCount(0)
 	, mDeadCount(0)
@@ -62,13 +63,18 @@ void EnemysControler::Update(float _deltaTime)
 	// 基準となるエネミーを検索
 	for (auto referenceEnemyItr : enemyObjectList)
 	{
+		// エネミーを更新させるための当たり判定用矩形オブジェクトに当たっていたらエネミーを湧かせる
+		if (mEnemyActiveBoxPtr->GetIsEnable())
+		{
+			mIsActive = true;
+		}
+		
 		// エネミーたちを倒した数をカウント
 		EnemysDeathCount(enemysCount, enemysSize, referenceEnemyItr);
 
 		++enemysCount;
 
-		// エネミーを更新させるための当たり判定用矩形オブジェクトに当たっていたら
-		if (mEnemyActiveBoxPtr->GetIsHitPlayer())
+		if (mIsActive)
 		{
 			// 一定時間が経ったら非アクティブなエネミーをアクティブにする
 			ActiveEnemy(referenceEnemyItr);
@@ -83,8 +89,9 @@ void EnemysControler::Update(float _deltaTime)
 		SearchTargetEnemy(enemyObjectList, referenceEnemyItr);
 
 		// ボスを更新させるための当たり判定用矩形オブジェクトに当たっていたら
-		if (mBossActiveBoxPtr->GetIsHitPlayer())
+		if (mBossActiveBoxPtr->GetIsEnable())
 		{
+			mIsActive = false;
 			// ボスをアクティブにする
 			bossObjectPtr->SetState(eActive);
 		}

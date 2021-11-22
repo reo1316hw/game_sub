@@ -11,7 +11,8 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_owner"> アタッチしたオブジェクトのポインタ </param>
-	OperationExplanationBehavior(GameObject* _owner);
+	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
+	OperationExplanationBehavior(GameObject* _owner, PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
@@ -28,4 +29,7 @@ private:
 
 	// 初期座標
 	const Vector3 MInitPosition;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 };

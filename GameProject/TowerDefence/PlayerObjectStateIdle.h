@@ -53,6 +53,8 @@ private:
 	//移動するための左スティックのしきい値
 	const float MLeftAxisThreshold;
 
+	// 待機状態かのフラグ
+	bool mIsIdle;
 	// ダメージ値
 	int mDamageValue;
 };

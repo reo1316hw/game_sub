@@ -36,12 +36,4 @@ private:
 
 	// プレイヤーと当たったか
 	bool mIsHitPlayer;
-
-public:// ゲッターセッター
-
-	/// <summary>
-	/// プレイヤーと当たったかフラグを取得
-	/// </summary>
-	/// <returns> プレイヤーと当たったか </returns>
-	bool GetIsHitPlayer() { return mIsHitPlayer; }
 };
