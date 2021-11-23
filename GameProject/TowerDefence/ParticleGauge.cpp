@@ -11,7 +11,7 @@ ParticleGauge::ParticleGauge(GameObject* _owner, const Vector3& _Scale,
 	const std::string& _TextureName, const Tag& _ObjectTag,
 	const bool& _IsInitScaleChange)
 	: GameObject(_ObjectTag)
-	, MOffset(Vector3(0.0f, 0.0f, 100.0f))
+	, MOffset(Vector3(0.0f, 0.0f, 90.0f))
 	, mOwner(_owner)
 {
 	SetScale(_Scale);

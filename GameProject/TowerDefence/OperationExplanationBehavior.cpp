@@ -7,7 +7,7 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 OperationExplanationBehavior::OperationExplanationBehavior(GameObject* _owner, PlayerObject* _playerPtr)
 	: Component(_owner)
-	, MMoveSpeed(40.0f)
+	, MMoveSpeed(20.0f)
 	, MStopForDistance(200000.0f)
 	, MInitPosition(mOwner->GetPosition())
 	, MRightDirVec(Vector3(1.0f, 0.0f, 0.0f))

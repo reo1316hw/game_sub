@@ -15,7 +15,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	, MShouldTutorialUse(false)
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
-	, MHpGaugeScale(Vector3(0.05f, 1.0f, 4.0f))
+	, MHpGaugeScale(Vector3(0.05f, 1.0f, 2.0f))
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
@@ -89,7 +89,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mBoxColliderPtr->SetObjectBox(mBox);
 
 	// エネミーのhpゲージを生成
-	mEnemyHitPointGaugePtr = new ParticleGauge(this, MHpGaugeScale, "Assets/Texture/EnemyHpGauge01.png", Tag::eOther);
+	mEnemyHitPointGaugePtr = new ParticleGauge(this, MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther);
 	// エネミーのhpの枠を生成
 	mEnemyHitPointFramePtr = new ParticleFrame(this, MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther);
 }
@@ -110,7 +110,7 @@ EnemyObject::EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, co
 	, MShouldTutorialUse(_ShouldTutorialUse)
 	, MMaxHp(50)
 	, MPlayRate(1.0f)
-	, MHpGaugeScale(Vector3(0.05f, 1.0f, 4.0f))
+	, MHpGaugeScale(Vector3(0.05f, 1.0f, 2.0f))
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
