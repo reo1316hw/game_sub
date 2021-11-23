@@ -79,11 +79,6 @@ EnemyState EnemyObjectStateMove::Update(EnemyObject* _owner, const float _DeltaT
 
 	++mPeriodMoveCount;
 
-	if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateImpactDamage;
-	}
-
 	if (mPeriodMoveCount >= MTransitionTimingNum)
 	{
 		// ƒ‰ƒ“ƒ_ƒ€’l

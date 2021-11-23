@@ -48,7 +48,9 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mAnimTypes[static_cast<int>(BossState::eBossStateAreaAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossAreaAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(BossState::eBossStateOverheadAttack)] = RENDERER->GetAnimation("Assets/Model/Boss/BossOverheadAttack.gpanim", false);
 	mAnimTypes[static_cast<int>(BossState::eBossStateTeleportation)] = RENDERER->GetAnimation("Assets/Model/Boss/BossWait.gpanim", true);
-	mAnimTypes[static_cast<int>(BossState::eBossStateDamage)] = RENDERER->GetAnimation("Assets/Model/Boss/BossDamage.gpanim", false);
+	mAnimTypes[static_cast<int>(BossState::eBossStateImpactDamage)] = RENDERER->GetAnimation("Assets/Model/Boss/BossImpact.gpanim", false);
+	mAnimTypes[static_cast<int>(BossState::eBossStateSweepFallDamage)] = RENDERER->GetAnimation("Assets/Model/Boss/BossSweepFall.gpanim", false);
+	mAnimTypes[static_cast<int>(BossState::eBossStateFlyingBackDamage)] = RENDERER->GetAnimation("Assets/Model/Boss/BossFlyingBack.gpanim", false);
 	mAnimTypes[static_cast<int>(BossState::eBossStateDeath)] = RENDERER->GetAnimation("Assets/Model/Boss/BossDeath.gpanim", false);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
@@ -57,14 +59,16 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mSkeltalMeshComponentPtr->PlayAnimation(anim);
 
 	// アクターステートプールの初期化
-	mStatePools.push_back(new BossObjectStateWait(_playerPtr));	          // mStatePool[eBossStateWait]
-	mStatePools.push_back(new BossObjectStateTrack(_playerPtr));	      // mStatepool[eBossStateTrack]
-	mStatePools.push_back(new BossObjectStateFrontAttack(_playerPtr));    // mStatepool[eBossStateFrontAttack]
-	mStatePools.push_back(new BossObjectStateAreaAttack(_playerPtr));     // mStatepool[eBossStateAreaAttack]
-	mStatePools.push_back(new BossObjectStateOverheadAttack(_playerPtr)); // mStatepool[eBossObjectStateOverheadAttack]
-	mStatePools.push_back(new BossObjectStateTeleportation(_playerPtr));  // mStatepool[eBossStateTeleportation]
-	mStatePools.push_back(new BossObjectStateDamage(_playerPtr));         // mStatepool[eBossStateDamage];
-	mStatePools.push_back(new BossObjectStateDeath(_playerPtr));          // mStatepool[eBossStateDeath];
+	mStatePools.push_back(new BossObjectStateWait(_playerPtr));	             // mStatePool[eBossStateWait]
+	mStatePools.push_back(new BossObjectStateTrack(_playerPtr));	         // mStatepool[eBossStateTrack]
+	mStatePools.push_back(new BossObjectStateFrontAttack(_playerPtr));       // mStatepool[eBossStateFrontAttack]
+	mStatePools.push_back(new BossObjectStateAreaAttack(_playerPtr));        // mStatepool[eBossStateAreaAttack]
+	mStatePools.push_back(new BossObjectStateOverheadAttack(_playerPtr));    // mStatepool[eBossObjectStateOverheadAttack]
+	mStatePools.push_back(new BossObjectStateTeleportation(_playerPtr));     // mStatepool[eBossStateTeleportation]
+	mStatePools.push_back(new BossObjectStateImpactDamage(_playerPtr));      // mStatepool[eBossStateImpactDamage];
+	mStatePools.push_back(new BossObjectStateSweepFallDamage(_playerPtr));   // mStatepool[eBossStateSweepFallDamage];
+	mStatePools.push_back(new BossObjectStateFlyingBackDamage(_playerPtr));  // mStatepool[eBossStateFlyingBackDamage];
+	mStatePools.push_back(new BossObjectStateDeath(_playerPtr));             // mStatepool[eBossStateDeath];
 
 	// ヒットエフェクト生成
 	new HitEffect(this, MHitEffectScale, Tag::eHItEffect);
@@ -76,7 +80,9 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	// 範囲攻撃エフェクト生成
 	new AreaMagicEffect(this, MAreaMagicEffectScale, Tag::eAreaMagicEffect);
 	// プレイヤーの頭上に攻撃するエフェクトを生成
-	new OverheadMagicEffect(this, MOverheadEffectScale, Tag::eOverheadMagicEffect);
+	new OverheadMagicEffect(this, _playerPtr, MOverheadEffectScale, Tag::eOverheadMagicEffect);
+	// プレイヤー頭上攻撃時の危険信号エフェクト
+	new DangerSignalEffect(this, _playerPtr, MOverheadEffectScale, Tag::eOverheadMagicEffect);
 	// テレポートエフェクト
 	new TeleportationEffect(this, MTeleportationEffectScale, Tag::eTeleportationEffect);
 

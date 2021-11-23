@@ -32,6 +32,28 @@ BossObjectStateTrack::BossObjectStateTrack(PlayerObject* _playerPtr)
 /// <returns> ボスの状態 </returns>
 BossState BossObjectStateTrack::Update(BossObject* _owner, const float _DeltaTime)
 {
+	if (mIsDamage)
+	{
+		switch (mHitTag)
+		{
+		case Tag::eDashAttackEffect:
+
+			return BossState::eBossStateImpactDamage;
+
+		case Tag::eFirstAttackEffect:
+
+			return BossState::eBossStateImpactDamage;
+
+		case Tag::eSecondAttackEffect:
+
+			return BossState::eBossStateSweepFallDamage;
+
+		case Tag::eThirdAttackEffect:
+
+			return BossState::eBossStateFlyingBackDamage;
+		}
+	}
+
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
@@ -41,11 +63,6 @@ BossState BossObjectStateTrack::Update(BossObject* _owner, const float _DeltaTim
 	int randNum = rand() % 100;
 
 	++UntilTransitionOverheadAttackCount;
-
-	if (mIsDamage)
-	{
-		return BossState::eBossStateDamage;
-	}
 
 	if (dirPlayerVec.LengthSq() < MTransitionStateDistance)
 	{
@@ -138,7 +155,7 @@ void BossObjectStateTrack::OnCollision(BossObject* _owner, const GameObject& _Hi
 {
 	mBossPtr = _owner;
 	// 座標
-	mPosition = _owner->GetPosition();
+	mPosition = mBossPtr->GetPosition();
 
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();

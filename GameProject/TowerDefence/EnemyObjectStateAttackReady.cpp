@@ -49,11 +49,6 @@ EnemyState EnemyObjectStateAttackReady::Update(EnemyObject* _owner, const float 
 	}
 
 	_owner->SetPosition(mPosition);
-	
-	if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateImpactDamage;
-	}
 
 	// アニメーションが終了したら攻撃状態へ遷移
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -72,7 +67,7 @@ EnemyState EnemyObjectStateAttackReady::Update(EnemyObject* _owner, const float 
 void EnemyObjectStateAttackReady::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttackReady));
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttackReady), 1.5f);
 	mIsDamage = false;
 
 	// 座標

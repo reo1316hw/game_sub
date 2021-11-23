@@ -213,7 +213,7 @@
     <ClCompile Include="BossObjectStateTeleportation.cpp">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="BossObjectStateDamage.cpp">
+    <ClCompile Include="BossObjectStateImpactDamage.cpp">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="BossObjectStateDeath.cpp">
@@ -353,6 +353,12 @@
     </ClCompile>
     <ClCompile Include="OperationExplanationBehavior.cpp">
       <Filter>UI\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateSweepFallDamage.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateFlyingBackDamage.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -570,7 +576,7 @@
     <ClInclude Include="BossObjectStateTeleportation.h">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="BossObjectStateDamage.h">
+    <ClInclude Include="BossObjectStateImpactDamage.h">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="BossObjectStateDeath.h">
@@ -710,6 +716,12 @@
     </ClInclude>
     <ClInclude Include="OperationExplanationBehavior.h">
       <Filter>UI\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateFlyingBackDamage.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateSweepFallDamage.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,12 +4,16 @@
 /// コンストラクタ
 /// </summary>	
 /// <param name="_bossPtr"> ボスのポインタ </param>
+/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 /// <param name="_Scale"> 大きさ </param>
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
-OverheadMagicEffect::OverheadMagicEffect(BossObject* _bossPtr, const Vector3& _Scale, const Tag& _ObjectTag)
+OverheadMagicEffect::OverheadMagicEffect(BossObject* _bossPtr, PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
-	, mNowState(_bossPtr->GetNowState())
+	, MEffectPositionUnUpdateTiming(1.8f)
+	, MEffectPlayTiming(2.0f)
+	, mElapseTime(0.0f)
 	, mBossPtr(_bossPtr)
+	, mPlayerPtr(_playerPtr)
 	, mEffectComponentPtr(nullptr)
 {
 	// 武器の矩形当たり判定
@@ -29,24 +33,27 @@ OverheadMagicEffect::OverheadMagicEffect(BossObject* _bossPtr, const Vector3& _S
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void OverheadMagicEffect::UpdateGameObject(float _deltaTime)
 {
-	// 前のステート
-	BossState preState = mNowState;
+	// 現在のステート
+	BossState nowState = mBossPtr->GetNowState();
 
-	mNowState = mBossPtr->GetNowState();
-
-	if (mNowState == preState)
+	if (nowState != BossState::eBossStateOverheadAttack)
 	{
+		mElapseTime = 0.0f;
 		return;
 	}
 
-	if (mNowState != BossState::eBossStateOverheadAttack)
+	mElapseTime += _deltaTime;
+
+	if (mElapseTime < MEffectPositionUnUpdateTiming)
+	{
+		mPosition = mPlayerPtr->GetPosition();
+		SetPosition(mPosition);
+	}
+
+	if (mElapseTime < MEffectPlayTiming)
 	{
 		return;
 	}
-
-	mPosition = mBossPtr->GetPosition();
-	SetPosition(mPosition);
-	SetRotation(mBossPtr->GetRotation());
 
 	// 再生済みじゃなかったらエフェクトを再生する
 	if (mEffectComponentPtr->IsPlayedEffect())

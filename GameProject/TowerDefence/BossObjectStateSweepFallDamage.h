@@ -1,9 +1,9 @@
 #pragma once
 
 /// <summary>
-/// エネミーがダメージを受けた状態(小さい衝撃)
+/// ボスの死亡状態(吹っ飛んで落ちる)
 /// </summary>
-class EnemyObjectStateImpactDamage : public EnemyObjectStateBase
+class BossObjectStateSweepFallDamage : public BossObjectStateBase
 {
 public:
 
@@ -11,41 +11,41 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
-	EnemyObjectStateImpactDamage(PlayerObject* _playerPtr);
+	BossObjectStateSweepFallDamage(PlayerObject* _playerPtr);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~EnemyObjectStateImpactDamage() {};
+	~BossObjectStateSweepFallDamage() {};
 
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	/// <param name="_owner"> エネミー(親)のポインタ </param>
+	/// <param name="_owner"> ボス(親)のポインタ </param>
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	/// <returns> エネミーの状態 </returns>
-	EnemyState Update(EnemyObject* _owner, const float _DeltaTime)override;
+	/// <returns> ボスの状態 </returns>
+	BossState Update(BossObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-	/// エネミーの状態が変更して、最初に1回だけ呼び出される関数
+	/// ボスの状態が変更して、最初に1回だけ呼び出される関数
 	/// </summary>
-	/// <param name="_owner"> エネミー(親)のポインタ </param>
+	/// <param name="_owner"> ボス(親)のポインタ </param>
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
+	void Enter(BossObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-    /// エネミー同士の引き離し
-    /// </summary>
-    /// <param name="_owner"> エネミー(親)のポインタ </param>
-    /// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
-	void Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)override;
+	/// ボス同士の引き離し
+	/// </summary>
+	/// <param name="_owner"> ボス親)のポインタ </param>
+	/// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
+	void Separation(BossObject* _owner, const Vector3& _DirTargetEnemyVec)override;
 
 	/// <summary>
 	/// ヒットした時の処理
 	/// </summary>
-	/// <param name="_owner"> エネミー(親)のポインタ </param>
+	/// <param name="_owner"> ボス(親)のポインタ </param>
 	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;
+	void OnCollision(BossObject* _owner, const GameObject& _HitObject)override;
 
 private:
 
@@ -62,12 +62,14 @@ private:
 
 	// プレイヤーの1段階目の通常攻撃のダメージ値
 	const int MDamageValuePlayerFirstAttack;
-	// ダメージ時の速度
-	const float MDamageSpeed;
 	// ベクトルを短くする値
 	const float MVecShortenVelue;
 	// 引き離しベクトルの長さ
 	const float MSeparationVecLength;
+	// ダメージ時の初速度
+	const float MDamageInitSpeed;
+	// 重力
+	const float MGravity;
 	// 当たり判定を行わない時間
 	const float MNotHitTime;
 
@@ -83,11 +85,13 @@ private:
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;
-	// アニメーション総時間
-	float mTotalAnimTime;
+	// ダメージ時の速度
+	float mDamageSpeed;
 
 	// 座標
 	Vector3 mPosition;
+	// このステートに入った時の座標
+	Vector3 mNowStateInitPos;
 	// 速度
 	Vector3 mVelocity;
 	// プレイヤーに向いたベクトル
@@ -96,8 +100,8 @@ private:
 	// ヒットしたオブジェクトのタグ
 	Tag mHitTag;
 
-	// エネミーのポインタ
-	EnemyObject* mEnemyPtr;
+	// ボスのポインタ
+	BossObject* mBossPtr;
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 };

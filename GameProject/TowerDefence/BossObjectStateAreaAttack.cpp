@@ -30,17 +30,34 @@ BossObjectStateAreaAttack::BossObjectStateAreaAttack(PlayerObject* _playerPtr)
 /// <returns> ボスの状態 </returns>
 BossState BossObjectStateAreaAttack::Update(BossObject* _owner, const float _DeltaTime)
 {
+	if (mIsDamage)
+	{
+		switch (mHitTag)
+		{
+		case Tag::eDashAttackEffect:
+
+			return BossState::eBossStateImpactDamage;
+
+		case Tag::eFirstAttackEffect:
+
+ 			return BossState::eBossStateImpactDamage;
+
+		case Tag::eSecondAttackEffect:
+
+			return BossState::eBossStateSweepFallDamage;
+
+		case Tag::eThirdAttackEffect:
+
+			return BossState::eBossStateFlyingBackDamage;
+		}
+	}
+
 	_owner->SetPosition(mPosition);
 
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトルsd
 	Vector3 dirPlayerVec = playerPos - mPosition;
-
-	if (mIsDamage)
-	{
-	    return BossState::eBossStateDamage;
-	}
 
 	// アニメーションが終了したら移動状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -110,7 +127,7 @@ void BossObjectStateAreaAttack::OnCollision(BossObject* _owner, const GameObject
 {
 	mBossPtr = _owner;
 	// 座標
-	mPosition = _owner->GetPosition();
+	mPosition = mBossPtr->GetPosition();
 
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();

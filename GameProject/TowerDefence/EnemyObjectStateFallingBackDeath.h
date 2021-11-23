@@ -44,16 +44,6 @@ private:
 
 	// ダメージ時の速度
 	const float MDamageSpeed;
-	// アニメーションの再生速度
-	const float MPlayRate;
-	// ヒットストップが終わるタイミング
-	const int MHitStopEndTiming;
-
-	// ヒットストップするか
-	bool mIsHitStop;
-
-	// ヒットストップするフレーム数
-	int mHitStopCount;
 
 	// このステートに入ってからの経過時刻
 	float mElapseTime;

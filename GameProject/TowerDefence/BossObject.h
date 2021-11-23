@@ -16,7 +16,9 @@ enum class BossState
 	eBossStateAreaAttack,           // 範囲攻撃
 	eBossStateOverheadAttack,    	// プレイヤーの頭上に攻撃
 	eBossStateTeleportation,    	// 瞬間移動
-	eBossStateDamage,               // ダメージを受けた
+	eBossStateImpactDamage,         // ダメージを受けた(小さい衝撃)
+	eBossStateSweepFallDamage,      // ダメージを受けた(吹っ飛んで落ちる)
+	eBossStateFlyingBackDamage,     // ダメージを受けた(遠くまで飛行して落ちる)
 	eBossStateDeath,                // 死亡
 
 	eBossStateNum,                  // 総アニメーション数

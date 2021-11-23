@@ -11,9 +11,10 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_bossPtr"> ボスのポインタ </param>
+	/// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	/// <param name="_Scale"> 大きさ </param>
 	/// <param name="_ObjectTag"> オブジェクトのタグ </param>
-	OverheadMagicEffect(BossObject* _bossPtr, const Vector3& _Scale, const Tag& _ObjectTag);
+	OverheadMagicEffect(BossObject* _bossPtr, PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag);
 
 	/// <summary>
 	/// デストラクタ
@@ -28,11 +29,18 @@ public:
 
 private:
 
-	// ボスの現在のステート
-	BossState mNowState;
+	// エフェクトの座標を更新しないタイミング
+	const float MEffectPositionUnUpdateTiming;
+	// エフェクトを再生するタイミング
+	const float MEffectPlayTiming;
+
+	// 経過時間
+	float mElapseTime;
 
 	// ボスのポインタ
 	BossObject* mBossPtr;
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 	// エフェクトコンポーネントクラスのポインタ
 	EffectComponent* mEffectComponentPtr;
 };

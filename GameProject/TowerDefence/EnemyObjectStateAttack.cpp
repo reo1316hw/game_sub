@@ -83,11 +83,6 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
 	}
 
-	if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateImpactDamage;
-	}
-
 	// アニメーションが終了したら移動状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{

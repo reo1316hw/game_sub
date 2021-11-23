@@ -4,24 +4,26 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-EnemyObjectStateImpactDamage::EnemyObjectStateImpactDamage(PlayerObject* _playerPtr)
+BossObjectStateSweepFallDamage::BossObjectStateSweepFallDamage(PlayerObject* _playerPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
 	, MDamageValuePlayerFirstAttack(25)
-	, MDamageSpeed(100.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, MDamageInitSpeed(100.0f)
+	, MGravity(4.0f)
 	, MNotHitTime(0.1f)
 	, mIsDamage(false)
 	, mHitPoint(0)
 	, mDamageValue(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
+	, mDamageSpeed(0.0f)
 	, mPosition(Vector3::Zero)
+	, mNowStateInitPos(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
 	, mHitTag(Tag::eOther)
-	, mEnemyPtr(nullptr)
+	, mBossPtr(nullptr)
 	, mPlayerPtr(_playerPtr)
 {
 }
@@ -29,58 +31,64 @@ EnemyObjectStateImpactDamage::EnemyObjectStateImpactDamage(PlayerObject* _player
 /// <summary>
 /// 更新処理
 /// </summary>
-/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_owner"> ボス(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-/// <returns> エネミーの状態 </returns>
-EnemyState EnemyObjectStateImpactDamage::Update(EnemyObject* _owner, const float _DeltaTime)
+/// <returns> ボスの状態 </returns>
+BossState BossObjectStateSweepFallDamage::Update(BossObject* _owner, const float _DeltaTime)
 {
 	if (mHitPoint <= 0)
 	{
-		return EnemyState::eEnemyStateFallingBackDeath;
+		return BossState::eBossStateDeath;
 	}
 
 	if (mIsDamage)
 	{
 		switch (mHitTag)
 		{
+		case Tag::eDashAttackEffect:
+
+			return BossState::eBossStateImpactDamage;
+
 		case Tag::eFirstAttackEffect:
 
-			Enter(_owner, _DeltaTime);
-			break;
+			return BossState::eBossStateImpactDamage;
 
-		case Tag::eSecondAttackEffect:
+		case Tag::eThirdAttackEffect:
 
-			return EnemyState::eEnemyStateSweepFallDamage;
+			return BossState::eBossStateFlyingBackDamage;
 		}
 	}
 
-	// 開始速度
-	float startSpeed = -MDamageSpeed * _DeltaTime;
-	// 終了速度
-	float endSpeed = MDamageSpeed * _DeltaTime;
-
-	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
 	mElapseTime += _DeltaTime;
-	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirPlayerVec;
+
+	// 速度
+	Vector3 velocity = mDamageSpeed * Vector3::UnitZ;
+	mDamageSpeed -= MGravity;
+
+	mPosition += velocity * _DeltaTime;
+
+	if (mPosition.z <= mNowStateInitPos.z)
+	{
+		mPosition.z = mNowStateInitPos.z;
+	}
 
 	_owner->SetPosition(mPosition);
-	
+
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
-		return EnemyState::eEnemyStateWait;
+		return BossState::eBossStateTeleportation;
 	}
 
-	return EnemyState::eEnemyStateImpactDamage;
+	return BossState::eBossStateSweepFallDamage;
 }
 
 /// <summary>
-/// エネミー同士の引き離し
+/// ボス同士の引き離し
 /// </summary>
-/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_owner"> ボス親)のポインタ </param>
 /// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
-void EnemyObjectStateImpactDamage::Separation(EnemyObject* _owner, const Vector3& _DirTargetEnemyVec)
+void BossObjectStateSweepFallDamage::Separation(BossObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -95,28 +103,29 @@ void EnemyObjectStateImpactDamage::Separation(EnemyObject* _owner, const Vector3
 }
 
 /// <summary>
-/// エネミーの状態が変更して、最初に1回だけ呼び出される関数
+/// ボスの状態が変更して、最初に1回だけ呼び出される関数
 /// </summary>
-/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_owner"> ボス(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyObjectStateImpactDamage::Enter(EnemyObject* _owner, const float _DeltaTime)
+void BossObjectStateSweepFallDamage::Enter(BossObject* _owner, const float _DeltaTime)
 {
 	mIsDamage = false;
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateImpactDamage));
-
-	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateImpactDamage)->GetDuration();
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateSweepFallDamage));
 	mElapseTime = 0.0f;
 
 	// 座標
 	mPosition = _owner->GetPosition();
+	// このステートに入った時の座標
+	mNowStateInitPos = mPosition;
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトル
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
+
+	mDamageSpeed = MDamageInitSpeed;
 
 	// ダメージ値
 	int damageValue = _owner->GetDamageValue();
@@ -132,18 +141,19 @@ void EnemyObjectStateImpactDamage::Enter(EnemyObject* _owner, const float _Delta
 /// <summary>
 /// ヒットした時の処理
 /// </summary>
-/// <param name="_owner"> エネミー(親)のポインタ </param>
+/// <param name="_owner"> ボス(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyObjectStateImpactDamage::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
+void BossObjectStateSweepFallDamage::OnCollision(BossObject* _owner, const GameObject& _HitObject)
 {
 	if (mElapseTime <= MNotHitTime)
 	{
 		return;
 	}
 
-	mEnemyPtr = _owner;
+	mBossPtr = _owner;
+
 	// 座標
-	mPosition = mEnemyPtr->GetPosition();
+	mPosition = mBossPtr->GetPosition();
 
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
@@ -153,6 +163,8 @@ void EnemyObjectStateImpactDamage::OnCollision(EnemyObject* _owner, const GameOb
 		// 攻撃を受けた時の処理
 		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
 		{
+			mPosition.z = mNowStateInitPos.z;
+			_owner->SetPosition(mPosition);
 			return;
 		}
 	}
@@ -164,14 +176,14 @@ void EnemyObjectStateImpactDamage::OnCollision(EnemyObject* _owner, const GameOb
 /// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
 /// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
 /// <returns> ヒットしたか </returns>
-bool EnemyObjectStateImpactDamage::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+bool BossObjectStateSweepFallDamage::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
 {
 	if (mHitTag == _hitTag)
 	{
 		mDamageValue = _DamageValuePlayerAttack;
 		mIsDamage = true;
 
-		mEnemyPtr->SetDamageValue(mDamageValue);
+		mBossPtr->SetDamageValue(mDamageValue);
 		return true;
 	}
 

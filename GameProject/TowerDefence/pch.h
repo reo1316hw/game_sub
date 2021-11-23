@@ -90,7 +90,9 @@
 #include "BossObjectStateAreaAttack.h"
 #include "BossObjectStateOverheadAttack.h"
 #include "BossObjectStateTeleportation.h"
-#include "BossObjectStateDamage.h"
+#include "BossObjectStateImpactDamage.h"
+#include "BossObjectStateFlyingBackDamage.h"
+#include "BossObjectStateSweepFallDamage.h"
 #include "BossObjectStateDeath.h"
 
 #include "DeadObjectEnable.h"

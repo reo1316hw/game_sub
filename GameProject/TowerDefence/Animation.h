@@ -62,7 +62,7 @@ public: //ゲッターセッター
 	/*
 	 @fn アニメーションはループアニメーションか？
 	*/
-	bool   IsLoopAnimation() const { return mIsLoopAnimation; }
+ 	bool   IsLoopAnimation() const { return mIsLoopAnimation; }
 
 
 	//指定された配列を、アニメーションの指定された時間に、

@@ -4,20 +4,23 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
-BossObjectStateDamage::BossObjectStateDamage(PlayerObject* _playerPtr)
-	: MDamageSpeed(150.0f)
+BossObjectStateFlyingBackDamage::BossObjectStateFlyingBackDamage(PlayerObject* _playerPtr)
+	: MHitStopEndTiming(10)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
+	, MPlayRate(1.5f)
+	, MDamageInitSpeed(400.0f)
+	, MDecelerationSpeedValue(1.8f)
 	, mIsHitStop(false)
 	, mHitPoint(0)
 	, mHitStopCount(0)
-    , mHitStopEndTiming(0)
-	, mElapseTime(0.0f)
-	, mTotalAnimTime(0.0f)
+	, mDamageSpeed(0.0f)
+	, mDecelerationSpeed(0.0f)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
+	, mBoxColliderPtr(nullptr)
 {
 }
 
@@ -27,31 +30,33 @@ BossObjectStateDamage::BossObjectStateDamage(PlayerObject* _playerPtr)
 /// <param name="_owner"> ボス(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 /// <returns> ボスの状態 </returns>
-BossState BossObjectStateDamage::Update(BossObject* _owner, const float _DeltaTime)
+BossState BossObjectStateFlyingBackDamage::Update(BossObject* _owner, const float _DeltaTime)
 {
-	++mHitStopCount;
-
-	if (mHitStopCount <= mHitStopEndTiming)
-	{
-		return BossState::eBossStateDamage;
-	}
-
-	// 開始速度
-	float startSpeed = -MDamageSpeed * _DeltaTime;
-	// 終了速度
-	float endSpeed = MDamageSpeed * _DeltaTime;
-
-	// 攻撃踏み込み移動のためのアニメーション再生時間の経過割合を計算
-	mElapseTime += _DeltaTime;
-	// 経過割合をもとに移動処理
-	mPosition += Quintic::EaseIn(mElapseTime, startSpeed, endSpeed, mTotalAnimTime) * mDirPlayerVec;
-
-	_owner->SetPosition(mPosition);
-
 	if (mHitPoint <= 0)
 	{
 		return BossState::eBossStateDeath;
 	}
+
+	++mHitStopCount;
+
+	if (mHitStopCount <= MHitStopEndTiming)
+	{
+		return BossState::eBossStateFlyingBackDamage;
+	}
+
+	// 速度
+	Vector3 velocity = mDamageSpeed * mDirPlayerVec;
+	mDamageSpeed -= mDecelerationSpeed;
+	mDecelerationSpeed += 0.05f;
+
+	if (mDamageSpeed <= 0.0f)
+	{
+		mDamageSpeed = 0.0f;
+	}
+
+	mPosition -= velocity * _DeltaTime;
+
+	_owner->SetPosition(mPosition);
 
 	// アニメーションが終了したら待機状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
@@ -59,15 +64,15 @@ BossState BossObjectStateDamage::Update(BossObject* _owner, const float _DeltaTi
 		return BossState::eBossStateTeleportation;
 	}
 
-	return BossState::eBossStateDamage;
+	return BossState::eBossStateFlyingBackDamage;
 }
 
 /// <summary>
-/// ボスとエネミーの引き離し
+/// ボス同士の引き離し
 /// </summary>
-/// <param name="_owner"> ボス親)のポインタ </param>
+/// <param name="_owner"> ボス(親)のポインタ </param>
 /// <param name="_DirTargetEnemyVec"> 対象となるエネミーに向いたベクトル </param>
-void BossObjectStateDamage::Separation(BossObject* _owner, const Vector3& _DirTargetEnemyVec)
+void BossObjectStateFlyingBackDamage::Separation(BossObject* _owner, const Vector3& _DirTargetEnemyVec)
 {
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -84,33 +89,25 @@ void BossObjectStateDamage::Separation(BossObject* _owner, const Vector3& _DirTa
 /// <summary>
 /// ボスの状態が変更して、最初に1回だけ呼び出される関数
 /// </summary>
-/// <param name="_owner"> ボス親)のポインタ </param>
+/// <param name="_owner"> ボス(親)のポインタ </param>
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void BossObjectStateDamage::Enter(BossObject* _owner, const float _DeltaTime)
+void BossObjectStateFlyingBackDamage::Enter(BossObject* _owner, const float _DeltaTime)
 {
+	mBoxColliderPtr = _owner->GetBoxCollider();
+	// エネミーの当たり判定を無効にする
+	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
+
 	mIsHitStop = false;
 
 	// プレイヤーのステートが3段階目の通常攻撃状態だったらヒットストップを行う
 	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
 	{
-		mHitStopEndTiming = 10;
-		mIsHitStop = true;
-	}
-
-	// プレイヤーのステートがダッシュ攻撃状態だったらヒットストップを行う
-	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack)
-	{
-		mHitStopEndTiming = 5;
 		mIsHitStop = true;
 	}
 
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateDamage), 1.5f, mHitStopEndTiming);
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(BossState::eBossStateFlyingBackDamage), MPlayRate);
 	meshcomp->SetIsHitStop(mIsHitStop);
-	
-	// アニメーション再生時間取得
-	mTotalAnimTime = _owner->GetAnimPtr(BossState::eBossStateDamage)->GetDuration();
-	mElapseTime = 0.0f;
 
 	// ヒットストップするフレーム数を初期化
 	mHitStopCount = 0;
@@ -123,6 +120,9 @@ void BossObjectStateDamage::Enter(BossObject* _owner, const float _DeltaTime)
 	mDirPlayerVec = playerPos - mPosition;
 	mDirPlayerVec.Normalize();
 
+	mDamageSpeed = MDamageInitSpeed;
+	mDecelerationSpeed = MDecelerationSpeedValue;
+
 	// ダメージ値
 	int damageValue = _owner->GetDamageValue();
 	// 体力
@@ -132,4 +132,15 @@ void BossObjectStateDamage::Enter(BossObject* _owner, const float _DeltaTime)
 	_owner->SetScaleLeftSideValue(mHitPoint);
 	_owner->RotateToNewForward(mDirPlayerVec);
 	_owner->SetHitPoint(mHitPoint);
+}
+
+/// <summary>
+/// ボスの状態が変更して、最後に1回だけ呼び出される関数
+/// </summary>
+/// <param name="_owner"> ボス(親)のポインタ </param>
+/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
+void BossObjectStateFlyingBackDamage::Exit(BossObject* _owner, const float _DeltaTime)
+{
+	// エネミーの当たり判定を有効にする
+	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 }

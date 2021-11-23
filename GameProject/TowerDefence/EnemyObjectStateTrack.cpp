@@ -58,11 +58,6 @@ EnemyState EnemyObjectStateTrack::Update(EnemyObject* _owner, const float _Delta
 	// プレイヤーに向いたベクトル
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
-	if (mIsDamage)
-	{
-		return EnemyState::eEnemyStateImpactDamage;
-	}
-
 	if (dirPlayerVec.LengthSq() <= MTransitionStateDistance)
 	{
 		// ランダム値

@@ -6,10 +6,6 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateFallingBackDeath::EnemyObjectStateFallingBackDeath(PlayerObject* _playerPtr)
 	: MDamageSpeed(50.0f)
-	, MPlayRate(1.0f)
-	, mIsHitStop(false)
-	, mHitStopCount(0)
-	, MHitStopEndTiming(5)
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
 	, mPosition(Vector3::Zero)
@@ -31,13 +27,6 @@ EnemyObjectStateFallingBackDeath::EnemyObjectStateFallingBackDeath(PlayerObject*
 /// <returns> エネミーの状態 </returns>
 EnemyState EnemyObjectStateFallingBackDeath::Update(EnemyObject* _owner, const float _DeltaTime)
 {
-	++mHitStopCount;
-
-	if (mHitStopCount <= MHitStopEndTiming)
-	{
-		return EnemyState::eEnemyStateFallingBackDeath;
-	}
-
 	// 開始速度
 	float startSpeed = -MDamageSpeed * _DeltaTime;
 	// 終了速度
@@ -83,24 +72,12 @@ void EnemyObjectStateFallingBackDeath::Enter(EnemyObject* _owner, const float _D
 	// エネミーの当たり判定を無効にする
 	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 
-	mIsHitStop = false;
-
-	// プレイヤーのステートがダッシュ攻撃状態だったらヒットストップを行う
-	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack)
-	{
-		mIsHitStop = true;
-	}
-
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
-	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateFallingBackDeath), MPlayRate, MHitStopEndTiming);
-	meshcomp->SetIsHitStop(mIsHitStop);
+	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateFallingBackDeath));
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateFallingBackDeath)->GetDuration() - 0.3f;
 	mElapseTime = 0.0f;
-
-	// ヒットストップするフレーム数を初期化
-	mHitStopCount = 0;
 
 	// 座標
 	mPosition = _owner->GetPosition();

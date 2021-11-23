@@ -31,17 +31,34 @@ BossObjectStateWait::BossObjectStateWait(PlayerObject* _playerPtr)
 /// <returns> ボスの状態 </returns>
 BossState BossObjectStateWait::Update(BossObject* _owner, const float _DeltaTime)
 {
+	if (mIsDamage)
+	{
+		switch (mHitTag)
+		{
+		case Tag::eDashAttackEffect:
+
+			return BossState::eBossStateImpactDamage;
+
+		case Tag::eFirstAttackEffect:
+
+			return BossState::eBossStateImpactDamage;
+
+		case Tag::eSecondAttackEffect:
+
+			return BossState::eBossStateSweepFallDamage;
+
+		case Tag::eThirdAttackEffect:
+
+			return BossState::eBossStateFlyingBackDamage;
+		}
+	}
+
 	// プレイヤーの座標
 	Vector3 playerPos = mPlayerPtr->GetPosition();
 	// プレイヤーに向いたベクトルsd
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
 	++mPeriodWaitCount;
-
-	if (mIsDamage)
-	{
-		return BossState::eBossStateDamage;
-	}
 
 	if (mPeriodWaitCount >= MTransitionTimingNum)
 	{
@@ -132,6 +149,8 @@ void BossObjectStateWait::Separation(BossObject* _owner, const Vector3& _DirTarg
 void BossObjectStateWait::OnCollision(BossObject* _owner, const GameObject& _HitObject)
 {
 	mBossPtr = _owner;
+	// 座標
+	mPosition = mBossPtr->GetPosition();
 
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
