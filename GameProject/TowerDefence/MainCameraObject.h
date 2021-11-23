@@ -44,9 +44,9 @@ private:
 	// 回転追加値
 	const float MAddRotate;
 	// カメラ座標との差
-	const Vector3 MCameraOffset;
+	Vector3 mCameraOffset;
 	// 見たい座標との差
-	const Vector3 MTargetOffset;
+	Vector3 mTargetOffset;
       
 	// カメラ周囲回転方向回転角
 	float mRotateZAngle;

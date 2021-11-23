@@ -26,6 +26,9 @@ public:
 
 private:
 
+	// 画角
+	const float MAngleOfView;
+
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ

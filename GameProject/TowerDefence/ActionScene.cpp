@@ -7,6 +7,7 @@ ActionScene::ActionScene()
 	: mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
 	, mMainCameraPtr(nullptr)
+	, MAngleOfView(70.0f)
 {
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.8f, 0.8f, 0.8f));
@@ -14,11 +15,6 @@ ActionScene::ActionScene()
 	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
 	dir.m_diffuseColor = Vector3(0.36f, 0.44f, 0.5f);
 	dir.m_specColor = Vector3(0.4f, 0.4f, 0.4f);
-
-	// 行列初期化
-	Matrix4 proj;
-	proj = Matrix4::CreatePerspectiveFOV(Math::ToRadians(90.0f), RENDERER->GetScreenWidth(), RENDERER->GetScreenHeight(), 1.0, 10000.0f);
-	RENDERER->SetProjMatrix(proj);
 
 	// マップを生成するためのクラスを生成
     mMapCreate = new MapCreate();
@@ -64,6 +60,24 @@ SceneBase* ActionScene::Update(const InputState& _KeyState)
 	//{
 	//	return new GameClearScene();
 	//}
+
+	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_R) == Held)
+	//{
+	//	angle += 1.0f;
+	//}
+	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_C) == Held)
+	//{
+	//	angle -= 1.0f;
+	//}
+	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_O) == Released)
+	//{
+	//	angle = 60.0f;
+	//}
+
+	// 行列初期化
+	Matrix4 proj;
+	proj = Matrix4::CreatePerspectiveFOV(Math::ToRadians(MAngleOfView), RENDERER->GetScreenWidth(), RENDERER->GetScreenHeight(), 1.0, 10000.0f);
+	RENDERER->SetProjMatrix(proj);
 	
 	// プレイヤーのhpが0になったらゲームオーバーシーンへ遷移
 	if (mPlayerPtr->GetHitPoint() <= 0)
