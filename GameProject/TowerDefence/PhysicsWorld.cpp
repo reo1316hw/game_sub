@@ -242,6 +242,72 @@ void PhysicsWorld::HitCheck(BoxCollider* _box)
 				_box->Refresh();
 			}
 		}
+		for (auto itr : mFrontMagicEffectBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mAreaMagicEffectBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
+		for (auto itr : mOverheadMagicEffectBoxes)
+		{
+			if (itr == _box)
+			{
+				continue;
+			}
+			// コライダーの親オブジェクトがActiveじゃなければ終了する
+			// コライダーが有効じゃなかったら終了する
+			if (itr->GetOwner()->GetState() != State::eActive || itr->GetCollisionState() != CollisionState::eEnableCollision)
+			{
+				continue;
+			}
+			bool hit = Intersect(itr->GetWorldBox(), _box->GetWorldBox());
+			if (hit)
+			{
+				onCollisionFunc func = mCollisionFunction.at(_box);
+				func(*(itr->GetOwner()));
+				func = mCollisionFunction.at(itr);
+				func(*(_box->GetOwner()));
+				_box->Refresh();
+			}
+		}
 	}
 
 	if (_box->GetOwner()->GetTag() == Tag::eEnemyAttackDecision)
@@ -823,6 +889,24 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
 		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
 	}
+	if (_box->GetOwner()->GetTag() == Tag::eFrontCoreMagicEffect)
+	{
+		mFrontMagicEffectBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetOwner()->GetTag() == Tag::eAreaMagicEffect)
+	{
+		mAreaMagicEffectBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
+	if (_box->GetOwner()->GetTag() == Tag::eOverheadMagicEffect)
+	{
+		mOverheadMagicEffectBoxes.emplace_back(_box);
+		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
+		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
+	}
 	if (_box->GetOwner()->GetTag() == Tag::eEnemy)
 	{
 		mEnemyBoxes.emplace_back(_box);
@@ -945,6 +1029,24 @@ void PhysicsWorld::RemoveBox(BoxCollider * _box)
 		std::iter_swap(dashAttackEffectBox, mDashAttackEffectBoxes.end() - 1);
 		mDashAttackEffectBoxes.pop_back();
 	}
+	auto frontMagicEffectBox = std::find(mFrontMagicEffectBoxes.begin(), mFrontMagicEffectBoxes.end(), _box);
+	if (frontMagicEffectBox != mFrontMagicEffectBoxes.end())
+	{
+		std::iter_swap(frontMagicEffectBox, mFrontMagicEffectBoxes.end() - 1);
+		mFrontMagicEffectBoxes.pop_back();
+	}
+	auto areaMagicEffectBox = std::find(mAreaMagicEffectBoxes.begin(), mAreaMagicEffectBoxes.end(), _box);
+	if (areaMagicEffectBox != mAreaMagicEffectBoxes.end())
+	{
+		std::iter_swap(areaMagicEffectBox, mAreaMagicEffectBoxes.end() - 1);
+		mAreaMagicEffectBoxes.pop_back();
+	}
+	auto overheadMagicEffectBox = std::find(mOverheadMagicEffectBoxes.begin(), mOverheadMagicEffectBoxes.end(), _box);
+	if (overheadMagicEffectBox != mOverheadMagicEffectBoxes.end())
+	{
+		std::iter_swap(overheadMagicEffectBox, mOverheadMagicEffectBoxes.end() - 1);
+		mOverheadMagicEffectBoxes.pop_back();
+	}
 	auto enemyAttackDecisionBox = std::find(mEnemyAttackDecisionBoxes.begin(), mEnemyAttackDecisionBoxes.end(), _box);
 	if (enemyAttackDecisionBox != mEnemyAttackDecisionBoxes.end())
 	{
@@ -1049,6 +1151,9 @@ void PhysicsWorld::DebugShowBox()
 	DrawBoxs(mBossActiveBoxes, Color::Green);
 	DrawBoxs(mEnemyBootSemitransparentWallBoxes, Color::Green);
 	DrawBoxs(mBossBootSemitransparentWallBoxes, Color::Green);
+	DrawBoxs(mFrontMagicEffectBoxes, Color::LightGreen);
+	DrawBoxs(mAreaMagicEffectBoxes, Color::LightGreen);
+	DrawBoxs(mOverheadMagicEffectBoxes, Color::LightGreen);
 }
 
 /// <summary>

@@ -131,6 +131,12 @@ private:
 	std::vector<BoxCollider*> mThirdAttackEffectBoxes;
 	// ダッシュ攻撃エフェクトの矩形当たり判定
 	std::vector<BoxCollider*> mDashAttackEffectBoxes;
+	// 前方攻撃エフェクトの矩形当たり判定
+	std::vector<BoxCollider*> mFrontMagicEffectBoxes;
+	// 範囲攻撃エフェクトの矩形当たり判定
+	std::vector<BoxCollider*> mAreaMagicEffectBoxes;
+	// プレイヤー頭上攻撃エフェクトの矩形当たり判定
+	std::vector<BoxCollider*> mOverheadMagicEffectBoxes;
 	// エネミーの矩形当たり判定
 	std::vector<BoxCollider*> mEnemyBoxes;
 	// エネミーの生成器の矩形当たり判定

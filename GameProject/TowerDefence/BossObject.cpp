@@ -82,7 +82,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	// プレイヤーの頭上に攻撃するエフェクトを生成
 	new OverheadMagicEffect(this, _playerPtr, MOverheadEffectScale, Tag::eOverheadMagicEffect);
 	// プレイヤー頭上攻撃時の危険信号エフェクト
-	new DangerSignalEffect(this, _playerPtr, MOverheadEffectScale, Tag::eOverheadMagicEffect);
+	new DangerSignalEffect(this, _playerPtr, MOverheadEffectScale, Tag::eDangerSignalEffect);
 	// テレポートエフェクト
 	new TeleportationEffect(this, MTeleportationEffectScale, Tag::eTeleportationEffect);
 

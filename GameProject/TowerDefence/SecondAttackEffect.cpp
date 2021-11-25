@@ -20,7 +20,7 @@ SecondAttackEffect::SecondAttackEffect(PlayerObject* _playerPtr, const Vector3& 
 	, mEffectComponentPtr(nullptr)
 	, mSecondAttackPtr(_secondAttackPtr)
 {
-	// 武器の矩形当たり判定
+	// エフェクトの矩形当たり判定
 	mBox = AABB(Vector3(0.0f, -40.0f, 50.0f), Vector3(100.0f, 40.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);

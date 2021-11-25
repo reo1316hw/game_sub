@@ -20,7 +20,7 @@ FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 	, mEffectComponentPtr(nullptr)
 	, mFirstAttackPtr(_firstAttackPtr)
 {
-	// 武器の矩形当たり判定
+	// エフェクトの矩形当たり判定
 	mBox = AABB(Vector3(0.0f, -20.0f, 50.0f), Vector3(70.0f, 20.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);

@@ -59,6 +59,7 @@ enum Tag
 	eFrontLaserMagicEffect,
 	eAreaMagicEffect,
 	eOverheadMagicEffect,
+	eDangerSignalEffect,
 	eTeleportationEffect,
 	eHItEffect,
 	eWall,

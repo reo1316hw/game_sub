@@ -16,7 +16,7 @@ DashAttackEffect::DashAttackEffect(PlayerObject* _playerPtr, const Vector3& _Sca
 	, mEffectComponentPtr(nullptr)
 	, mDashAttackPtr(_dashAttackPtr)
 {
-	// 武器の矩形当たり判定
+	// エフェクトの矩形当たり判定
 	mBox = AABB(Vector3(-15.0f, -100.0f, 50.0f), Vector3(75.0f, 100.0f, 50.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
