@@ -81,8 +81,6 @@ protected:
 	bool mIsSprint;
 	// 攻撃するか
 	bool mIsAttack;
-	// 当たったか
-	bool mIsHit;
 
 	// gpSkelファイルの何番目のボーンか
 	int	mAttackBoneIndex;

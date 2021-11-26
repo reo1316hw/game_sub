@@ -8,8 +8,10 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 FrontCoreMagicEffect::FrontCoreMagicEffect(BossObject* _bossPtr, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, MBoxEnableTiming(0.5f)
+	, MMoveSpeed(10.0f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
-	, mNowState(_bossPtr->GetNowState())
+	, mElapseTime(0.0f)
 	, mBossPtr(_bossPtr)
 	, mEffectComponentPtr(nullptr)
 {
@@ -30,24 +32,35 @@ FrontCoreMagicEffect::FrontCoreMagicEffect(BossObject* _bossPtr, const Vector3& 
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void FrontCoreMagicEffect::UpdateGameObject(float _deltaTime)
 {
-	// 前のステート
-	BossState preState = mNowState;
+	// 現在のステート
+	BossState nowState = mBossPtr->GetNowState();
 
-	mNowState = mBossPtr->GetNowState();
-
-	if (mNowState == preState)
+	if (nowState != BossState::eBossStateFrontAttack)
 	{
+		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
+		mElapseTime = 0.0f;
 		return;
 	}
 
-	if (mNowState != BossState::eBossStateFrontAttack)
+	mElapseTime += _deltaTime;
+
+	if (mElapseTime <= MBoxEnableTiming)
 	{
+		mPosition = mBossPtr->GetPosition() + MHeightCorrection;
 		return;
 	}
 
-	mPosition = mBossPtr->GetPosition() + MHeightCorrection;
+	// 前方ベクトル
+	Vector3 forwardVec = mBossPtr->GetForward();
+ 	forwardVec.Normalize();
+	// 速度
+	Vector3 volocity = forwardVec * MMoveSpeed;
+
+	mPosition += volocity;
 	SetPosition(mPosition);
 	SetRotation(mBossPtr->GetRotation());
+
+	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 
 	// 再生済みじゃなかったらエフェクトを再生する
 	if (mEffectComponentPtr->IsPlayedEffect())

@@ -10,8 +10,11 @@
 OverheadMagicEffect::OverheadMagicEffect(BossObject* _bossPtr, PlayerObject* _playerPtr, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
 	, MEffectPositionUnUpdateTiming(1.8f)
-	, MEffectPlayTiming(2.0f)
+	, MBoxEnableTiming(2.0f)
+	, mIsCollisionState(false)
+	, mIsOneCollisionState(false)
 	, mElapseTime(0.0f)
+	, MBoxDisableTiming(2.5f)
 	, mBossPtr(_bossPtr)
 	, mPlayerPtr(_playerPtr)
 	, mEffectComponentPtr(nullptr)
@@ -38,6 +41,7 @@ void OverheadMagicEffect::UpdateGameObject(float _deltaTime)
 
 	if (nowState != BossState::eBossStateOverheadAttack)
 	{
+		mIsOneCollisionState = false;
 		mElapseTime = 0.0f;
 		return;
 	}
@@ -48,11 +52,31 @@ void OverheadMagicEffect::UpdateGameObject(float _deltaTime)
 	{
 		mPosition = mPlayerPtr->GetPosition();
 		SetPosition(mPosition);
+		return;
 	}
 
-	if (mElapseTime < MEffectPlayTiming)
+	if (mIsCollisionState)
+	{
+		if (mElapseTime >= MBoxDisableTiming)
+		{
+			mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
+
+			// 1段階目の通常攻撃の当たり判定を無効にする
+			mIsCollisionState = false;
+			mIsOneCollisionState = true;
+		}
+	}
+
+	if (mIsOneCollisionState)
 	{
 		return;
+	}
+
+	if (mElapseTime >= MBoxEnableTiming)
+	{
+		mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
+		// 1段階目の通常攻撃の当たり判定を有効にする
+		mIsCollisionState = true;
 	}
 
 	// 再生済みじゃなかったらエフェクトを再生する

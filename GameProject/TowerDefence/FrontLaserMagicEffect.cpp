@@ -8,8 +8,9 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 FrontLaserMagicEffect::FrontLaserMagicEffect(BossObject* _bossPtr, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, MBoxEnableTiming(0.5f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
-	, mNowState(_bossPtr->GetNowState())
+	, mElapseTime(0.0f)
 	, mBossPtr(_bossPtr)
 	, mEffectComponentPtr(nullptr)
 {
@@ -23,29 +24,28 @@ FrontLaserMagicEffect::FrontLaserMagicEffect(BossObject* _bossPtr, const Vector3
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void FrontLaserMagicEffect::UpdateGameObject(float _deltaTime)
 {
-	// 前のステート
-	BossState preState = mNowState;
-	
-	mNowState = mBossPtr->GetNowState();
-	
-	if (mNowState == preState)
+	// 現在のステート
+	BossState nowState = mBossPtr->GetNowState();
+
+	if (nowState != BossState::eBossStateFrontAttack)
 	{
+		mElapseTime = 0.0f;
 		return;
 	}
 
-	if (mNowState != BossState::eBossStateFrontAttack)
-	{
-		return;
-	}
+	mElapseTime += _deltaTime;
 
-	mPosition = mBossPtr->GetPosition() + MHeightCorrection;
-	SetPosition(mPosition);
-	SetRotation(mBossPtr->GetRotation());
-
-	// 再生済みじゃなかったらエフェクトを再生する
-	if (mEffectComponentPtr->IsPlayedEffect())
+	if (mElapseTime >= MBoxEnableTiming)
 	{
-		// エフェクトを再生
-		mEffectComponentPtr->PlayEffect();
+		mPosition = mBossPtr->GetPosition() + MHeightCorrection;
+		SetPosition(mPosition);
+		SetRotation(mBossPtr->GetRotation());
+
+		// 再生済みじゃなかったらエフェクトを再生する
+		if (mEffectComponentPtr->IsPlayedEffect())
+		{
+			// エフェクトを再生
+			mEffectComponentPtr->PlayEffect();
+		}
 	}
 }

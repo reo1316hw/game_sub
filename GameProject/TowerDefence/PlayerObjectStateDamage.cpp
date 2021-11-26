@@ -5,6 +5,7 @@
 /// </summary>
 PlayerObjectStateDamage::PlayerObjectStateDamage()
 	: mHitPoint(0)
+	, MPlayRate(2.0f)
 {
 }
 
@@ -39,7 +40,7 @@ void PlayerObjectStateDamage::Enter(PlayerObject* _owner, const float _DeltaTime
 {
 	// ダメージ状態のアニメーション再生
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
-	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDamage));
+	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDamage), MPlayRate);
 
 	// ダメージ値
 	int damageValue = _owner->GetDamageValue();

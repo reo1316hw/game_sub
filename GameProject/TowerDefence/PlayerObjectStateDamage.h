@@ -31,6 +31,9 @@ public:
 
 private:
 
+	// アニメーションの再生速度
+	const float MPlayRate;
+
 	// 体力
 	int mHitPoint;
 };

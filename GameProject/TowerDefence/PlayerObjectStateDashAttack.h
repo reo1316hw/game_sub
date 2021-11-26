@@ -50,6 +50,17 @@ public:
 
 private:
 
+	/// <summary>
+	/// 攻撃を受けた時の処理
+	/// </summary>
+	/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+	/// <returns> ヒットしたか </returns>
+	bool ReceivedAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
 	// ヒットストップが終わるタイミング
@@ -71,8 +82,13 @@ private:
 	// 現在のステートに入って1回だけ当たり判定を有効にする
 	bool mIsOneCollisionState;
 
+	// ダメージを受けたか
+	bool mIsDamage;
+
 	// ダメージ値
 	int mDamageValue;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 	// ヒットストップするフレーム数
 	int mHitStopCount;
 
@@ -86,6 +102,11 @@ private:
 	// 前方ベクトル
 	Vector3 mForwardVec;
 
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 	// スケルトンクラスのポインタ
 	SkeletalMeshComponent* skeletalMeshCompPtr;
 	// ダッシュ攻撃エフェクトのクラスのポインタ

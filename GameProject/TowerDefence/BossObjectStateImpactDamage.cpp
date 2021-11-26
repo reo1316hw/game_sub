@@ -44,10 +44,6 @@ BossState BossObjectStateImpactDamage::Update(BossObject* _owner, const float _D
 	{
 		switch (mHitTag)
 		{
-		case Tag::eFirstAttackEffect:
-
-			Enter(_owner, _DeltaTime);
-			break;
 
 		case Tag::eSecondAttackEffect:
 

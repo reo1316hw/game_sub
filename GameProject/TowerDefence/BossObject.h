@@ -80,6 +80,8 @@ private:
 	const Vector3 MAreaMagicEffectScale;
 	// 頭上攻撃エフェクトの大きさ
 	const Vector3 MOverheadEffectScale;
+	// 危険信号エフェクトの大きさ
+	const Vector3 MDangerSignalEffectScale;
 	// テレポートエフェクトの大きさ
 	const Vector3 MTeleportationEffectScale;
 

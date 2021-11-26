@@ -4,7 +4,8 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
-	: faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
+	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
+	, faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
 	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MHalfRotation(180)
@@ -17,7 +18,9 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	, mIsCollisionState(false)
 	, mIsOneCollisionState(false)
 	, mIsHitStop(false)
+	, mIsDamage(false)
 	, mDamageValue(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mHitUntilCount(0)
 	, mHitStopCount(0)
 	, mTwoVectorAngle(0.0f)
@@ -26,6 +29,8 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mRightVec(Vector3::Zero)
+	, mHitTag(Tag::eOther)
+	, mPlayerPtr(nullptr)
 	, mMainCameraPtr(nullptr)
 	, skeletalMeshCompPtr(nullptr)
 	, mThirdAttackEffectPtr(nullptr)
@@ -40,7 +45,7 @@ PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateThirdAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	if (mIsHit)
+	if (mIsDamage)
 	{
 		return PlayerState::ePlayerStateDamage;
 	}
@@ -288,7 +293,7 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	// 3段階目の通常攻撃状態のアニメーション再生
 	skeletalMeshCompPtr = _owner->GetSkeletalMeshComponentPtr();
 	skeletalMeshCompPtr->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack), MPlayRate);
-	mIsHit = false;
+	mIsDamage = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateThirdAttack)->GetDuration() - 0.6f;
@@ -305,6 +310,7 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	mPosition = _owner->GetPosition();
 }
 
+
 /// <summary>
 /// ヒットした時の処理
 /// </summary>
@@ -312,19 +318,39 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateThirdAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
+	mPlayerPtr = _owner;
 
 	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
+	mHitTag = _HitObject.GetTag();
 
-	if (tag == Tag::eEnemyAttackDecision)
+	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		mDamageValue = MDamageValueEnemyAttack;
-		mIsHit = true;
+		// 攻撃を受けた時の処理
+		if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// 攻撃を受けた時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+/// <returns> ヒットしたか </returns>
+bool PlayerObjectStateThirdAttack::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
+		mIsDamage = true;
+
+		mPlayerPtr->SetDamageValue(mDamageValue);
+		return true;
 	}
 
-	_owner->SetDamageValue(mDamageValue);
+	return false;
 }
 
 /// <summary>

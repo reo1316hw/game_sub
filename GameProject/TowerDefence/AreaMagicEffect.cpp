@@ -8,13 +8,18 @@
 /// <param name="_ObjectTag"> オブジェクトのタグ </param>
 AreaMagicEffect::AreaMagicEffect(BossObject* _bossPtr, const Vector3& _Scale, const Tag& _ObjectTag)
 	: GameObject(_ObjectTag)
+	, MBoxEnableTiming(2.2f)
+	, MBoxDisableTiming(2.5f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
+	, mIsCollisionState(false)
+	, mIsOneCollisionState(false)
+	, mElapseTime(0.0f)
 	, mNowState(_bossPtr->GetNowState())
 	, mBossPtr(_bossPtr)
 	, mEffectComponentPtr(nullptr)
 {
 	// エフェクトの矩形当たり判定
-	mBox = AABB(Vector3(-100.0f, -100.0f, -100.0f), Vector3(100.0f, 100.0f, 100.0f));
+	mBox = AABB(Vector3(-250.0f, -250.0f, -100.0f), Vector3(250.0f, 250.0f, 100.0f));
 	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
 	mBoxColliderPtr->SetObjectBox(mBox);
 	// 最初は当たり判定を行わないようにする
@@ -30,21 +35,49 @@ AreaMagicEffect::AreaMagicEffect(BossObject* _bossPtr, const Vector3& _Scale, co
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void AreaMagicEffect::UpdateGameObject(float _deltaTime)
 {
-	mPosition = mBossPtr->GetPosition() + MHeightCorrection;
-	SetPosition(mPosition);
-	SetRotation(mBossPtr->GetRotation());
-
 	// 前のステート
 	BossState preState = mNowState;
 
 	mNowState = mBossPtr->GetNowState();
 
-	if (mNowState == preState)
+	if (mNowState != BossState::eBossStateAreaAttack)
+	{
+		mIsOneCollisionState = false;
+		mElapseTime = 0.0f;
+		return;
+	}
+
+	mElapseTime += _deltaTime;
+
+	if (mIsCollisionState)
+	{
+		if (mElapseTime >= MBoxDisableTiming)
+		{
+			mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
+
+			// 1段階目の通常攻撃の当たり判定を無効にする
+			mIsCollisionState = false;
+			mIsOneCollisionState = true;
+		}
+	}
+
+	if (mIsOneCollisionState)
 	{
 		return;
 	}
 
-	if (mNowState != BossState::eBossStateAreaAttack)
+	mPosition = mBossPtr->GetPosition() + MHeightCorrection;
+	SetPosition(mPosition);
+	SetRotation(mBossPtr->GetRotation());
+
+	if (mElapseTime >= MBoxEnableTiming)
+	{
+		mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
+		// 1段階目の通常攻撃の当たり判定を有効にする
+		mIsCollisionState = true;
+	}
+
+	if (mNowState == preState)
 	{
 		return;
 	}

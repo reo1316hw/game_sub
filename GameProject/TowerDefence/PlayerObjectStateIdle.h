@@ -48,13 +48,36 @@ public:
 
 private:
 
+	/// <summary>
+	/// 攻撃を受けた時の処理
+	/// </summary>
+	/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+	/// <returns> ヒットしたか </returns>
+	bool ReceivedAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
+
 	//移動するための左スティックのしきい値
 	const float MLeftAxisThreshold;
 
-	// 待機状態かのフラグ
-	bool mIsIdle;
+	// ダメージを受けたか
+	bool mIsDamage;
+
 	// ダメージ値
 	int mDamageValue;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
+
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
+	// 座標
+	Vector3 mPosition;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 };

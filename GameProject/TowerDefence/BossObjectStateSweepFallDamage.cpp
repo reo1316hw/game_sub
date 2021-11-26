@@ -45,14 +45,6 @@ BossState BossObjectStateSweepFallDamage::Update(BossObject* _owner, const float
 	{
 		switch (mHitTag)
 		{
-		case Tag::eDashAttackEffect:
-
-			return BossState::eBossStateImpactDamage;
-
-		case Tag::eFirstAttackEffect:
-
-			return BossState::eBossStateImpactDamage;
-
 		case Tag::eThirdAttackEffect:
 
 			return BossState::eBossStateFlyingBackDamage;

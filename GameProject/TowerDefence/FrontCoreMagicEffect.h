@@ -28,11 +28,17 @@ public:
 
 private:
 
+	// 当たり判定を有効にするタイミング
+	const float MBoxEnableTiming;
+	
+	// 速度の値
+	const float MMoveSpeed;
+
 	// 高さ補正値
 	const Vector3 MHeightCorrection;
 
-	// ボスの現在のステート
-	BossState mNowState;
+	// 経過時間
+	float mElapseTime;
 
 	// ボスのポインタ
 	BossObject* mBossPtr;

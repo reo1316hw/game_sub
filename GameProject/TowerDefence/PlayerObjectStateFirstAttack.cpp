@@ -4,7 +4,8 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
-	: faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
+	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
+	, faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
 	, MDamageValueEnemyAttack(25)
 	, MHalfRotation(180)
 	, MAllRotation(360)
@@ -16,13 +17,17 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 	, MValueShortenVector(0.05f)
 	, mIsCollisionState(false)
 	, mIsOneCollisionState(false)
+	, mIsDamage(false)
 	, mDamageValue(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mTwoVectorAngle(0.0f)
 	, mBoxDisableTiming(0.0f)
 	, mLeftAxis(Vector2::Zero)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
 	, mRightVec(Vector3::Zero)
+	, mHitTag(Tag::eOther)
+	, mPlayerPtr(nullptr)
 	, mMainCameraPtr(nullptr)
 	, mFirstAttackEffectPtr(nullptr)
 {
@@ -36,7 +41,7 @@ PlayerObjectStateFirstAttack::PlayerObjectStateFirstAttack()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateFirstAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	if (mIsHit)
+	if (mIsDamage)
 	{
 		return PlayerState::ePlayerStateDamage;
 	}
@@ -283,7 +288,7 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 	SkeletalMeshComponent* meshComp = _owner->GetSkeletalMeshComponentPtr();
 	meshComp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateFirstAttack), MPlayRate);
 	mIsNextCombo = false;
-	mIsHit = false;
+	mIsDamage = false;
 
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(PlayerState::ePlayerStateFirstAttack)->GetDuration();
@@ -303,19 +308,39 @@ void PlayerObjectStateFirstAttack::Enter(PlayerObject* _owner, const float _Delt
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateFirstAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
+	mPlayerPtr = _owner;
 
 	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
+	mHitTag = _HitObject.GetTag();
 
-	if (tag == Tag::eEnemyAttackDecision)
+	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		mDamageValue = MDamageValueEnemyAttack;
-		mIsHit = true;
+		// 攻撃を受けた時の処理
+		if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// 攻撃を受けた時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+/// <returns> ヒットしたか </returns>
+bool PlayerObjectStateFirstAttack::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
+		mIsDamage = true;
+
+		mPlayerPtr->SetDamageValue(mDamageValue);
+		return true;
 	}
 
-	_owner->SetDamageValue(mDamageValue);
+	return false;
 }
 
 /// <summary>

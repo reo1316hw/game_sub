@@ -31,8 +31,16 @@ private:
 
 	// エフェクトの座標を更新しないタイミング
 	const float MEffectPositionUnUpdateTiming;
-	// エフェクトを再生するタイミング
-	const float MEffectPlayTiming;
+	// 当たり判定を有効にするタイミング
+	const float MBoxEnableTiming;
+	// 当たり判定を無効にするタイミング
+	const float MBoxDisableTiming;
+
+	// 当たり判定の状態
+	// true : 有効, false : 無効
+	bool mIsCollisionState;
+	// 1回だけ当たり判定を有効にするフラグ
+	bool mIsOneCollisionState;
 
 	// 経過時間
 	float mElapseTime;

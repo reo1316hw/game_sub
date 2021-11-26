@@ -4,12 +4,15 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
-	: MDamageValueEnemyAttack(25)
+	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
+    , MDamageValueEnemyAttack(25)
 	, MMoveSpeed(300.0f)
 	, MLeftAxisThreshold(0.5f)
+	, mIsDamage(false)
 	, mDamageValue(0)
-	, mPosition(Vector3::Zero)
-	, mMainCameraPtr(nullptr)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
+	, mHitTag(Tag::eOther)
+	, mPlayerPtr(nullptr)
 {	
 }
 
@@ -21,7 +24,7 @@ PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateRunLoop::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	if (mIsHit)
+	if (mIsDamage)
 	{
 	    return PlayerState::ePlayerStateDamage;
 	}
@@ -139,7 +142,7 @@ void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, const float _DeltaTim
 	// 走り状態のアニメーション再生
     SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateRunLoop));
-	mIsHit = false;
+	mIsDamage = false;
 
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -152,19 +155,39 @@ void PlayerObjectStateRunLoop::Enter(PlayerObject* _owner, const float _DeltaTim
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateRunLoop::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
+	mPlayerPtr = _owner;
 
 	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
+	mHitTag = _HitObject.GetTag();
 
-	if (tag == Tag::eEnemyAttackDecision)
+	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		mDamageValue = MDamageValueEnemyAttack;
-		mIsHit = true;
+		// 攻撃を受けた時の処理
+		if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// 攻撃を受けた時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+/// <returns> ヒットしたか </returns>
+bool PlayerObjectStateRunLoop::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
+		mIsDamage = true;
+
+		mPlayerPtr->SetDamageValue(mDamageValue);
+		return true;
 	}
 
-	_owner->SetDamageValue(mDamageValue);
+	return false;
 }
 
 /// <summary>

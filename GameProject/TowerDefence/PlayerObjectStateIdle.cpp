@@ -4,9 +4,15 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateIdle::PlayerObjectStateIdle()
-    : MDamageValueEnemyAttack(25)
+    : mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
+    , MDamageValueEnemyAttack(25)
     , MLeftAxisThreshold(0.5f)
+    , mIsDamage(false)
     , mDamageValue(0)
+    , mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
+    , mHitTag(Tag::eOther)
+    , mPosition(Vector3::Zero)
+    , mPlayerPtr(nullptr)
 {
 }
 
@@ -18,7 +24,11 @@ PlayerObjectStateIdle::PlayerObjectStateIdle()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateIdle::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-    if (mIsHit)
+    // 座標
+    mPosition = _owner->GetPosition();
+    _owner->SetPosition(mPosition);
+
+    if (mIsDamage)
     {
         return PlayerState::ePlayerStateDamage;
     }
@@ -86,7 +96,7 @@ void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
     // 待機状態のアニメーション再生
     SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
     meshcomp->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateIdle));
-    mIsHit = false;
+    mIsDamage = false;
 
     mIsIdle = true;
     _owner->SetIsEnable(mIsIdle);
@@ -99,14 +109,37 @@ void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateIdle::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
+    mPlayerPtr = _owner;
+ 
     // オブジェクトのタグ
-    Tag tag = _HitObject.GetTag();
+    mHitTag = _HitObject.GetTag();
 
-    if (tag == Tag::eEnemyAttackDecision)
+    for (int i = 0; i < mHitTagListSize; i++)
     {
-        mDamageValue = MDamageValueEnemyAttack;
-        mIsHit = true;
+        // 攻撃を受けた時の処理
+        if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+        {
+            return;
+        }
+    }
+}
+
+/// <summary>
+/// 攻撃を受けた時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+/// <returns> ヒットしたか </returns>
+bool PlayerObjectStateIdle::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+    if (mHitTag == _hitTag)
+    {
+        mDamageValue = _DamageValuePlayerAttack;
+        mIsDamage = true;
+
+        mPlayerPtr->SetDamageValue(mDamageValue);
+        return true;
     }
 
-    _owner->SetDamageValue(mDamageValue);
+    return false;
 }

@@ -49,11 +49,22 @@ public:
 private:
 
 	/// <summary>
+	/// 攻撃を受けた時の処理
+	/// </summary>
+	/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+	/// <returns> ヒットしたか </returns>
+	bool ReceivedAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+
+	/// <summary>
 	/// 移動処理
 	/// </summary>
 	/// <param name="_owner"> プレイヤー(親)のポインタ </param>
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void MoveCalc(PlayerObject* _owner, const float _DeltaTime);
+
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
 
 	// エネミーの攻撃のダメージ値
 	const int MDamageValueEnemyAttack;
@@ -62,12 +73,22 @@ private:
 	//移動するための左スティックのしきい値
 	const float MLeftAxisThreshold;
 
+	// ダメージを受けたか
+	bool mIsDamage;
+
 	// ダメージ値
 	int mDamageValue;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// 座標
 	Vector3 mPosition;
 
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 

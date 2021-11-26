@@ -52,6 +52,14 @@ public:
 private:
 
 	/// <summary>
+	/// 攻撃を受けた時の処理
+	/// </summary>
+	/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+	/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+	/// <returns> ヒットしたか </returns>
+	bool ReceivedAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
+
+	/// <summary>
 	/// 縦キー入力操作
 	/// </summary>
 	/// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
@@ -105,6 +113,9 @@ private:
 	/// <param name="_ValueShortenVector"> ベクトルを短くする値 </param>
 	void RotateInRangeAngle(const float& _AngleBorderMin, const float& _AngleBorderMax, const float& _ValueShortenVector);
 
+	// ヒットするオブジェクトのリスト
+	Tag mHitTagList[4];
+
 	// 向く角度のリスト
 	float faceAngleList[8];
 
@@ -133,9 +144,13 @@ private:
 	bool mIsCollisionState;
 	// 現在のステートに入って1回だけ当たり判定を有効にする
 	bool mIsOneCollisionState;
+	// ダメージを受けたか
+	bool mIsDamage;
 
 	// ダメージ値
 	int mDamageValue;
+	// ヒットする相手のリストの要素数
+	int mHitTagListSize;
 
 	// 2つのベクトルのなす角
 	float mTwoVectorAngle;
@@ -151,6 +166,11 @@ private:
 	// 右方ベクトル
 	Vector3 mRightVec;
 
+	// ヒットしたオブジェクトのタグ
+	Tag mHitTag;
+
+	// プレイヤーのポインタ
+	PlayerObject* mPlayerPtr;
 	// カメラのポインタ
 	MainCameraObject* mMainCameraPtr;
 	// 2段階目の通常攻撃エフェクトのポインタ

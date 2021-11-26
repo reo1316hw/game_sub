@@ -15,9 +15,10 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	, MMaxHp(500)
 	, MPlayRate(1.0f)
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
-	, MFrontMagicEffectScale(Vector3(10.0f, -10.0f, 10.0f))
-	, MAreaMagicEffectScale(Vector3(20.0f, -20.0f, 20.0f))
+	, MFrontMagicEffectScale(Vector3(15.0f, -15.0f, 15.0f))
+	, MAreaMagicEffectScale(Vector3(60.0f, -60.0f, 60.0f))
 	, MOverheadEffectScale(Vector3(20.0f, -20.0f, 20.0f))
+	, MDangerSignalEffectScale(Vector3(40.0f, -40.0f, 40.0f))
 	, MTeleportationEffectScale(Vector3(40.0f, -40.0f, 40.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(BossState::eBossStateWait)
@@ -65,10 +66,10 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mStatePools.push_back(new BossObjectStateAreaAttack(_playerPtr));        // mStatepool[eBossStateAreaAttack]
 	mStatePools.push_back(new BossObjectStateOverheadAttack(_playerPtr));    // mStatepool[eBossObjectStateOverheadAttack]
 	mStatePools.push_back(new BossObjectStateTeleportation(_playerPtr));     // mStatepool[eBossStateTeleportation]
-	mStatePools.push_back(new BossObjectStateImpactDamage(_playerPtr));      // mStatepool[eBossStateImpactDamage];
-	mStatePools.push_back(new BossObjectStateSweepFallDamage(_playerPtr));   // mStatepool[eBossStateSweepFallDamage];
-	mStatePools.push_back(new BossObjectStateFlyingBackDamage(_playerPtr));  // mStatepool[eBossStateFlyingBackDamage];
-	mStatePools.push_back(new BossObjectStateDeath(_playerPtr));             // mStatepool[eBossStateDeath];
+	mStatePools.push_back(new BossObjectStateImpactDamage(_playerPtr));      // mStatepool[eBossStateImpactDamage]
+	mStatePools.push_back(new BossObjectStateSweepFallDamage(_playerPtr));   // mStatepool[eBossStateSweepFallDamage]
+	mStatePools.push_back(new BossObjectStateFlyingBackDamage(_playerPtr));  // mStatepool[eBossStateFlyingBackDamage]
+	mStatePools.push_back(new BossObjectStateDeath(_playerPtr));             // mStatepool[eBossStateDeath]
 
 	// ヒットエフェクト生成
 	new HitEffect(this, MHitEffectScale, Tag::eHItEffect);
@@ -82,7 +83,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	// プレイヤーの頭上に攻撃するエフェクトを生成
 	new OverheadMagicEffect(this, _playerPtr, MOverheadEffectScale, Tag::eOverheadMagicEffect);
 	// プレイヤー頭上攻撃時の危険信号エフェクト
-	new DangerSignalEffect(this, _playerPtr, MOverheadEffectScale, Tag::eDangerSignalEffect);
+	new DangerSignalEffect(this, _playerPtr, MDangerSignalEffectScale, Tag::eDangerSignalEffect);
 	// テレポートエフェクト
 	new TeleportationEffect(this, MTeleportationEffectScale, Tag::eTeleportationEffect);
 

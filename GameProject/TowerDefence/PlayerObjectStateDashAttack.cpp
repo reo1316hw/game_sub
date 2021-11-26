@@ -4,7 +4,8 @@
 /// コンストラクタ
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
-	: MDamageValueEnemyAttack(25)
+	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
+	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(5)
 	, MValidComboFrame(0.4f)
 	, MBoxEnableTiming(0.15f)
@@ -12,11 +13,15 @@ PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 	, MAttackSpeed(300.0f)
 	, mIsCollisionState(false)
 	, mIsHitStop(false)
+	, mIsDamage(false)
 	, mDamageValue(0)
+	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mHitStopCount(0)
 	, mBoxDisableTiming(0.0f)
 	, mPosition(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
+	, mHitTag(Tag::eOther)
+	, mPlayerPtr(nullptr)
 	, skeletalMeshCompPtr(nullptr)
 	, mDashAttackEffectPtr(nullptr)
 {
@@ -30,7 +35,7 @@ PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 /// <returns> プレイヤーの状態 </returns>
 PlayerState PlayerObjectStateDashAttack::Update(PlayerObject* _owner, const float _DeltaTime)
 {
-	if (mIsHit)
+	if (mIsDamage)
 	{
 		return PlayerState::ePlayerStateDamage;
 	}
@@ -132,7 +137,7 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 	skeletalMeshCompPtr = _owner->GetSkeletalMeshComponentPtr();
 	skeletalMeshCompPtr->PlayAnimation(_owner->GetAnimPtr(PlayerState::ePlayerStateDashAttack), MPlayRate);
 	mIsNextCombo = false;
-	mIsHit = false;
+	mIsDamage = false;
 	mIsOneCollisionState = false;
 
 	// アニメーション再生時間取得
@@ -157,17 +162,37 @@ void PlayerObjectStateDashAttack::Enter(PlayerObject* _owner, const float _Delta
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void PlayerObjectStateDashAttack::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
-	// 座標
-	mPosition = _owner->GetPosition();
+	mPlayerPtr = _owner;
 
 	// オブジェクトのタグ
-	Tag tag = _HitObject.GetTag();
+	mHitTag = _HitObject.GetTag();
 
-	if (tag == Tag::eEnemyAttackDecision)
+	for (int i = 0; i < mHitTagListSize; i++)
 	{
-		mDamageValue = MDamageValueEnemyAttack;
-		mIsHit = true;
+		// 攻撃を受けた時の処理
+		if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+		{
+			return;
+		}
+	}
+}
+
+/// <summary>
+/// 攻撃を受けた時の処理
+/// </summary>
+/// <param name="_HitTag"> ヒットしたオブジェクトのタグ </param>
+/// <param name="_DamageValuePlayerAttack"> ダメージ量 </param>
+/// <returns> ヒットしたか </returns>
+bool PlayerObjectStateDashAttack::ReceivedAttack(const Tag& _hitTag, const int& _DamageValuePlayerAttack)
+{
+	if (mHitTag == _hitTag)
+	{
+		mDamageValue = _DamageValuePlayerAttack;
+		mIsDamage = true;
+
+		mPlayerPtr->SetDamageValue(mDamageValue);
+		return true;
 	}
 
-	_owner->SetDamageValue(mDamageValue);
+	return false;
 }

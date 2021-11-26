@@ -14,7 +14,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, MPlayRate(1.0f)
 	, MAngle(270.0f)
 	, MAttackEffectScale(Vector3(50.0f, -50.0f, 50.0f))
-	, MHitEffectScale(Vector3(25.0f, -25.0f, 25.0f))
+	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, mNowState(PlayerState::ePlayerStateRunLoop)
 	, mNextState(PlayerState::ePlayerStateIdle)
 	, mSkeltalMeshComponentPtr(nullptr)
