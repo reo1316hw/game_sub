@@ -6,7 +6,7 @@
 /// <param name="_enemyAttackPtr"> エネミーの攻撃判定オブジェクトのポインタ </param>
 EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
-	, MBoxEnableTiming(20)
+	, MBoxEnableTiming(0.4f)
 	, MStateTransitionProbability(100)
 	, MDamageValuePlayerFirstAttack(25)
 	, MAttackSpeed(150.0f)
@@ -14,11 +14,13 @@ EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemy
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, mIsDamage(false)
+	, mIsCollisionState(false)
+	, mIsOneCollisionState(false)
 	, mDamageValue(0)
-	, mHitUntilCount(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mElapseTime(0.0f)
 	, mTotalAnimTime(0.0f)
+	, mBoxDisableTiming(0)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mForwardVec(Vector3::Zero)
@@ -75,14 +77,6 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 
 	_owner->SetPosition(mPosition);
 
-	++mHitUntilCount;
-
-	if (mHitUntilCount >= MBoxEnableTiming)
-	{
-		// 武器の当たり判定を行うようにする
-		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
-	}
-
 	// アニメーションが終了したら移動状態へ
 	if (!_owner->GetSkeletalMeshComponentPtr()->IsPlaying())
 	{
@@ -103,6 +97,33 @@ EnemyState EnemyObjectStateAttack::Update(EnemyObject* _owner, const float _Delt
 		}
 	}
 
+	if (mIsOneCollisionState)
+	{
+		return EnemyState::eEnemyStateAttack;
+	}
+
+	if (mElapseTime >= MBoxEnableTiming)
+	{
+		// 攻撃の当たり判定を有効にする
+		mIsCollisionState = true;
+		mOwnerBoxCollider->SetCollisionState(CollisionState::eEnableCollision);
+	}
+
+	if (!mIsCollisionState)
+	{
+		return EnemyState::eEnemyStateAttack;
+	}
+
+	mBoxDisableTiming = MBoxEnableTiming + _DeltaTime;
+
+	if (mElapseTime >= mBoxDisableTiming)
+	{
+		// 攻撃の当たり判定を無効にする
+		mIsCollisionState = false;
+		mIsOneCollisionState = true;
+		mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
+	}
+
 	return EnemyState::eEnemyStateAttack;
 }
 
@@ -116,11 +137,12 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateAttack), MPlayRate);
 
-	mIsDamage = false;
 	// アニメーション再生時間取得
 	mTotalAnimTime = _owner->GetAnimPtr(EnemyState::eEnemyStateAttack)->GetDuration() - 0.5f;
 	mElapseTime = 0.0f;
-	mHitUntilCount = 0;
+
+	mIsDamage = false;
+	mIsOneCollisionState = false;
 
 	// 座標
 	mPosition = _owner->GetPosition();
@@ -128,17 +150,6 @@ void EnemyObjectStateAttack::Enter(EnemyObject* _owner, const float _DeltaTime)
 	mForwardVec = _owner->GetForward();
 
 	_owner->RotateToNewForward(mForwardVec);
-}
-
-/// <summary>
-/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
-/// </summary>
-/// <param name="_owner"> エネミー(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyObjectStateAttack::Exit(EnemyObject* _owner, const float _DeltaTime)
-{
-	// 武器の当たり判定を行わないようにする
-	mOwnerBoxCollider->SetCollisionState(CollisionState::eDisableCollision);
 }
 
 /// <summary>

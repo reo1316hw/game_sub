@@ -31,11 +31,3 @@ void EnemyAttackDecisionObject::UpdateGameObject(float _deltaTime)
 	mPosition = mOwner->GetPosition() + offsetPos;
 	SetPosition(mPosition);
 }
-
-/// <summary>
-/// ヒットした時の処理
-/// </summary>
-/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-void EnemyAttackDecisionObject::OnCollision(const GameObject& _HitObject)
-{
-}

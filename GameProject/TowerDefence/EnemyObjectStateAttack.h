@@ -34,13 +34,6 @@ public:
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-	/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
-	/// </summary>
-	/// <param name="_owner"> エネミー(親)のポインタ </param>
-	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void Exit(EnemyObject* _owner, const float _DeltaTime)override;
-
-	/// <summary>
 	/// エネミー同士の引き離し
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
@@ -67,12 +60,12 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
-	// 当たり判定を有効にするタイミング
-	const int MBoxEnableTiming;
 	// 状態遷移確率
 	const int MStateTransitionProbability;
 	// プレイヤーの1段階目の通常攻撃のダメージ値
 	const int MDamageValuePlayerFirstAttack;
+	// 当たり判定を有効にするタイミング
+	const float MBoxEnableTiming;
 	// 攻撃時の速度
 	const float MAttackSpeed;
 	// アニメーションの再生速度
@@ -84,9 +77,12 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+	// 当たり判定の状態
+	// true : 有効, false : 無効
+	bool mIsCollisionState;
+	// 現在のステートに入って1回だけ当たり判定を有効にする
+	bool mIsOneCollisionState;
 
-	// 当たり判定するまでのカウント
-	int mHitUntilCount;
 	// ダメージ値
 	int mDamageValue;
 	// ヒットする相手のリストの要素数
@@ -96,6 +92,8 @@ private:
 	float mElapseTime;
 	// アニメーション総時間
 	float mTotalAnimTime;
+	// 当たり判定を無効にするタイミング
+	float mBoxDisableTiming;
 
 	// 座標
 	Vector3 mPosition;

@@ -27,12 +27,6 @@ public:
 
 private:
 
-	/// <summary>
-	/// ヒットした時の処理
-	/// </summary>
-	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
-	void OnCollision(const GameObject& _HitObject)override;
-
 	// 中心座標との差
 	const float MCenterOffset;
 

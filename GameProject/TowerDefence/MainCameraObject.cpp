@@ -32,7 +32,7 @@ MainCameraObject::MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPt
 void MainCameraObject::UpdateGameObject(float _deltaTime)
 {
 	// プレイヤーかボスのhpが0以下だったら初期座標に戻す
-	if (mPlayerPtr->GetHitPoint() <= 0 /*|| mBossPtr->GetHitPoint() <= 0*/)
+	if (mPlayerPtr->GetHitPoint() <= 0 || mBossPtr->GetHitPoint() <= 0)
 	{
 		mPosition = mInitPosition;
 		SetPosition(mPosition);
@@ -119,60 +119,4 @@ void MainCameraObject::GameObjectInput(const InputState& _KeyState)
 	{
 		mRotateZAngle -= MAddRotate;
 	}
-
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_K) == Held)
-	//{
-	//	mCameraOffset.x += 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_J) == Held)
-	//{
-	//	mCameraOffset.x -= 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_I) == Held)
-	//{
-	//	mCameraOffset.y += 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_M) == Held)
-	//{
-	//	mCameraOffset.y -= 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_U) == Held)
-	//{
-	//	mCameraOffset.z += 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_N) == Held)
-	//{
-	//	mCameraOffset.z -= 1.0f;
-	//}
-
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_H) == Held)
-	//{
-	//	mTargetOffset.x += 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_G) == Held)
-	//{
-	//	mTargetOffset.x -= 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_Y) == Held)
-	//{
-	//	mTargetOffset.y += 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_B) == Held)
-	//{
-	//	mTargetOffset.y -= 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_T) == Held)
-	//{
-	//	mTargetOffset.z += 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_V) == Held)
-	//{
-	//	mTargetOffset.z -= 1.0f;
-	//}
-
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_P) == Released)
-	//{
-	//	mCameraOffset = Vector3(-200.0f, -200.0f, -200.0f);
-	//	mTargetOffset = Vector3(0.0f, 0.0f, 60.0f);
-	//}
 }

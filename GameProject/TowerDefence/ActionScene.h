@@ -26,8 +26,17 @@ public:
 
 private:
 
+	// ゲームクリアシーンに遷移するタイミング
+	const int MTimingTransitionGameClear;
+	// ゲームオーバーシーンに遷移するタイミング
+	const int MTimingTransitionGameOver;
 	// 画角
 	const float MAngleOfView;
+
+	// ゲームクリアシーンに遷移するまでのカウント
+	int mGameClearTransitionUntilCount;
+	// ゲームオーバーシーンに遷移するまでのカウント
+	int mGameOverTransitionUntilCount;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

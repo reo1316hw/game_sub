@@ -4,10 +4,14 @@
 /// コンストラクタ
 /// </summary>
 ActionScene::ActionScene()
-	: mPlayerPtr(nullptr)
+	: MTimingTransitionGameClear(220.0f)
+	, MTimingTransitionGameOver(160.0f)
+	, MAngleOfView(70.0f)
+	, mGameClearTransitionUntilCount(0)
+	, mGameOverTransitionUntilCount(0)
+	, mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
 	, mMainCameraPtr(nullptr)
-	, MAngleOfView(70.0f)
 {
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.8f, 0.8f, 0.8f));
@@ -15,6 +19,11 @@ ActionScene::ActionScene()
 	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
 	dir.m_diffuseColor = Vector3(0.36f, 0.44f, 0.5f);
 	dir.m_specColor = Vector3(0.4f, 0.4f, 0.4f);
+
+	// 行列初期化
+	Matrix4 proj;
+	proj = Matrix4::CreatePerspectiveFOV(Math::ToRadians(MAngleOfView), RENDERER->GetScreenWidth(), RENDERER->GetScreenHeight(), 1.0, 10000.0f);
+	RENDERER->SetProjMatrix(proj);
 
 	// マップを生成するためのクラスを生成
     mMapCreate = new MapCreate();
@@ -55,32 +64,24 @@ ActionScene::~ActionScene()
 /// <returns> シーンクラスのポインタ </returns>
 SceneBase* ActionScene::Update(const InputState& _KeyState)
 {
-	//// ボスのhpが0になったらゲームクリアシーンへ遷移
-	//if (mBossPtr->GetHitPoint() <= 0 || _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_O) == Released)
-	//{
-	//	return new GameClearScene();
-	//}
+	// ボスのhpが0になったらゲームクリアシーンへ遷移
+	if (mBossPtr->GetHitPoint() <= 0)
+	{
+		++mGameClearTransitionUntilCount;
+	}
 
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_R) == Held)
-	//{
-	//	angle += 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_C) == Held)
-	//{
-	//	angle -= 1.0f;
-	//}
-	//if (_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_O) == Released)
-	//{
-	//	angle = 60.0f;
-	//}
-
-	// 行列初期化
-	Matrix4 proj;
-	proj = Matrix4::CreatePerspectiveFOV(Math::ToRadians(MAngleOfView), RENDERER->GetScreenWidth(), RENDERER->GetScreenHeight(), 1.0, 10000.0f);
-	RENDERER->SetProjMatrix(proj);
+	if (mGameClearTransitionUntilCount >= MTimingTransitionGameClear)
+	{
+		return new GameClearScene();
+	}
 	
 	// プレイヤーのhpが0になったらゲームオーバーシーンへ遷移
 	if (mPlayerPtr->GetHitPoint() <= 0)
+	{
+		++mGameOverTransitionUntilCount;
+	}
+
+	if (mGameOverTransitionUntilCount >= MTimingTransitionGameOver)
 	{
 		return new GameOverScene();
 	}
