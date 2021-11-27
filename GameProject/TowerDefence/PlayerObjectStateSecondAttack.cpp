@@ -162,7 +162,7 @@ void PlayerObjectStateSecondAttack::Input(PlayerObject* _owner, const InputState
 	}
 
 	// 攻撃ボタン押されたら次のステートへ移行する準備
-	if (mElapseTime >= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_Y) == Released ||
+	if (mElapseTime >= MValidComboFrame && _KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_X) == Released ||
 		mElapseTime >= MValidComboFrame && _KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
 		mIsNextCombo = true;

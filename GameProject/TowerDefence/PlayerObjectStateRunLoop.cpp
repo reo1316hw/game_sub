@@ -128,7 +128,7 @@ void PlayerObjectStateRunLoop::Input(PlayerObject* _owner, const InputState& _Ke
 		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_LSHIFT);
 
 	// SpaceÉLÅ[Ç™ì¸óÕÇ≥ÇÍÇΩÇ©
-	mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_Y) ||
+	mIsAttack = _KeyState.m_controller.GetButtonValue(SDL_CONTROLLER_BUTTON_X) ||
 		        _KeyState.m_keyboard.GetKeyValue(SDL_SCANCODE_SPACE);
 }
 
