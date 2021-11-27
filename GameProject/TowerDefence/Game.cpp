@@ -97,6 +97,13 @@ void Game::GameLoop()
 
 		SceneBase* tmpScene;
 
+		//ゲームの更新処理
+		UpdateGame();
+		// 現在のシーンの描画処理
+		GenerateOutput();
+		//FPSの更新処理
+		mFps->Update();
+
 		// 実行中のシーンを更新処理
 		tmpScene = mNowScene->Update(state);
 
@@ -110,13 +117,6 @@ void Game::GameLoop()
  			mNowScene = tmpScene;
 			continue;
 		}
-		
-		//ゲームの更新処理
-		UpdateGame();
-		// 現在のシーンの描画処理
-		GenerateOutput();
-		//FPSの更新処理
-		mFps->Update();
 	}
 }
 

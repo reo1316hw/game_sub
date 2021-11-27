@@ -24,9 +24,23 @@ public:
 	/// </summary>
 	~Sprite() {};
 
+	/// <summary>
+	/// スプライト画像を変更する
+	/// </summary>
+	/// <param name="_TextureName"> テクスチャのパス </param>
+	void ChangeSprite(const std::string _TextureName);
+
 private:
 
 	// スクリーン上に描画するクラスのポインタ
 	SpriteComponent* mSpriteComponent;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// スクリーン上に描画するクラスのポインタ取得
+	/// </summary>
+	/// <returns> スクリーン上に描画するクラスのポインタ </returns>
+	SpriteComponent* GetSpriteComponentPtr() { return mSpriteComponent; }
 };
 

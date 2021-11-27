@@ -22,7 +22,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	, MTeleportationEffectScale(Vector3(40.0f, -40.0f, 40.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(BossState::eBossStateWait)
-	, mNextState(BossState::eBossStateWait)
+	, mNextState(BossState::eBossStateTeleportation)
 {
 	//GameObjectメンバ変数の初期化
 	SetScale(_Scale);
@@ -55,7 +55,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	mAnimTypes[static_cast<int>(BossState::eBossStateDeath)] = RENDERER->GetAnimation("Assets/Model/Boss/BossDeath.gpanim", false);
 
 	//Rendererクラス内のSkeletonデータ読み込み関数を利用してAnimationをセット(.gpanim)
-	const Animation* anim = mAnimTypes[static_cast<int>(BossState::eBossStateWait)];
+	const Animation* anim = mAnimTypes[static_cast<int>(BossState::eBossStateTeleportation)];
 	//anim変数を速度1.0fで再生
 	mSkeltalMeshComponentPtr->PlayAnimation(anim);
 

@@ -172,7 +172,6 @@ void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& _outPoses, const Skele
 		BoneTransform interp = BoneTransform::Interpolate(mTracks[0][frame],
 			mTracks[0][nextFrame], pct);
 		_outPoses[0] = interp.ToMatrix();
-
 	}
 	else
 	{

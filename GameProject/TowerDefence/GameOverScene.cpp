@@ -5,6 +5,8 @@
 /// </summary>
 GameOverScene::GameOverScene()
 	: MSpriteScale(Vector3(2.0f, 1.0f, 1.0f))
+	, MTimingTransitionTitle(120)
+	, mTitleTransitionUntilCount(0)
 {
 	// ライトを設定(設定しないと何も映らない)
 	RENDERER->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));
@@ -32,9 +34,10 @@ GameOverScene::~GameOverScene()
 /// <returns> シーンクラスのポインタ </returns>
 SceneBase* GameOverScene::Update(const InputState& _KeyState)
 {
-	// アクションシーンに遷移
-	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_START) == Released ||
-		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
+	++mTitleTransitionUntilCount;
+
+	// タイトルシーンに遷移
+	if (mTitleTransitionUntilCount >= MTimingTransitionTitle)
 	{
 		return new TitleScene();
 	}

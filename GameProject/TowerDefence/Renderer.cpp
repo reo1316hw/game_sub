@@ -790,13 +790,16 @@ void Renderer::SetParticleVertex()
 void Renderer::CreateFontTexture(const int& _Value, const int& _FontSize)
 {
 	// フォントの生成
-	Font* font = GetFont("Assets/Font/impact.ttf");
+	Font* font = GetFont("Assets/Font/msmincho.ttc");
+
+	// 要素数を合わせたテクスチャの枚数
+	int numTexture = _Value + 1;
 
 	// 格納する可変長配列をリサイズ
-	mFontTextures.resize(_Value + 1);
+	mFontTextures.resize(numTexture);
 
 	// フォントテクスチャを指定した枚数生成する
-	for (int i = 0; i <= _Value; i++)
+	for (int i = 0; i < numTexture; i++)
 	{
 		std::string str;
 		str = std::to_string(i);

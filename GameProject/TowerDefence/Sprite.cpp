@@ -17,3 +17,13 @@ Sprite::Sprite(const std::string _TextureName, const bool& _ReUseGameObject, con
 
 	mSpriteComponent = new SpriteComponent(this, texture);
 }
+
+/// <summary>
+/// スプライト画像を変更する
+/// </summary>
+/// <param name="_TextureName"> テクスチャのパス </param>
+void Sprite::ChangeSprite(const std::string _TextureName)
+{
+	Texture* texture = RENDERER->GetTexture(_TextureName);
+	mSpriteComponent->SetTexture(texture);
+}

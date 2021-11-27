@@ -28,5 +28,10 @@ private:
 
 	// スプライトの拡大サイズ
 	const Vector3 MSpriteScale;
+	// タイトルシーンに遷移するタイミング
+	const int MTimingTransitionTitle;
+
+	// タイトルシーンに遷移するまでのカウント
+	int mTitleTransitionUntilCount;
 };
 

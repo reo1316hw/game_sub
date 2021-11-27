@@ -33,7 +33,7 @@ TitleScene::~TitleScene()
 SceneBase* TitleScene::Update(const InputState& _KeyState)
 {
 	// アクションシーンに遷移
-	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_START) == Released ||
+	if (_KeyState.m_controller.GetButtonState(SDL_CONTROLLER_BUTTON_A) == Released ||
 		_KeyState.m_keyboard.GetKeyState(SDL_SCANCODE_SPACE) == Released)
 	{
   		return new ActionScene();
