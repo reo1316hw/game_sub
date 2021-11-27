@@ -6,8 +6,8 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateFrontAttack::BossObjectStateFrontAttack(PlayerObject* _playerPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, mDamageValueList{ 10, 5, 15, 25 }
 	, MTimingFixFacing(30)
-	, MDamageValuePlayerFirstAttack(25)
 	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(8.0f)
@@ -145,7 +145,7 @@ void BossObjectStateFrontAttack::OnCollision(BossObject* _owner, const GameObjec
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// 攻撃を受けた時の処理
-		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

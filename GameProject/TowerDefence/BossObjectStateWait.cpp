@@ -6,7 +6,7 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateWait::BossObjectStateWait(PlayerObject* _playerPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
-	, MDamageValuePlayerFirstAttack(25)
+	, mDamageValueList{ 10, 5, 15, 25 }
 	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MTransitionTimingNum(60)
@@ -158,7 +158,7 @@ void BossObjectStateWait::OnCollision(BossObject* _owner, const GameObject& _Hit
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// 攻撃を受けた時の処理
-		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

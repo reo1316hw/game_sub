@@ -116,11 +116,12 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
+	// ダメージ値のリスト
+	int mDamageValueList[4];
+
 	// 向く角度のリスト
 	float faceAngleList[8];
 
-	// エネミーの攻撃のダメージ値
-	const int MDamageValueEnemyAttack;
 	// ヒットストップが終わるタイミング
 	const int MHitStopEndTiming;
 	// 半回転値

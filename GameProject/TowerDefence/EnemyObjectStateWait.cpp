@@ -6,9 +6,9 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateWait::EnemyObjectStateWait(PlayerObject* _playerPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, mDamageValueList{ 10, 5, 15, 25 }
 	, MTransitionTimingNum(120)
 	, MStateTransitionProbability(100)
-	, MDamageValuePlayerFirstAttack(25)
 	, MTransitionStateShortDistance(15000.0f)
 	, MTransitionStateMediumDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
@@ -165,7 +165,7 @@ void EnemyObjectStateWait::OnCollision(EnemyObject* _owner, const GameObject& _H
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// 攻撃を受けた時の処理
-		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

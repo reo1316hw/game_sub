@@ -6,9 +6,9 @@
 /// <param name="_enemyAttackPtr"> エネミーの攻撃判定オブジェクトのポインタ </param>
 EnemyObjectStateAttack::EnemyObjectStateAttack(EnemyAttackDecisionObject* _enemyAttackPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, mDamageValueList{ 10, 5, 15, 25 }
 	, MBoxEnableTiming(0.4f)
 	, MStateTransitionProbability(100)
-	, MDamageValuePlayerFirstAttack(25)
 	, MAttackSpeed(150.0f)
 	, MPlayRate(1.5f)
 	, MVecShortenVelue(0.1f)
@@ -189,7 +189,7 @@ void EnemyObjectStateAttack::OnCollision(EnemyObject* _owner, const GameObject& 
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// 攻撃を受けた時の処理
-		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateIdle::PlayerObjectStateIdle()
     : mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
-    , MDamageValueEnemyAttack(25)
+    , mDamageValueList{ 5, 10, 20, 15 }
     , MLeftAxisThreshold(0.5f)
     , mIsDamage(false)
     , mDamageValue(0)
@@ -117,7 +117,7 @@ void PlayerObjectStateIdle::OnCollision(PlayerObject* _owner, const GameObject& 
     for (int i = 0; i < mHitTagListSize; i++)
     {
         // UŒ‚‚ðŽó‚¯‚½Žž‚Ìˆ—
-        if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+        if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
         {
             return;
         }

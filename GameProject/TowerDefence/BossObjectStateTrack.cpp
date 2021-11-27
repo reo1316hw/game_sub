@@ -6,8 +6,8 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 BossObjectStateTrack::BossObjectStateTrack(PlayerObject* _playerPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, mDamageValueList{ 10, 5, 15, 25 }
 	, MTimingTransitionOverheadAttack(240)
-	, MDamageValuePlayerFirstAttack(25)
 	, MTransitionStateDistance(30000.0f)
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(8.0f)
@@ -163,7 +163,7 @@ void BossObjectStateTrack::OnCollision(BossObject* _owner, const GameObject& _Hi
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// 攻撃を受けた時の処理
-		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

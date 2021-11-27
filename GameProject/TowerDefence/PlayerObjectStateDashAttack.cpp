@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
-	, MDamageValueEnemyAttack(25)
+	, mDamageValueList{ 5, 10, 20, 15 }
 	, MHitStopEndTiming(5)
 	, MValidComboFrame(0.4f)
 	, MBoxEnableTiming(0.15f)
@@ -170,7 +170,7 @@ void PlayerObjectStateDashAttack::OnCollision(PlayerObject* _owner, const GameOb
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// UŒ‚‚ðŽó‚¯‚½Žž‚Ìˆ—
-		if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

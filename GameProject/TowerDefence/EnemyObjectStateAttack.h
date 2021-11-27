@@ -60,10 +60,11 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
+	// ダメージ値のリスト
+	int mDamageValueList[4];
+
 	// 状態遷移確率
 	const int MStateTransitionProbability;
-	// プレイヤーの1段階目の通常攻撃のダメージ値
-	const int MDamageValuePlayerFirstAttack;
 	// 当たり判定を有効にするタイミング
 	const float MBoxEnableTiming;
 	// 攻撃時の速度

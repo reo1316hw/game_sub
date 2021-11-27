@@ -6,7 +6,7 @@
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 EnemyObjectStateSweepFallDamage::EnemyObjectStateSweepFallDamage(PlayerObject* _playerPtr)
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
-	, MDamageValuePlayerFirstAttack(25)
+	, mDamageValueList{ 10, 5, 15, 25 }
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(4.0f)
 	, MDamageInitSpeed(100.0f)
@@ -161,7 +161,7 @@ void EnemyObjectStateSweepFallDamage::OnCollision(EnemyObject* _owner, const Gam
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// 攻撃を受けた時の処理
-		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			mPosition.z = mNowStateInitPos.z;
 			_owner->SetPosition(mPosition);

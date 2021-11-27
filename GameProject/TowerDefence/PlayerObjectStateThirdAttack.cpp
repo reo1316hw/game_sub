@@ -5,8 +5,8 @@
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
+	, mDamageValueList{ 5, 10, 20, 15 }
 	, faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
-	, MDamageValueEnemyAttack(25)
 	, MHitStopEndTiming(10)
 	, MHalfRotation(180)
 	, MAllRotation(360)
@@ -326,7 +326,7 @@ void PlayerObjectStateThirdAttack::OnCollision(PlayerObject* _owner, const GameO
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// UŒ‚‚ðŽó‚¯‚½Žž‚Ìˆ—
-		if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

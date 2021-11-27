@@ -5,12 +5,12 @@
 /// </summary>
 EnemyObjectStateAttackReady::EnemyObjectStateAttackReady()
 	: mHitTagList{ Tag::eDashAttackEffect, Tag::eFirstAttackEffect, Tag::eSecondAttackEffect, Tag::eThirdAttackEffect }
+	, mDamageValueList{ 10, 5, 15, 25 }
     , MVecShortenVelue(0.1f)
     , MSeparationVecLength(8.0f)
 	, mIsDamage(false)
 	, mDamageValue(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
-	, MDamageValuePlayerFirstAttack(25)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mHitTag(Tag::eOther)
@@ -110,7 +110,7 @@ void EnemyObjectStateAttackReady::OnCollision(EnemyObject* _owner, const GameObj
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// UŒ‚‚ðŽó‚¯‚½Žž‚Ìˆ—
-		if (ReceivedAttack(mHitTagList[i], MDamageValuePlayerFirstAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

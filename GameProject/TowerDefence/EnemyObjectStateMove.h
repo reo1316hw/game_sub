@@ -68,12 +68,13 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
+	// ダメージ値のリスト
+	int mDamageValueList[4];
+
 	// 遷移するタイミング
 	const int MTransitionTimingNum;
 	// 状態遷移確率
 	const int MStateTransitionProbability;
-	// プレイヤーの1段階目の通常攻撃のダメージ値
-	const int MDamageValuePlayerFirstAttack;
 	// 状態を変えるための距離(近距離)
 	const float MTransitionStateShortDistance;
 	// 状態を変えるための距離(中距離)

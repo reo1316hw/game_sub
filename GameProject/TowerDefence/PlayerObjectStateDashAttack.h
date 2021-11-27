@@ -61,8 +61,9 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
-	// エネミーの攻撃のダメージ値
-	const int MDamageValueEnemyAttack;
+	// ダメージ値のリスト
+	int mDamageValueList[4];
+
 	// ヒットストップが終わるタイミング
 	const int MHitStopEndTiming;
 	// 当たり判定を有効にするタイミング

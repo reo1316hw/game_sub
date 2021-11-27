@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateSprintLoop::PlayerObjectStateSprintLoop()
 	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
-	, MDamageValueEnemyAttack(25)
+	, mDamageValueList{ 5, 10, 20, 15 }
 	, MMoveSpeed(500.0f)
 	, MLeftAxisThreshold(0.5f)
 	, mIsDamage(false)
@@ -167,7 +167,7 @@ void PlayerObjectStateSprintLoop::OnCollision(PlayerObject* _owner, const GameOb
 	for (int i = 0; i < mHitTagListSize; i++)
 	{
 		// UŒ‚‚ðŽó‚¯‚½Žž‚Ìˆ—
-		if (ReceivedAttack(mHitTagList[i], MDamageValueEnemyAttack))
+		if (ReceivedAttack(mHitTagList[i], mDamageValueList[i]))
 		{
 			return;
 		}

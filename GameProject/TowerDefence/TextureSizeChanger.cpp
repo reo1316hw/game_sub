@@ -34,10 +34,16 @@ void TextureSizeChanger::Update(float _deltaTime)
 	if (mPreScaleLeftSideValue != mNowScaleLeftSideValue)
 	{
 		mScaleRightSideValue = static_cast<float>(mGameObjectPtr->GetScaleRightSideValue());
-		// 収縮率
-		float scaleContractionRate = mNowScaleLeftSideValue / mScaleRightSideValue;
+		// 拡縮率
+		float scalingRate = mNowScaleLeftSideValue / mScaleRightSideValue;
+
+		if (scalingRate <= 0.0f)
+		{
+			scalingRate = 0.0f;
+		}
+
 		// アタッチしたオブジェクトの大きさ
- 		Vector3 scale = Vector3(mInitScale.x * scaleContractionRate, mInitScale.y, mInitScale.z);
+ 		Vector3 scale = Vector3(mInitScale.x * scalingRate, mInitScale.y, mInitScale.z);
 		mOwner->SetScale(scale);
 	}
 }

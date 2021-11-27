@@ -66,8 +66,9 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
-	// エネミーの攻撃のダメージ値
-	const int MDamageValueEnemyAttack;
+	// ダメージ値のリスト
+	int mDamageValueList[4];
+
 	// 移動速度
 	const float MMoveSpeed;
 	//移動するための左スティックのしきい値

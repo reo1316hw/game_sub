@@ -59,8 +59,8 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
-	// エネミーの攻撃のダメージ値
-	const int MDamageValueEnemyAttack;
+	// ダメージ値のリスト
+	int mDamageValueList[4];
 
 	//移動するための左スティックのしきい値
 	const float MLeftAxisThreshold;

@@ -60,8 +60,9 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
-	// 1段階目の通常攻撃のダメージ値
-	const int MDamageValuePlayerFirstAttack;
+	// ダメージ値のリスト
+	int mDamageValueList[4];
+
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
 	// ベクトルを短くする値

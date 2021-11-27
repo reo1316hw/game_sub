@@ -60,8 +60,9 @@ private:
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
-	// プレイヤーの1段階目の通常攻撃のダメージ値
-	const int MDamageValuePlayerFirstAttack;
+	// ダメージ値のリスト
+	int mDamageValueList[4];
+
 	// ダメージ時の速度
 	const float MDamageSpeed;
 	// ベクトルを短くする値
