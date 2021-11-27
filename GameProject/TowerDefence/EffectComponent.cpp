@@ -12,6 +12,11 @@ EffectComponent::EffectComponent(GameObject* owner, const Vector3& _Scale, const
 	mEffectPtr = RENDERER->GetEffect(effkseerFilename);
 }
 
+void EffectComponent::StopEffect()
+{
+	RENDERER->GetEffekseerManager()->StopEffect(mHandle);
+}
+
 void EffectComponent::PlayEffect(const float& _PlayRate)
 {
 	mPlayerRate = _PlayRate;

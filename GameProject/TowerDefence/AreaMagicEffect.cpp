@@ -42,6 +42,7 @@ void AreaMagicEffect::UpdateGameObject(float _deltaTime)
 
 	if (mNowState != BossState::eBossStateAreaAttack)
 	{
+		mEffectComponentPtr->StopEffect();
 		mIsOneCollisionState = false;
 		mElapseTime = 0.0f;
 		return;

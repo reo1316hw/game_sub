@@ -37,6 +37,7 @@ void FrontCoreMagicEffect::UpdateGameObject(float _deltaTime)
 
 	if (nowState != BossState::eBossStateFrontAttack)
 	{
+		mEffectComponentPtr->StopEffect();
 		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mElapseTime = 0.0f;
 		return;

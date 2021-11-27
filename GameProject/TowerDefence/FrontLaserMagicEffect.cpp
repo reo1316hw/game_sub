@@ -29,6 +29,7 @@ void FrontLaserMagicEffect::UpdateGameObject(float _deltaTime)
 
 	if (nowState != BossState::eBossStateFrontAttack)
 	{
+		mEffectComponentPtr->StopEffect();
 		mElapseTime = 0.0f;
 		return;
 	}

@@ -64,25 +64,31 @@ ActionScene::~ActionScene()
 /// <returns> シーンクラスのポインタ </returns>
 SceneBase* ActionScene::Update(const InputState& _KeyState)
 {
-	// ボスのhpが0になったらゲームクリアシーンへ遷移
+	// ボスのhpが0になったらゲームクリアシーンへ遷移するカウントを始める
 	if (mBossPtr->GetHitPoint() <= 0)
 	{
 		++mGameClearTransitionUntilCount;
 	}
 
+	// ゲームクリアシーンへ遷移する
 	if (mGameClearTransitionUntilCount >= MTimingTransitionGameClear)
 	{
+		// エフェクトを全て止める
+		RENDERER->GetEffekseerManager()->StopAllEffects();
 		return new GameClearScene();
 	}
 	
-	// プレイヤーのhpが0になったらゲームオーバーシーンへ遷移
+	// プレイヤーのhpが0になったらゲームオーバーシーンへ遷移するカウントを始める
 	if (mPlayerPtr->GetHitPoint() <= 0)
 	{
 		++mGameOverTransitionUntilCount;
 	}
 
+	// ゲームオーバーシーンへ遷移する
 	if (mGameOverTransitionUntilCount >= MTimingTransitionGameOver)
 	{
+		// エフェクトを全て止める
+		RENDERER->GetEffekseerManager()->StopAllEffects();
 		return new GameOverScene();
 	}
 

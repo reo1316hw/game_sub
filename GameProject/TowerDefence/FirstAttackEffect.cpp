@@ -37,6 +37,15 @@ FirstAttackEffect::FirstAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void FirstAttackEffect::UpdateGameObject(float _deltaTime)
 {
+	// 前のステート
+	PlayerState nowState = mPlayerPtr->GetNowState();
+
+	if (nowState != PlayerState::ePlayerStateFirstAttack)
+	{
+		mEffectComponentPtr->StopEffect();
+		return;
+	}
+
 	mFaceInFlockCenterVec = Vector3::Zero;
 
 	// エネミーにヒットしいたら

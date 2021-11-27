@@ -8,6 +8,8 @@ public:
 	
 	void Update(float deltaTime) override;
 	
+	void StopEffect();
+
 	void PlayEffect(const float& _PlayRate = 1.0f);
 
 	/// <summary>

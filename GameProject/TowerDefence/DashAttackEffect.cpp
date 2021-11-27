@@ -33,6 +33,15 @@ DashAttackEffect::DashAttackEffect(PlayerObject* _playerPtr, const Vector3& _Sca
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void DashAttackEffect::UpdateGameObject(float _deltaTime)
 {
+	// 前のステート
+	PlayerState nowState  = mPlayerPtr->GetNowState();
+
+	if (nowState != PlayerState::ePlayerStateDashAttack)
+	{
+		mEffectComponentPtr->StopEffect();
+		return;
+	}
+
 	// 前にずらすベクトル
 	Vector3 offsetVec = mPlayerPtr->GetForward() * MOffset;
 	mPosition = mPlayerPtr->GetPosition() + offsetVec;
@@ -78,8 +87,8 @@ void DashAttackEffect::OnCollision(const GameObject& _HitObject)
 	// オブジェクトのタグ
 	Tag tag = _HitObject.GetTag();
 
-	if (tag == Tag::eEnemy && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack ||
-		tag == Tag::eBoss && !mDisableIsHit && mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateDashAttack)
+	if (tag == Tag::eEnemy && !mDisableIsHit && mPlayerPtr->GetNowState() == PlayerState::ePlayerStateDashAttack ||
+		tag == Tag::eBoss && !mDisableIsHit && mPlayerPtr->GetNowState() == PlayerState::ePlayerStateDashAttack)
 	{
 		mIsHit = true;
 		mDisableIsHit = true;

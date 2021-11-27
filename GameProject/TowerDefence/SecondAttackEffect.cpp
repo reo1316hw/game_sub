@@ -37,9 +37,18 @@ SecondAttackEffect::SecondAttackEffect(PlayerObject* _playerPtr, const Vector3& 
 /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void SecondAttackEffect::UpdateGameObject(float _deltaTime)
 {
+	// 前のステート
+	PlayerState nowState = mPlayerPtr->GetNowState();
+
+	if (nowState != PlayerState::ePlayerStateSecondAttack)
+	{
+		mEffectComponentPtr->StopEffect();
+		return;
+	}
+
 	mFaceInFlockCenterVec = Vector3::Zero;
 
-	// エネミーにヒットしいたら
+	// エネミーにヒットしていたら
 	if (mHitEnemyCount != 0)
 	{
 		// ヒットしたエネミーの群れの中心に向くベクトル

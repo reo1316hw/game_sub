@@ -134,7 +134,7 @@ public:// ゲッターセッター
 	/// プレイヤーの現在のステートを取得
 	/// </summary>
 	/// <returns> プレイヤーの現在のステート </returns>
-	PlayerState GetPlayerState() { return mNowState; }
+	PlayerState GetNowState() { return mNowState; }
 
 	/// <summary>
 	/// カメラのポインタを設定

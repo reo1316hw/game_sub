@@ -31,7 +31,7 @@ void OperationExplanationBehavior::Update(float _deltaTime)
 	mIsDisable = false;
 	mOwner->SetIsDisable(mIsDisable);
 
-	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateIdle && 
+	if (mPlayerPtr->GetNowState() == PlayerState::ePlayerStateIdle &&
 		distance.LengthSq() <= MStopForDistance)
 	{
 		// ‘¬“x
@@ -42,7 +42,7 @@ void OperationExplanationBehavior::Update(float _deltaTime)
 		return;
 	}
 
-	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateIdle)
+	if (mPlayerPtr->GetNowState() == PlayerState::ePlayerStateIdle)
 	{
 		return;
 	}

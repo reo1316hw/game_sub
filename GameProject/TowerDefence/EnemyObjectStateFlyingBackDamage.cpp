@@ -100,7 +100,7 @@ void EnemyObjectStateFlyingBackDamage::Enter(EnemyObject* _owner, const float _D
 	mIsHitStop = false;
 
 	// プレイヤーのステートが3段階目の通常攻撃状態だったらヒットストップを行う
-	if (mPlayerPtr->GetPlayerState() == PlayerState::ePlayerStateThirdAttack)
+	if (mPlayerPtr->GetNowState() == PlayerState::ePlayerStateThirdAttack)
 	{
 		mIsHitStop = true;
 	}

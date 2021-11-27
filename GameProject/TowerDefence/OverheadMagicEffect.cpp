@@ -41,6 +41,7 @@ void OverheadMagicEffect::UpdateGameObject(float _deltaTime)
 
 	if (nowState != BossState::eBossStateOverheadAttack)
 	{
+		mEffectComponentPtr->StopEffect();
 		mIsOneCollisionState = false;
 		mElapseTime = 0.0f;
 		return;
