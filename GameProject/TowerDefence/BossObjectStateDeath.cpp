@@ -102,3 +102,14 @@ void BossObjectStateDeath::Enter(BossObject* _owner, const float _DeltaTime)
 
 	_owner->RotateToNewForward(mDirPlayerVec);
 }
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> ボス(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void BossObjectStateDeath::OnCollision(BossObject* _owner, const GameObject& _HitObject)
+{
+	// 座標
+	mPosition = _owner->GetPosition();
+}

@@ -126,3 +126,14 @@ void BossObjectStateTeleportation::Exit(BossObject* _owner, const float _DeltaTi
 	// 不透明にする
 	_owner->GetSkeletalMeshComponentPtr()->SetVisible(true);
 }
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> ボス(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void BossObjectStateTeleportation::OnCollision(BossObject* _owner, const GameObject& _HitObject)
+{
+	// 座標
+	mPosition = _owner->GetPosition();
+}

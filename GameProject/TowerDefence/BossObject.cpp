@@ -27,7 +27,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	//GameObjectƒƒ“ƒo•Ï”‚Ì‰Šú‰»
 	SetScale(_Scale);
 	SetPosition(_Pos);
-	SetState(State::eDead);
+	//SetState(State::eDead);
 	mInitPosition = mPosition;
 	mMaxHp = MMaxHp;
 	mHitPoint = mMaxHp;

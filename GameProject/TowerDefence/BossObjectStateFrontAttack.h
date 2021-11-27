@@ -57,6 +57,12 @@ private:
 	/// <returns> ヒットしたか </returns>
 	bool ReceivedAttack(const Tag& _HitTag, const int& _DamageValuePlayerAttack);
 
+	/// <summary>
+	/// ダメージを負う処理
+	/// </summary>
+	/// <param name="_owner"> ボス(親)のポインタ </param>
+	void SufferDamage(BossObject* _owner);
+
 	// ヒットするオブジェクトのリスト
 	Tag mHitTagList[4];
 
@@ -74,6 +80,8 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
+	// hpが変更されたか
+	bool mIsChangeHitPoint;
 
 	// ダメージ値
 	int mDamageValue;

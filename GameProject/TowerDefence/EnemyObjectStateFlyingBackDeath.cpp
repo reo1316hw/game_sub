@@ -19,7 +19,6 @@ EnemyObjectStateFlyingBackDeath::EnemyObjectStateFlyingBackDeath(PlayerObject* _
 	, mPlayerPtr(_playerPtr)
 	, mEnemyHitPointGaugePtr(nullptr)
 	, mEnemyHitPointFramePtr(nullptr)
-	, mBoxColliderPtr(nullptr)
 {
 }
 
@@ -81,10 +80,6 @@ EnemyState EnemyObjectStateFlyingBackDeath::Update(EnemyObject* _owner, const fl
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateFlyingBackDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
-	mBoxColliderPtr = _owner->GetBoxCollider();
-	// エネミーの当たり判定を無効にする
-	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
-
 	mIsHitStop = false;
 
 	// プレイヤーのステートが3段階目の通常攻撃状態だったらヒットストップを行う
@@ -117,12 +112,12 @@ void EnemyObjectStateFlyingBackDeath::Enter(EnemyObject* _owner, const float _De
 }
 
 /// <summary>
-/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
+/// ヒットした時の処理
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyObjectStateFlyingBackDeath::Exit(EnemyObject* _owner, const float _DeltaTime)
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void EnemyObjectStateFlyingBackDeath::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
-	// エネミーの当たり判定を有効にする
-	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
+	// 座標
+	mPosition = _owner->GetPosition();
 }

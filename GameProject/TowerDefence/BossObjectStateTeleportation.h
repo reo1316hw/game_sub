@@ -40,6 +40,13 @@ public:
 	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 	void Exit(BossObject* _owner, const float _DeltaTime)override;
 
+	/// <summary>
+	/// ヒットした時の処理
+	/// </summary>
+	/// <param name="_owner"> ボス(親)のポインタ </param>
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(BossObject* _owner, const GameObject& _HitObject)override;
+
 private:
 
 	// テレポート終わるタイミング

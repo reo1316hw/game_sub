@@ -144,3 +144,14 @@ void BossObjectStateFlyingBackDamage::Exit(BossObject* _owner, const float _Delt
 	// エネミーの当たり判定を有効にする
 	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 }
+
+/// <summary>
+/// ヒットした時の処理
+/// </summary>
+/// <param name="_owner"> ボス(親)のポインタ </param>
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void BossObjectStateFlyingBackDamage::OnCollision(BossObject* _owner, const GameObject& _HitObject)
+{
+	// 座標
+	mPosition = _owner->GetPosition();
+}

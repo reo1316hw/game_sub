@@ -52,35 +52,35 @@ MapCreate::~MapCreate()
 void MapCreate::OpenFile()
 {
 	// 上層マップデータの読み込み
-	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Upper"))
+	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Upper"))
 	{
 		printf("don't have Layer/UpperObject\n");
 		return;
 	}
 
 	// 下層マップデータの読み込み
-	if (!readTiledJson(mUnderObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Under"))
+	if (!readTiledJson(mUnderObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Under"))
 	{
 		printf("don't have Layer/UnderObject\n");
 		return;
 	}
 
 	// 最下層マップデータの読み込み
-	if (!readTiledJson(mBottomObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Bottom"))
+	if (!readTiledJson(mBottomObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Bottom"))
 	{
 		printf("don't have Layer/BottomObject\n");
 		return;
 	}
 
 	// プレイヤーのデータの読み込み
-	if (!readTiledJson(mPlayerMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Player"))
+	if (!readTiledJson(mPlayerMapData, "Assets/Config/DebugValkyrieWarriors.json", "Player"))
 	{
 		printf("don't have Layer/Player\n");
 		return;
 	}
 
 	// エネミーたちのデータの読み込み
-	if (!readTiledJson(mEnemysMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Enemys"))
+	if (!readTiledJson(mEnemysMapData, "Assets/Config/DebugValkyrieWarriors.json", "Enemys"))
 	{
 		printf("don't have Layer/Enemys\n");
 		return;

@@ -11,6 +11,7 @@ BossObjectStateOverheadAttack::BossObjectStateOverheadAttack(PlayerObject* _play
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
+	, mIsChangeHitPoint(false)
 	, mDamageValue(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mPosition(Vector3::Zero)
@@ -35,11 +36,33 @@ BossState BossObjectStateOverheadAttack::Update(BossObject* _owner, const float 
 		{
 		case Tag::eDashAttackEffect:
 
-			return BossState::eBossStateImpactDamage;
+			// hpが変更されたらダメージを負う処理を現在のステートに次回入るまで行わないようにする
+			if (mIsChangeHitPoint)
+			{
+				break;
+			}
+
+			// ダメージを負う処理
+			SufferDamage(_owner);
+
+			mIsChangeHitPoint = true;
+
+			break;
 
 		case Tag::eFirstAttackEffect:
 
-			return BossState::eBossStateImpactDamage;
+			// hpが変更されたらダメージを負う処理を現在のステートに次回入るまで行わないようにする
+			if (mIsChangeHitPoint)
+			{
+				break;
+			}
+
+			// ダメージを負う処理
+			SufferDamage(_owner);
+
+			mIsChangeHitPoint = true;
+
+			break;
 
 		case Tag::eSecondAttackEffect:
 
@@ -159,4 +182,20 @@ bool BossObjectStateOverheadAttack::ReceivedAttack(const Tag& _hitTag, const int
 	}
 
 	return false;
+}
+
+/// <summary>
+/// ダメージを負う処理
+/// </summary>
+/// <param name="_owner"> ボス(親)のポインタ </param>
+void BossObjectStateOverheadAttack::SufferDamage(BossObject* _owner)
+{
+	// ダメージ値
+	int damageValue = _owner->GetDamageValue();
+	// 体力
+	int hitPoint = _owner->GetHitPoint() - damageValue;
+
+	// オブジェクトのスケールサイズを求めるための左辺の値を設定
+	_owner->SetScaleLeftSideValue(hitPoint);
+	_owner->SetHitPoint(hitPoint);
 }

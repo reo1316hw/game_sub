@@ -34,11 +34,11 @@ public:
 	void Enter(EnemyObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-	/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
+	/// ヒットした時の処理
 	/// </summary>
 	/// <param name="_owner"> エネミー(親)のポインタ </param>
-	/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void Exit(EnemyObject* _owner, const float _DeltaTime)override;
+	/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+	void OnCollision(EnemyObject* _owner, const GameObject& _HitObject)override;
 
 private:
 
@@ -65,6 +65,4 @@ private:
 	ParticleGauge* mEnemyHitPointGaugePtr;
 	// エネミーのhpの枠のポインタ
 	ParticleFrame* mEnemyHitPointFramePtr;
-	// ボックスの当たり判定を行うコンポーネントクラスのポインタ
-	BoxCollider* mBoxColliderPtr;
 };

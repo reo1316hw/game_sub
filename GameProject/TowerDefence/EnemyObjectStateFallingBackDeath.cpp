@@ -15,7 +15,6 @@ EnemyObjectStateFallingBackDeath::EnemyObjectStateFallingBackDeath(PlayerObject*
 	, mPlayerPtr(_playerPtr)
 	, mEnemyHitPointGaugePtr(nullptr)
 	, mEnemyHitPointFramePtr(nullptr)
-	, mBoxColliderPtr(nullptr)
 {
 }
 
@@ -68,10 +67,6 @@ EnemyState EnemyObjectStateFallingBackDeath::Update(EnemyObject* _owner, const f
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void EnemyObjectStateFallingBackDeath::Enter(EnemyObject* _owner, const float _DeltaTime)
 {
-	mBoxColliderPtr = _owner->GetBoxCollider();
-	// エネミーの当たり判定を無効にする
-	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
-
 	SkeletalMeshComponent* meshcomp = _owner->GetSkeletalMeshComponentPtr();
 	meshcomp->PlayAnimation(_owner->GetAnimPtr(EnemyState::eEnemyStateFallingBackDeath));
 
@@ -93,12 +88,12 @@ void EnemyObjectStateFallingBackDeath::Enter(EnemyObject* _owner, const float _D
 }
 
 /// <summary>
-/// エネミーの状態が変更して、最後に1回だけ呼び出される関数
+/// ヒットした時の処理
 /// </summary>
 /// <param name="_owner"> エネミー(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void EnemyObjectStateFallingBackDeath::Exit(EnemyObject* _owner, const float _DeltaTime)
+/// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
+void EnemyObjectStateFallingBackDeath::OnCollision(EnemyObject* _owner, const GameObject& _HitObject)
 {
-	// エネミーの当たり判定を有効にする
-	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
+	// 座標
+	mPosition = _owner->GetPosition();
 }

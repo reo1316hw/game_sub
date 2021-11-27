@@ -33,9 +33,9 @@ UIRoot::UIRoot(const Tag& _ObjectTag, PlayerObject* _playerPtr, BossObject* _bos
 	// プレイヤーのhpの枠を生成
 	new SpriteFrame(MPlayerHitPointPosition, "Assets/Texture/PlayerHpFrame.png", Tag::eOther, State::eActive, MPlayerHitPointScale);
 	// ボスのhpゲージを生成
-	SpriteGauge* bossHitPointGaugePtr = new SpriteGauge(_bossPtr, MBossHitPointGaugePosition, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, State::eDead, MBossHitPointScale);
+	SpriteGauge* bossHitPointGaugePtr = new SpriteGauge(_bossPtr, MBossHitPointGaugePosition, "Assets/Texture/EnemyHpGauge.png", Tag::eOther, State::eActive, MBossHitPointScale);
 	// ボスのhpの枠を生成
-	SpriteFrame* bossHitPointFramePtr = new SpriteFrame(MBossHitPointFramePosition, "Assets/Texture/SpriteFrame.png", Tag::eOther, State::eDead, MBossHitPointScale);
+	SpriteFrame* bossHitPointFramePtr = new SpriteFrame(MBossHitPointFramePosition, "Assets/Texture/SpriteFrame.png", Tag::eOther, State::eActive, MBossHitPointScale);
 	// 倒したエネミーのカウントゲージを生成
 	SpriteGauge* deadEnemyCountGaugePtr = new SpriteGauge(_enemyObjectManagerPtr, MDeadEnemyCountGaugePosition, "Assets/Texture/DeadEnemyCountGauge.png", Tag::eOther, State::eActive, _enemyObjectManagerPtr, MDeadEnemyCountScale, true);
 	// 倒したエネミーのカウントフレームを生成

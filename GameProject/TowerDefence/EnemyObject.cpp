@@ -264,7 +264,7 @@ void EnemyObject::OnCollision(const GameObject& _HitObject)
 			mPosition.y += dy;
 		}
 
-		SetPosition(mPosition);
+ 		SetPosition(mPosition);
 	}
 
 	mStatePools[static_cast<int>(mNowState)]->OnCollision(this, _HitObject);
