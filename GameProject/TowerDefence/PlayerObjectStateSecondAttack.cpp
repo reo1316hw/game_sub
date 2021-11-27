@@ -308,6 +308,9 @@ void PlayerObjectStateSecondAttack::OnCollision(PlayerObject* _owner, const Game
 {
 	mPlayerPtr = _owner;
 
+	// 座標
+	mPosition = mPlayerPtr->GetPosition();
+
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
 

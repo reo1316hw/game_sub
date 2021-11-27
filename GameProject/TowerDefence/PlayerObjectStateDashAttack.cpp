@@ -164,6 +164,9 @@ void PlayerObjectStateDashAttack::OnCollision(PlayerObject* _owner, const GameOb
 {
 	mPlayerPtr = _owner;
 
+	// 座標
+	mPosition = mPlayerPtr->GetPosition();
+
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
 

@@ -154,6 +154,9 @@ void PlayerObjectStateSprintStart::OnCollision(PlayerObject* _owner, const GameO
 {
 	mPlayerPtr = _owner;
 
+	// 座標
+	mPosition = mPlayerPtr->GetPosition();
+
 	// オブジェクトのタグ
 	mHitTag = _HitObject.GetTag();
 

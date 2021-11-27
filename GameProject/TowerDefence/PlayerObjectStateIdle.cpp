@@ -110,6 +110,9 @@ void PlayerObjectStateIdle::Enter(PlayerObject* _owner, const float _DeltaTime)
 void PlayerObjectStateIdle::OnCollision(PlayerObject* _owner, const GameObject& _HitObject)
 {
     mPlayerPtr = _owner;
+
+    // 座標
+    mPosition = mPlayerPtr->GetPosition();
  
     // オブジェクトのタグ
     mHitTag = _HitObject.GetTag();
