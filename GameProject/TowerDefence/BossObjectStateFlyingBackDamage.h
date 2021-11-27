@@ -34,13 +34,6 @@ public:
 	void Enter(BossObject* _owner, const float _DeltaTime)override;
 
 	/// <summary>
-    /// ボスの状態が変更して、最後に1回だけ呼び出される関数
-    /// </summary>
-    /// <param name="_owner"> ボス(親)のポインタ </param>
-    /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void Exit(BossObject* _owner, const float _DeltaTime)override;
-
-	/// <summary>
 	/// ボス同士の引き離し
 	/// </summary>
 	/// <param name="_owner"> ボス親)のポインタ </param>
@@ -91,6 +84,4 @@ private:
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
-	// ボックスの当たり判定を行うコンポーネントクラスのポインタ
-	BoxCollider* mBoxColliderPtr;
 };

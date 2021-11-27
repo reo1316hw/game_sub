@@ -20,7 +20,6 @@ BossObjectStateFlyingBackDamage::BossObjectStateFlyingBackDamage(PlayerObject* _
 	, mVelocity(Vector3::Zero)
 	, mDirPlayerVec(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
-	, mBoxColliderPtr(nullptr)
 {
 }
 
@@ -93,10 +92,6 @@ void BossObjectStateFlyingBackDamage::Separation(BossObject* _owner, const Vecto
 /// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
 void BossObjectStateFlyingBackDamage::Enter(BossObject* _owner, const float _DeltaTime)
 {
-	mBoxColliderPtr = _owner->GetBoxCollider();
-	// エネミーの当たり判定を無効にする
-	mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
-
 	mIsHitStop = false;
 
 	// プレイヤーのステートが3段階目の通常攻撃状態だったらヒットストップを行う
@@ -132,17 +127,6 @@ void BossObjectStateFlyingBackDamage::Enter(BossObject* _owner, const float _Del
 	_owner->SetScaleLeftSideValue(mHitPoint);
 	_owner->RotateToNewForward(mDirPlayerVec);
 	_owner->SetHitPoint(mHitPoint);
-}
-
-/// <summary>
-/// ボスの状態が変更して、最後に1回だけ呼び出される関数
-/// </summary>
-/// <param name="_owner"> ボス(親)のポインタ </param>
-/// <param name="_DeltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void BossObjectStateFlyingBackDamage::Exit(BossObject* _owner, const float _DeltaTime)
-{
-	// エネミーの当たり判定を有効にする
-	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 }
 
 /// <summary>
