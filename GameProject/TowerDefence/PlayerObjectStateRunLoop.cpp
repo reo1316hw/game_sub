@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateRunLoop::PlayerObjectStateRunLoop()
 	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
-	, mDamageValueList{ 5, 10, 20, 15 }
+	, mDamageValueList{ 5, 15, 30, 20 }
 	, MMoveSpeed(300.0f)
 	, MLeftAxisThreshold(0.5f)
 	, mIsDamage(false)

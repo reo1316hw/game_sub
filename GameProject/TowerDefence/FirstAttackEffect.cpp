@@ -42,6 +42,7 @@ void FirstAttackEffect::UpdateGameObject(float _deltaTime)
 
 	if (nowState != PlayerState::ePlayerStateFirstAttack)
 	{
+		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mEffectComponentPtr->StopEffect();
 		return;
 	}

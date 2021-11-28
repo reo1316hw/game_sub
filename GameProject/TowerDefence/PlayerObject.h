@@ -93,6 +93,8 @@ private:
 	const Vector3 MAttackEffectScale;
 	// ヒットエフェクトの大きさ
 	const Vector3 MHitEffectScale;
+	// 丸い影の大きさ
+	const Vector3 MCircleShadowScale;
 
 	// 現在のステート
 	PlayerState mNowState;

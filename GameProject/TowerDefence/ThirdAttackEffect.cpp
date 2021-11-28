@@ -38,6 +38,7 @@ void ThirdAttackEffect::UpdateGameObject(float _deltaTime)
 
 	if (nowState != PlayerState::ePlayerStateThirdAttack)
 	{
+		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mEffectComponentPtr->StopEffect();
 		return;
 	}

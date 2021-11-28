@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateDashAttack::PlayerObjectStateDashAttack()
 	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
-	, mDamageValueList{ 5, 10, 20, 15 }
+	, mDamageValueList{ 5, 15, 30, 20 }
 	, MHitStopEndTiming(5)
 	, MValidComboFrame(0.4f)
 	, MBoxEnableTiming(0.15f)

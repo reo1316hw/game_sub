@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateThirdAttack::PlayerObjectStateThirdAttack()
 	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
-	, mDamageValueList{ 5, 10, 20, 15 }
+	, mDamageValueList{ 5, 15, 30, 20 }
 	, faceAngleList{ 0.0f, 45.0f, 90.0f, 135.0f, 180.0f, 225.0f, 270.0f, 315.0f }
 	, MHitStopEndTiming(10)
 	, MHalfRotation(180)
@@ -309,7 +309,6 @@ void PlayerObjectStateThirdAttack::Enter(PlayerObject* _owner, const float _Delt
 	// À•W
 	mPosition = _owner->GetPosition();
 }
-
 
 /// <summary>
 /// ƒqƒbƒg‚µ‚½Žž‚Ìˆ—

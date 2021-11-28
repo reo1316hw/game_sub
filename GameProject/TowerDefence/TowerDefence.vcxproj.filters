@@ -360,6 +360,9 @@
     <ClCompile Include="BossObjectStateFlyingBackDamage.cpp">
       <Filter>GameObject\Map\Boss\State</Filter>
     </ClCompile>
+    <ClCompile Include="CircleShadowObject.cpp">
+      <Filter>GameObject\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -722,6 +725,9 @@
     </ClInclude>
     <ClInclude Include="BossObjectStateSweepFallDamage.h">
       <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleShadowObject.h">
+      <Filter>GameObject\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

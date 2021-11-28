@@ -53,6 +53,8 @@ private:
 	const int MTimingTeleportationEnding;
 	// 状態を変えるための距離
 	const float MTransitionStateDistance;
+	// プレイヤーとの距離
+	const float MDistanceWithPlayer;
 
 	// ダメージを受けたか
 	bool mIsDamage;

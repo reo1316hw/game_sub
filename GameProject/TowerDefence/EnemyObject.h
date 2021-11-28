@@ -102,6 +102,8 @@ private:
 	const Vector3 MHpGaugeScale;
 	// ヒットエフェクトの大きさ
 	const Vector3 MHitEffectScale;
+	// 丸い影の大きさ
+	const Vector3 MCircleShadowScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>       mAnimTypes;

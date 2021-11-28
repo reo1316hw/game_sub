@@ -108,6 +108,8 @@
 
 #include "WallObject.h"
 
+#include "CircleShadowObject.h"
+
 #include "MainCameraObject.h"
 
 #include "Sprite.h"

@@ -12,7 +12,7 @@
 BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::string _GpmeshName, const char* _GpskelName,
 	const Tag& _ObjectTag, PlayerObject* _playerPtr)
 	: GameObject(_ObjectTag)
-	, MMaxHp(500)
+	, MMaxHp(300)
 	, MPlayRate(1.0f)
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
 	, MFrontMagicEffectScale(Vector3(15.0f, -15.0f, 15.0f))
@@ -20,6 +20,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	, MOverheadEffectScale(Vector3(20.0f, -20.0f, 20.0f))
 	, MDangerSignalEffectScale(Vector3(40.0f, -40.0f, 40.0f))
 	, MTeleportationEffectScale(Vector3(40.0f, -40.0f, 40.0f))
+	, MCircleShadowScale(Vector3(1.0f, 1.0f, 1.0f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(BossState::eBossStateWait)
 	, mNextState(BossState::eBossStateTeleportation)
@@ -27,7 +28,7 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	//GameObjectメンバ変数の初期化
 	SetScale(_Scale);
 	SetPosition(_Pos);
-	//SetState(State::eDead);
+	SetState(State::eDead);
 	mInitPosition = mPosition;
 	mMaxHp = MMaxHp;
 	mHitPoint = mMaxHp;
@@ -86,6 +87,9 @@ BossObject::BossObject(const Vector3& _Pos, const Vector3& _Scale, const std::st
 	new DangerSignalEffect(this, _playerPtr, MDangerSignalEffectScale, Tag::eDangerSignalEffect);
 	// テレポートエフェクト
 	new TeleportationEffect(this, MTeleportationEffectScale, Tag::eTeleportationEffect);
+
+	//// 丸い影生成
+	//new CircleShadowObject(this, MCircleShadowScale, "Assets/Model/CircleShadow.gpmesh", Tag::eOther);
 
 	// 矩形当たり判定
 	mBox = AABB(Vector3(-45.0f, -45.0f, 0.0f), Vector3(45.0f, 45.0f, 170.0f));

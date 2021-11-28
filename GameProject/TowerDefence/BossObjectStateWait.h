@@ -80,8 +80,10 @@ private:
 
 	// ダメージを受けたか
 	bool mIsDamage;
-	// hpが変更されたか
-	bool mIsChangeHitPoint;
+	// ダッシュアタックhpが変更されたか
+	bool mDashAttackIsChangeHitPoint;
+	// 一回目の通常攻撃hpが変更されたか
+	bool mFirstAttackIsChangeHitPoint;
 
 	// ダメージ値
 	int mDamageValue;
@@ -89,6 +91,8 @@ private:
 	int mPeriodWaitCount;
 	// ヒットする相手のリストの要素数
 	int mHitTagListSize;
+	// 体力
+	int mHitPoint;
 
 	// 座標
 	Vector3 mPosition;

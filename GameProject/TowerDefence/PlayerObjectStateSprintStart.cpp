@@ -5,7 +5,7 @@
 /// </summary>
 PlayerObjectStateSprintStart::PlayerObjectStateSprintStart()
 	: mHitTagList{ Tag::eEnemyAttackDecision, Tag::eFrontCoreMagicEffect, Tag::eAreaMagicEffect, Tag::eOverheadMagicEffect }
-	, mDamageValueList{ 5, 10, 20, 15 }
+	, mDamageValueList{ 5, 15, 30, 20 }
 	, MMoveSpeed(100.0f)
 	, MMaxSpeed(12.0f)
 	, MPlayRate(1.2f)

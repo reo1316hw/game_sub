@@ -38,6 +38,7 @@ void DashAttackEffect::UpdateGameObject(float _deltaTime)
 
 	if (nowState != PlayerState::ePlayerStateDashAttack)
 	{
+		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mEffectComponentPtr->StopEffect();
 		return;
 	}

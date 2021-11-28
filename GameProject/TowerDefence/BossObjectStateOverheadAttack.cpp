@@ -11,9 +11,11 @@ BossObjectStateOverheadAttack::BossObjectStateOverheadAttack(PlayerObject* _play
 	, MVecShortenVelue(0.1f)
 	, MSeparationVecLength(8.0f)
 	, mIsDamage(false)
-	, mIsChangeHitPoint(false)
+	, mDashAttackIsChangeHitPoint(false)
+	, mFirstAttackIsChangeHitPoint(false)
 	, mDamageValue(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
+	, mHitPoint(0)
 	, mPosition(Vector3::Zero)
 	, mVelocity(Vector3::Zero)
 	, mHitTag(Tag::eOther)
@@ -30,6 +32,16 @@ BossObjectStateOverheadAttack::BossObjectStateOverheadAttack(PlayerObject* _play
 /// <returns> ボスの状態 </returns>
 BossState BossObjectStateOverheadAttack::Update(BossObject* _owner, const float _DeltaTime)
 {
+	if (mPlayerPtr->GetNowState() != PlayerState::ePlayerStateDashAttack)
+	{
+		mDashAttackIsChangeHitPoint = false;
+	}
+
+	if (mPlayerPtr->GetNowState() != PlayerState::ePlayerStateFirstAttack)
+	{
+		mFirstAttackIsChangeHitPoint = false;
+	}
+
 	if (mIsDamage)
 	{
 		switch (mHitTag)
@@ -37,7 +49,7 @@ BossState BossObjectStateOverheadAttack::Update(BossObject* _owner, const float 
 		case Tag::eDashAttackEffect:
 
 			// hpが変更されたらダメージを負う処理を現在のステートに次回入るまで行わないようにする
-			if (mIsChangeHitPoint)
+			if (mDashAttackIsChangeHitPoint)
 			{
 				break;
 			}
@@ -45,14 +57,14 @@ BossState BossObjectStateOverheadAttack::Update(BossObject* _owner, const float 
 			// ダメージを負う処理
 			SufferDamage(_owner);
 
-			mIsChangeHitPoint = true;
+			mDashAttackIsChangeHitPoint = true;
 
 			break;
 
 		case Tag::eFirstAttackEffect:
 
 			// hpが変更されたらダメージを負う処理を現在のステートに次回入るまで行わないようにする
-			if (mIsChangeHitPoint)
+			if (mFirstAttackIsChangeHitPoint)
 			{
 				break;
 			}
@@ -60,7 +72,7 @@ BossState BossObjectStateOverheadAttack::Update(BossObject* _owner, const float 
 			// ダメージを負う処理
 			SufferDamage(_owner);
 
-			mIsChangeHitPoint = true;
+			mFirstAttackIsChangeHitPoint = true;
 
 			break;
 
@@ -73,6 +85,13 @@ BossState BossObjectStateOverheadAttack::Update(BossObject* _owner, const float 
 			return BossState::eBossStateFlyingBackDamage;
 		}
 	}
+
+	if (mHitPoint <= 0)
+	{
+		return BossState::eBossStateDeath;
+	}
+
+	mIsDamage = false;
 
 	_owner->SetPosition(mPosition);
 
@@ -117,6 +136,8 @@ void BossObjectStateOverheadAttack::Enter(BossObject* _owner, const float _Delta
 
 	mIsDamage = false;
 
+	// 体力
+	mHitPoint = _owner->GetHitPoint();
 	// 座標
 	mPosition = _owner->GetPosition();
 }
@@ -193,9 +214,9 @@ void BossObjectStateOverheadAttack::SufferDamage(BossObject* _owner)
 	// ダメージ値
 	int damageValue = _owner->GetDamageValue();
 	// 体力
-	int hitPoint = _owner->GetHitPoint() - damageValue;
+	mHitPoint = _owner->GetHitPoint() - damageValue;
 
 	// オブジェクトのスケールサイズを求めるための左辺の値を設定
-	_owner->SetScaleLeftSideValue(hitPoint);
-	_owner->SetHitPoint(hitPoint);
+	_owner->SetScaleLeftSideValue(mHitPoint);
+	_owner->SetHitPoint(mHitPoint);
 }

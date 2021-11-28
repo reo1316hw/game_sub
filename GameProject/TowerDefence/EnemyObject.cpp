@@ -17,6 +17,7 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	, MPlayRate(1.0f)
 	, MHpGaugeScale(Vector3(0.05f, 1.0f, 2.0f))
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
+	, MCircleShadowScale(Vector3(0.5f, 0.5f, 0.5f))
 	, mInitPosition(Vector3::Zero)
 	, mNowState(EnemyState::eEnemyStateWait)
 	, mNextState(EnemyState::eEnemyStateTrack)
@@ -92,6 +93,9 @@ EnemyObject::EnemyObject(const Vector3& _Pos, const Vector3& _Scale, const std::
 	mEnemyHitPointGaugePtr = new ParticleGauge(this, MHpGaugeScale, "Assets/Texture/EnemyHpGauge.png", Tag::eOther);
 	// ÉGÉlÉ~Å[ÇÃhpÇÃògÇê∂ê¨
 	mEnemyHitPointFramePtr = new ParticleFrame(this, MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther);
+
+	//// ä€Ç¢âeê∂ê¨
+	//new CircleShadowObject(this, MCircleShadowScale, "Assets/Model/CircleShadow.gpmesh", Tag::eOther);
 }
 
 /// <summary>
@@ -189,6 +193,8 @@ EnemyObject::EnemyObject(const bool& _ShouldTutorialUse, const Vector3& _Pos, co
 	mEnemyHitPointFramePtr = new ParticleFrame(this, MHpGaugeScale, "Assets/Texture/EnemyHpFrame.png", Tag::eOther);
 	mEnemyHitPointFramePtr->SetState(eActive);
 
+	//// ä€Ç¢âeê∂ê¨
+	//new CircleShadowObject(this, MCircleShadowScale, "Assets/Model/CircleShadow.gpmesh", Tag::eOther);
 }
 
 /// <summary>

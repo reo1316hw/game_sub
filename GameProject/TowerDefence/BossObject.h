@@ -84,6 +84,8 @@ private:
 	const Vector3 MDangerSignalEffectScale;
 	// テレポートエフェクトの大きさ
 	const Vector3 MTeleportationEffectScale;
+	// 丸い影の大きさ
+	const Vector3 MCircleShadowScale;
 
 	// アニメーション可変長コンテナ
 	std::vector<const Animation*>      mAnimTypes;

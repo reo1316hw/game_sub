@@ -7,6 +7,7 @@
 BossObjectStateTeleportation::BossObjectStateTeleportation(PlayerObject* _playerPtr)
 	: MTimingTeleportationEnding(120)
 	, MTransitionStateDistance(30000.0f)
+	, MDistanceWithPlayer(50.0f)
 	, mIsDamage(false)
 	, mUntilTeleportationEndingCount(0)
 	, mTeleportationVec(Vector3::Zero)
@@ -28,7 +29,7 @@ BossState BossObjectStateTeleportation::Update(BossObject* _owner, const float _
 	// プレイヤーに向いたベクトルsd
 	Vector3 dirPlayerVec = playerPos - mPosition;
 
-	mPosition = playerPos + mTeleportationVec * 100.0f;
+	mPosition = playerPos + mTeleportationVec * MDistanceWithPlayer;
 
 	++mUntilTeleportationEndingCount;
 
@@ -129,7 +130,7 @@ void BossObjectStateTeleportation::Exit(BossObject* _owner, const float _DeltaTi
 
 /// <summary>
 /// ヒットした時の処理
-/// </summary>
+/// </summary>a
 /// <param name="_owner"> ボス(親)のポインタ </param>
 /// <param name="_HitObject"> ヒットしたゲームオブジェクト </param>
 void BossObjectStateTeleportation::OnCollision(BossObject* _owner, const GameObject& _HitObject)

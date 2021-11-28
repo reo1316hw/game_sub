@@ -52,35 +52,35 @@ MapCreate::~MapCreate()
 void MapCreate::OpenFile()
 {
 	// 上層マップデータの読み込み
-	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Upper"))
+	if (!readTiledJson(mUpperObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Upper"))
 	{
 		printf("don't have Layer/UpperObject\n");
 		return;
 	}
 
 	// 下層マップデータの読み込み
-	if (!readTiledJson(mUnderObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Under"))
+	if (!readTiledJson(mUnderObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Under"))
 	{
 		printf("don't have Layer/UnderObject\n");
 		return;
 	}
 
 	// 最下層マップデータの読み込み
-	if (!readTiledJson(mBottomObjectMapData, "Assets/Config/DebugValkyrieWarriors.json", "Bottom"))
+	if (!readTiledJson(mBottomObjectMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Bottom"))
 	{
 		printf("don't have Layer/BottomObject\n");
 		return;
 	}
 
 	// プレイヤーのデータの読み込み
-	if (!readTiledJson(mPlayerMapData, "Assets/Config/DebugValkyrieWarriors.json", "Player"))
+	if (!readTiledJson(mPlayerMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Player"))
 	{
 		printf("don't have Layer/Player\n");
 		return;
 	}
 
 	// エネミーたちのデータの読み込み
-	if (!readTiledJson(mEnemysMapData, "Assets/Config/DebugValkyrieWarriors.json", "Enemys"))
+	if (!readTiledJson(mEnemysMapData, "Assets/Config/ValkyrieWarriorsMap.json", "Enemys"))
 	{
 		printf("don't have Layer/Enemys\n");
 		return;
@@ -247,9 +247,9 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 
 	case(MapDataNum::eTutorialEnemyNum):
 
-		//// チュートリアルエネミーを生成
-		//mCreateEnemysPtr->CreateEnemyObject(true, _ObjectPos, MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh",
-		//	"Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, mPlayerPtr);
+		// チュートリアルエネミーを生成
+		mCreateEnemysPtr->CreateEnemyObject(true, _ObjectPos, MPersonSize, "Assets/Model/Enemy/Enemy.gpmesh",
+			"Assets/Model/Enemy/Enemy.gpskel", Tag::eEnemy, mPlayerPtr);
 
 		break;
 

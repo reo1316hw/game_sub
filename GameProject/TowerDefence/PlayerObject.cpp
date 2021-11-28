@@ -15,6 +15,7 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	, MAngle(270.0f)
 	, MAttackEffectScale(Vector3(50.0f, -50.0f, 50.0f))
 	, MHitEffectScale(Vector3(10.0f, -10.0f, 10.0f))
+	, MCircleShadowScale(Vector3(0.5f, 0.5f, 0.5f))
 	, mNowState(PlayerState::ePlayerStateRunLoop)
 	, mNextState(PlayerState::ePlayerStateIdle)
 	, mSkeltalMeshComponentPtr(nullptr)
@@ -87,6 +88,9 @@ PlayerObject::PlayerObject(const Vector3& _Pos, const Vector3& _Scale, const cha
 	ThirdAttackEffect* thirdAttackEffectPtr = new ThirdAttackEffect(this, MAttackEffectScale, Tag::eThirdAttackEffect, mThirdAttackPtr);
 	// ダッシュ攻撃エフェクトを生成
 	DashAttackEffect* dashEffectPtr = new DashAttackEffect(this, MAttackEffectScale, Tag::eDashAttackEffect, dashAttackPtr);
+
+	//// 丸い影生成
+	//new CircleShadowObject(this, MCircleShadowScale, "Assets/Model/CircleShadow.gpmesh", Tag::eOther);
 
 	// 1段階目の通常攻撃状態クラスに1段階目の通常攻撃エフェクトクラスのポインタを渡す
 	mFirstAttackPtr->SetFirstAttackEffectPtr(firstAttackEffectPtr);
