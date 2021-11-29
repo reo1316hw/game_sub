@@ -13,6 +13,7 @@ AreaMagicEffect::AreaMagicEffect(BossObject* _bossPtr, const Vector3& _Scale, co
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
 	, mIsCollisionState(false)
 	, mIsOneCollisionState(false)
+	, mIsPlayEffect(false)
 	, mElapseTime(0.0f)
 	, mNowState(_bossPtr->GetNowState())
 	, mBossPtr(_bossPtr)
@@ -46,6 +47,7 @@ void AreaMagicEffect::UpdateGameObject(float _deltaTime)
 		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mIsCollisionState = false;
 		mIsOneCollisionState = false;
+		mIsPlayEffect = false;
 		mElapseTime = 0.0f;
 		return;
 	}
@@ -85,10 +87,11 @@ void AreaMagicEffect::UpdateGameObject(float _deltaTime)
 		return;
 	}
 
-	// 再生済みじゃなかったらエフェクトを再生する
-	if (mEffectComponentPtr->IsPlayedEffect())
+	if (!mIsPlayEffect)
 	{
 		// エフェクトを再生
 		mEffectComponentPtr->PlayEffect();
 	}
+
+	mIsPlayEffect = true;
 }

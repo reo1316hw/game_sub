@@ -10,6 +10,7 @@ FrontLaserMagicEffect::FrontLaserMagicEffect(BossObject* _bossPtr, const Vector3
 	: GameObject(_ObjectTag)
 	, MBoxEnableTiming(0.5f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
+	, mIsPlayEffect(false)
 	, mElapseTime(0.0f)
 	, mBossPtr(_bossPtr)
 	, mEffectComponentPtr(nullptr)
@@ -31,6 +32,7 @@ void FrontLaserMagicEffect::UpdateGameObject(float _deltaTime)
 	{
 		mEffectComponentPtr->StopEffect();
 		mElapseTime = 0.0f;
+		mIsPlayEffect = false;
 		return;
 	}
 
@@ -42,11 +44,12 @@ void FrontLaserMagicEffect::UpdateGameObject(float _deltaTime)
 		SetPosition(mPosition);
 		SetRotation(mBossPtr->GetRotation());
 
-		// 再生済みじゃなかったらエフェクトを再生する
-		if (mEffectComponentPtr->IsPlayedEffect())
+		if (!mIsPlayEffect)
 		{
 			// エフェクトを再生
 			mEffectComponentPtr->PlayEffect();
 		}
+
+		mIsPlayEffect = true;
 	}
 }

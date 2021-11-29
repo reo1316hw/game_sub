@@ -11,6 +11,7 @@ DangerSignalEffect::DangerSignalEffect(BossObject* _bossPtr, PlayerObject* _play
 	: GameObject(_ObjectTag)
 	, MEffectPositionUnUpdateTiming(1.8f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 5.0f))
+	, mIsPlayEffect(false)
 	, mElapseTime(0.0f)
 	, mBossPtr(_bossPtr)
 	, mPlayerPtr(_playerPtr)
@@ -33,6 +34,7 @@ void DangerSignalEffect::UpdateGameObject(float _deltaTime)
 	{
 		mEffectComponentPtr->StopEffect();
 		mElapseTime = 0.0f;
+		mIsPlayEffect = false;
 		return;
 	}
 
@@ -44,10 +46,11 @@ void DangerSignalEffect::UpdateGameObject(float _deltaTime)
 		SetPosition(mPosition);
 	}
 
-	// 再生済みじゃなかったらエフェクトを再生する
-	if (mEffectComponentPtr->IsPlayedEffect())
+	if (!mIsPlayEffect)
 	{
 		// エフェクトを再生
 		mEffectComponentPtr->PlayEffect();
 	}
+
+	mIsPlayEffect = true;
 }

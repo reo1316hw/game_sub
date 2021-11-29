@@ -12,6 +12,7 @@ ThirdAttackEffect::ThirdAttackEffect(PlayerObject* _playerPtr, const Vector3& _S
 	, MOffset(10.0f)
 	, mIsHit(false)
 	, mDisableIsHit(false)
+	, mIsPlayEffect(false)
 	, mPlayerPtr(_playerPtr)
 	, mEffectComponentPtr(nullptr)
 	, mThirdAttackPtr(_thirdAttackPtr)
@@ -40,6 +41,7 @@ void ThirdAttackEffect::UpdateGameObject(float _deltaTime)
 	{
 		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mEffectComponentPtr->StopEffect();
+		mIsPlayEffect = false;
 		return;
 	}
 
@@ -62,12 +64,13 @@ void ThirdAttackEffect::UpdateGameObject(float _deltaTime)
 	// 当たり判定を有効にする
 	if (mThirdAttackPtr->GetIsCollisionState())
 	{
-		// 再生済みじゃなかったらエフェクトを再生する
-		if (mEffectComponentPtr->IsPlayedEffect())
+		if (!mIsPlayEffect)
 		{
 			// エフェクトを再生
 			mEffectComponentPtr->PlayEffect();
 		}
+
+		mIsPlayEffect = true;
 
 		mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 	}

@@ -11,6 +11,7 @@ FrontCoreMagicEffect::FrontCoreMagicEffect(BossObject* _bossPtr, const Vector3& 
 	, MBoxEnableTiming(0.5f)
 	, MMoveSpeed(10.0f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
+	, mIsPlayEffect(false)
 	, mElapseTime(0.0f)
 	, mBossPtr(_bossPtr)
 	, mEffectComponentPtr(nullptr)
@@ -40,6 +41,7 @@ void FrontCoreMagicEffect::UpdateGameObject(float _deltaTime)
 		mEffectComponentPtr->StopEffect();
 		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mElapseTime = 0.0f;
+		mIsPlayEffect = false;
 		return;
 	}
 
@@ -63,10 +65,11 @@ void FrontCoreMagicEffect::UpdateGameObject(float _deltaTime)
 
 	mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 
-	// 再生済みじゃなかったらエフェクトを再生する
-	if (mEffectComponentPtr->IsPlayedEffect())
+	if (!mIsPlayEffect)
 	{
 		// エフェクトを再生
 		mEffectComponentPtr->PlayEffect();
 	}
+
+	mIsPlayEffect = true;
 }

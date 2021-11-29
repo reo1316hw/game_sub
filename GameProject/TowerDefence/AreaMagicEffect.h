@@ -41,6 +41,8 @@ private:
 	bool mIsCollisionState;
 	// 1回だけ当たり判定を有効にするフラグ
 	bool mIsOneCollisionState;
+	// エフェクトを再生したか
+	bool mIsPlayEffect;
 
 	// 経過時間
 	float mElapseTime;

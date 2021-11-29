@@ -11,6 +11,7 @@ SecondAttackEffect::SecondAttackEffect(PlayerObject* _playerPtr, const Vector3& 
 	: GameObject(_ObjectTag)
 	, mHitTagList{ Tag::eEnemy, Tag::eBoss }
 	, MOffset(10.0f)
+	, mIsPlayEffect(false)
 	, mHitEnemyCount(0)
 	, mHitTagListSize(sizeof(mHitTagList) / sizeof(int))
 	, mFaceInEnemyVec(Vector3::Zero)
@@ -44,6 +45,7 @@ void SecondAttackEffect::UpdateGameObject(float _deltaTime)
 	{
 		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mEffectComponentPtr->StopEffect();
+		mIsPlayEffect = false;
 		return;
 	}
 
@@ -76,12 +78,13 @@ void SecondAttackEffect::UpdateGameObject(float _deltaTime)
 	// 当たり判定を有効にする
 	if (mSecondAttackPtr->GetIsCollisionState())
 	{
-		// 再生済みじゃなかったらエフェクトを再生する
-		if (mEffectComponentPtr->IsPlayedEffect())
+		if (!mIsPlayEffect)
 		{
 			// エフェクトを再生
 			mEffectComponentPtr->PlayEffect();
 		}
+
+		mIsPlayEffect = true;
 
 		mBoxColliderPtr->SetCollisionState(CollisionState::eEnableCollision);
 	}

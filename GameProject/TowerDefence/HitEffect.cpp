@@ -36,11 +36,8 @@ void HitEffect::UpdateGameObject(float _deltaTime)
 		SetPosition(mPosition);
 		SetRotation(mOwner->GetRotation());
 
-		// 再生済みじゃなかったらエフェクトを再生する
-		if (mEffectComponentPtr->IsPlayedEffect())
-		{
-			// エフェクトを再生
-			mEffectComponentPtr->PlayEffect();
-		}
+		// エフェクトを再生
+ 		mEffectComponentPtr->PlayEffect();
+		
 	}
 }

@@ -48,6 +48,9 @@ private:
 	// 座標との差
 	const float MOffset;
 
+	// エフェクトを再生したか
+	bool mIsPlayEffect;
+
 	// 何体エネミーと当たっているかカウント
 	int mHitEnemyCount;
 	// ヒットする相手のリストの要素数

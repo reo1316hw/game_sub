@@ -10,6 +10,7 @@ TeleportationEffect::TeleportationEffect(BossObject* _bossPtr, const Vector3& _S
 	: GameObject(_ObjectTag)
 	, MPlayRate(5.0f)
 	, MHeightCorrection(Vector3(0.0f, 0.0f, 50.0f))
+	, mIsPlayEffect(false)
 	, mNowState(_bossPtr->GetNowState())
 	, mBossPtr(_bossPtr)
 	, mEffectComponentPtr(nullptr)
@@ -40,17 +41,14 @@ void TeleportationEffect::UpdateGameObject(float _deltaTime)
 		SetPosition(mPosition);
 		SetRotation(mBossPtr->GetRotation());
 
-		// 再生済みじゃなかったらエフェクトを再生する
-		if (mEffectComponentPtr->IsPlayedEffect())
-		{
-			// エフェクトを再生
-			mEffectComponentPtr->PlayEffect(MPlayRate);
-			return;
-		}
+		// エフェクトを再生
+		mEffectComponentPtr->PlayEffect(MPlayRate);
+		return;
 	}
 
 	if (mNowState != BossState::eBossStateTeleportation)
 	{
+		mIsPlayEffect = false;
 		return;
 	}
 
@@ -58,10 +56,11 @@ void TeleportationEffect::UpdateGameObject(float _deltaTime)
 	SetPosition(mPosition);
 	SetRotation(mBossPtr->GetRotation());
 
-	// 再生済みじゃなかったらエフェクトを再生する
-	if (mEffectComponentPtr->IsPlayedEffect())
+	if (!mIsPlayEffect)
 	{
 		// エフェクトを再生
 		mEffectComponentPtr->PlayEffect(MPlayRate);
 	}
+
+	mIsPlayEffect = true;
 }

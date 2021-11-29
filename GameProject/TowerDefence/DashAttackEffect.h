@@ -48,6 +48,8 @@ private:
 	bool mIsHit;
 	// ヒットフラグを無効にするフラグ
 	bool mDisableIsHit;
+	// エフェクトを再生したか
+	bool mIsPlayEffect;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

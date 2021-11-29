@@ -13,6 +13,7 @@ OverheadMagicEffect::OverheadMagicEffect(BossObject* _bossPtr, PlayerObject* _pl
 	, MBoxEnableTiming(2.0f)
 	, mIsCollisionState(false)
 	, mIsOneCollisionState(false)
+	, mIsPlayEffect(false)
 	, mElapseTime(0.0f)
 	, MBoxDisableTiming(2.5f)
 	, mBossPtr(_bossPtr)
@@ -45,6 +46,7 @@ void OverheadMagicEffect::UpdateGameObject(float _deltaTime)
 		mBoxColliderPtr->SetCollisionState(CollisionState::eDisableCollision);
 		mIsCollisionState = false;
 		mIsOneCollisionState = false;
+		mIsPlayEffect = false;
 		mElapseTime = 0.0f;
 		return;
 	}
@@ -82,10 +84,11 @@ void OverheadMagicEffect::UpdateGameObject(float _deltaTime)
 		mIsCollisionState = true;
 	}
 
-	// 再生済みじゃなかったらエフェクトを再生する
-	if (mEffectComponentPtr->IsPlayedEffect())
+	if (!mIsPlayEffect)
 	{
 		// エフェクトを再生
 		mEffectComponentPtr->PlayEffect();
 	}
+
+	mIsPlayEffect = true;
 }

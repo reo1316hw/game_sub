@@ -33,6 +33,9 @@ private:
 	// 高さ補正値
 	const Vector3 MHeightCorrection;
 
+	// エフェクトを再生したか
+	bool mIsPlayEffect;
+
 	// ボスの現在のステート
 	BossState mNowState;
 

@@ -34,6 +34,9 @@ private:
 	// 高さ補正値
 	const Vector3 MHeightCorrection;
 
+	// エフェクトを再生したか
+	bool mIsPlayEffect;
+
 	// 経過時間
 	float mElapseTime;
 	
