@@ -32,6 +32,7 @@ void TeleportationEffect::UpdateGameObject(float _deltaTime)
 
 	if (mNowState == preState)
 	{
+		mIsPlayEffect = false;
 		return;
 	}
 
