@@ -113,8 +113,6 @@ private:
 	// デバッグモードフラグ
 	bool mBoolDebugMode;
 
-	// 床の矩形当たり判定
-	std::vector<BoxCollider*> mGroundBoxes;
 	// 壁の矩形当たり判定
 	std::vector<BoxCollider*> mWallBoxes;
 	// 門の矩形当たり判定

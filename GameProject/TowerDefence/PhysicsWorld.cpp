@@ -835,12 +835,6 @@ void PhysicsWorld::HitCheck(SphereCollider * _sphere)
 /// <param name="_func"> OnCollision関数のポインタ </param>
 void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 {
-	if (_box->GetOwner()->GetTag() == Tag::eGround)
-	{
-		mGroundBoxes.emplace_back(_box);
-		//コライダーのポインタと親オブジェクトの当たり判定時関数ポインタ
-		mCollisionFunction.insert(std::make_pair(static_cast<ColliderComponent*>(_box), _func));
-	}
 	if (_box->GetOwner()->GetTag() == Tag::eWall)
 	{
 		mWallBoxes.emplace_back(_box);
@@ -963,12 +957,6 @@ void PhysicsWorld::AddBox(BoxCollider * _box, onCollisionFunc _func)
 /// <param name="_box"> 削除するBoxColliderクラスのポインタ </param>
 void PhysicsWorld::RemoveBox(BoxCollider * _box)
 {
-	auto groundBox = std::find(mGroundBoxes.begin(), mGroundBoxes.end(), _box);
-	if (groundBox != mGroundBoxes.end())
-	{
-		std::iter_swap(groundBox, mGroundBoxes.end() - 1);
-		mGroundBoxes.pop_back();
-	}
 	auto wallBox = std::find(mWallBoxes.begin(), mWallBoxes.end(), _box);
 	if (wallBox != mWallBoxes.end())
 	{
@@ -1134,7 +1122,6 @@ void PhysicsWorld::DebugShowBox()
 	mLineShader->SetMatrixUniform("uViewProj", viewProj);
 
 	// 当たり判定ボックス描画
-	DrawBoxs(mGroundBoxes, Color::Red);
 	DrawBoxs(mWallBoxes, Color::Blue);
 	DrawBoxs(mGateBoxes, Color::LightBlue);
 	DrawBoxs(mGateDoorBoxes, Color::LightBlue);

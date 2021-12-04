@@ -21,11 +21,5 @@ public:
     /// </summary>
 	~GroundObject() {};
 
-	/// <summary>
-    /// オブジェクトの更新処理
-    /// </summary>
-    /// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
-	void UpdateGameObject(float _deltaTime)override;
-
 private:
 };

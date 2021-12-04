@@ -18,19 +18,4 @@ GroundObject::GroundObject(const Vector3& _Pos, const Vector3& _Scale, const std
 	mMeshComponentPtr = new MeshComponent(this);
 	//Rendererクラス内のMesh読み込み関数を利用してMeshをセット(.gpmesh)
 	mMeshComponentPtr->SetMesh(RENDERER->GetMesh(_GpmeshName));
-
-	// 当たり判定
-	mMeshPtr = new Mesh;
-	mMeshPtr = RENDERER->GetMesh(_GpmeshName);
-	mBoxColliderPtr = new BoxCollider(this, _ObjectTag, GetOnCollisionFunc());
-	mBoxColliderPtr->SetObjectBox(mMeshPtr->GetBox());
-}
-
-/// <summary>
-/// オブジェクトの更新処理
-/// </summary>
-/// <param name="_deltaTime"> 最後のフレームを完了するのに要した時間 </param>
-void GroundObject::UpdateGameObject(float _deltaTime)
-{
-	mBox = mBoxColliderPtr->GetWorldBox();
 }
