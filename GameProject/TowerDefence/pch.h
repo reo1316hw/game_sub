@@ -134,6 +134,7 @@
 
 #include "Renderer.h"
 #include "HDRRenderer.h"
+#include "DepthMap.h"
 #include "Shader.h"
 #include "Mesh.h"
 #include "Texture.h"

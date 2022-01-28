@@ -13,17 +13,17 @@ in vec2 fragTexCoord;
 in vec3 fragNormal;
 // 頂点位置（ワールド空間）
 in vec3 fragWorldPos;
-//// ライト空間でのフラグメント位置(シャドウマップ)
-//in vec4 fragLightPos;
+// ライト空間でのフラグメント位置(シャドウマップ)
+in vec4 fragLightPos;
 
 // テクスチャサンプリング
 uniform sampler2D uDiffuseMap;
-//uniform sampler2D uNormalMap;
-//uniform sampler2D uSpecularMap;
+uniform sampler2D uNormalMap;
+uniform sampler2D uSpecularMap;
 uniform sampler2D uEmissiveMap;
 
-//// デプスマップ
-//uniform sampler2D depthMap;
+// デプスマップ
+uniform sampler2D depthMap;
 
 // ディレクショナルライト用構造体
 struct DirectionalLight
@@ -56,7 +56,7 @@ uniform float uAlpha;
 uniform DirectionalLight uDirLight;
 
 // シャドウ計算
-//float ShadowCalculation(vec4 fragPosLightSpace);
+float ShadowCalculation(vec4 fragPosLightSpace);
 
 void main()
 {
@@ -79,7 +79,7 @@ void main()
 	Diffuse = uDirLight.mDiffuseColor * max(NdotL,0.0f);
 	Specular = uDirLight.mSpecColor * pow(max(0.0, dot(R, V)), uSpecPower);
 
-    //	float shadow = ShadowCalculation(fragLightPos);
+    float shadow = ShadowCalculation(fragLightPos);
 
 	// テクスチャカラーをディフューズ・アンビエントカラーに合成
 	vec3 texColor = texture(uDiffuseMap, fragTexCoord).rgb;
@@ -87,8 +87,8 @@ void main()
 	vec3 ambientColor = uAmbientLight * texColor;
 
 	// シャドウを合成して描画（アンビエントはシャドウの3響を受けない）
-    //	vec3 result = ( 1.0 - shadow ) * (diffuseColor + Specular) + ambientColor;
-    vec3 result = diffuseColor + Specular + ambientColor;
+    vec3 result = ( 1.0 - shadow ) * (diffuseColor + Specular) + ambientColor;
+    // vec3 result = diffuseColor + Specular + ambientColor;
 	
 	//輝度計算によって高輝度成分のみ、HiBrightBufferに書き込み
     float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
@@ -100,34 +100,34 @@ void main()
     {
         HiBrightBuffer = vec4(0.0f, 0.0f, 0.0f, 0.0f) + texture(uEmissiveMap, fragTexCoord) * uLuminance;
     }
+
 	// HDR成分はそのままHDRバッファへ出力
-//	HDRBuffer = vec4(result, 0.0f);
+    // HDRBuffer = vec4(result, 0.0f);
     HDRBuffer = vec4(result, uAlpha);
 }
 
 // シャドウ
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // 0～1の範囲に変換
+    projCoords = projCoords * 0.5 + 0.5;
+    // デプスマップより深度取得 
+    float closestDepth = texture(depthMap,projCoords.xy).r;
+    // 現在のフラグメントのライト空間での深度値取得
+    float currentDepth = projCoords.z;
+    // 深度バイアス(デプスマップ解像度と勾配
+    vec3 normal = normalize(fragNormal);
+       vec3 lightDir = normalize(-uDirLight.mDirection);
+    float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.0001);
+    
+    // シャドウ判定
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 
-//float ShadowCalculation(vec4 fragPosLightSpace)
-//{
-//    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-//    // 0～1の範囲に変換
-//    projCoords = projCoords * 0.5 + 0.5;
-//    // デプスマップより深度取得 
-//    float closestDepth = texture(depthMap,projCoords.xy).r;
-//    // 現在のフラグメントのライト空間での深度値取得
-//    float currentDepth = projCoords.z;
-//    // 深度バイアス(デプスマップ解像度と勾配
-//    vec3 normal = normalize(fragNormal);
-//       vec3 lightDir = normalize(-uDirLight.mDirection);
-//    float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.0001);
-//    
-//    // シャドウ判定
-//    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
-//
-//    // デプスマップ範囲外は影なしにする
-//    if(projCoords.z > 1.0)
-//    {
-//        shadow = 0.0;
-//    }
-//    return shadow;
-//}
+    // デプスマップ範囲外は影なしにする
+    if(projCoords.z > 1.0)
+    {
+        shadow = 0.0;
+    }
+    return shadow;
+}

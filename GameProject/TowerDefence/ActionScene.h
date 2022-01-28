@@ -32,6 +32,8 @@ private:
 	const int MTimingTransitionGameOver;
 	// 画角
 	const float MAngleOfView;
+	// 光源までの距離
+	const float MLightDistance;
 
 	// ゲームクリアシーンに遷移するまでのカウント
 	int mGameClearTransitionUntilCount;

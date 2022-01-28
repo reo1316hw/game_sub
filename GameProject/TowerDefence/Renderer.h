@@ -46,6 +46,7 @@ class InvisibleMeshComponent;
 class Shader;
 class VertexArray;
 class ParticleComponent;
+class DepthMap;
 class HDRRenderer;
 class CubeMapComponent;
 class PlayerObject;
@@ -289,6 +290,14 @@ private:
 
 	// プレイヤー
 	PlayerObject* mPlayer;
+	// デプスマップレンダラー
+	DepthMap* mDepthMapRender;
+	// スキンメッシュのデプスシェーダー
+	Shader* mSkinnedDepthShader;
+	// メッシュのシャドウシェーダー
+	Shader* mMeshShadowHDRShader;
+	// スキンメッシュのシャドウシェーダー
+	Shader* mSkinnedShadowHDRShader;
 	// HDR レンダラー
 	HDRRenderer* mHDRRenderer;
 
@@ -413,6 +422,8 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <param name="_activeSkyBox"> キューブマップのポインタ </param>
 	void SetActiveSkyBox(CubeMapComponent* _activeSkyBox) { mActiveSkyBox = _activeSkyBox; }
+
+	void SetDepthSetting(const Vector3& _CenterWorldPos, const Vector3& _LightDir, const Vector3& _UpVec, const float _LightDistance);
 
 	/// <summary>
 	/// キューブマップの頂点配列を取得する

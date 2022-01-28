@@ -257,6 +257,7 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="DepthMap.cpp" />
     <ClCompile Include="OperationExplanation.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
@@ -1388,6 +1389,7 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClInclude Include="CircleShadowObject.h" />
     <ClInclude Include="DeadEnemyCountTextChange.h" />
     <ClInclude Include="DefeatEnemyNumberText.h" />
+    <ClInclude Include="DepthMap.h" />
     <ClInclude Include="OperationExplanation.h" />
     <ClInclude Include="OperationExplanationBehavior.h" />
     <ClInclude Include="ParticleFrame.h" />
@@ -1513,19 +1515,24 @@ xcopy "$(ProjectDir)\..\external\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</C
     <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\Depthmap.frag" />
+    <None Include="Shaders\Depthmap.vert" />
     <None Include="Shaders\downsampling.frag" />
     <None Include="Shaders\framebufferScreen.vert" />
     <None Include="Shaders\gaussianblur.frag" />
     <None Include="Shaders\gBuffer_SkyBox.frag" />
     <None Include="Shaders\gBuffer_SkyBox.vert" />
     <None Include="Shaders\hdrBlurBlend.frag" />
-    <None Include="Shaders\HDRMesh.frag" />
+    <None Include="Shaders\ShadowHDRMesh.frag" />
     <None Include="Shaders\Line.frag" />
     <None Include="Shaders\LineWorld.vert" />
     <None Include="Shaders\Particle.frag" />
     <None Include="Shaders\Phong.frag" />
     <None Include="Shaders\Phong.vert" />
+    <None Include="Shaders\ShadowMesh.vert" />
     <None Include="Shaders\Skinned.vert" />
+    <None Include="Shaders\SkinnedDepth.vert" />
+    <None Include="Shaders\SkinnedShadow.vert" />
     <None Include="Shaders\Sprite.frag" />
     <None Include="Shaders\Sprite.vert" />
   </ItemGroup>

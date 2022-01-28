@@ -363,6 +363,9 @@
     <ClCompile Include="CircleShadowObject.cpp">
       <Filter>GameObject\Map</Filter>
     </ClCompile>
+    <ClCompile Include="DepthMap.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -729,6 +732,9 @@
     <ClInclude Include="CircleShadowObject.h">
       <Filter>GameObject\Map</Filter>
     </ClInclude>
+    <ClInclude Include="DepthMap.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -868,7 +874,7 @@
     <None Include="Shaders\Sprite.vert">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shaders\HDRMesh.frag">
+    <None Include="Shaders\ShadowHDRMesh.frag">
       <Filter>Shader</Filter>
     </None>
     <None Include="Shaders\Line.frag">
@@ -881,6 +887,21 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="Shaders\gBuffer_SkyBox.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Depthmap.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\ShadowMesh.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\SkinnedDepth.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\SkinnedShadow.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Depthmap.frag">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

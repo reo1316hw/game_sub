@@ -7,6 +7,7 @@ ActionScene::ActionScene()
 	: MTimingTransitionGameClear(220.0f)
 	, MTimingTransitionGameOver(160.0f)
 	, MAngleOfView(70.0f)
+	, MLightDistance(5000.0f)
 	, mGameClearTransitionUntilCount(0)
 	, mGameOverTransitionUntilCount(0)
 	, mPlayerPtr(nullptr)
@@ -97,6 +98,17 @@ SceneBase* ActionScene::Update(const InputState& _KeyState)
 	{
 		PHYSICS->ToggleDebugMode();
 	}
+
+	// プレイヤーの座標を取得
+	Vector3 playerPos = mPlayerPtr->GetPosition();
+
+	// レンダラに登録されているディレクショナルライト方向を取得
+	DirectionalLight dirLight = RENDERER->GetDirectionalLight();
+	Vector3 lightDir = dirLight.m_direction;
+	lightDir.Normalize();
+
+	// シャドウマップレンダリングのためのライト情報渡す
+	RENDERER->SetDepthSetting(playerPos, lightDir, Vector3::UnitZ, MLightDistance);
 
 	RENDERER->GetEffekseerManager()->Update();
 

@@ -23,6 +23,8 @@ Renderer::Renderer()
 	, mSkinnedShader(nullptr)
 	, mSkyBoxShader(nullptr)
 	, mParticleVertex(nullptr)
+	, mDepthMapRender(nullptr)
+	, mSkinnedDepthShader(nullptr)
 {
 }
 
@@ -131,6 +133,11 @@ bool Renderer::Initialize(const float& _ScreenWidth, const float& _ScreenHeight,
 	}
 	// 未定義テクスチャ
 	mUndefineTexID = GetTexture("Assets/Texture/noneTexture.png")->GetTextureID();
+
+	// デプスレンダラー初期化
+	mDepthMapRender = new DepthMap;
+	const int DepthmapSize = 2048;
+	mDepthMapRender->CreateShadowMap(DepthmapSize);
 
 	// HDRレンダラー初期化
 	mHDRRenderer = new HDRRenderer(mScreenWidth, mScreenHeight, 4);
@@ -254,6 +261,35 @@ void Renderer::UnloadData()
 /// </summary>
 void Renderer::Draw()
 {
+	// デプスレンダリングパス開始
+	Matrix4 lightSpaceMat = mDepthMapRender->GetLightSpaceMatrix();
+	mDepthMapRender->DepthRenderingBegin();
+	{
+		// スタティックメッシュを描画
+		for (auto mc : mMeshComponents)
+		{
+			if (mc->GetVisible())
+			{
+				mc->Draw(mDepthMapRender->GetDepthMapShader());
+			}
+		}
+
+		// スキンメッシュを描画
+		mSkinnedDepthShader->SetActive();
+		mSkinnedDepthShader->SetMatrixUniform("uLightSpaceMat", lightSpaceMat);
+		// スキンシェーダにパラメータセット
+		for (auto sk : mSkeletalMeshes)
+		{
+
+			if (sk->GetVisible())
+			{
+				sk->Draw(mSkinnedDepthShader);
+			}
+		}
+	}
+	// デプスレンダリングパス終了
+	mDepthMapRender->DepthRenderignEnd();
+
 	mHDRRenderer->HdrRecordBegin();
 	{
 		glEnable(GL_DEPTH_TEST);
@@ -451,6 +487,11 @@ void Renderer::SetProjMatrix(const Matrix4& proj)
 	Effekseer::Matrix44 eProj;
 	eProj = tmp;
 	RENDERER->GetEffekseerRenderer()->SetProjectionMatrix(eProj);
+}
+
+void Renderer::SetDepthSetting(const Vector3& _CenterWorldPos, const Vector3& _LightDir, const Vector3& _UpVec, const float _LightDistance)
+{
+	mDepthMapRender->CalcLightSpaceMatrix(_CenterWorldPos, _LightDir, _UpVec, _LightDistance);
 }
 
 /// <summary>
@@ -692,19 +733,21 @@ bool Renderer::LoadShaders()
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
 	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
-	// 標準のメッシュシェーダーの作成
+	// メッシュシェーダーの作成
 	mMeshShader = new Shader();
-	if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/HDRMesh.frag"))
+	if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/ShadowHDRMesh.frag"))
 	{
 		return false;
 	}
 
-	mParticleShader = new Shader();
-	if (!mParticleShader->Load("Shaders/Phong.vert", "Shaders/Particle.frag"))
+	// メッシュのシャドウシェーダー
+	mMeshShadowHDRShader = new Shader();
+	if (!mMeshShadowHDRShader->Load("Shaders/ShadowMesh.vert", "Shaders/ShadowHDRMesh.frag"))
 	{
-		printf("シェーダー読み込み失敗\n");
+		return false;
 	}
 
+	// スキンメッシュシェーダー
 	mSkinnedShader = new Shader();
 	if (!mSkinnedShader->Load("Shaders/Skinned.vert", "Shaders/Phong.frag"))
 	{
@@ -713,7 +756,28 @@ bool Renderer::LoadShaders()
 	mSkinnedShader->SetActive();
 	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
-	// 標準のメッシュシェーダーの作成
+	// スキンメッシュのデプスシェーダー
+	mSkinnedDepthShader = new Shader();
+	if (!mSkinnedDepthShader->Load("Shaders/SkinnedDepth.vert", "Shaders/Depthmap.frag"))
+	{
+		return false;
+	}
+
+	// スキンメッシュのシャドウシェーダー
+	mSkinnedShadowHDRShader = new Shader;
+	if (!mSkinnedShadowHDRShader->Load("Shaders/SkinnedShadow.vert", "Shaders/ShadowHDRMesh.frag"))
+	{
+		return false;
+	}
+
+	// パーティクルシェーダー
+	mParticleShader = new Shader();
+	if (!mParticleShader->Load("Shaders/Phong.vert", "Shaders/Particle.frag"))
+	{
+		printf("シェーダー読み込み失敗\n");
+	}
+
+	// スカイボックスシェーダーの作成
 	mSkyBoxShader = new Shader();
 	if (!mSkyBoxShader->Load("Shaders/gBuffer_SkyBox.vert", "Shaders/gBuffer_SkyBox.frag"))
 	{
