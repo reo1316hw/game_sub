@@ -261,6 +261,11 @@ void Renderer::UnloadData()
 /// </summary>
 void Renderer::Draw()
 {
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// デプスレンダリングパス開始
 	Matrix4 lightSpaceMat = mDepthMapRender->GetLightSpaceMatrix();
 	mDepthMapRender->DepthRenderingBegin();
@@ -280,7 +285,6 @@ void Renderer::Draw()
 		// スキンシェーダにパラメータセット
 		for (auto sk : mSkeletalMeshes)
 		{
-
 			if (sk->GetVisible())
 			{
 				sk->Draw(mSkinnedDepthShader);
@@ -314,19 +318,60 @@ void Renderer::Draw()
 			mActiveSkyBox->Draw(mSkyBoxShader);
 		}
 
-		// メッシュコンポーネントの描画
-		// 基本的なメッシュシェーダーをアクティブにする
-		mMeshShader->SetActive();
-		// ビュー射影行列を更新する
-		mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
-		// シェーダーに渡すライティング情報を更新する
-		SetLightUniforms(mMeshShader, mView);
-		// すべてのメッシュの描画
+		//// メッシュコンポーネントの描画
+		//// 基本的なメッシュシェーダーをアクティブにする
+		//mMeshShader->SetActive();
+		//// ビュー射影行列を更新する
+		//mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
+		//// シェーダーに渡すライティング情報を更新する
+		//SetLightUniforms(mMeshShader, mView);
+		//// すべてのメッシュの描画
+		//for (auto mc : mMeshComponents)
+		//{
+		//	if (mc->GetVisible())
+		//	{
+		//		mc->Draw(mMeshShader);
+		//	}
+		//}
+
+		//シャドウ付きでメッシュを描画
+		mMeshShadowHDRShader->SetActive();
+		mMeshShadowHDRShader->SetMatrixUniform("uViewProj", mView * mProjection);
+		mMeshShadowHDRShader->SetMatrixUniform("uLightSpaceMat", lightSpaceMat);
+		mMeshShadowHDRShader->SetIntUniform("uTexture", 0);
+
+		// デプスマップをセット
+		mMeshShadowHDRShader->SetIntUniform("depthMap", 4);// ライティング変数をセット
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, mDepthMapRender->GetDepthTexID());
+
+		SetLightUniforms(mMeshShadowHDRShader, mView);
+
+		// 全てのメッシュコンポーネントを描画
 		for (auto mc : mMeshComponents)
 		{
 			if (mc->GetVisible())
 			{
-				mc->Draw(mMeshShader);
+				mc->Draw(mMeshShadowHDRShader);
+			}
+		}
+
+		// スキン＆シャドウメッシュ
+		mSkinnedShadowHDRShader->SetActive();
+		// ビュープロジェクション＆ライト空間行列セット
+		mSkinnedShadowHDRShader->SetMatrixUniform("uViewProj", mView * mProjection);
+		mSkinnedShadowHDRShader->SetMatrixUniform("uLightSpaceMat", lightSpaceMat);
+		mSkinnedShadowHDRShader->SetIntUniform("uTexture", 0);
+		mSkinnedShadowHDRShader->SetIntUniform("depthMap", 4);
+
+		// ライトパラメータのセット
+		SetLightUniforms(mSkinnedShadowHDRShader, mView);
+
+		for (auto sk : mSkeletalMeshes)
+		{
+			if (sk->GetVisible())
+			{
+				sk->Draw(mSkinnedShadowHDRShader);
 			}
 		}
 	}
@@ -349,20 +394,20 @@ void Renderer::Draw()
 	// 当たり判定デバッグBoxの表示
 	PHYSICS->DebugShowBox();
 
-	// Draw any skinned mMeshes now
-	// Draw any skinned mMeshes now
-	mSkinnedShader->SetActive();
-	// Update mView-mProjection matrix
-	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
-	// Update lighting uniforms
-	SetLightUniforms(mSkinnedShader, mView);
-	for (auto sk : mSkeletalMeshes)
-	{
-		if (sk->GetVisible())
-		{
-			sk->Draw(mSkinnedShader);
-		}
-	}
+	//// Draw any skinned mMeshes now
+	//// Draw any skinned mMeshes now
+	//mSkinnedShader->SetActive();
+	//// Update mView-mProjection matrix
+	//mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
+	//// Update lighting uniforms
+	//SetLightUniforms(mSkinnedShader, mView);
+	//for (auto sk : mSkeletalMeshes)
+	//{
+	//	if (sk->GetVisible())
+	//	{
+	//		sk->Draw(mSkinnedShader);
+	//	}
+	//}
 
 	DrawParticle();
 
@@ -389,7 +434,7 @@ void Renderer::Draw()
 		}
 	}
 
-		// バッファを交換
+	// バッファを交換
 	SDL_GL_SwapWindow(mWindow);
 }
 

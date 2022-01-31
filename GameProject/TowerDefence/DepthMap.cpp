@@ -67,8 +67,6 @@ void DepthMap::CreateShadowMap(unsigned int depthSIze)
 // ライト空間行列を計算する
 void DepthMap::CalcLightSpaceMatrix(const Vector3& centerWorldPos, const Vector3& lightDir, const Vector3& upVec, float lightDistance)
 {
-	Vector3 viewPos;
-
 	mLightDir = lightDir;
 	mLightOrigin = (-lightDistance) * mLightDir + centerWorldPos;
 
