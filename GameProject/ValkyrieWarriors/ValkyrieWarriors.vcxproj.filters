@@ -1,0 +1,908 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletalMeshComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneTransform.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsWorld.cpp">
+      <Filter>Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MainCameraObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapCreate.cpp">
+      <Filter>GameObject\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="HDRRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>GameObject\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="WallObject.cpp">
+      <Filter>GameObject\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundObject.cpp">
+      <Filter>GameObject\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObject.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackMeshComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RapidJsonHelper.cpp">
+      <Filter>RapidJson</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="EnemyObject.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerWeaponObject.cpp">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyGenerator.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateAttack.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateBase.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateMove.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateTrack.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateWait.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectManager.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateBase.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateDashAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateFirstAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateIdle.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateRunLoop.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSecondAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSprintLoop.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateSprintStart.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateThirdAttack.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateAttackReady.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttackDecisionObject.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateDamage.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjectStateDeath.cpp">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateEnemys.cpp">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemysControler.cpp">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBoxObject.cpp">
+      <Filter>SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMapComponent.cpp">
+      <Filter>SkyBox\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObject.cpp">
+      <Filter>GameObject\Map\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateBase.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateWait.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateTrack.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateFrontAttack.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateAreaAttack.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateOverheadAttack.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateTeleportation.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateImpactDamage.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateDeath.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureSizeChanger.cpp">
+      <Filter>UI\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstAttackEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectComponent.cpp">
+      <Filter>Effect\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EffekseerEffect.cpp">
+      <Filter>Effect\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SecondAttackEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdAttackEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DashAttackEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="AreaMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ChantEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DangerSignalEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontCoreMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontLaserMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="OverheadMagicEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="TeleportationEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateImpactDamage.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateFlyingBackDeath.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateFallingBackDeath.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateFlyingBackDamage.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateStandUp.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateSweepFallDamage.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObjectStateSweepFallDeath.cpp">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyGeneratorBlackBoard.cpp">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GateDoorObject.cpp">
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClCompile>
+    <ClCompile Include="GateObject.cpp">
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfRotation.cpp">
+      <Filter>GameObject\Map\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGate.cpp">
+      <Filter>GameObject\Map\Gate\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UIRoot.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SemitransparentWall.cpp">
+      <Filter>GameObject\Map\SemitransparentWall</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadObjectActiveBox.cpp">
+      <Filter>GameObject\Map\DeadObjectActiveBox</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadObjectEnable.cpp">
+      <Filter>GameObject\Map\DeadObjectActiveBox\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SemitransparentWallEnabler.cpp">
+      <Filter>GameObject\Map\SemitransparentWall</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadEnemyCountText.cpp">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="DefeatEnemyNumberText.cpp">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="ActiveObjectDisable.cpp">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadEnemyCountTextChange.cpp">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleFrame.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleGauge.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteFrame.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteGauge.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="OperationExplanation.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="OperationExplanationBehavior.cpp">
+      <Filter>UI\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateSweepFallDamage.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BossObjectStateFlyingBackDamage.cpp">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleShadowObject.cpp">
+      <Filter>GameObject\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthMap.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexArray.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletalMeshComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneTransform.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixPalette.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsWorld.h">
+      <Filter>Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="MainCameraObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCreate.h">
+      <Filter>GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="HDRRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>GameObject\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="WallObject.h">
+      <Filter>GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundObject.h">
+      <Filter>GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObject.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackMeshComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidJsonHelper.h">
+      <Filter>RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="EnemyObject.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerWeaponObject.h">
+      <Filter>GameObject\Map\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyGenerator.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateAttack.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateBase.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateMove.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateTrack.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateWait.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectManager.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateBase.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateDashAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateFirstAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateIdle.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateRunLoop.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSecondAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSprintLoop.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateSprintStart.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateThirdAttack.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateAttackReady.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttackDecisionObject.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateDamage.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjectStateDeath.h">
+      <Filter>GameObject\Map\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateEnemys.h">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemysControler.h">
+      <Filter>GameObject\Map\Enemy\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBoxObject.h">
+      <Filter>SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMapComponent.h">
+      <Filter>SkyBox\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObject.h">
+      <Filter>GameObject\Map\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateBase.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateWait.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateTrack.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateFrontAttack.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateAreaAttack.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateOverheadAttack.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateTeleportation.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateImpactDamage.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateDeath.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureSizeChanger.h">
+      <Filter>UI\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstAttackEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectComponent.h">
+      <Filter>Effect\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EffekseerEffect.h">
+      <Filter>Effect\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SecondAttackEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdAttackEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DashAttackEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="AreaMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ChantEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DangerSignalEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontCoreMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontLaserMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="OverheadMagicEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="TeleportationEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateImpactDamage.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateFlyingBackDeath.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateFallingBackDeath.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateFlyingBackDamage.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateStandUp.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateSweepFallDamage.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObjectStateSweepFallDeath.h">
+      <Filter>GameObject\Map\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyGeneratorBlackBoard.h">
+      <Filter>GameObject\Map\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GateDoorObject.h">
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClInclude>
+    <ClInclude Include="GateObject.h">
+      <Filter>GameObject\Map\Gate</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfRotation.h">
+      <Filter>GameObject\Map\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGate.h">
+      <Filter>GameObject\Map\Gate\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UIRoot.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SemitransparentWall.h">
+      <Filter>GameObject\Map\SemitransparentWall</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadObjectActiveBox.h">
+      <Filter>GameObject\Map\DeadObjectActiveBox</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadObjectEnable.h">
+      <Filter>GameObject\Map\DeadObjectActiveBox\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SemitransparentWallEnabler.h">
+      <Filter>GameObject\Map\SemitransparentWall</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadEnemyCountText.h">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="DefeatEnemyNumberText.h">
+      <Filter>UI\DeadEnemyCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="ActiveObjectDisable.h">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadEnemyCountTextChange.h">
+      <Filter>UI\DeadEnemyCounter\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGauge.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleFrame.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteFrame.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteGauge.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="OperationExplanation.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="OperationExplanationBehavior.h">
+      <Filter>UI\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateFlyingBackDamage.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BossObjectStateSweepFallDamage.h">
+      <Filter>GameObject\Map\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleShadowObject.h">
+      <Filter>GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthMap.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Components">
+      <UniqueIdentifier>{453546c5-e9de-4e3e-a25b-f98a2b7e8960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{82d6709d-ae31-4598-b249-044af437e576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FPS">
+      <UniqueIdentifier>{f5cd1200-4d13-4894-b195-06cc32386c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InputSystem">
+      <UniqueIdentifier>{86dd1375-242a-47c5-b4ab-8c242a88e640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{6a202267-f302-460a-bad2-773b2329bbdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{c8e606d2-bf2c-4f01-ad9d-28b803aa7d2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RapidJson">
+      <UniqueIdentifier>{f0e3faca-e48a-4068-8bbf-2cbca8ba06c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Collision">
+      <UniqueIdentifier>{8348fe14-c5e3-46d8-91ab-a2fd710d7e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{d9969020-af94-4f6a-952a-d4ea04a278b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{547d9b44-2a77-41c6-8afc-deef117dca5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{6d4c2c73-9c5e-4be8-a16e-117e13350bc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{393b5bfb-e08c-411b-b7c1-689fbb3a59e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map">
+      <UniqueIdentifier>{3a7470fa-f546-4170-98fb-da0544d9116c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Player">
+      <UniqueIdentifier>{fb49822a-16ec-4cda-bd96-92719707cbc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy">
+      <UniqueIdentifier>{490dc89b-5731-4103-9417-f686277e5bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy\State">
+      <UniqueIdentifier>{bc67cf51-727f-4002-8318-598565ec126b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Player\State">
+      <UniqueIdentifier>{5ff3e5ff-a8a1-4aa8-b6e9-6430528538a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Enemy\Component">
+      <UniqueIdentifier>{58d3cfaf-10d5-4a43-af26-de15eb3b3cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sprite">
+      <UniqueIdentifier>{8accac4b-4874-47c5-8067-233f81ea8063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkyBox">
+      <UniqueIdentifier>{faa83da2-3466-4001-8b88-61442f5111d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkyBox\Component">
+      <UniqueIdentifier>{bbdb06be-64fa-49b9-87a8-327b054c0b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Boss">
+      <UniqueIdentifier>{b03ab5e4-0c1e-4ff3-bbed-723d352d2a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Boss\State">
+      <UniqueIdentifier>{7111f781-3c00-4c24-830c-97c7b9165dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{a4188c99-c305-4947-9ccd-4e07bec25d76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Component">
+      <UniqueIdentifier>{7916fa6b-5ef5-4f2a-94a1-de37efdb19f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{243adb3b-c164-4b97-afba-f284a2ff3bdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect\Component">
+      <UniqueIdentifier>{47ee6fdd-6ecd-4795-aee0-4a8793cd3ea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Gate">
+      <UniqueIdentifier>{cf64e933-f6ae-4026-8f0e-4687dc00190e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Gate\Component">
+      <UniqueIdentifier>{b96348d3-dbe2-4e54-a903-21fdaa716aa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\Component">
+      <UniqueIdentifier>{772fec03-37e1-4ddf-bf14-6d72c648152e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\SemitransparentWall">
+      <UniqueIdentifier>{bf90852d-98f6-4c0a-84b9-4032fbec5bbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\DeadObjectActiveBox">
+      <UniqueIdentifier>{a5941972-a4d5-4974-b6ea-4683d59dd25f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Map\DeadObjectActiveBox\Component">
+      <UniqueIdentifier>{6e4df2b3-0791-4606-8e81-5153006c646a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\DeadEnemyCounter">
+      <UniqueIdentifier>{2413843e-cdf3-4aa3-b676-094e6ff77efb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\DeadEnemyCounter\Component">
+      <UniqueIdentifier>{86990902-fa96-40a4-b8c4-6494fd7c32d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\downsampling.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\framebufferScreen.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\gaussianblur.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\hdrBlurBlend.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Particle.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Phong.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Phong.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Skinned.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Sprite.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Sprite.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\ShadowHDRMesh.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Line.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\LineWorld.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\gBuffer_SkyBox.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\gBuffer_SkyBox.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Depthmap.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\ShadowMesh.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\SkinnedDepth.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\SkinnedShadow.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shaders\Depthmap.frag">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>

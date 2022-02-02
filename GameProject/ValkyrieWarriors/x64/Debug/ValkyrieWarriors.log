@@ -1,0 +1,154 @@
+﻿  pch.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\EnemysControler.h(2,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  Animation.cpp
+  AreaMagicEffect.cpp
+  AttackMeshComponent.cpp
+  ActiveObjectDisable.cpp
+  BossObjectStateFlyingBackDamage.cpp
+  BossObjectStateSweepFallDamage.cpp
+  CircleShadowObject.cpp
+  DeadEnemyCountTextChange.cpp
+  DefeatEnemyNumberText.cpp
+  OperationExplanation.cpp
+  ParticleFrame.cpp
+  ParticleGauge.cpp
+  SpriteFrame.cpp
+  SpriteGauge.cpp
+  SemitransparentWallEnabler.cpp
+  DeadObjectActiveBox.cpp
+  SemitransparentWall.cpp
+  DeadObjectEnable.cpp
+  BossObject.cpp
+  BossObjectStateBase.cpp
+  コードを生成中...
+  コンパイル中...
+  BossObjectStateImpactDamage.cpp
+  BossObjectStateDeath.cpp
+  BossObjectStateFrontAttack.cpp
+  BossObjectStateTeleportation.cpp
+  BossObjectStateTrack.cpp
+  BossObjectStateWait.cpp
+  ChantEffect.cpp
+  CreateEnemys.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\CreateEnemys.cpp(68,60): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  CubeMapComponent.cpp
+  DangerSignalEffect.cpp
+  DashAttackEffect.cpp
+  DeadEnemyCountText.cpp
+  EffectComponent.cpp
+  EffekseerEffect.cpp
+  EnemyAttackDecisionObject.cpp
+  EnemyGenerator.cpp
+  EnemyGeneratorBlackBoard.cpp
+  EnemyObjectStateFallingBackDeath.cpp
+  EnemyObjectStateFlyingBackDamage.cpp
+  EnemyObjectStateStandUp.cpp
+  コードを生成中...
+  コンパイル中...
+  EnemyObjectStateSweepFallDamage.cpp
+  EnemyObjectStateSweepFallDeath.cpp
+  Font.cpp
+  FrontCoreMagicEffect.cpp
+  FrontLaserMagicEffect.cpp
+  GateDoorObject.cpp
+  GateObject.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\GateObject.cpp(33,63): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  HitEffect.cpp
+  EnemyObject.cpp
+  EnemyObjectManager.cpp
+  BossObjectStateAreaAttack.cpp
+  EnemyObjectStateAttack.cpp
+  EnemyObjectStateAttackReady.cpp
+  EnemyObjectStateBase.cpp
+  EnemyObjectStateImpactDamage.cpp
+  EnemyObjectStateFlyingBackDeath.cpp
+  EnemyObjectStateMove.cpp
+  EnemyObjectStateTrack.cpp
+  EnemyObjectStateWait.cpp
+  FirstAttackEffect.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\FirstAttackEffect.cpp(58,45): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  コードを生成中...
+  コンパイル中...
+  GameClearScene.cpp
+  GameOverScene.cpp
+  TextureSizeChanger.cpp
+  OpenGate.cpp
+  OverheadMagicEffect.cpp
+  PlayerObjectStateDamage.cpp
+  PlayerObjectStateDeath.cpp
+  PlayerObjectStateSecondAttack.cpp
+  PlayerObjectStateThirdAttack.cpp
+  PlayerObjectStateBase.cpp
+  PlayerObjectStateDashAttack.cpp
+  PlayerObjectStateSprintLoop.cpp
+  PlayerObjectStateSprintStart.cpp
+  PlayerObjectStateIdle.cpp
+  PlayerWeaponObject.cpp
+  RapidJsonHelper.cpp
+  SecondAttackEffect.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\SecondAttackEffect.cpp(58,45): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  SelfRotation.cpp
+  SkyBoxObject.cpp
+  TeleportationEffect.cpp
+  コードを生成中...
+  コンパイル中...
+  ThirdAttackEffect.cpp
+  WallObject.cpp
+  BoxCollider.cpp
+  ColliderComponent.cpp
+  Collision.cpp
+  HDRRenderer.cpp
+  Sprite.cpp
+  GameObject.cpp
+  GroundObject.cpp
+  BoneTransform.cpp
+  Component.cpp
+  FPS.cpp
+  Game.cpp
+  GameObjectManager.cpp
+  InputSystem.cpp
+  main.cpp
+  MainCameraObject.cpp
+  MapCreate.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\MapCreate.cpp(89,35): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\MapCreate.cpp(90,32): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  Math.cpp
+  Mesh.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\Mesh.cpp(243,64): warning C4267: '引数': 'size_t' から 'unsigned int' に変換しました。データが失われているかもしれません。
+  コードを生成中...
+  コンパイル中...
+  MeshComponent.cpp
+  ParticleComponent.cpp
+  PhysicsWorld.cpp
+  PlayerObject.cpp
+  Renderer.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\Renderer.cpp(146,47): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\Renderer.cpp(146,33): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+  SceneBase.cpp
+  Shader.cpp
+  SkeletalMeshComponent.cpp
+  Skeleton.cpp
+  SphereCollider.cpp
+  SpriteComponent.cpp
+  Texture.cpp
+  TitleScene.cpp
+  ActionScene.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\ActionScene.cpp(7,30): warning C4244: '初期化中': 'float' から 'const int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\ActionScene.cpp(8,29): warning C4244: '初期化中': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  VertexArray.cpp
+  コードを生成中...
+  DepthMap.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\EnemysControler.h(2,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  OperationExplanationBehavior.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\EnemysControler.h(2,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  UIRoot.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\EnemysControler.h(2,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  コードを生成中...
+  BossObjectStateOverheadAttack.cpp
+  PlayerObjectStateFirstAttack.cpp
+  PlayerObjectStateRunLoop.cpp
+  EnemysControler.cpp
+C:\Users\student\Desktop\ValkyrieWarriors\GameProject\ValkyrieWarriors\EnemysControler.cpp(53,41): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  コードを生成中...
+LINK : warning LNK4098: defaultlib 'LIBCMT' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
+  ValkyrieWarriors.vcxproj -> C:\Users\student\Desktop\ValkyrieWarriors\GameProject\x64\Debug\ValkyrieWarriors.exe
