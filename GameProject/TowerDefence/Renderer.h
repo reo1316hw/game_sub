@@ -273,10 +273,6 @@ private:
 	// スプライト
 	Shader* mSpriteShader;
 	VertexArray* mSpriteVerts;
-	// メッシュ
-	Shader* mMeshShader;
-	// スキンメッシュ
-	Shader*  mSkinnedShader;  
 	// パーティクル
 	Shader* mParticleShader;
 	// パーティクル用頂点定義

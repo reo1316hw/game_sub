@@ -7,7 +7,7 @@ ActionScene::ActionScene()
 	: MTimingTransitionGameClear(220.0f)
 	, MTimingTransitionGameOver(160.0f)
 	, MAngleOfView(70.0f)
-	, MLightDistance(5000.0f)
+	, MLightDistance(100.0f)
 	, mGameClearTransitionUntilCount(0)
 	, mGameOverTransitionUntilCount(0)
 	, mPlayerPtr(nullptr)
@@ -15,10 +15,11 @@ ActionScene::ActionScene()
 	, mMainCameraPtr(nullptr)
 {
 	// ÉâÉCÉgÇê›íË(ê›íËÇµÇ»Ç¢Ç∆âΩÇ‡âfÇÁÇ»Ç¢)
-	RENDERER->SetAmbientLight(Vector3(0.8f, 0.8f, 0.8f));
+	RENDERER->SetAmbientLight(Vector3(0.2f, 0.2f, 0.2f));
 	DirectionalLight& dir = RENDERER->GetDirectionalLight();
-	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
-	dir.m_diffuseColor = Vector3(0.36f, 0.44f, 0.5f);
+	dir.m_direction = Vector3(-0.5f, 0.5f, -0.5f);
+	//dir.m_diffuseColor = Vector3(0.35f, 0.45f, 0.5f);
+	dir.m_diffuseColor = Vector3(0.35f, 0.45f, 0.5f);
 	dir.m_specColor = Vector3(0.4f, 0.4f, 0.4f);
 
 	// çsóÒèâä˙âª

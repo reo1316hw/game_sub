@@ -42,7 +42,7 @@ void FPS::Update()
 		mFps = 1000 / ((nowTickTime - mFrameStartTickTime) / mSetFps);
 		mFpsCount = 0;
 
-		//printf("%d\n", mFps);
+		printf("%d\n", mFps);
 	}
 	else
 	{

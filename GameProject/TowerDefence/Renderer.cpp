@@ -17,10 +17,12 @@ Renderer::Renderer()
 	, mView(Matrix4::Identity)
 	, mProjection(Matrix4::Identity)
 	, mHDRRenderer(nullptr)
+	, mMeshShadowHDRShader(nullptr)
+	, mSkinnedShadowHDRShader(nullptr)
 	, mSpriteVerts(nullptr)
 	, mSpriteShader(nullptr)
-	, mMeshShader(nullptr)
-	, mSkinnedShader(nullptr)
+	/*, mMeshShader(nullptr)
+	, mSkinnedShader(nullptr)*/
 	, mSkyBoxShader(nullptr)
 	, mParticleVertex(nullptr)
 	, mDepthMapRender(nullptr)
@@ -34,6 +36,7 @@ Renderer::Renderer()
 /// </summary>
 Renderer::~Renderer()
 {
+	delete mDepthMapRender;
 	delete mHDRRenderer;
 }
 
@@ -136,7 +139,7 @@ bool Renderer::Initialize(const float& _ScreenWidth, const float& _ScreenHeight,
 
 	// デプスレンダラー初期化
 	mDepthMapRender = new DepthMap;
-	const int DepthmapSize = 2048;
+	const int DepthmapSize = 4096;
 	mDepthMapRender->CreateShadowMap(DepthmapSize);
 
 	// HDRレンダラー初期化
@@ -190,10 +193,12 @@ void Renderer::Shutdown()
 	delete mSpriteVerts;
 	mSpriteShader->Unload();
 	delete mSpriteShader;
-	mMeshShader->Unload();
-	delete mMeshShader;
-	mSkinnedShader->Unload();
-	delete mSkinnedShader;
+	mSkinnedDepthShader->Unload();
+	delete mSkinnedDepthShader;
+	mMeshShadowHDRShader->Unload();
+	delete mMeshShadowHDRShader;
+	mSkinnedShadowHDRShader->Unload();
+	delete mSkinnedShadowHDRShader;
 	delete mParticleVertex;
 	mParticleShader->Unload();
 	delete mParticleShader;
@@ -261,10 +266,10 @@ void Renderer::UnloadData()
 /// </summary>
 void Renderer::Draw()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// デプスレンダリングパス開始
 	Matrix4 lightSpaceMat = mDepthMapRender->GetLightSpaceMatrix();
@@ -296,9 +301,6 @@ void Renderer::Draw()
 
 	mHDRRenderer->HdrRecordBegin();
 	{
-		glEnable(GL_DEPTH_TEST);
-		glDisable(GL_BLEND);
-
 		// スカイボックス描画
 		if (mActiveSkyBox != nullptr)
 		{
@@ -317,22 +319,6 @@ void Renderer::Draw()
 
 			mActiveSkyBox->Draw(mSkyBoxShader);
 		}
-
-		//// メッシュコンポーネントの描画
-		//// 基本的なメッシュシェーダーをアクティブにする
-		//mMeshShader->SetActive();
-		//// ビュー射影行列を更新する
-		//mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
-		//// シェーダーに渡すライティング情報を更新する
-		//SetLightUniforms(mMeshShader, mView);
-		//// すべてのメッシュの描画
-		//for (auto mc : mMeshComponents)
-		//{
-		//	if (mc->GetVisible())
-		//	{
-		//		mc->Draw(mMeshShader);
-		//	}
-		//}
 
 		//シャドウ付きでメッシュを描画
 		mMeshShadowHDRShader->SetActive();
@@ -393,21 +379,6 @@ void Renderer::Draw()
 
 	// 当たり判定デバッグBoxの表示
 	PHYSICS->DebugShowBox();
-
-	//// Draw any skinned mMeshes now
-	//// Draw any skinned mMeshes now
-	//mSkinnedShader->SetActive();
-	//// Update mView-mProjection matrix
-	//mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
-	//// Update lighting uniforms
-	//SetLightUniforms(mSkinnedShader, mView);
-	//for (auto sk : mSkeletalMeshes)
-	//{
-	//	if (sk->GetVisible())
-	//	{
-	//		sk->Draw(mSkinnedShader);
-	//	}
-	//}
 
 	DrawParticle();
 
@@ -778,12 +749,15 @@ bool Renderer::LoadShaders()
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
 	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
-	// メッシュシェーダーの作成
-	mMeshShader = new Shader();
-	if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/ShadowHDRMesh.frag"))
-	{
-		return false;
-	}
+	//// メッシュシェーダーの作成
+	//mMeshShader = new Shader();
+	//if (!mMeshShader->Load("Shaders/Phong.vert", "Shaders/ShadowHDRMesh.frag"))
+	//{
+	//	return false;
+	//}
+
+	//// メッシュ
+	//mMeshShader->SetActive();
 
 	// メッシュのシャドウシェーダー
 	mMeshShadowHDRShader = new Shader();
@@ -792,14 +766,14 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 
-	// スキンメッシュシェーダー
-	mSkinnedShader = new Shader();
-	if (!mSkinnedShader->Load("Shaders/Skinned.vert", "Shaders/Phong.frag"))
-	{
-		return false;
-	}
-	mSkinnedShader->SetActive();
-	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
+	//// スキンメッシュシェーダー
+	//mSkinnedShader = new Shader();
+	//if (!mSkinnedShader->Load("Shaders/Skinned.vert", "Shaders/Phong.frag"))
+	//{
+	//	return false;
+	//}
+	//mSkinnedShader->SetActive();
+	//mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
 	// スキンメッシュのデプスシェーダー
 	mSkinnedDepthShader = new Shader();
@@ -828,9 +802,6 @@ bool Renderer::LoadShaders()
 	{
 		return false;
 	}
-
-	// メッシュ
-	mMeshShader->SetActive();
 
 	return true;
 }
