@@ -5,14 +5,15 @@
 /// </summary>
 /// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 /// <param name="_texture"> テクスチャのポインタ </param>
-/// <param name="_Scale"> 大きさ </param>
+/// <param name="_Alpha"> 透明度 </param>
 /// <param name="_DrawOrder"> 描画の順番 </param>
-SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, const int& _DrawOrder)
+SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, const float _Alpha, const int& _DrawOrder)
     : Component(_owner)
     , mDrawOrder(_DrawOrder)
 	, mVisible(true)
 	, mTextureWidth(0)
 	, mTextureHeight(0)
+	, mAlpha(_Alpha)
     , mTexture(_texture)
 {
 	mTextureWidth = mTexture->GetWidth();
@@ -51,6 +52,8 @@ void SpriteComponent::Draw(Shader * _shader)
 	Matrix4 world = scaleMatrix * mOwner->GetWorldTransform();
 
 	_shader->SetMatrixUniform("uWorldTransform",world);
+
+	_shader->SetFloatUniform("uAlpha", mAlpha);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTexture->GetTextureID());

@@ -17,8 +17,9 @@ public:
 	/// </summary>
 	/// <param name="_owner"> アタッチするゲームオブジェクトのポインタ </param>
 	/// <param name="_texture"> テクスチャのポインタ </param>
+	/// <param name="_Alpha"> 透明度 </param>
 	/// <param name="_DrawOrder"> 描画の順番 </param>
-	SpriteComponent(GameObject* _owner, Texture* _texture, const int& _DrawOrder = 100);
+	SpriteComponent(GameObject* _owner, Texture* _texture, const float _Alpha = 1.0f, const int& _DrawOrder = 100);
 
 	/// <summary>
 	/// デストラクタ
@@ -42,6 +43,9 @@ private:
 	int mTextureWidth;
 	// テクスチャの縦幅
 	int mTextureHeight;
+	
+	// 透明度
+	float mAlpha;
 
 	// テクスチャクラスのポインタ
 	Texture* mTexture;

@@ -40,6 +40,9 @@ private:
 	// ゲームオーバーシーンに遷移するまでのカウント
 	int mGameOverTransitionUntilCount;
 
+	// スプライトの拡大サイズ
+	const Vector3 MSpriteScale;
+
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ

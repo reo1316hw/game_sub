@@ -16,7 +16,7 @@ GameOverScene::GameOverScene()
 	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	// ゲームオーバー用のスプライトを生成
-	mSprite = new Sprite("Assets/Texture/GameOver.png", true, MSpriteScale);
+	mSprite = new Sprite("Assets/Texture/GameOver.png", true, 1.0f, MSpriteScale);
 }
 
 /// <summary>

@@ -4,9 +4,10 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="_TextureName"> テクスチャのパス </param>
-/// <param name="_Scale"> テクスチャの拡大サイズ </param>
 /// <param name="_ReUseGameObject"> 再利用するか </param>
-Sprite::Sprite(const std::string _TextureName, const bool& _ReUseGameObject, const Vector3& _Scale)
+/// <param name="_Alpha"> テクスチャの透明度 </param>
+/// <param name="_Scale"> テクスチャの拡大サイズ </param>
+Sprite::Sprite(const std::string _TextureName, const bool& _ReUseGameObject, const float _Alpha, const Vector3& _Scale)
 	:GameObject(Tag::eOther, _ReUseGameObject)
 {
 	Texture* texture = RENDERER->GetTexture(_TextureName);
@@ -15,7 +16,7 @@ Sprite::Sprite(const std::string _TextureName, const bool& _ReUseGameObject, con
 	SetPosition(mPosition);
 	SetScale(_Scale);
 
-	mSpriteComponent = new SpriteComponent(this, texture);
+	mSpriteComponent = new SpriteComponent(this, texture, _Alpha);
 }
 
 /// <summary>

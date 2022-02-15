@@ -16,7 +16,7 @@ GameClearScene::GameClearScene()
 	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	// ゲームクリア用のスプライトを生成
-	mSprite = new Sprite("Assets/Texture/GameClear.png", true, MSpriteScale);
+	mSprite = new Sprite("Assets/Texture/GameClear.png", true, 1.0f, MSpriteScale);
 }
 
 /// <summary>

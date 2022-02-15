@@ -14,7 +14,7 @@ TitleScene::TitleScene()
 	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	// スタート画面用のスプライトを生成
-	mSprite = new Sprite("Assets/Texture/Title.png", false, MSpriteScale);
+	mSprite = new Sprite("Assets/Texture/Title.png", false, 1.0f, MSpriteScale);
 }
 
 /// <summary>

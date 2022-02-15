@@ -10,6 +10,7 @@ ActionScene::ActionScene()
 	, MLightDistance(100.0f)
 	, mGameClearTransitionUntilCount(0)
 	, mGameOverTransitionUntilCount(0)
+	, MSpriteScale(Vector3(2.0f, 1.0f, 1.0f))
 	, mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
 	, mMainCameraPtr(nullptr)
@@ -32,6 +33,7 @@ ActionScene::ActionScene()
 	mMapCreate->OpenFile();
 	mPlayerPtr = mMapCreate->GetPlayerPtr();
 	mBossPtr = mMapCreate->GetBossPtr();
+
 	// 門のリスト
 	std::vector<GateObject*> gateList = mMapCreate->GetGateList();
 	// エネミーを管理するクラスのポインタ
@@ -51,6 +53,11 @@ ActionScene::ActionScene()
 
 	// スカイボックス生成
 	new SkyBoxObject(Tag::eOther, false);
+
+	//// フェードイン用の白テクスチャ
+	//new Sprite("Assets/Texture/FadeWhite.png", true, 0.0f, MSpriteScale);
+	//// フェードイン用の黒テクスチャ
+	//new Sprite("Assets/Texture/FadeBlack.png", true, 0.0f, MSpriteScale);
 }
 
 /// <summary>

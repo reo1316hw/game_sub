@@ -15,9 +15,10 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_TextureName"> テクスチャのパス </param>
-	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
     /// <param name="_ReUseGameObject"> 再利用するか </param>
-	Sprite(const std::string _TextureName, const bool& _ReUseGameObject = false, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f));
+	/// <param name="_Alpha"> テクスチャの透明度 </param>
+	/// <param name="_Scale"> テクスチャの拡大サイズ </param>
+	Sprite(const std::string _TextureName, const bool& _ReUseGameObject = false, const float _Alpha = 1.0f, const Vector3& _Scale = Vector3(1.0f, 1.0f, 1.0f));
 
 	/// <summary>
 	/// デストラクタ
