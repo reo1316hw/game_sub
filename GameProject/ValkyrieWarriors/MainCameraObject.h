@@ -12,13 +12,14 @@ public:
 	/// </summary>
     /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 	/// <param name="_bossPtr"> ボスのポインタ </param>
+	/// <param name="_gateList"> 門のリスト </param>
     /// <param name="_ReUseGameObject"> 再利用するかのフラグ </param>
-	MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPtr, const bool& _ReUseGameObject);
+	MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPtr, std::vector<GateObject*> _gateList, const bool& _ReUseGameObject);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~MainCameraObject() {};
+	~MainCameraObject();
 
 	/// <summary>
 	/// オブジェクトの更新処理
@@ -44,9 +45,17 @@ private:
 	// 回転追加値
 	const float MAddRotate;
 	// カメラ座標との差
-	Vector3 mCameraOffset;
+	const Vector3 MCameraOffset;
 	// 見たい座標との差
-	Vector3 mTargetOffset;
+	const Vector3 MTargetOffset;
+
+	// 門に注目したか
+	bool mIsLookGate;
+	// 門に注目する処理の初期処理をさせるためのフラグ
+	bool mIsInitOpenGate;
+
+	// 門のリストの番号
+	int mGateListNum;
       
 	// カメラ周囲回転方向回転角
 	float mRotateZAngle;
@@ -55,12 +64,22 @@ private:
 
 	// 追従先のオブジェクト座標
 	Vector3 mTargetPos;
+	//// 門に注目する前の追従先のオブジェクト座標
+	//Vector3 mNotLookGateTargetPos;
+	//// 門に注目する前のカメラ座標
+	//Vector3 mNotLookGateCameraPos;
 	// 初期座標
 	Vector3 mInitPosition;
+	// 門の座標
+	Vector3 mGatePos;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;
 	// ボスのポインタ
 	BossObject* mBossPtr;
+	// 門のリスト
+	std::vector<GateObject*> mGateList;
+	// 門を開く処理コンポーネントのリスト
+	std::vector<OpenGate*> mOpenGateComponentList;
 };
 

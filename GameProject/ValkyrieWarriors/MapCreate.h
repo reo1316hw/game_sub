@@ -7,6 +7,7 @@ class EnemyObjectManager;
 class CreateEnemys;
 class EnemysControler;
 class DeadObjectActiveBox;
+class GateObject;
 
 /// <summary>
 /// マップデータのオブジェクトの番号
@@ -115,6 +116,9 @@ private:
 	//jsonから読み込んだエネミーたちのマップデータを格納するための可変長配列
 	std::vector<std::vector<int>> mEnemysMapData;
 
+	// 門のリスト
+	std::vector<GateObject*> mGateList;
+
 	// マップデータの横のタイル数
 	int   mSizeX;
 	// マップデータの縦のタイル数
@@ -141,7 +145,7 @@ private:
 	CreateEnemys* mCreateEnemysPtr;
 	// エネミーたちを制御するクラスのポインタ
 	EnemysControler* mEnemysControlerPtr;
-
+	
 public:// ゲッターセッター
 
 	/// <summary>
@@ -155,6 +159,12 @@ public:// ゲッターセッター
 	/// </summary>
 	/// <returns> ボスのポインタ </returns>
 	BossObject* GetBossPtr() { return mBossPtr; }
+
+	/// <summary>
+	/// 門のリストを取得
+	/// </summary>
+	/// <returns> 門のリスト </returns>
+	std::vector<GateObject*> GetGateList() { return mGateList; }
 
 	/// <summary>
 	/// エネミーを管理するクラスのポインタを取得

@@ -44,6 +44,7 @@ MapCreate::~MapCreate()
 	mBottomObjectMapData.clear();
 	mPlayerMapData.clear();
 	mEnemysMapData.clear();
+	mGateList.clear();
 }
 
 /// <summary>
@@ -183,7 +184,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		Vector3 gatePos = _ObjectPos + MGateShiftVec;
 
 		// ñÂÇê∂ê¨
-		new GateObject(gatePos, MStaticObjectSize, OpenToDefeatEnemyNum, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr);
+		mGateList.emplace_back(new GateObject(gatePos, MStaticObjectSize, OpenToDefeatEnemyNum, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr));
 
 		break;
 	}
@@ -193,7 +194,7 @@ void MapCreate::CreateGameObject(const unsigned int _Name, const Vector3 _Object
 		Vector3 tutorialGatePos = _ObjectPos + MGateShiftVec;
 
 		// ñÂÇê∂ê¨
-		new GateObject(tutorialGatePos, MStaticObjectSize, OpenToDefeatTutorialEnemyNum, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr);
+		mGateList.emplace_back(new GateObject(tutorialGatePos, MStaticObjectSize, OpenToDefeatTutorialEnemyNum, "Assets/Model/Gate/Gate.gpmesh", Tag::eGate, mEnemysControlerPtr));
 
 		break;
 	}

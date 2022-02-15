@@ -5,24 +5,46 @@
 /// </summary>
 /// <param name="_playerPtr"> プレイヤーのポインタ </param>
 /// <param name="_bossPtr"> ボスのポインタ </param>
+/// <param name="_gateList"> 門のリスト </param>
 /// <param name="_ReUseGameObject"> 再利用するかのフラグ </param>
-MainCameraObject::MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPtr, const bool& _ReUseGameObject)
+MainCameraObject::MainCameraObject(PlayerObject* _playerPtr, BossObject* _bossPtr, std::vector<GateObject*> _gateList, const bool& _ReUseGameObject)
 	: GameObject(Tag::eCamera, _ReUseGameObject)
 	, MMinLookDownAngle(Math::ToRadians(0.0f))
 	, MMaxLookDownAngle(Math::ToRadians(80.0f))
 	, MRightAxisThreshold(0.3f)
 	, MAddRotate(0.04f)
-	, mCameraOffset(Vector3(-200.0f, -200.0f, -200.0f))
-	, mTargetOffset(Vector3(0.0f, 0.0f, 70.0f))
+	, MCameraOffset(Vector3(-200.0f, -200.0f, -200.0f))
+	, MTargetOffset(Vector3(0.0f, 0.0f, 70.0f))
+	, mIsLookGate(false)
+	, mIsInitOpenGate(true)
+	, mGateListNum(1)
 	, mRotateZAngle(Math::Pi)
 	, mRotateYAngle(0.5f)
 	, mTargetPos(Vector3::Zero)
+	//, mNotLookGatePos(Vector3::Zero)
+	//, mNotLookGateTargetPos(Vector3::Zero)
 	, mInitPosition(Vector3::Zero)
+	, mGatePos(Vector3::Zero)
 	, mPlayerPtr(_playerPtr)
 	, mBossPtr(_bossPtr)
+	, mGateList(_gateList)
 {
-	mTargetPos = mPlayerPtr->GetPosition() + mTargetOffset;
+	for (auto gateItr : mGateList)
+	{
+		mOpenGateComponentList.emplace_back(gateItr->GetGateDoorPtr()->GetOpenGatePtr());
+	}
+
+	mTargetPos = mPlayerPtr->GetPosition() + MTargetOffset;
 	SetPosition(mTargetPos);
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+MainCameraObject::~MainCameraObject()
+{
+	mGateList.clear();
+	mOpenGateComponentList.clear();
 }
 
 /// <summary>
@@ -40,7 +62,60 @@ void MainCameraObject::UpdateGameObject(float _deltaTime)
 		return;
 	}
 
-	mTargetPos = mPlayerPtr->GetPosition() + mTargetOffset;
+	// プレイヤーの座標
+	Vector3 playerPos = mPlayerPtr->GetPosition();
+
+	// 門注目処理
+	if (mOpenGateComponentList[mGateListNum]->GetIsOpen())
+	{
+		if (mIsInitOpenGate)
+		{
+			mIsLookGate = true;
+			// 門の座標
+			mGatePos = mGateList[mGateListNum]->GetPosition();
+
+			mTargetPos = mGatePos + MTargetOffset;
+
+			mIsInitOpenGate = false;
+		}
+		
+		// カメラに向くベクトル
+		Vector3 cameraToVec = mGatePos - playerPos;
+		cameraToVec.Normalize();
+		cameraToVec.z = -0.4f;
+
+		mPosition = cameraToVec * MCameraOffset + playerPos;
+
+		//mTargetPos = Vector3::Lerp(mTargetPos, mNotLookGateTargetPos, 0.05f);
+
+		// 見たい座標を見る処理
+		Matrix4 view = Matrix4::CreateLookAt(mPosition, mTargetPos, Vector3::UnitZ);
+		RENDERER->SetViewMatrix(view);
+		SetPosition(mPosition);
+
+		//// 補間中の座標
+		//Vector3 lerpPos = Vector3::Lerp(mPosition, mNotLookGatePos, 0.1f);
+
+		//// 見たい座標を見る処理
+		//Matrix4 view = Matrix4::CreateLookAt(lerpPos, mTargetPos, Vector3::UnitZ);
+		//RENDERER->SetViewMatrix(view);
+		//SetPosition(lerpPos);
+
+		return;
+	}
+
+	// 最初の門が完全に開いたら、次の門を対象にするために番号を1ずらす
+	if (mIsLookGate && mGateListNum >= 1)
+	{
+		--mGateListNum;
+	}
+
+	// この行まで実行されたら門に注目していないのでフラグを戻す
+	mIsLookGate = false;
+	mIsInitOpenGate = true;
+
+	mTargetPos = playerPos + MTargetOffset;
+	//mNotLookGateTargetPos = mTargetPos;
 
 	// 見降ろし角度の角度制限
 	if (mRotateYAngle < MMinLookDownAngle)
@@ -56,11 +131,12 @@ void MainCameraObject::UpdateGameObject(float _deltaTime)
 	Vector3 rotatePos;
 
 	// ヨー回転・ピッチ回転
-	rotatePos.x = mCameraOffset.x * cosf(mRotateYAngle) * sinf(mRotateZAngle);
-	rotatePos.y = mCameraOffset.y * cosf(mRotateYAngle) * cosf(mRotateZAngle);
-	rotatePos.z = mCameraOffset.z * sinf(-mRotateYAngle);
+	rotatePos.x = MCameraOffset.x * cosf(mRotateYAngle) * sinf(mRotateZAngle);
+	rotatePos.y = MCameraOffset.y * cosf(mRotateYAngle) * cosf(mRotateZAngle);
+	rotatePos.z = MCameraOffset.z * sinf(-mRotateYAngle);
 
 	mPosition = rotatePos + mTargetPos;
+	//mNotLookGatePos = mPosition;
 
 	// 見たい座標を見る処理
 	Matrix4 view = Matrix4::CreateLookAt(mPosition, mTargetPos, Vector3::UnitZ);
@@ -75,6 +151,11 @@ void MainCameraObject::UpdateGameObject(float _deltaTime)
 /// <param name="_KeyState"> キーボード、マウス、コントローラーの入力状態 </param>
 void MainCameraObject::GameObjectInput(const InputState& _KeyState)
 {
+	if (mOpenGateComponentList[mGateListNum]->GetIsOpen())
+	{
+		return;
+	}
+
 	//右スティックの入力値の値(-1~1)
 	Vector2 rightAxis = _KeyState.m_controller.GetRAxisVec();
 

@@ -55,4 +55,12 @@ private:
 	EnemysControler* mEnemysControlerPtr;
 	// 自身を回転するためのコンポーネントクラスのポインタ
 	SelfRotation* mSelfRotationPtr;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 開いたかフラグを取得
+	/// </summary>
+	/// <returns> 開いたかフラグ </returns>
+	bool GetIsOpen() { return mIsOpen; }
 };

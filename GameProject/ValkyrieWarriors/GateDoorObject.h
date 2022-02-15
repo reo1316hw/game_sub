@@ -35,4 +35,15 @@ private:
 	
 	// 回転角を増やすための定数
 	const float MAddAngle;
+
+	// 門を開くためのクラスのポインタ
+	OpenGate* mOpenGatePtr;
+
+public:// ゲッターセッター
+
+	/// <summary>
+	/// 門を開くためのクラスのポインタを取得
+	/// </summary>
+	/// <returns> 門を開くためのクラスのポインタ </returns>
+	OpenGate* GetOpenGatePtr() { return mOpenGatePtr; }
 };

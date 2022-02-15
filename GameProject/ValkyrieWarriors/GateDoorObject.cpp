@@ -33,7 +33,7 @@ GateDoorObject::GateDoorObject(const Vector3& _Pos, const Vector3& _Scale, const
 	// ©g‚ğ‰ñ“]‚·‚éˆ—
 	SelfRotation* selfRotationPtr = new SelfRotation(this, Vector3::UnitZ, 0.0f);
 	// –å‚ğŠJ‚­ˆ—
-	new OpenGate(this, Vector3::UnitZ, MAddAngle, _OpenToDefeatEnemyNum, _enemysControlerPtr, selfRotationPtr);
+	mOpenGatePtr = new OpenGate(this, Vector3::UnitZ, MAddAngle, _OpenToDefeatEnemyNum, _enemysControlerPtr, selfRotationPtr);
 }
 
 /// <summary>

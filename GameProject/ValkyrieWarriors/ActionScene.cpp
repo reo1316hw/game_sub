@@ -32,6 +32,8 @@ ActionScene::ActionScene()
 	mMapCreate->OpenFile();
 	mPlayerPtr = mMapCreate->GetPlayerPtr();
 	mBossPtr = mMapCreate->GetBossPtr();
+	// 門のリスト
+	std::vector<GateObject*> gateList = mMapCreate->GetGateList();
 	// エネミーを管理するクラスのポインタ
 	EnemyObjectManager* enemyObjectManagerPtr = mMapCreate->GetEnemyObjectManagerPtr();
 	// エネミーを更新させるための当たり判定用矩形オブジェクトのポインタ
@@ -40,7 +42,7 @@ ActionScene::ActionScene()
 	DeadObjectActiveBox* bossActiveBoxPtr = mMapCreate->GetBossActiveBoxPtr();
 
 	// カメラ生成
-	mMainCameraPtr = new MainCameraObject(mPlayerPtr, mBossPtr, true);
+	mMainCameraPtr = new MainCameraObject(mPlayerPtr, mBossPtr, gateList, true);
 	// UIの親クラス
 	new UIRoot(Tag::eOther, mPlayerPtr, mBossPtr, enemyObjectManagerPtr, enemyActiveBoxPtr, bossActiveBoxPtr);
 

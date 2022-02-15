@@ -47,7 +47,7 @@ GateObject::GateObject(const Vector3& _Pos, const Vector3& _Scale, const int& _O
 	// –å‚Ì‰E”à‚Ì‘å‚«‚³
 	Vector3 rightGateDoorScale = _Scale * Vector3(-1.0f, 1.0f, 1.0f);
 	// –å‚Ì‰E”à‚ğ¶¬
-	new GateDoorObject(rightGateDoorPos, rightGateDoorScale, MRightGateDoorAddAngle, _OpenToDefeatEnemyNum,
+	mGateDoorPtr = new GateDoorObject(rightGateDoorPos, rightGateDoorScale, MRightGateDoorAddAngle, _OpenToDefeatEnemyNum,
 		               "Assets/Model/Gate/GateDoor.gpmesh", Tag::eGateDoor, _enemysControlerPtr);
 	// –å‚Ì¶”à‚ÌÀ•W
 	Vector3 leftGateDoorPos = _Pos + MRightGateDoorShiftVec;
