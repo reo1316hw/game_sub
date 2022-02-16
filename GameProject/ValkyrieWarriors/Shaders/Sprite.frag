@@ -20,6 +20,8 @@ uniform sampler2D uEmissiveMap;
 
 // Ž©ŒÈ”­Œõ‹­“x
 uniform float uLuminance;
+// “§–¾“x
+uniform float uAlpha;
 
 void main()
 {
@@ -37,6 +39,7 @@ void main()
         HiBrightBuffer = vec4(0.0f);
     }
 
-    HDRBuffer = texColor;
+    HDRBuffer.rgb = texColor.rgb;
+    HDRBuffer.a = texColor.a * uAlpha;
 }
 

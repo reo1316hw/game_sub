@@ -31,8 +31,23 @@ public:
     /// </summary>
     /// <param name="_shader"> 使用するシェーダークラスのポインタ </param>
     virtual void Draw(Shader* _shader);
+	
+	/// <summary>
+	/// 透明度を上げる
+	/// </summary>
+	/// <param name="_PlusAlpha"> 透明度を足していくための値 </param>
+	/// <returns> 透明度 </returns>
+	float IncreaseAlpha(const float _PlusAlpha);
+
+	/// <summary>
+	/// 透明度をリセット
+	/// </summary>
+	void ResetAlpha();
 
 private:
+
+	// 初期透明度
+	const float MInitAlpha;
 
 	// 描画を行うか
 	bool mVisible;

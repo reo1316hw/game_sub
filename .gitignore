@@ -24,14 +24,14 @@
 *.la
 
 # Executables
-GameProject/TowerDefence/TowerDefence.exe
-GameProject/TowerDefence/TowerDefence.ilk
-GameProject/TowerDefence/TowerDefence.pdb
+GameProject/ValkyrieWarriors/ValkyrieWarriors.exe
+GameProject/ValkyrieWarriors/ValkyrieWarriors.ilk
+GameProject/ValkyrieWarriors/ValkyrieWarriors.pdb
 GameProject/.vs
-GameProject/TowerDefence/.vs
+GameProject/ValkyrieWarriors/.vs
 GameProject/x64
-GameProject/TowerDefence/x64
+GameProject/ValkyrieWarriors/x64
 GameProject/Debug
-GameProject/TowerDefence/Debug
+GameProject/ValkyrieWarriors/Debug
 GameProject/Release
-GameProject/TowerDefence/Release
+GameProject/ValkyrieWarriors/Release

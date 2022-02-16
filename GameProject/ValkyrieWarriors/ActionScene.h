@@ -1,6 +1,15 @@
 #pragma once
 
 /// <summary>
+/// フェードイン用スプライトの種類
+/// </summary>
+enum FadeInSpriteType
+{
+	eWhite,
+    eBlack
+};
+
+/// <summary>
 /// アクションシーン
 /// </summary>
 class ActionScene : public SceneBase
@@ -26,22 +35,17 @@ public:
 
 private:
 
-	// ゲームクリアシーンに遷移するタイミング
-	const int MTimingTransitionGameClear;
-	// ゲームオーバーシーンに遷移するタイミング
-	const int MTimingTransitionGameOver;
+	// 透明度を足していくための値
+	const float MPlusAlpha;
 	// 画角
 	const float MAngleOfView;
 	// 光源までの距離
 	const float MLightDistance;
-
-	// ゲームクリアシーンに遷移するまでのカウント
-	int mGameClearTransitionUntilCount;
-	// ゲームオーバーシーンに遷移するまでのカウント
-	int mGameOverTransitionUntilCount;
-
 	// スプライトの拡大サイズ
 	const Vector3 MSpriteScale;
+
+	// スプライトコンポーネントのリスト
+	std::vector<SpriteComponent*> mSpriteComponentList;
 
 	// プレイヤーのポインタ
 	PlayerObject* mPlayerPtr;

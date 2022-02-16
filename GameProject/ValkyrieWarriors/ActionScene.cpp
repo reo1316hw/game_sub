@@ -4,12 +4,9 @@
 /// コンストラクタ
 /// </summary>
 ActionScene::ActionScene()
-	: MTimingTransitionGameClear(220.0f)
-	, MTimingTransitionGameOver(160.0f)
+	: MPlusAlpha(0.006f)
 	, MAngleOfView(70.0f)
 	, MLightDistance(100.0f)
-	, mGameClearTransitionUntilCount(0)
-	, mGameOverTransitionUntilCount(0)
 	, MSpriteScale(Vector3(2.0f, 1.0f, 1.0f))
 	, mPlayerPtr(nullptr)
 	, mBossPtr(nullptr)
@@ -54,10 +51,18 @@ ActionScene::ActionScene()
 	// スカイボックス生成
 	new SkyBoxObject(Tag::eOther, false);
 
-	//// フェードイン用の白テクスチャ
-	//new Sprite("Assets/Texture/FadeWhite.png", true, 0.0f, MSpriteScale);
-	//// フェードイン用の黒テクスチャ
-	//new Sprite("Assets/Texture/FadeBlack.png", true, 0.0f, MSpriteScale);
+	// スプライトのリスト
+	std::vector<Sprite*> spriteList;
+
+	// フェードイン用の白テクスチャ
+	spriteList.emplace_back(new Sprite("Assets/Texture/FadeWhite.png", true, 0.0f, MSpriteScale));
+	// フェードイン用の黒テクスチャ
+	spriteList.emplace_back(new Sprite("Assets/Texture/FadeBlack.png", true, 0.0f, MSpriteScale));
+
+	for (auto spriteItr : spriteList)
+	{
+		mSpriteComponentList.emplace_back(spriteItr->GetSpriteComponentPtr());
+	}
 }
 
 /// <summary>
@@ -65,6 +70,7 @@ ActionScene::ActionScene()
 /// </summary>
 ActionScene::~ActionScene()
 {
+	mSpriteComponentList.clear();
 	GAME_OBJECT_MANAGER->RemoveAllUsedGameObject();
 }
 
@@ -75,29 +81,36 @@ ActionScene::~ActionScene()
 /// <returns> シーンクラスのポインタ </returns>
 SceneBase* ActionScene::Update(const InputState& _KeyState)
 {
-	// ボスのhpが0になったらゲームクリアシーンへ遷移するカウントを始める
+	// フェードイン用の白テクスチャの透明度
+	float whiteSpriteAlpha = 0.0f;
+	// フェードイン用の黒テクスチャの透明度
+	float blackSpriteAlpha = 0.0f;
+
+	// ボスのhpが0になったら白いフェードインを始める
 	if (mBossPtr->GetHitPoint() <= 0)
 	{
-		++mGameClearTransitionUntilCount;
+		whiteSpriteAlpha = mSpriteComponentList[FadeInSpriteType::eWhite]->IncreaseAlpha(MPlusAlpha);
 	}
 
 	// ゲームクリアシーンへ遷移する
-	if (mGameClearTransitionUntilCount >= MTimingTransitionGameClear)
+	if (whiteSpriteAlpha >= 1.0f)
 	{
+		mSpriteComponentList[FadeInSpriteType::eWhite]->ResetAlpha();
 		// エフェクトを全て止める
 		RENDERER->GetEffekseerManager()->StopAllEffects();
 		return new GameClearScene();
 	}
 	
-	// プレイヤーのhpが0になったらゲームオーバーシーンへ遷移するカウントを始める
+	// プレイヤーのhpが0になったら黒いフェードインを始める
 	if (mPlayerPtr->GetHitPoint() <= 0)
 	{
-		++mGameOverTransitionUntilCount;
+		blackSpriteAlpha = mSpriteComponentList[FadeInSpriteType::eBlack]->IncreaseAlpha(MPlusAlpha);
 	}
 
 	// ゲームオーバーシーンへ遷移する
-	if (mGameOverTransitionUntilCount >= MTimingTransitionGameOver)
+	if (blackSpriteAlpha >= 1.0f)
 	{
+		mSpriteComponentList[FadeInSpriteType::eBlack]->ResetAlpha();
 		// エフェクトを全て止める
 		RENDERER->GetEffekseerManager()->StopAllEffects();
 		return new GameOverScene();

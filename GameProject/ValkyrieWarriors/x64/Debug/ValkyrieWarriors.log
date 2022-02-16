@@ -1,4 +1,2 @@
 ﻿  ActionScene.cpp
-D:\Users\leoha\Desktop\sub\GameProject\ValkyrieWarriors\ActionScene.cpp(7,30): warning C4244: '初期化中': 'float' から 'const int' への変換です。データが失われる可能性があります。
-D:\Users\leoha\Desktop\sub\GameProject\ValkyrieWarriors\ActionScene.cpp(8,29): warning C4244: '初期化中': 'float' から 'const int' への変換です。データが失われる可能性があります。
   ValkyrieWarriors.vcxproj -> D:\Users\leoha\Desktop\sub\GameProject\x64\Debug\ValkyrieWarriors.exe

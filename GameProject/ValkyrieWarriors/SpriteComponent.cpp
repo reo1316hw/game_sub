@@ -9,6 +9,7 @@
 /// <param name="_DrawOrder"> 描画の順番 </param>
 SpriteComponent::SpriteComponent(GameObject* _owner, Texture* _texture, const float _Alpha, const int& _DrawOrder)
     : Component(_owner)
+	, MInitAlpha(_Alpha)
     , mDrawOrder(_DrawOrder)
 	, mVisible(true)
 	, mTextureWidth(0)
@@ -60,6 +61,24 @@ void SpriteComponent::Draw(Shader * _shader)
 	_shader->SetIntUniform("uSpriteTexture", 0);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);	
+}
+
+/// <summary>
+/// 透明度を上げる
+/// </summary>
+/// <param name="_PlusAlpha"> 透明度を足していくための値 </param>
+/// <returns> 透明度 </returns>
+float SpriteComponent::IncreaseAlpha(const float _PlusAlpha)
+{
+	return mAlpha += _PlusAlpha;
+}
+
+/// <summary>
+/// 透明度をリセット
+/// </summary>
+void SpriteComponent::ResetAlpha()
+{
+	mAlpha = MInitAlpha;
 }
 
 /// <summary>
